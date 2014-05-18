@@ -39,7 +39,11 @@ syntax on
 " Theme
 syntax enable
 set background=dark
-colorscheme solarized
+try
+    colorscheme solarized
+catch
+    colorscheme default
+endtry
 set ruler                     " show the line number on the bar
 set more                      " use more prompt
 set autoread                  " watch for file changes

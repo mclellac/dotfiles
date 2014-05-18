@@ -1,58 +1,80 @@
 #!/bin/bash
-a=(
+declare -a a=(
     vim
     hg
 )
 len=${#a[*]}
+package_list="/tmp/missing-packages.txt"
+# colours
 green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
+cyan='\033[1;36m'
 errquit()    { msgwarn $err; exit 1; }
 msgsuccess() { msginfo $msg; }
 msginfo()    { message=${@:-"${white}Error: No message passed"}; printf "${green}${message}${white}\n"; }
 msgwarn()    { message=${@:-"${white}Error: No message passed"}; printf "${red}${message}${white}\n";   }
 
-pkgmgr() {
-    # function to determine which package manager is being used on the host OS.
-    [ -x "$(which $1)" ]
+
+cmd_exists() {
+    [ -x "$(command -v "$1")" ] \
+        && printf 0 \
+        || printf 1
 }
 
-chkdeps() {
-    # TODO: rewrite this to check for application, and if missing pass to chkos() instead of quit.
-    echo "Checking to see if the following applications have been installed:"
+main() {
+    if [ -d ${HOME}/.vim/bundle/ ]; then
+        printf "${red}Moving old vim configuration files into ${HOME}/.vim.old${white}\n"
+        mv ${HOME}/.vim ${HOME}/.vim.old && mv ${HOME}/.vimrc ${HOME}/.vim.old
+    fi
+
+    printf "Checking to see if the following applications have been installed:\n"
     for (( i=0; i<=$(( $len -1 )); i++ )); do
-        msg="[✔]${white} ${a[$i]}"
-        command -v ${a[$i]} >/dev/null 2>&1 || {
-            err="[✘] ${white}Please install ${red}${a[$i]}${white}. Attempting to install" >&2 errquit
-        }
-        msgsuccess $msg
-    done
-    vimsetup
-}
-
-chkos() {
-    os=`uname`
-    # TODO: Modify chkdeps to be able to handle installing missing deps
-    ###################################################################
-    if [ $os = 'Linux' ]; then
-        if pkgmgr apt-get ; then 
-            sudo apt-get install $app
-        elif pkgmgr yum ; then 
-            sudo yum install $app
-        elif pkgmgr up2date ; then 
-            sudo up2date -i $app
+        if [ $(cmd_exists ${a[$i]}) -eq 0 ]; then
+            printf "${green}[✔]${white} ${a[$i]}\n"
         else
-            echo 'No package manager found!'
-            exit 2
+            printf "${red}[✘] ${a[$i]}${white} is missing.\n"
+            echo ${a[$i]} >> $package_list
         fi
-    elif [ $os = 'FreeBSD' ]; then
-        cd /usr/ports/devel/$app && make && sudo make install
-    elif [ $os = 'Darwin' ]; then
-        brew install $app
+    done
+
+    if [ -f $package_list ]; then
+        install_deps
+    else
+        vim_setup
     fi
 }
 
-vimsetup() {
+install_deps() {
+    os=`uname -s`
+
+    printf "${cyan}Attempting to install missing packages.${white}\n"
+    for package in `(cat ${package_list})`; do
+       if [ $os = 'Linux' ]; then
+           if [ $(cmd_exists apt-get) ]; then 
+               sudo apt-get install $package
+           elif [ $(cmd_exists yum) ]; then 
+               sudo yum install $package
+           elif [ $(cmd_exists up2date) ]; then 
+               sudo up2date -i $package
+           else
+               echo 'No package manager found!'
+               exit 2
+           fi
+       elif [ $os = 'FreeBSD' ]; then
+           cd /usr/ports/devel/$package && make && sudo make install
+       elif [ $os = 'Darwin' ]; then
+           brew install $package
+       fi
+    done
+
+    # delete /tmp/missing-packages.txt when done.
+    rm $package_list
+    
+    vim_setup
+}
+
+vim_setup() {
     if [ ! -d ${HOME}/.vim/autoload ] || [ ! -d ${HOME}/.vim/bundle ]; then
         mkdir -p ${HOME}/.vim/autoload ${HOME}/.vim/bundle
     fi
@@ -68,4 +90,4 @@ vimsetup() {
     cp vimrc ${HOME}/.vimrc && vim +PluginInstall +qall
 }
 
-chkdeps
+main

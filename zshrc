@@ -2,7 +2,7 @@ source /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.z
 
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=~/.history
+HISTFILE=~/.zhistory
 export SAVEHIST HISTFILE HISTSIZE
 
 GOROOT="/usr/local/go"
