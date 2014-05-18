@@ -1,9 +1,13 @@
 source /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE=~/.zhistory
+HISTFILE=$HOME/.zhistory       # enable history saving on shell exit
+setopt APPEND_HISTORY          # append rather than overwrite history file.
+HISTSIZE=1200                  # lines of history to maintain memory
+SAVEHIST=1000                  # lines of history to maintain in history file.
+setopt HIST_EXPIRE_DUPS_FIRST  # allow dups, but expire old ones when I hit HISTSIZE
+setopt EXTENDED_HISTORY        # save timestamp and runtime information
 export SAVEHIST HISTFILE HISTSIZE
+export HISTCONTROL=ignoredups
 
 GOROOT="/usr/local/go"
 export GOPATH=$HOME/Projects

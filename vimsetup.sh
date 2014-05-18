@@ -80,14 +80,23 @@ vim_setup() {
     fi
     
     if [ -d ${HOME}/.vim/bundle ] && [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
-        git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go
+        printf "github.com: ${white}Cloning ${cyan}fatih/vim-go.git  ${white}to ${cyan}~/.vim/bundle/vim-go. "
+        git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
+        printf "${green}[done]${white}\n"
     fi
     
     if [ -d ${HOME}/.vim/autoload ]; then
-        git clone https://github.com/gmarik/vundle.git ${HOME}/.vim/bundle/vundle
+        printf "github.com: ${white}Cloning ${cyan}gmarik/vundle.git ${white}to ${cyan}~/.vim/bundle/vundle. "
+        git clone https://github.com/gmarik/vundle.git ${HOME}/.vim/bundle/vundle -q 
+        printf "${green}[done]${white}\n"
+        sleep 1
     fi
-
+    printf "${white}Installing plugins.\n"
+    sleep 1
     cp vimrc ${HOME}/.vimrc && vim +PluginInstall +qall
+    printf "${cyan}vimrc ${white}has been moved to ${cyan}~/.vimrc.\n"
+    printf "${green}Install complete.${white}\n"
+
 }
 
 main
