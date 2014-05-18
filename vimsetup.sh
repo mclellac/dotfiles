@@ -18,6 +18,7 @@ pkgmgr() {
 }
 
 chkdeps() {
+    # TODO: rewrite this to check for application, and if missing pass to chkos() instead of quit.
     echo "Checking to see if the following applications have been installed:"
     for (( i=0; i<=$(( $len -1 )); i++ )); do
         msg="[✔]${white} ${a[$i]}"
@@ -31,8 +32,8 @@ chkdeps() {
 
 chkos() {
     os=`uname`
-    #TODO: Modify chkdeps to be able to handle installing missing deps
-    ##################################################################
+    # TODO: Modify chkdeps to be able to handle installing missing deps
+    ###################################################################
     if [ $os = 'Linux' ]; then
         if pkgmgr apt-get ; then 
             sudo apt-get install $app
@@ -63,6 +64,8 @@ vimsetup() {
     if [ -d ${HOME}/.vim/autoload ]; then
         git clone https://github.com/gmarik/vundle.git ${HOME}/.vim/bundle/vundle
     fi
+
+    cp vimrc ${HOME}/.vimrc && vim +PluginInstall +qall
 }
 
 chkdeps
