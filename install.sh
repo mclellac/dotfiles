@@ -17,11 +17,12 @@ if [ -f ${dotfiles}/README.md ]; then
     rm ${dotfiles}/README.md
 fi
 
-cd $dotfiles
-for file in `(ls $dotfiles)`;
-do 
-    mv $file ${HOME}/.$file; 
-done
+
+#cd $dotfiles
+#for file in `(ls $dotfiles)`;
+#do 
+#    mv $file ${HOME}/.$file; 
+#done
 
 # install powerline
 cd $workdir && pip install --user $pl

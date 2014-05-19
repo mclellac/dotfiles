@@ -1,4 +1,5 @@
 #!/bin/bash
+appname=`basename "$0"`
 declare -a a=(
     vim
     hg
@@ -10,18 +11,45 @@ green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
 cyan='\033[1;36m'
-errquit()    { msgwarn $err; exit 1; }
-msgsuccess() { msginfo $msg; }
-msginfo()    { message=${@:-"${white}Error: No message passed"}; printf "${green}${message}${white}\n"; }
-msgwarn()    { message=${@:-"${white}Error: No message passed"}; printf "${red}${message}${white}\n";   }
 
-cmd_exists() {
-    [ -x "$(command -v "$1")" ] \
-        && printf 0 \
-        || printf 1
+cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
+
+print_help() {
+    cat << EOF
+Usage: $appname 
+
+    TODO
+
+EOF
 }
 
-main() {
+os_check() {
+    os=`uname -s`
+
+    if [ $os = 'Linux' ]; then
+        if [ $(cmd_exists apt-get) ]; then 
+            app_install="sudo apt-get install"
+        elif [ $(cmd_exists yum) ]; then 
+            app_install="sudo yum install"
+        elif [ $(cmd_exists up2date) ]; then 
+            app_install="sudo up2date -i"
+        else
+            printf "${red}[✘] ${white}No package manager found for this Linux system!\n"
+            exit 2
+        fi
+    elif [ $os = 'FreeBSD' ]; then
+        bsd_install="cd /usr/ports/devel/"
+    elif [ $os = 'Darwin' ]; then
+        app_install="brew install"
+    else
+        printf "${red}[✘] ${white}Unable to determine the operating system.\n"
+        exit 2
+    fi
+
+    dependency_check
+}
+
+dependency_check() {
     if [ -d ${HOME}/.vim/bundle/ ]; then
         printf "${red}Moving old vim configuration files into ${HOME}/.vim.old${white}\n"
         mv ${HOME}/.vim ${HOME}/.vim.old && mv ${HOME}/.vimrc ${HOME}/.vim.old
@@ -38,32 +66,19 @@ main() {
     done
 
     if [ -f $package_list ]; then
-        install_deps
+        install_dependencies
     else
         vim_setup
     fi
 }
 
-install_deps() {
-    os=`uname -s`
-
+install_dependencies() {
     printf "${cyan}Attempting to install missing packages.${white}\n"
     for package in `(cat ${package_list})`; do
-        if [ $os = 'Linux' ]; then
-            if [ $(cmd_exists apt-get) ]; then 
-                sudo apt-get install $package
-            elif [ $(cmd_exists yum) ]; then 
-                sudo yum install $package
-            elif [ $(cmd_exists up2date) ]; then 
-                sudo up2date -i $package
-            else
-                echo 'No package manager found!'
-                exit 2
-            fi
-        elif [ $os = 'FreeBSD' ]; then
-            cd /usr/ports/devel/$package && make && sudo make install
-        elif [ $os = 'Darwin' ]; then
-            brew install $package
+        if [ $os != "FreeBSD" ];
+            app_install $package
+        else
+            bsd_install $package && make && sudo make install
         fi
     done
 
@@ -97,4 +112,4 @@ vim_setup() {
     printf "${green}Install complete.${white}\n"
 }
 
-main
+os_check
