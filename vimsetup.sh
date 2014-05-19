@@ -15,7 +15,6 @@ msgsuccess() { msginfo $msg; }
 msginfo()    { message=${@:-"${white}Error: No message passed"}; printf "${green}${message}${white}\n"; }
 msgwarn()    { message=${@:-"${white}Error: No message passed"}; printf "${red}${message}${white}\n";   }
 
-
 cmd_exists() {
     [ -x "$(command -v "$1")" ] \
         && printf 0 \
@@ -50,27 +49,26 @@ install_deps() {
 
     printf "${cyan}Attempting to install missing packages.${white}\n"
     for package in `(cat ${package_list})`; do
-       if [ $os = 'Linux' ]; then
-           if [ $(cmd_exists apt-get) ]; then 
-               sudo apt-get install $package
-           elif [ $(cmd_exists yum) ]; then 
-               sudo yum install $package
-           elif [ $(cmd_exists up2date) ]; then 
-               sudo up2date -i $package
-           else
-               echo 'No package manager found!'
-               exit 2
-           fi
-       elif [ $os = 'FreeBSD' ]; then
-           cd /usr/ports/devel/$package && make && sudo make install
-       elif [ $os = 'Darwin' ]; then
-           brew install $package
-       fi
+        if [ $os = 'Linux' ]; then
+            if [ $(cmd_exists apt-get) ]; then 
+                sudo apt-get install $package
+            elif [ $(cmd_exists yum) ]; then 
+                sudo yum install $package
+            elif [ $(cmd_exists up2date) ]; then 
+                sudo up2date -i $package
+            else
+                echo 'No package manager found!'
+                exit 2
+            fi
+        elif [ $os = 'FreeBSD' ]; then
+            cd /usr/ports/devel/$package && make && sudo make install
+        elif [ $os = 'Darwin' ]; then
+            brew install $package
+        fi
     done
 
     # delete /tmp/missing-packages.txt when done.
-    rm $package_list
-    
+    rm $package_list    
     vim_setup
 }
 
@@ -91,12 +89,12 @@ vim_setup() {
         printf "${green}[done]${white}\n"
         sleep 1
     fi
+
     printf "${white}Installing plugins.\n"
     sleep 1
     cp vimrc ${HOME}/.vimrc && vim +PluginInstall +qall
     printf "${cyan}vimrc ${white}has been moved to ${cyan}~/.vimrc.\n"
     printf "${green}Install complete.${white}\n"
-
 }
 
 main
