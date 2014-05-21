@@ -92,6 +92,8 @@ vim_setup() {
         mkdir -p ${HOME}/.vim/autoload ${HOME}/.vim/bundle
     fi
     
+    [ ! -d ${HOME}/.vim/backup ]; mkdir -p ${HOME}/.vim/backup;
+        
     if [ -d ${HOME}/.vim/bundle ] && [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
         printf "github.com: ${white}Cloning ${cyan}fatih/vim-go.git  ${white}to ${cyan}~/.vim/bundle/vim-go. "
         git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
