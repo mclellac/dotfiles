@@ -1,10 +1,15 @@
 #!/bin/bash
 appname=`basename "$0"`
-declare -a a=(
-    vim
-    hg
+declare -a dir=(
+    ${HOME}/.vim
+    ${HOME}/.vim/bundle
+    ${HOME}/.vim/autoload
+    ${HOME}/.vim/colors
+    ${HOME}/.vim/backup
 )
-len=${#a[*]}
+
+declare -a deps=(vim hg)
+
 package_list="/tmp/missing-packages.txt"
 # colours
 green='\033[00;32m'
@@ -21,6 +26,14 @@ Usage: $appname
     TODO
 
 EOF
+}
+
+mkdr() {
+    if [ ! -d $directory ]; then 
+        mkdir -p $directory >/dev/null 2>&1 && \
+            printf "${cyan}Directory ${directory} created.${white}\n" || \
+            printf "${red}Error: Failed to create ${directory} directory.${white}\n"
+    fi
 }
 
 os_check() {
@@ -52,16 +65,16 @@ os_check() {
 dependency_check() {
     if [ -d ${HOME}/.vim/bundle/ ]; then
         printf "${red}Moving old vim configuration files into ${HOME}/.vim.old${white}\n"
-        mv ${HOME}/.vim ${HOME}/.vim.old && mv ${HOME}/.vimrc ${HOME}/.vim.old
+        mv ${HOME}/.vim ${HOME}/.vim.`(date +%H%M-%d%m%y)` && mv ${HOME}/.vimrc ${HOME}/.vim.old
     fi
 
     printf "Checking to see if the following applications have been installed:\n"
-    for (( i=0; i<=$(( $len -1 )); i++ )); do
-        if [ $(cmd_exists ${a[$i]}) -eq 0 ]; then
-            printf "${green}[✔]${white} ${a[$i]}\n"
+    for i in ${!deps[*]}; do
+        if [ $(cmd_exists ${deps[$i]}) -eq 0 ]; then
+            printf "${green}[✔]${white} ${deps[$i]}\n"
         else
-            printf "${red}[✘] ${a[$i]}${white} is missing.\n"
-            echo ${a[$i]} >> $package_list
+            printf "${red}[✘] ${deps[$i]}${white} is missing.\n"
+            echo ${deps[$i]} >> $package_list
         fi
     done
 
@@ -75,7 +88,7 @@ dependency_check() {
 install_dependencies() {
     printf "${cyan}Attempting to install missing packages.${white}\n"
     for package in `(cat ${package_list})`; do
-        if [ $os != "FreeBSD" ];
+        if [ $os != "FreeBSD" ]; then
             app_install $package
         else
             bsd_install $package && make && sudo make install
@@ -88,12 +101,10 @@ install_dependencies() {
 }
 
 vim_setup() {
-    if [ ! -d ${HOME}/.vim/autoload ] || [ ! -d ${HOME}/.vim/bundle ]; then
-        mkdir -p ${HOME}/.vim/autoload ${HOME}/.vim/bundle
-    fi
-    
-    [ ! -d ${HOME}/.vim/backup ]; mkdir -p ${HOME}/.vim/backup;
-        
+    for directory in ${dir[@]}; do
+        mkdr $directory
+    done
+
     if [ -d ${HOME}/.vim/bundle ] && [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
         printf "github.com: ${white}Cloning ${cyan}fatih/vim-go.git  ${white}to ${cyan}~/.vim/bundle/vim-go. "
         git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
@@ -109,9 +120,14 @@ vim_setup() {
 
     printf "${white}Installing plugins.\n"
     sleep 1
-    cp vimrc ${HOME}/.vimrc && vim +PluginInstall +qall
+    cp vim/vimrc ${HOME}/.vimrc && vim +PluginInstall +qall
     printf "${cyan}vimrc ${white}has been moved to ${cyan}~/.vimrc.\n"
     printf "${green}Install complete.${white}\n"
 }
+
+cleanup() {
+    echo "Cleanup"
+}
+trap cleanup EXIT
 
 os_check
