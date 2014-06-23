@@ -166,12 +166,11 @@ main() {
                 ;;
             i)
                 install_app=${OPTARG}
-                ((  
-                    install_app == "vim"   || 
-                    install_app == "tmux"  ||
-                    install_app == "zsh"   ||
-                    install_app == "iTerm2"
-                )) || usage
+                echo $OPTARG
+                ((  install_app == "vim"   || \
+                    install_app == "tmux"  || \
+                    install_app == "zsh"   || \
+                    install_app == "iTerm2" )) || usage
                 ;;
         esac
     done
