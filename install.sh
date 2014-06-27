@@ -153,8 +153,8 @@ vim_setup() {
 main() {
     install_app=""
 
-    while getopts "i:hv" options; do
-        echo $options
+    while getopts i:hv options
+    do
         case "${options}" in
             h|\?)
                 usage
@@ -174,13 +174,14 @@ main() {
                 ;;
         esac
     done
-    shift $((OPTIND-1))
+    #shift $((OPTIND-1))
 
-    if [ -z "${s}" ] || [ -z "${p}" ]; then
-        usage
-    fi
+    #if [ -z "${s}" ] || [ -z "${p}" ]; then
+    #    usage
+    #fi
 
 #    os_check
 }
+echo $OPTARG
 main
 #os_check
