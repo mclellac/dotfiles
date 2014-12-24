@@ -35,7 +35,9 @@ function ssh() {
 
 # command wrapper functions.
 function diga() {  dig +nocmd "$*" any +multiline +noall +answer }
-function fed()  { find . -type f -name "$*" -exec vim {} \; }
+# Usage: fed $filename
+#   Find and edit the filename argument.
+function fed()  {  find . -type f -name "$*" -exec vim {} \; }
 
 # simple calculator
 function calc() {
