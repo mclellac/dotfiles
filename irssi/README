@@ -1,0 +1,9 @@
+My .irssi directory. Includes the solarized theme and a powerline looking statusbar.
+
+1. git clone as ~/.irssi
+2. Edit `config`, and s/dmondark/your_nick
+3. Edit `triggers` and do the same.
+4. Check out what's in the `script` directory. And play with `scriptassist` script.
+5. Enjoy.
+
+Note: Requires that your terminal is configured with a Powerline patched font.
