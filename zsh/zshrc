@@ -1,28 +1,39 @@
-#source /usr/local/lib/python2.7/site-packages/Powerline-beta-py2.7.egg/bin/
-
-HISTFILE=$HOME/.zhistory       # enable history saving on shell exit
-setopt APPEND_HISTORY          # append rather than overwrite history file.
-HISTSIZE=1200                  # lines of history to maintain memory
-SAVEHIST=1000                  # lines of history to maintain in history file.
-setopt HIST_EXPIRE_DUPS_FIRST  # allow dups, but expire old ones when I hit HISTSIZE
-setopt EXTENDED_HISTORY        # save timestamp and runtime information
+HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
+setopt APPEND_HISTORY               # append rather than overwrite history file.
+HISTSIZE=1200                       # lines of history to maintain memory
+SAVEHIST=1000                       # lines of history to maintain in history file.
+setopt HIST_EXPIRE_DUPS_FIRST       # allow dups, but expire old ones when I hit HISTSIZE
+setopt EXTENDED_HISTORY             # save timestamp and runtime information
 export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 
+export BYOBU_PREFIX=$(brew --prefix)
+export TERM='xterm-256color'
+
 GOROOT="/usr/local/go"
 export GOPATH=$HOME/Projects
-export PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/usr/sbin:/sbin:${HOME}/bin:/Applications/VirtualBox.app/Contents/MacOS"
+export PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin:${HOME}/bin"
 export EDITOR=vim
 export VISUAL=vim
 
+
+alias unixxx="ssh unixxx.net"
+alias gitlog="git log --pretty=format:\"%h %an %s\""
 alias history="history 0"
+alias agenda="gcalcli agenda"
+alias calw="clear; gcalcli calw -w 12"
+alias calm="clear; gcalcli calm -w 20"
 
-settitle() { printf "\033k$1\033\\" }
-
-cmdhistory() {
-    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"#";printf "%15s %5d %s %s",$2,$1,r,"\n";}'
+# List the top 20 commands used in history.
+cmdhist() {
+    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|\
+    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"•";printf "\033[1;34m\%15s\033[0m  %5d ￨ \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
 }
 
+# set new tmux window name the hostname
+printf "\033k`hostname -s`\033\\"
+
+# rename tmux window to the address ssh'ed to.
 function ssh() {
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
         tmux rename-window "$*"
@@ -33,18 +44,23 @@ function ssh() {
     fi
 }
 
-# command wrapper functions.
+# Command wrapper functions.
 function diga() {  dig +nocmd "$*" any +multiline +noall +answer }
 # Usage: fed $filename
 #   Find and edit the filename argument.
 function fed()  {  find . -type f -name "$*" -exec vim {} \; }
 
-# simple calculator
+function connerize() { echo "$*" | sed "s/s/sh/g" }
+function connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
+
+# Simple calculator
 function calc() {
+    # You will need to escape multiplication (ie: "calc 2 \* 20")
+    # Everything else should be okay.
     local result=""
     result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
     #                       └─ default (when `--mathlib` is used) is 20
-    #
+    
     if [[ "$result" == *.* ]]; then
         # improve the output for decimal numbers
         printf "$result" |
@@ -64,8 +80,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# CTRL+LEFT ARROW  & CTRL+RIGHT ARROW keybinding to  go back or forward 
-# a word.
+# CTRL+left & CTRL+right keybinding to  go back or forward a word.
 bindkey ';5D' emacs-backward-word
 bindkey ';5C' emacs-forward-word
 
@@ -76,19 +91,28 @@ precmd() {
     fi
 }
 
-function powerline_precmd() {
-    export PS1="$(/usr/lib/powerline/powerline-shell.py $? --shell zsh 2> /dev/null)"
-    export SUDO_PS1="$(/usr/lib/powerline/powerline-shell.py $? --shell zsh 2> /dev/null)"
+function _update_ps1()
+{
+  export PROMPT="$(~/.powerline-zsh.py $?)"
+}
+precmd()
+{
+  _update_ps1
 }
 
-function install_powerline_precmd() {
-    for s in "${precmd_functions[@]}"; do
-        if [ "$s" = "powerline_precmd" ]; then
-            return
-        fi
-    done
-    precmd_functions+=(powerline_precmd)
-}
-install_powerline_precmd
+#function powerline_precmd() {
+#    export PS1="$(/usr/lib/powerline/powerline-shell.py $? --shell zsh 2> /dev/null)"
+#    export SUDO_PS1="$(/usr/lib/powerline/powerline-shell.py $? --shell zsh 2> /dev/null)"
+#}
 
-source /Users/mclellac/.iterm2_shell_integration.zsh
+#function install_powerline_precmd() {
+#    for s in "${precmd_functions[@]}"; do
+#        if [ "$s" = "powerline_precmd" ]; then
+#            return
+#        fi
+#    done
+#    precmd_functions+=(powerline_precmd)
+#}
+#install_powerline_precmd
+
+#source /Users/mclellac/.iterm2_shell_integration.zsh
