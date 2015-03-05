@@ -41,6 +41,7 @@ if ! grep -Fxq $work_email $HOME/.gitconfig; then
     # requires modification should it spawn a subshell
     # and assign the current users name to the realname variable 
     realname=$(finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //')
+    work_email=$(echo $realname | tr '[:upper:]' '[:lower:]' |awk '{print $1"."$2"@cbc.ca"}')
     git config --global user.name  "${realname}"
     git config --global user.email "${work_email}"  
 fi
