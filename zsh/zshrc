@@ -132,4 +132,10 @@ precmd()
 #}
 #install_powerline_precmd
 
-source ${HOME}/.iterm2_shell_integration.zsh
+# iterm2 integration if using OSX, and if it's been installed.
+if [[ `uname -s` == "Darwin" ]]; then
+  if [ -f ${HOME}/.iterm2_shell_integration.zsh ]; then
+      source ${HOME}/.iterm2_shell_integration.zsh
+  fi
+fi
+
