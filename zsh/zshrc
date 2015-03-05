@@ -132,4 +132,4 @@ precmd()
 #}
 #install_powerline_precmd
 
-source /Users/mclellac/.iterm2_shell_integration.zsh
+source ${HOME}/.iterm2_shell_integration.zsh
