@@ -14,23 +14,33 @@ export TERM='xterm-256color'
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 setopt rmstarsilent
 
+#-- bindings --
+# CTRL+left & CTRL+right keybinding to go back or forward a word
+bindkey ';5D' emacs-backward-word
+bindkey ';5C' emacs-forward-word
+
+#-- zprezto --
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 #-- development --
-realname=$(finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //')
 github_path=$HOME/Projects/src/github.com
 work_git_path=$HOME/Projects/src/stash
 source ~/.zprivate                  # .zprivate includes: $email, $work_email and ssh aliases.
 
 if [ ! -d $github_path ]; then
-    mkdir -p ~/Projects/{pkg,src,bin}
+    mkdir -p ${HOME}/Projects/{pkg,src,bin}
     mkdir -p $github_path
     mkdir -p $work_git_path
 fi
 
 if ! grep -Fxq $work_email $HOME/.gitconfig; then
+    # putting realname here so it doesn't get assigned every time
+    # a new shell starts. Only when the .gitconfig file
+    # requires modification should it spawn a subshell
+    # and assign the current users name to the realname variable 
+    realname=$(finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //')
     git config --global user.name  "${realname}"
     git config --global user.email "${work_email}"  
 fi
@@ -71,13 +81,13 @@ ssh() {
 
 #--  command wrapper functions --
 diga() {  dig +nocmd "$*" any +multiline +noall +answer }
-#-- find and edit the filename argument (usage: fed $filename) --
+# find and edit the filename argument (usage: fed $filename)
 fed()  {  find . -type f -name "$*" -exec vim {} \; }
 terminalator() { echo "$*" | sed "s/what\ is\ the\ matter/whazzamadda/g" | sed "s/\ the\ /\ zee\ /g" | sed "s/I/Ah/g" | sed "s/\ i\ /\ ah\ /g" | sed "s/\ a\ /\ uh\ /g" | sed "s/idi/eede/g" | sed "s/ar/ah/g" | sed "s/tum/toom/g" | sed "s/\ and\ /\ und\ /g" | sed "s/see\ /zee\ /g" | sed "s/tha/da/g" | sed "s/Argh/ARrrArrUGEEarRGHH/g"}
 connerize() { echo "$*" | sed "s/s/sh/g" }
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
 
-#-- simple calculator --
+# simple calculator
 function calc() {
     # You will need to escape multiplication (ie: "calc 2 \* 20")
     # Everything else should be okay.
@@ -96,10 +106,6 @@ function calc() {
     fi
     printf "\n"
 }
-
-#-- CTRL+left & CTRL+right keybinding to  go back or forward a word --
-bindkey ';5D' emacs-backward-word
-bindkey ';5C' emacs-forward-word
 
 precmd() {
     if [[ ( ${-} == *i* ) && ( ${TERM} == screen* ) ]]
