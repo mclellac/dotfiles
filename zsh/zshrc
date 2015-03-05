@@ -82,7 +82,6 @@ ssh() {
 #--  command wrapper functions --
 diga() {  dig +nocmd "$*" any +multiline +noall +answer }
 fed()  {  find . -type f -name "$*" -exec vim {} \; }  # edit the file passed as an argument
-# command line Sean Connery
 connerize()     { echo "$*" | sed "s/s/sh/g" }
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
 
