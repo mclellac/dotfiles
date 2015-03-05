@@ -1,0 +1,5 @@
+#-- private variables --
+export email=""
+export work_email=""
+
+#-- ssh aliases --
