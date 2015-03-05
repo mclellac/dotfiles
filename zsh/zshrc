@@ -24,10 +24,10 @@ github_path=$HOME/Projects/src/github.com
 work_git_path=$HOME/Projects/src/stash
 source ~/.zprivate                  # .zprivate includes: $email, $work_email and ssh aliases.
 
-if [ ! -d $WORK_GIT_PATH ]; then
+if [ ! -d $github_path ]; then
     mkdir -p ~/Projects/{pkg,src,bin}
-    mkdir -p $GITHUB_PATH
-    mkdir -p $WORK_GIT_PATH
+    mkdir -p $github_path
+    mkdir -p $work_git_path
 fi
 
 if ! grep -Fxq $work_email $HOME/.gitconfig; then
