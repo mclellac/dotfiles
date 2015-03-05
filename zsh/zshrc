@@ -30,7 +30,6 @@ if [ ! -d $WORK_GIT_PATH ]; then
     mkdir -p $WORK_GIT_PATH
 fi
 
-
 if ! grep -Fxq $work_email $HOME/.gitconfig; then
     git config --global user.name  "${realname}"
     git config --global user.email "${work_email}"  
