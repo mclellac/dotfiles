@@ -74,7 +74,7 @@ diga() {  dig +nocmd "$*" any +multiline +noall +answer }
 #-- find and edit the filename argument (usage: fed $filename) --
 fed()  {  find . -type f -name "$*" -exec vim {} \; }
 terminalator() { echo "$*" | sed "s/what\ is\ the\ matter/whazzamadda/g" | sed "s/\ the\ /\ zee\ /g" | sed "s/I/Ah/g" | sed "s/\ i\ /\ ah\ /g" | sed "s/\ a\ /\ uh\ /g" | sed "s/idi/eede/g" | sed "s/ar/ah/g" | sed "s/tum/toom/g" | sed "s/\ and\ /\ und\ /g" | sed "s/see\ /zee\ /g" | sed "s/tha/da/g" | sed "s/Argh/ARrrArrUGEEarRGHH/g"}
-connerize() { echo "$*" | sed "s/s/sh/g" | sed "s/shsh/sh/g" }
+connerize() { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
 
 alias samuels="ls & printf \"mother fucker\""
