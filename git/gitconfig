@@ -39,6 +39,7 @@
     ll = log -p --stat --abbrev-commit
     glog = log --graph --decorate --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
     complete-log = log --graph --decorate --tags --branches --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+        lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     serve = daemon --reuseaddr --verbose --base-path=. --export-all --enable=receive-pack ./.git
     list-changed = ! git status -s | awk '/^.M/ {print $2}'
     list-untracked = ! git status -s | awk '/^\\?\\?/ {print $2}'
