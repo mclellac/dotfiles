@@ -7,11 +7,11 @@
 dotconf="${HOME}/.config"
 dotdir="${dotconf}/dotfiles"
 declare -a dir=(
-    ${HOME}/.config/vim
-    ${HOME}/.config/vim/bundle
-    ${HOME}/.config/vim/autoload
-    ${HOME}/.config/vim/colors
-    ${HOME}/.config/vim/backup
+    ${HOME}/.vim
+    ${HOME}/.vim/bundle
+    ${HOME}/.vim/autoload
+    ${HOME}/.vim/colors
+    ${HOME}/.vim/backup
 )
 declare -a deps=(vim git hg)
 
@@ -72,7 +72,7 @@ dependency_check() {
     if [ -f $package_list ]; then
         install_dependencies
     else
-        vim_setup
+        symlink
     fi
 }
 
@@ -88,13 +88,15 @@ install_dependencies() {
 
     #-- delete /tmp/missing-packages.txt when done. --
     rm $package_list    
-    vim_setup
+    symlink
 }
 
 symlink() {
     for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '*/\.*')`; do 
         ln $file `(echo $file | awk -F/ '{print $4}')`
     done
+
+    vim_setup
 }
 
 #-- check to make sure ~/.conf directory exists --
@@ -106,6 +108,29 @@ if [ ! -d $dotconf/dotfiles ]; then
 elif [ -d $dotconf/dotfiles ]; then
     cd $dotconf/dotfiles && git pull  && cd $dotconf
 fi
+
+vim_setup() {
+    for directory in ${dir[@]}; do
+        mkdr $directory
+    done
+
+    if [ -d ${HOME}/.vim/bundle ] && [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
+        printf "${green}GitHub: ${cyan}fatih/vim-go.git  ${white}to ${cyan}${HOME}/.vim/bundle/vim-go. "
+        git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
+        printf "${green}[done]${white}\n"
+    fi
+    
+    if [ -d ${dotconf}/vim/autoload ]; then
+        printf "${green}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/vundle. "
+        git clone https://github.com/gmarik/vundle.git ${HOME}/.vim/bundle/vundle -q 
+        printf "${green}[done]${white}\n"
+        sleep 1
+    fi
+
+    printf "${white}Installing vim plugins.\n"
+    sleep 1
+    vim +PluginInstall +qall
+}
 
 os_check
 symlink
