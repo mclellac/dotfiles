@@ -14,8 +14,8 @@ declare -a dir=(
     ${HOME}/.vim/backup
 )
 declare -a deps=(vim git hg)
-
-# text colour variables & output helper functions.
+package_list="/tmp/missing-packages.txt"
+#-- text colour variables & output helper functions. --
 green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
