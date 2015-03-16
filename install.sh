@@ -97,7 +97,7 @@ install_dependencies() {
 }
 
 symlink() {
-    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '*/\.*')`; do 
+    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*')`; do 
         ln -s $file `(echo $file | awk -F/ '{print $4}')`
     done
 
