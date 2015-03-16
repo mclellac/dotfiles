@@ -61,6 +61,10 @@ mkdr() {
 }
 
 dependency_check() {
+
+    #TODO: check for following and install if not found.
+    #   prezto, powerline, tmux powerline
+
     if [ -d ${HOME}/.vim/bundle/ ]; then
         printf "${red}Moving old vim configuration files into ${HOME}/.vim.`(date +%H%M-%d%m%y)`${white}\n"
         mkdir ${HOME}/.vim.`(date +%H%M-%d%m%y)` && 
