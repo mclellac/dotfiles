@@ -14,6 +14,7 @@ declare -a dir=(
     ${HOME}/.vim/backup
 )
 declare -a deps=(vim git hg)
+
 package_list="/tmp/missing-packages.txt"
 #-- text colour variables & output helper functions. --
 green='\033[00;32m'
@@ -70,7 +71,7 @@ dependency_check() {
     #fi
 
     printf "Checking to see if the following applications have been installed:\n"
-    for i in ${!deps[*]}; do
+    for i in ${deps[*]}; do
         if [ $(cmd_exists ${deps[$i]}) -eq 0 ]; then
             printf "${green}[✔]${white} ${deps[$i]}\n"
         else
