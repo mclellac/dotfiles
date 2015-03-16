@@ -13,17 +13,18 @@ declare -a dir=(
     ${HOME}/.vim/colors
     ${HOME}/.vim/backup
 )
-declare -a deps=(vim git hg)
-
+declare -a deps=(
+    vim 
+    git 
+    hg
+)
+len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
 #-- text colour variables & output helper functions. --
 green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
-#errquit()    { msgwarn $err; exit 1; }
-#msgsuccess() { msginfo $msg; }
-#msginfo()    { message=${@:-"${white}Error: No message passed"}; printf "${green}${message}${white}\n"; }
-#msgwarn()    { message=${@:-"${white}Error: No message passed"}; printf "${red}${message}${white}\n";   }
+
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 os_check() {
@@ -71,7 +72,8 @@ dependency_check() {
     #fi
 
     printf "Checking to see if the following applications have been installed:\n"
-    for i in ${deps[*]}; do
+
+    for (( i=0; i<=(($len -1)); i++)); do
         if [ $(cmd_exists ${deps[$i]}) -eq 0 ]; then
             printf "${green}[✔]${white} ${deps[$i]}\n"
         else
