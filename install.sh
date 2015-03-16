@@ -72,7 +72,6 @@ dependency_check() {
     #    mkdir ${HOME}/.vim.`(date +%H%M-%d%m%y)` && 
     #    mv ${HOME}/.vim ${HOME}/.vim.`(date +%H%M-%d%m%y)` && mv ${HOME}/.vimrc ${HOME}/.vim.`(date +%H%M-%d%m%y)`
     #fi
-
     printf "Checking to see if the following applications have been installed:\n"
 
     for (( i=0; i<=(($len -1)); i++)); do
@@ -151,4 +150,3 @@ elif [ -d $dotconf/dotfiles ]; then
 fi
 
 os_check
-symlink
