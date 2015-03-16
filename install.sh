@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #--
 # install script for github.com/mclellac dotfiles
 # Usage:
@@ -19,11 +19,10 @@ package_list="/tmp/missing-packages.txt"
 green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
-errquit()    { msgwarn $err; exit 1; }
-msgsuccess() { msginfo $msg; }
-msginfo()    { message=${@:-"${white}Error: No message passed"}; printf "${green}${message}${white}\n"; }
-msgwarn()    { message=${@:-"${white}Error: No message passed"}; printf "${red}${message}${white}\n";   }
-
+#errquit()    { msgwarn $err; exit 1; }
+#msgsuccess() { msginfo $msg; }
+#msginfo()    { message=${@:-"${white}Error: No message passed"}; printf "${green}${message}${white}\n"; }
+#msgwarn()    { message=${@:-"${white}Error: No message passed"}; printf "${red}${message}${white}\n";   }
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 os_check() {
@@ -61,15 +60,14 @@ mkdr() {
 }
 
 dependency_check() {
+    #-- TODO: check for following and install if not found.
+    #   prezto, powerline, tmux powerline --
 
-    #TODO: check for following and install if not found.
-    #   prezto, powerline, tmux powerline
-
-    if [ -d ${HOME}/.vim/bundle/ ]; then
-        printf "${red}Moving old vim configuration files into ${HOME}/.vim.`(date +%H%M-%d%m%y)`${white}\n"
-        mkdir ${HOME}/.vim.`(date +%H%M-%d%m%y)` && 
-        mv ${HOME}/.vim ${HOME}/.vim.`(date +%H%M-%d%m%y)` && mv ${HOME}/.vimrc ${HOME}/.vim.`(date +%H%M-%d%m%y)`
-    fi
+    #if [ -d ${HOME}/.vim/bundle/ ]; then
+    #    printf "${red}Moving old vim configuration files into ${HOME}/.vim.`(date +%H%M-%d%m%y)`${white}\n"
+    #    mkdir ${HOME}/.vim.`(date +%H%M-%d%m%y)` && 
+    #    mv ${HOME}/.vim ${HOME}/.vim.`(date +%H%M-%d%m%y)` && mv ${HOME}/.vimrc ${HOME}/.vim.`(date +%H%M-%d%m%y)`
+    #fi
 
     printf "Checking to see if the following applications have been installed:\n"
     for i in ${!deps[*]}; do
@@ -100,19 +98,6 @@ install_dependencies() {
     symlink
 }
 
-symlink() {
-    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
-        #-- softlink variable stores the absolute path for the symlink --
-        softlink=${HOME}/.`(echo $file | awk -F/ '{print $7}')`
-
-        if [ ! -f ${softlink} ]; then
-            ln -s ${file} ${softlink}
-        fi
-    done
-
-    vim_setup
-}
-
 vim_setup() {
     for directory in ${dir[@]}; do
         mkdr $directory
@@ -134,6 +119,20 @@ vim_setup() {
     printf "${white}Installing vim plugins.\n"
     sleep 1
     vim +PluginInstall +qall
+}
+
+
+symlink() {
+    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
+        #-- softlink variable stores the absolute path for the symlink --
+        softlink=${HOME}/.`(echo $file | awk -F/ '{print $7}')`
+
+        if [ ! -f ${softlink} ]; then
+            ln -s ${file} ${softlink}
+        fi
+    done
+
+    vim_setup
 }
 
 #-- check to make sure ~/.conf directory exists --
