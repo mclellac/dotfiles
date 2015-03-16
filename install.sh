@@ -69,11 +69,8 @@ dependency_check() {
         fi
     done
 
-    if [ -f $package_list ]; then
-        install_dependencies
-    else
-        symlink
-    fi
+    #-- if package list exists, then install else symlink conf files. -- 
+    [ -f $package_list ] && install_dependencies || synlink
 }
 
 install_dependencies() {
