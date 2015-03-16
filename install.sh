@@ -104,16 +104,6 @@ symlink() {
     vim_setup
 }
 
-#-- check to make sure ~/.conf directory exists --
-[ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
-
-#-- clone or pull project from git --
-if [ ! -d $dotconf/dotfiles ]; then
-    git clone https://github.com/mclellac/dotfiles/ $dotconf && cd $dotconf
-elif [ -d $dotconf/dotfiles ]; then
-    cd $dotconf/dotfiles && git pull  && cd $dotconf
-fi
-
 vim_setup() {
     for directory in ${dir[@]}; do
         mkdr $directory
@@ -136,6 +126,16 @@ vim_setup() {
     sleep 1
     vim +PluginInstall +qall
 }
+
+#-- check to make sure ~/.conf directory exists --
+[ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
+
+#-- clone or pull project from git --
+if [ ! -d $dotconf/dotfiles ]; then
+    git clone https://github.com/mclellac/dotfiles/ ${dotdir} && cd ${dotdir}
+elif [ -d $dotconf/dotfiles ]; then
+    cd $dotconf/dotfiles && git pull  && cd ${dotdir}
+fi
 
 os_check
 symlink
