@@ -52,6 +52,14 @@ os_check() {
     dependency_check
 }
 
+mkdr() {
+    if [ ! -d $directory ]; then 
+        mkdir -p $directory >/dev/null 2>&1 && \
+            printf "${green}Directory: ${cyan}${directory} ${white}created.\n" || \
+            printf "${red}Error: ${white}Failed to create ${red}${directory} ${white}directory.\n"
+    fi
+}
+
 dependency_check() {
     if [ -d ${HOME}/.vim/bundle/ ]; then
         printf "${red}Moving old vim configuration files into ${HOME}/.vim.`(date +%H%M-%d%m%y)`${white}\n"
