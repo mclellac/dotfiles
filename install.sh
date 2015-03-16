@@ -98,7 +98,7 @@ install_dependencies() {
 
 symlink() {
     for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '*/\.*')`; do 
-        ln $file `(echo $file | awk -F/ '{print $4}')`
+        ln -s $file `(echo $file | awk -F/ '{print $4}')`
     done
 
     vim_setup
