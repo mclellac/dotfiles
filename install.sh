@@ -104,7 +104,7 @@ symlink() {
     for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do 
         ln -s ${file} ${HOME}/.`(echo $file | awk -F/ '{print $7}')`
     done
-    
+
     vim_setup
 }
 
@@ -113,13 +113,13 @@ vim_setup() {
         mkdr $directory
     done
 
-    if [ -d ${HOME}/.vim/bundle/vim-go]; then
+    if [ ! -d ${HOME}/.vim/bundle/vim-go]; then
         printf "${green}GitHub: ${cyan}fatih/vim-go.git  ${white}to ${cyan}${HOME}/.vim/bundle/vim-go. "
         git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
         printf "${green}[done]${white}\n"
     fi
     
-    if [ -d ${dotconf}/vim/bundle/vundle ]; then
+    if [ ! -d ${dotconf}/vim/bundle/vundle ]; then
         printf "${green}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/vundle. "
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${green}[done]${white}\n"
