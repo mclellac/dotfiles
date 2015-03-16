@@ -103,7 +103,7 @@ install_dependencies() {
 symlink() {
     for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
         #-- softlink variable stores the absolute path for the symlink --
-        softlink='${HOME}/.`(echo $file | awk -F/ '{print $7}')`'
+        softlink=${HOME}/.`(echo $file | awk -F/ '{print $7}')`
 
         if [ ! -f ${softlink} ]; then
             ln -s ${file} ${softlink}
@@ -118,7 +118,7 @@ vim_setup() {
         mkdr $directory
     done
 
-    if [ ! -d ${HOME}/.vim/bundle/vim-go]; then
+    if [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
         printf "${green}GitHub: ${cyan}fatih/vim-go.git  ${white}to ${cyan}${HOME}/.vim/bundle/vim-go. "
         git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
         printf "${green}[done]${white}\n"
