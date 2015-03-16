@@ -95,14 +95,19 @@ install_dependencies() {
         fi
     done
 
-    #-- delete /tmp/missing-packages.txt when done. --
+    #-- delete /tmp/missing-packages.txt when done --
     rm $package_list    
     symlink
 }
 
 symlink() {
-    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do 
-        ln -sf ${file} ${HOME}/.`(echo $file | awk -F/ '{print $7}')`
+    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
+        #-- softlink variable stores the absolute path for the symlink --
+        softlink='${HOME}/.`(echo $file | awk -F/ '{print $7}')`'
+
+        if [ ! -f ${softlink} ]; then
+            ln -s ${file} ${softlink}
+        fi
     done
 
     vim_setup
