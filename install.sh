@@ -101,10 +101,10 @@ install_dependencies() {
 }
 
 symlink() {
-    for file in `(find ${HOME}/.config/dotfiles -mindepth 2 -maxdepth 2 -type f -not -path '\.*')`; do 
+    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do 
         ln -s ${file} ${HOME}/.`(echo $file | awk -F/ '{print $7}')`
     done
-
+    
     vim_setup
 }
 
