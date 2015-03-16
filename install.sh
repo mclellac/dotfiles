@@ -98,7 +98,7 @@ symlink() {
 }
 
 #-- check to make sure ~/.conf directory exists --
-[ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}; fi
+[ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
 
 #-- clone or pull project from git --
 if [ ! -d $dotconf/dotfiles ]; then
