@@ -25,6 +25,7 @@ package_list="/tmp/missing-packages.txt"
 green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
+cyan='\033[00;36m'
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
@@ -73,7 +74,7 @@ os_check() {
 mkdr() {
     if [ ! -d $directory ]; then 
         mkdir -p $directory >/dev/null 2>&1 && \
-            printf "${green}Directory: ${cyan}${directory} ${white}created.\n" || \
+            printf "${white}Directory: ${cyan}${directory} ${white}created.\n" || \
             printf "${red}Error: ${white}Failed to create ${red}${directory} ${white}directory.\n"
     fi
 }
@@ -123,13 +124,13 @@ vim_setup() {
     done
 
     if [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
-        printf "${green}GitHub: ${cyan}fatih/vim-go.git  ${white}to ${cyan}${HOME}/.vim/bundle/vim-go. "
+        printf "${white}GitHub: ${cyan}fatih/vim-go.git  ${white}to ${cyan}${HOME}/.vim/bundle/vim-go. "
         git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
         printf "${green}[done]${white}\n"
     fi
     
     if [ ! -d ${dotconf}/vim/bundle/vundle ]; then
-        printf "${green}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/vundle. "
+        printf "${white}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/vundle. "
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${green}[done]${white}\n"
         sleep 1
