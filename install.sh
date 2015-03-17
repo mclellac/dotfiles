@@ -92,9 +92,9 @@ install_dependencies() {
     printf "${cyan}Attempting to install missing packages.${white}\n"
     for package in `(cat ${package_list})`; do
         if [ $os != "FreeBSD" ]; then
-            app_install $package
+            $app_install $package
         else
-            bsd_install $package && make && sudo make install
+            $bsd_install $package && make && sudo make install
         fi
     done
 
