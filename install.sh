@@ -44,14 +44,14 @@ zprezto() {
 os_check() {
     os=`uname -s`
 
-    if [ $os == 'Darwin' ]; then
+    if [ $os = 'Darwin' ]; then
         app_install="brew install"
         echo "${os} detected. Using ${app_install}"
-    elif [ $os == 'FreeBSD' ]; then
+    elif [ $os = 'FreeBSD' ]; then
         bsd_install="cd /usr/ports/devel/"
-    elif [ $os == 'Darwin' ]; then
+    elif [ $os = 'Darwin' ]; then
         app_install="brew install"
-    elif [ $os == 'Linux' ]; then
+    elif [ $os = 'Linux' ]; then
         if [ $(cmd_exists apt-get) ]; then 
             app_install="sudo apt-get install"
         elif [ $(cmd_exists yum) ]; then 

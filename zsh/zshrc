@@ -109,11 +109,11 @@ precmd() {
 
 #-- source platform specific settings based on os --
 os=`uname`
-if [ $os == 'Linux' ]; then
+if [ $os = 'Linux' ]; then
     . ${HOME}/.zsh.gnu 
-elif [ $os == 'FreeBSD' ]; then
+elif [ $os = 'FreeBSD' ]; then
     . ${HOME}/.zsh.bsd
-elif [ $os == 'Darwin' ]; then
+elif [ $os = 'Darwin' ]; then
     . ${HOME}/.iterm2_shell_integration.zsh
     . ${HOME}/.zsh.osx
 fi
