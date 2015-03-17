@@ -17,6 +17,7 @@ declare -a deps=(
     vim 
     git 
     hg
+    tmux
 )
 len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
@@ -26,6 +27,19 @@ red='\033[01;31m'
 white='\033[00;00m'
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
+
+zprezto() {
+    if [ -d ${HOME}/.zprezto ]; then
+        printf "${cyan}Updating Prezto${white}"
+        cd ${HOME}/.zprezto
+        git pull && git submodule update --init --recursive
+    else
+        printf "${green}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}"
+        git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+    fi
+    
+    symlink
+}
 
 os_check() {
     os=`uname -s`
@@ -100,7 +114,7 @@ install_dependencies() {
 
     #-- delete /tmp/missing-packages.txt when done --
     rm $package_list    
-    symlink
+    zprezto
 }
 
 vim_setup() {
@@ -140,8 +154,6 @@ symlink() {
     vim_setup
 }
 
-os_check
-
 #-- check to make sure ~/.conf directory exists --
 [ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
 
@@ -152,3 +164,4 @@ elif [ -d $dotconf/dotfiles ]; then
     cd $dotconf/dotfiles && git pull  && cd ${dotdir}
 fi
 
+os_check
