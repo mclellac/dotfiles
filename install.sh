@@ -30,13 +30,14 @@ cyan='\033[00;36m'
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 zprezto() {
-    if [ -d ${HOME}/.zprezto ]; then
-        printf "${cyan}Updating Prezto${white}\n"
+
+    if [ ! -d ${HOME}/.zprezto ]; then
+        printf "${white}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}\n"
+        git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+    else
+        printf "${white}Updating Prezto\n"
         cd ${HOME}/.zprezto
         git pull && git submodule update --init --recursive
-    else
-        printf "${green}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}\n"
-        git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
     fi
 
     symlink
