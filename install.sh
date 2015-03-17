@@ -30,7 +30,7 @@ cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 os_check() {
     os=`uname -s`
 
-    if [ $os = 'Darwin' ]; then
+    if [ $os == 'Darwin' ]; then
         app_install="brew install"
         echo "${os} detected. Using ${app_install}"
     elif [ $os = 'FreeBSD' ]; then
@@ -140,6 +140,8 @@ symlink() {
     vim_setup
 }
 
+os_check
+
 #-- check to make sure ~/.conf directory exists --
 [ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
 
@@ -150,4 +152,3 @@ elif [ -d $dotconf/dotfiles ]; then
     cd $dotconf/dotfiles && git pull  && cd ${dotdir}
 fi
 
-os_check
