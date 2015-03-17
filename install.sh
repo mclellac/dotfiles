@@ -29,20 +29,6 @@ cyan='\033[00;36m'
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
-zprezto() {
-
-    if [ ! -d ${HOME}/.zprezto ]; then
-        printf "${white}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}\n"
-        git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-    else
-        printf "${white}Updating Prezto\n"
-        cd ${HOME}/.zprezto
-        git pull && git submodule update --init --recursive
-    fi
-
-    symlink
-}
-
 os_check() {
     os=`uname -s`
 
@@ -116,7 +102,7 @@ install_dependencies() {
 
     #-- delete /tmp/missing-packages.txt when done --
     rm $package_list    
-    zprezto
+    symlink
 }
 
 vim_setup() {
@@ -155,6 +141,16 @@ symlink() {
 
     vim_setup
 }
+
+#-- check to see if zprezto is installed, and either install or update it --
+if [ ! -d ${HOME}/.zprezto ]; then
+    echo "${white}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}"
+    git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+else
+    echo "${white}Updating Prezto"
+    cd ${HOME}/.zprezto
+    git pull && git submodule update --init --recursive
+fi
 
 #-- check to make sure ~/.conf directory exists --
 [ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
