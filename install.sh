@@ -32,6 +32,7 @@ os_check() {
 
     if [ $os = 'Darwin' ]; then
         app_install="brew install"
+        echo "${os} detected. Using ${app_install}"
     elif [ $os = 'FreeBSD' ]; then
         bsd_install="cd /usr/ports/devel/"
     elif [ $os = 'Darwin' ]; then
