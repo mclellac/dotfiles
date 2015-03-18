@@ -111,7 +111,7 @@ vim_setup() {
     done
 
     if [ ! -d ${dotconf}/vim/bundle/Vundle.vim ]; then
-        printf "${white}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/vundle. "
+        printf "${white}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/Vundle.vim. "
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${green}[done]${white}\n"
     else
