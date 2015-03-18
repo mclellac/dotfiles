@@ -29,6 +29,17 @@ cyan='\033[00;36m'
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
+carlcarl() {
+    #-- install github.com/carlcarl/powerline-zsh --
+    if [ ! -d ${dotconf}/powerline ]; then
+        cd ${dotconf} && git clone https://github.com/carlcarl/powerline-zsh ./powerline
+    else
+        cd ${dotconf}/powerline && git pull
+    fi
+
+    vim_setup
+}
+
 os_check() {
     os=`uname -s`
 
@@ -134,7 +145,7 @@ symlink() {
         fi
     done
 
-    vim_setup
+    carlcarl
 }
 
 #-- check to see if zprezto is installed, and either install or update it --
