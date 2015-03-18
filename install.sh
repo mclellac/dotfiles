@@ -126,7 +126,7 @@ vim_setup() {
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${green}[done]${white}\n"
     else
-        cd ${HOME}/.vim/bundle/Vundle.vim && git pull
+        cd ${HOME}/\.vim/bundle/Vundle.vim && git pull
     fi
 
     printf "${white}Installing vim plugins.\n"
