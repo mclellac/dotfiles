@@ -15,7 +15,8 @@ bindkey ';5D' emacs-backward-word
 bindkey ';5C' emacs-forward-word
 
 #-- aliases --
-source ~/.zprivate                  # .zprivate includes: $email, $work_email and ssh aliases.
+source ~/.zprivate                  # .zprivate includes private aliases.
+
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias history="history 0"
 alias agenda="gcalcli agenda"
