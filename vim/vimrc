@@ -1,24 +1,24 @@
-" Plugins
+" Bundles
 """""""""""""""""""""""""""""""
 set nocompatible
 filetype off
-set rtp+=~/.vim/Plugin/Vundle.vim
+set rtp+=~/.vim/Bundle/Vundle.vim
 call vundle#rc()
 
-" Plugins
+" Bundles
 """""""""""""""""""""""""""""""
-Plugin 'gmarik/vundle'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-surround'
-Plugin 'fatih/vim-go'
-Plugin 'Blackrush/vim-gocode'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Yggdroot/indentLine'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Bundle 'gmarik/vundle'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-surround'
+Bundle 'fatih/vim-go'
+Bundle 'Blackrush/vim-gocode'
+Bundle 'tpope/vim-fugitive'
+Bundle 'Yggdroot/indentLine'
+Bundle 'airblade/vim-gitgutter'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'scrooloose/nerdtree'
+Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
@@ -56,7 +56,7 @@ set more                      " use more prompt
 set autoread                  " watch for file changes
 syntax enable
 set background=dark
-" Plugin related `Look & Feel` settings
+" Bundle related `Look & Feel` settings
 try
     colorscheme solarized
 catch
