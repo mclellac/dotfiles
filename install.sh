@@ -110,17 +110,12 @@ vim_setup() {
         mkdr $directory
     done
 
-    if [ ! -d ${HOME}/.vim/bundle/vim-go ]; then
-        printf "${white}GitHub: ${cyan}fatih/vim-go.git  ${white}to ${cyan}${HOME}/.vim/bundle/vim-go. "
-        git clone https://github.com/fatih/vim-go.git ${HOME}/.vim/bundle/vim-go -q 
-        printf "${green}[done]${white}\n"
-    fi
-    
-    if [ ! -d ${dotconf}/vim/bundle/vundle ]; then
+    if [ ! -d ${dotconf}/vim/bundle/Vundle.vim ]; then
         printf "${white}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/vundle. "
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${green}[done]${white}\n"
-        sleep 1
+    else
+        cd ${dotconf}/vim/bundle/Vundle.vim && git pull
     fi
 
     printf "${white}Installing vim plugins.\n"
@@ -157,9 +152,9 @@ fi
 
 #-- clone or pull project from git --
 if [ ! -d $dotconf/dotfiles ]; then
-    git clone https://github.com/mclellac/dotfiles/ ${dotdir} && cd ${dotdir}
+    git clone https://github.com/mclellac/dotfiles/ ${dotdir}
 elif [ -d $dotconf/dotfiles ]; then
-    cd $dotconf/dotfiles && git pull  && cd ${dotdir}
+    cd $dotconf/dotfiles && git pull
 fi
 
 os_check
