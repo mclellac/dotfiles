@@ -32,11 +32,12 @@ cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 carlcarl() {
     #-- install github.com/carlcarl/powerline-zsh --
     if [ ! -d ${dotconf}/powerline ]; then
-        cd ${dotconf} && git clone https://github.com/carlcarl/powerline-zsh ./powerline
+        cd ${dotconf} && git clone https://github.com/carlcarl/powerline-zsh ./carlcarl
     else
         cd ${dotconf}/powerline && git pull
     fi
 
+    ln -s ${HOME}/.config/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
     vim_setup
 }
 
