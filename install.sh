@@ -136,7 +136,7 @@ vim_setup() {
 
     github_grab ${HOME}/.vim/bundle/Vundle.vim gmarik vundle.git
 
-    printf "${WHITE}Installing vim plugins.\n"
+    printf "${WHITE}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${WHITE}\n$"
     sleep 1
     vim +PluginInstall +qall
 }
