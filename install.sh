@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #--
-# install script for github.com/mclellac dotfiles
+# Install script for github.com/mclellac dotfiles
 # Usage:
 #    sh <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
 #--
