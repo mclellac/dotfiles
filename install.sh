@@ -121,7 +121,7 @@ install_deps() {
     symlink_dotfiles
 }
 
-mkdr() {
+make_dir() {
     if [ ! -d $directory ]; then 
         mkdir -p $directory >/dev/null 2>&1 && \
             printf "${WHITE}Directory: ${CYAN}${directory} ${WHITE}created.\n" || \
@@ -131,7 +131,7 @@ mkdr() {
 
 vim_setup() {
     for directory in ${dir[@]}; do
-        mkdr $directory
+        make_dir $directory
     done
 
     github_grab ${HOME}/.vim/bundle/Vundle.vim gmarik vundle.git
@@ -158,7 +158,7 @@ get_os
 check_deps
 
 # check to make sure ~/.conf directory exists
-[ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || mkdr directory=${dotconfig}
+[ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || make_dir directory=${dotconfig}
 
 # clone or pull project from git
 github_grab $dotconfig/dotfiles mclellac dotfiles
