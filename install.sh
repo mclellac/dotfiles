@@ -136,7 +136,7 @@ vim_setup() {
 
     github_grab ${HOME}/.vim/bundle/Vundle.vim gmarik vundle.git
 
-    printf "${WHITE}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${WHITE}\n$"
+    printf "${WHITE}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${WHITE}\n"
     sleep 1
     vim +PluginInstall +qall
 }
@@ -158,7 +158,7 @@ get_os
 check_deps
 
 # check to make sure ~/.conf directory exists
-[ -d ${dotconfig} ] && echo "using ${dotconfig}" || mkdr directory=${dotconfig}
+[ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || mkdr directory=${dotconfig}
 
 # clone or pull project from git
 github_grab $dotconfig/dotfiles mclellac dotfiles
