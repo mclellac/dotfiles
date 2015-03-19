@@ -94,10 +94,15 @@ github_grab() {
         cd ${localdir} && git pull
     fi
 
-    if [ $repository = 'zprezto' ]; then
+    if [ $repository = 'prezto.git' ]; then
         cd ${HOME}/.zprezto
         echo "Updating: ${CYAN}${repository}${WHITE} -> ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
+    fi
+
+    if [ $repository = 'powerline-zsh' ]; then
+        # create symlink for powerline-zsh
+        ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
     fi
 }
 
@@ -147,9 +152,6 @@ symlink_dotfiles() {
             ln -s ${file} ${softlink}
         fi
     done
-
-    # create symlink for powerline-zsh
-    ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
 
     vim_setup
 }
