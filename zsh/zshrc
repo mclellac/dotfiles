@@ -10,13 +10,13 @@ setopt EXTENDED_HISTORY             # save timestamp and runtime information
 export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export TERM='xterm-256color'
+
 #-- bindings --
 bindkey ';5D' emacs-backward-word
 bindkey ';5C' emacs-forward-word
 
 #-- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
-
 alias ll="ls -al"
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias history="history 0"

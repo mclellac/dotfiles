@@ -57,11 +57,12 @@ get_os() {
 
     if [ $os = 'Darwin' ]; then
         app_install="brew install"
+        [ ! -f ${HOME}/.zsh.osx ] && touch ${HOME}/.zsh.osx
     elif [ $os = 'FreeBSD' ]; then
         bsd_install="cd /usr/ports/devel/"
-    elif [ $os = 'Darwin' ]; then
-        app_install="brew install"
+        [ ! -f ${HOME}/.zsh.bsd ] && touch ${HOME}/.zsh.bsd
     elif [ $os = 'Linux' ]; then
+        [ ! -f ${HOME}/.zsh.gnu ] && touch ${HOME}/.zsh.gnu
         if [ $(cmd_exists apt-get) ]; then 
             app_install="sudo apt-get install"
         elif [ $(cmd_exists yum) ]; then 
@@ -156,6 +157,9 @@ symlink_dotfiles() {
 
 # check to make sure ~/.conf directory exists
 [ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || make_dir directory=${dotconfig}
+
+# check for ~/.zprivate file, create default if doesn't exist.
+[ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
 
 # clone or pull project from git
 github_grab $dotconfig/dotfiles mclellac dotfiles
