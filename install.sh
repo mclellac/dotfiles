@@ -157,13 +157,9 @@ symlink_dotfiles() {
 }
 
 # check to make sure ~/.conf directory exists
-[ -d ${dotconfig} ] && echo "using ${dotconfig}" || mkdir ${dotconfig}
+[ -d ${dotconfig} ] && echo "using ${dotconfig}" || mkdr directory=${dotconfig}
 
 # clone or pull project from git
-if [ ! -d $dotconfig/dotfiles ]; then
-    git clone https://github.com/mclellac/dotfiles/ ${dotdir}
-elif [ -d $dotconfig/dotfiles ]; then
-    cd $dotconfig/dotfiles && git pull
-fi
+github_grab $dotconfig/dotfiles mclellac dotfiles
 
 get_os
