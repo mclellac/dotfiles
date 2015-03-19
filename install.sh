@@ -21,7 +21,6 @@ declare -a deps=(
 )
 len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
-#-- text colour variables & output helper functions. --
 green='\033[00;32m'
 red='\033[01;31m'
 white='\033[00;00m'
@@ -30,15 +29,16 @@ cyan='\033[00;36m'
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 carlcarl() {
-    #-- install github.com/carlcarl/powerline-zsh --
+    # install github.com/carlcarl/powerline-zsh
     if [ ! -d ${dotconf}/carlcarl ]; then
-        cd ${dotconf} && git clone https://github.com/carlcarl/powerline-zsh ./carlcarl
+        git clone https://github.com/carlcarl/powerline-zsh ${dotconf}/carlcarl
     else
+        printf "Updating github.com/carlcarl/powerline-zsh"
         cd ${dotconf}/carlcarl && git pull
     fi
 
     [ ! -f ${HOME}/.powerline-zsh.py ]&& ln -s ${HOME}/.config/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
-    
+
     vim_setup
 }
 
@@ -47,7 +47,6 @@ os_check() {
 
     if [ $os = 'Darwin' ]; then
         app_install="brew install"
-        echo "${os} detected. Using ${app_install}"
     elif [ $os = 'FreeBSD' ]; then
         bsd_install="cd /usr/ports/devel/"
     elif [ $os = 'Darwin' ]; then
@@ -99,7 +98,7 @@ dependency_check() {
         fi
     done
 
-    #-- if package list exists, then install else symlink conf files. -- 
+    # if package list exists, then install else symlink conf files.
     [ -f $package_list ] && install_dependencies || symlink
 }
 
@@ -113,7 +112,7 @@ install_dependencies() {
         fi
     done
 
-    #-- delete /tmp/missing-packages.txt when done --
+    # delete /tmp/missing-packages.txt when done
     rm $package_list    
     symlink
 }
@@ -128,6 +127,7 @@ vim_setup() {
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${green}[done]${white}\n"
     else
+        printf "Updating github.com/gmarik/vundle.git"
         cd ${HOME}/\.vim/bundle/Vundle.vim && git pull
     fi
 
@@ -139,7 +139,7 @@ vim_setup() {
 
 symlink() {
     for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
-        #-- softlink variable stores the absolute path for the symlink --
+        # softlink variable stores the absolute path for the symlink
         softlink=${HOME}/.`(echo $file | awk -F/ '{print $7}')`
 
         if [ ! -f ${softlink} ]; then
@@ -150,20 +150,20 @@ symlink() {
     carlcarl
 }
 
-#-- check to see if zprezto is installed, and either install or update it --
+# check to see if zprezto is installed, and either install or update it
 if [ ! -d ${HOME}/.zprezto ]; then
     echo "${white}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}"
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
 else
-    echo "${white}Updating Prezto"
+    echo "${white}Updating github.com/sorin-ionescu/prezto.git"
     cd ${HOME}/.zprezto
     git pull && git submodule update --init --recursive
 fi
 
-#-- check to make sure ~/.conf directory exists --
+# check to make sure ~/.conf directory exists
 [ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
 
-#-- clone or pull project from git --
+# clone or pull project from git
 if [ ! -d $dotconf/dotfiles ]; then
     git clone https://github.com/mclellac/dotfiles/ ${dotdir}
 elif [ -d $dotconf/dotfiles ]; then
