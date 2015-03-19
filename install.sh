@@ -94,7 +94,7 @@ github_grab() {
         cd ${localdir} && git pull
     fi
 
-    if [ $repository == "zprezto"]; then
+    if [ $repository == "zprezto" ]; then
         cd ${HOME}/.zprezto
         git pull && git submodule update --init --recursive
     fi
