@@ -1,4 +1,4 @@
-#-- zsh options --
+#-- Zsh Options --
 HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
 HISTSIZE=1200                       # lines of history to maintain memory
 SAVEHIST=1000                       # lines of history to maintain in history file.
@@ -11,27 +11,28 @@ export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export TERM='xterm-256color'
 
-#-- bindings --
+#-- Bindings --
 bindkey ';5D' emacs-backward-word
 bindkey ';5C' emacs-forward-word
 
-#-- aliases --
+#-- Aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
 alias ll="ls -al"
+alias rm="rm"                       # just in case I'm using something that defaults rm to sissy interactive mode. 
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias history="history 0"
 alias agenda="gcalcli agenda"
 alias calw="clear; gcalcli calw -w 12"
 alias calm="clear; gcalcli calm -w 20"
 
-#-- path variables --
+#-- Path Variables --
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 export EDITOR=vim
 export VISUAL=vim
 export GOROOT='/usr/local/go'
 export GOPATH=$HOME/Projects
 
-#-- zprezto --
+#-- Zprezto --
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 setopt rmstarsilent
 
@@ -39,18 +40,18 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-#-- powerline --
+#-- Powerline --
 _update_ps1() {
     export PROMPT="$(~/.powerline-zsh.py $?)"
 }
 
 precmd() {
     _update_ps1
-    # set tmux window name to username@hostname
+    # Set tmux window name to username@hostname
     printf "\033k`echo "$(whoami)@$(hostname -fs)"`\033\\"
 }
 
-#-- development --
+#-- Development --
 realname=$(finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //')
 github_path=$HOME/Projects/src/github.com/
 work_git_path=$HOME/Projects/src/stash.nm.cbc.ca
@@ -66,14 +67,21 @@ fi
 #    git config --global user.email "${work_email}"  
 #fi
 
-#-- list the top 20 commands used in history --
+#-- List the top 20 commands used in history. --
 cmdhist() {
     history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|  \
     awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"•"; printf "\033[1;34m\%15s\033[0m  %5d ￨ \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
 }
 
-#-- functions --
-# rename tmux window to the address ssh'ed to
+# Get and preserve the filename on download URL's that redirect
+# and dont support the Content-Disposition header.
+fncurl () {
+    fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}'`
+    curl -o $fn -L $@
+}
+
+#-- Functions --
+# Rename tmux window to the address ssh'ed to
 #ssh() {
 #    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
 #        #-- set tmux window name to username@hostname > CWD --
@@ -85,20 +93,20 @@ cmdhist() {
 #    fi
 #}
 
-#--  command wrapper functions --
+#--  Command Wrapper Functions. --
 diga()          {  dig +nocmd "$*" any +multiline +noall +answer }
 fed()           { find . -type f -name "$*" -exec vim {} \; }                       # find and edit the filename argument (usage: fed $filename) 
 connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of sean connery for fun
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
 
-# simple calculator
+# Simple calculator
 function calc() {
-    # you will only need to escape multiplication (ie: "calc 2 \* 20")
+    # You will only need to escape multiplication (ie: "calc 2 \* 20").
     local result=""
     result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
                           # └─ default (when `--mathlib` is used) is 20
     if [[ "$result" == *.* ]]; then
-        # improve the output for decimal numbers
+        # Improve the output for decimal numbers
         printf "$result" |
         sed -e 's/^\./0./'        `# add "0" for cases like ".5"` \
             -e 's/^-\./-0./'      `# add "0" for cases like "-.5"`\
@@ -109,7 +117,7 @@ function calc() {
     printf "\n"
 }
 
-# source platform specific settings based on os 
+# Source platform specific settings based on os 
 os=`uname`
 
 if [ $os = 'Linux' ]; then
