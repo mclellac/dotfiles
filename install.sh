@@ -40,6 +40,15 @@ check_deps() {
         fi
     done
 
+
+    #--
+    # Check to see if powerline-zsh & prezto are available & install or update
+    # them as needed.
+    #--     
+    # github_grab function takes 3 arguments $localdir, $user, $repository 
+    github_grab ${dotconf}/carlcarl carlcarl powerline-zsh
+    github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
+
     # if package list exists, then install else symlink conf files.
     [ -f $package_list ] && install_deps || symlink_dotfiles
 }
@@ -130,7 +139,6 @@ vim_setup() {
     vim +PluginInstall +qall
 }
 
-
 symlink_dotfiles() {
     for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
         # softlink variable stores the absolute path for the symlink
@@ -155,7 +163,3 @@ elif [ -d $dotconfig/dotfiles ]; then
 fi
 
 get_os
-
-# github_grab(localdir, user, repository)
-github_grab ${dotconf}/carlcarl carlcarl powerline-zsh
-github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
