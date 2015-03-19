@@ -46,7 +46,7 @@ check_deps() {
     # them as needed.
     #--     
     # github_grab function takes 3 arguments $localdir, $user, $repository 
-    github_grab ${dotconf}/carlcarl carlcarl powerline-zsh
+    github_grab ${dotconfig}/carlcarl carlcarl powerline-zsh
     github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
 
     # if package list exists, then install else symlink conf files.
@@ -94,7 +94,7 @@ github_grab() {
         cd ${localdir} && git pull
     fi
 
-    if [ $repository == "zprezto" ]; then
+    if [ $repository = 'zprezto' ]; then
         cd ${HOME}/.zprezto
         echo "Updating: ${CYAN}${repository}${WHITE} -> ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
