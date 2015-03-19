@@ -37,7 +37,8 @@ carlcarl() {
         cd ${dotconf}/carlcarl && git pull
     fi
 
-    ln -s ${HOME}/.config/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+    [ ! -f ${HOME}/.powerline-zsh.py ]&& ln -s ${HOME}/.config/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+    
     vim_setup
 }
 
