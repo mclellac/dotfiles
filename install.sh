@@ -40,7 +40,6 @@ check_deps() {
         fi
     done
 
-
     #--
     # Check to see if powerline-zsh & prezto are available & install or update
     # them as needed.
@@ -130,7 +129,6 @@ mkdr() {
     fi
 }
 
-
 vim_setup() {
     for directory in ${dir[@]}; do
         mkdr $directory
@@ -164,4 +162,3 @@ check_deps
 
 # clone or pull project from git
 github_grab $dotconfig/dotfiles mclellac dotfiles
-
