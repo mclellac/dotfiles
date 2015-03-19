@@ -87,7 +87,7 @@ github_grab() {
     repository=$3
 
     if [ ! -d ${localdir} ]; then
-        printf "Cloning: https://github.com/${CYAN}${user}${WHITE}/${CYAN}${repository}${WHITE} to ${CYAN}${localdir}${WHITE}\n"
+        printf "Cloning: https://github.com/${WHITE}${user}${WHITE}/${CYAN}${repository}${WHITE} to ${CYAN}${localdir}${WHITE}\n"
         git clone https://github.com/${user}/${repository} ${localdir}
     else
         printf "Updating: ${CYAN}${repository}${WHITE} ${CYAN}${localdir}${WHITE}\n"
@@ -96,6 +96,7 @@ github_grab() {
 
     if [ $repository == "zprezto" ]; then
         cd ${HOME}/.zprezto
+        echo "Updating: ${CYAN}${repository}${WHITE} -> ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
     fi
 }
