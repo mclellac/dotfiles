@@ -154,11 +154,11 @@ symlink_dotfiles() {
     vim_setup
 }
 
-get_os
-check_deps
-
 # check to make sure ~/.conf directory exists
 [ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || make_dir directory=${dotconfig}
 
 # clone or pull project from git
 github_grab $dotconfig/dotfiles mclellac dotfiles
+
+get_os
+check_deps
