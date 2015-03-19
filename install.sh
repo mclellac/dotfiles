@@ -148,6 +148,9 @@ symlink_dotfiles() {
         fi
     done
 
+    # create symlink for powerline-zsh
+    ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+
     vim_setup
 }
 
