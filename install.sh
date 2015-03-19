@@ -93,6 +93,11 @@ github_grab() {
         printf "Updating: ${CYAN}${repository}${WHITE} ${CYAN}${localdir}${WHITE}\n"
         cd ${localdir} && git pull
     fi
+
+    if [ $repository == "zprezto"]; then
+        cd ${HOME}/.zprezto
+        git pull && git submodule update --init --recursive
+    fi
 }
 
 install_deps() {
