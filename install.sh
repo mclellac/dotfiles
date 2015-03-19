@@ -99,10 +99,6 @@ install_deps() {
     # delete /tmp/missing-packages.txt when done
     rm $package_list
 
-    # github_grab(localdir, user, repository)
-    github_grab ${dotconf}/carlcarl carlcarl powerline-zsh
-    github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
-
     symlink_dotfiles
 }
 
@@ -159,3 +155,7 @@ elif [ -d $dotconfig/dotfiles ]; then
 fi
 
 get_os
+
+# github_grab(localdir, user, repository)
+github_grab ${dotconf}/carlcarl carlcarl powerline-zsh
+github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
