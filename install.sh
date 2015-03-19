@@ -77,8 +77,6 @@ get_os() {
         printf "${RED}[✘] ${WHITE}Unable to determine the operating system.\n"
         exit 2
     fi
-
-    check_deps
 }
 
 github_grab() {
@@ -158,10 +156,12 @@ symlink_dotfiles() {
     vim_setup
 }
 
+get_os
+check_deps
+
 # check to make sure ~/.conf directory exists
 [ -d ${dotconfig} ] && echo "using ${dotconfig}" || mkdr directory=${dotconfig}
 
 # clone or pull project from git
 github_grab $dotconfig/dotfiles mclellac dotfiles
 
-get_os
