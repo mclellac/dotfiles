@@ -4,8 +4,8 @@
 # Usage:
 #    sh <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
 #--
-dotconf="${HOME}/.config"
-dotdir="${dotconf}/dotfiles"
+dotconfig="${HOME}/.config"
+dotdir="${dotconfig}/dotfiles"
 declare -a dir=(
     ${HOME}/.vim
     ${HOME}/.vim/bundle
@@ -21,28 +21,30 @@ declare -a deps=(
 )
 len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
-green='\033[00;32m'
-red='\033[01;31m'
-white='\033[00;00m'
-cyan='\033[00;36m'
+GREEN='\033[00;32m'
+RED='\033[01;31m'
+WHITE='\033[00;00m'
+CYAN='\033[00;36m'
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
-carlcarl() {
-    # install github.com/carlcarl/powerline-zsh
-    if [ ! -d ${dotconf}/carlcarl ]; then
-        git clone https://github.com/carlcarl/powerline-zsh ${dotconf}/carlcarl
-    else
-        printf "Updating github.com/carlcarl/powerline-zsh"
-        cd ${dotconf}/carlcarl && git pull
-    fi
+check_deps() {
+    printf "Checking to see if the following applications have been installed:\n"
 
-    [ ! -f ${HOME}/.powerline-zsh.py ]&& ln -s ${HOME}/.config/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+    for (( i=0; i<=(($len -1)); i++)); do
+        if [ $(cmd_exists ${deps[$i]}) -eq 0 ]; then
+            printf "${GREEN}[✔]${WHITE} ${deps[$i]}\n"
+        else
+            printf "${RED}[✘] ${deps[$i]}${WHITE} is missing.\n"
+            echo ${deps[$i]} >> $package_list
+        fi
+    done
 
-    vim_setup
+    # if package list exists, then install else symlink conf files.
+    [ -f $package_list ] && install_deps || symlink
 }
 
-os_check() {
+get_os() {
     os=`uname -s`
 
     if [ $os = 'Darwin' ]; then
@@ -59,51 +61,32 @@ os_check() {
         elif [ $(cmd_exists up2date) ]; then 
             app_install="sudo up2date -i"
         else
-            printf "${red}[✘] ${white}No package manager found for this Linux system!\n"
+            printf "${RED}[✘] ${WHITE}No package manager found for this Linux system!\n"
             exit 2
         fi
     else
-        printf "${red}[✘] ${white}Unable to determine the operating system.\n"
+        printf "${RED}[✘] ${WHITE}Unable to determine the operating system.\n"
         exit 2
     fi
 
-    dependency_check
+    check_deps
 }
 
-mkdr() {
-    if [ ! -d $directory ]; then 
-        mkdir -p $directory >/dev/null 2>&1 && \
-            printf "${white}Directory: ${cyan}${directory} ${white}created.\n" || \
-            printf "${red}Error: ${white}Failed to create ${red}${directory} ${white}directory.\n"
+github_grab() {
+    localdir=$1
+    user=$2
+    repository=$3
+
+    if [ ! -d ${localdir} ]; then
+        git clone https://github.com/${user}/${repository} ${localdir}
+    else
+        printf "Updating ${localdir}"
+        cd ${localdir} && git pull
     fi
 }
 
-dependency_check() {
-    #-- TODO: check for following and install if not found.
-    #   prezto, powerline, tmux powerline --
-
-    #if [ -d ${HOME}/.vim/bundle/ ]; then
-    #    printf "${red}Moving old vim configuration files into ${HOME}/.vim.`(date +%H%M-%d%m%y)`${white}\n"
-    #    mkdir ${HOME}/.vim.`(date +%H%M-%d%m%y)` && 
-    #    mv ${HOME}/.vim ${HOME}/.vim.`(date +%H%M-%d%m%y)` && mv ${HOME}/.vimrc ${HOME}/.vim.`(date +%H%M-%d%m%y)`
-    #fi
-    printf "Checking to see if the following applications have been installed:\n"
-
-    for (( i=0; i<=(($len -1)); i++)); do
-        if [ $(cmd_exists ${deps[$i]}) -eq 0 ]; then
-            printf "${green}[✔]${white} ${deps[$i]}\n"
-        else
-            printf "${red}[✘] ${deps[$i]}${white} is missing.\n"
-            echo ${deps[$i]} >> $package_list
-        fi
-    done
-
-    # if package list exists, then install else symlink conf files.
-    [ -f $package_list ] && install_dependencies || symlink
-}
-
-install_dependencies() {
-    printf "${cyan}Attempting to install missing packages.${white}\n"
+install_deps() {
+    printf "${CYAN}Attempting to install missing packages.${WHITE}\n"
     for package in `(cat ${package_list})`; do
         if [ $os != "FreeBSD" ]; then
             $app_install $package
@@ -113,9 +96,23 @@ install_dependencies() {
     done
 
     # delete /tmp/missing-packages.txt when done
-    rm $package_list    
-    symlink
+    rm $package_list
+
+    # github_grab(localdir, user, repository)
+    github_grab ${dotconf}/carlcarl carlcarl powerline-zsh
+    github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
+
+    symlink_dotfiles
 }
+
+mkdr() {
+    if [ ! -d $directory ]; then 
+        mkdir -p $directory >/dev/null 2>&1 && \
+            printf "${WHITE}Directory: ${CYAN}${directory} ${WHITE}created.\n" || \
+            printf "${RED}Error: ${WHITE}Failed to create ${RED}${directory} ${WHITE}directory.\n"
+    fi
+}
+
 
 vim_setup() {
     for directory in ${dir[@]}; do
@@ -123,22 +120,22 @@ vim_setup() {
     done
 
     if [ ! -d ${HOME}/.vim/bundle/Vundle.vim ]; then
-        printf "${white}GitHub: ${cyan}gmarik/vundle.git ${white}to ${cyan}${HOME}/.vim/bundle/Vundle.vim. "
+        printf "${WHITE}GitHub: ${CYAN}gmarik/vundle.git ${WHITE}to ${CYAN}${HOME}/.vim/bundle/Vundle.vim. "
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
-        printf "${green}[done]${white}\n"
+        printf "${GREEN}[done]${WHITE}\n"
     else
         printf "Updating github.com/gmarik/vundle.git"
         cd ${HOME}/\.vim/bundle/Vundle.vim && git pull
     fi
 
-    printf "${white}Installing vim plugins.\n"
+    printf "${WHITE}Installing vim plugins.\n"
     sleep 1
     vim +PluginInstall +qall
 }
 
 
-symlink() {
-    for file in `(find ${dotdir} -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
+symlink_dotfiles() {
+    for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\.*' | grep -v irssi | grep -v .git)`; do
         # softlink variable stores the absolute path for the symlink
         softlink=${HOME}/.`(echo $file | awk -F/ '{print $7}')`
 
@@ -147,27 +144,17 @@ symlink() {
         fi
     done
 
-    carlcarl
+    vim_setup
 }
 
-# check to see if zprezto is installed, and either install or update it
-if [ ! -d ${HOME}/.zprezto ]; then
-    echo "${white}Installing Prezto to: ${cyan}${HOME}/.zprezto${white}"
-    git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-else
-    echo "${white}Updating github.com/sorin-ionescu/prezto.git"
-    cd ${HOME}/.zprezto
-    git pull && git submodule update --init --recursive
-fi
-
 # check to make sure ~/.conf directory exists
-[ -d ${dotconf} ] && echo "using ${dotconf}" || mkdir ${dotconf}
+[ -d ${dotconfig} ] && echo "using ${dotconfig}" || mkdir ${dotconfig}
 
 # clone or pull project from git
-if [ ! -d $dotconf/dotfiles ]; then
+if [ ! -d $dotconfig/dotfiles ]; then
     git clone https://github.com/mclellac/dotfiles/ ${dotdir}
-elif [ -d $dotconf/dotfiles ]; then
-    cd $dotconf/dotfiles && git pull
+elif [ -d $dotconfig/dotfiles ]; then
+    cd $dotconfig/dotfiles && git pull
 fi
 
-os_check
+get_os
