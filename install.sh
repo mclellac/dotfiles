@@ -41,7 +41,7 @@ check_deps() {
     done
 
     # if package list exists, then install else symlink conf files.
-    [ -f $package_list ] && install_deps || symlink
+    [ -f $package_list ] && install_deps || symlink_dotfiles
 }
 
 get_os() {
