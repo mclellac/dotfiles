@@ -78,9 +78,10 @@ github_grab() {
     repository=$3
 
     if [ ! -d ${localdir} ]; then
+        printf "Cloning: https://github.com/${CYAN}${user}${WHITE}/${CYAN}${repository}${WHITE} to ${CYAN}${localdir}${WHITE}\n"
         git clone https://github.com/${user}/${repository} ${localdir}
     else
-        printf "Updating ${localdir}"
+        printf "Updating: ${CYAN}${repository}${WHITE} ${CYAN}${localdir}${WHITE}\n"
         cd ${localdir} && git pull
     fi
 }
