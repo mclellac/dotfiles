@@ -120,11 +120,11 @@ vim_setup() {
     done
 
     if [ ! -d ${HOME}/.vim/bundle/Vundle.vim ]; then
-        printf "${WHITE}GitHub: ${CYAN}gmarik/vundle.git ${WHITE}to ${CYAN}${HOME}/.vim/bundle/Vundle.vim. "
+        printf "${WHITE}GitHub: ${CYAN}gmarik/vundle.git ${WHITE}to ${CYAN}${HOME}/.vim/bundle/Vundle.vim.\n"
         git clone https://github.com/gmarik/Vundle.vim.git ${HOME}/.vim/bundle/Vundle.vim -q 
         printf "${GREEN}[done]${WHITE}\n"
     else
-        printf "Updating github.com/gmarik/vundle.git"
+        printf "Updating github.com/gmarik/vundle.git\n"
         cd ${HOME}/\.vim/bundle/Vundle.vim && git pull
     fi
 
