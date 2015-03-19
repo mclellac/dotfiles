@@ -102,7 +102,9 @@ github_grab() {
 
     if [ $repository = 'powerline-zsh' ]; then
         # create symlink for powerline-zsh
-        ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+        if [ ! -f ${HOME}/.powerline-zsh.py ]; then
+            ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+        fi
     fi
 }
 
