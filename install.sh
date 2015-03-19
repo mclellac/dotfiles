@@ -96,7 +96,7 @@ github_grab() {
 
     if [ $repository = 'prezto.git' ]; then
         cd ${HOME}/.zprezto
-        echo "Updating: ${CYAN}${repository}${WHITE} -> ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
+        echo "Updating: ${CYAN}${repository}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
     fi
 
