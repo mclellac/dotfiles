@@ -17,6 +17,7 @@ bindkey ';5C' emacs-forward-word
 #-- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
 
+alias ll="ls -al"
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias history="history 0"
 alias agenda="gcalcli agenda"
@@ -112,10 +113,13 @@ function calc() {
 os=`uname`
 
 if [ $os = 'Linux' ]; then
+     alias ls="ls --color"
     . ${HOME}/.zsh.gnu 
 elif [ $os = 'FreeBSD' ]; then
+     alias ls="ls -G"
     . ${HOME}/.zsh.bsd
 elif [ $os = 'Darwin' ]; then
+    alias ls="ls -G"
     . ${HOME}/.iterm2_shell_integration.zsh
     . ${HOME}/.zsh.osx
 fi
