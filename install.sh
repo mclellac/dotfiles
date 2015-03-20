@@ -92,6 +92,7 @@ github_grab() {
         cd ${localdir} && git pull
     fi
 
+    # if zpresto has been installed, then update the submodules.
     if [ $repository = 'prezto.git' ]; then
         cd ${HOME}/.zprezto
         echo "Updating: ${CYAN}${repository}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
@@ -102,6 +103,8 @@ github_grab() {
         # create symlink for powerline-zsh
         if [ ! -f ${HOME}/.powerline-zsh.py ]; then
             ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
+        else
+            rm ${HOME}/.powerline-zsh.py && ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
         fi
     fi
 }
