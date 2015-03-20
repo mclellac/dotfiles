@@ -51,10 +51,7 @@ cmdhist() {
 
 # Get and preserve the filename on download URL's that redirect
 # and dont support the Content-Disposition header.
-fncurl () {
-    fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}'`
-    curl -o $fn -L $@
-}
+fncurl () { fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ }
 
 #-- Functions --
 # Rename tmux window to the address ssh'ed to
