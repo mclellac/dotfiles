@@ -34,8 +34,8 @@ zstyle ':prezto:load' pmodule \
   'rails' \
   'ssh' \
   'syntax-highlighting' \
-  'completion' \
-  'prompt'
+  'completion'
+# 'prompt'  disable prompt in favour of powerline.
 
 # Editor
 # Set the key mapping style to 'emacs' or 'vi'.
@@ -71,6 +71,7 @@ zstyle ':prezto:module:pacman' frontend 'yaourt'
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
 #zstyle ':prezto:module:prompt' theme 'sorin'
+zstyle ':prezto:module:prompt' theme 'off'
 
 # Screen
 # Auto start a session when Zsh is launched.

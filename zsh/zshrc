@@ -10,6 +10,7 @@ setopt EXTENDED_HISTORY             # save timestamp and runtime information
 export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export TERM='xterm-256color'
+export PROMPT="$(~/.config/carlcarl/powerline-zsh.py $?)"
 
 #-- Bindings --
 bindkey ';5D' emacs-backward-word
@@ -41,18 +42,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-#-- Powerline --
-_update_ps1() {
-    export PROMPT="$(~/.config/carlcarl/powerline-zsh.py $?)"
-}
-
-precmd() {
-    _update_ps1
-    # Set tmux window name to username@hostname
-    printf "\033k`echo "$(whoami)@$(hostname -fs)"`\033\\"
-}
-
-#-- List the top 20 commands used in history. --
+# List the top 20 commands used in history.
 cmdhist() {
     history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|  \
     awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"•"; printf "\033[1;34m\%15s\033[0m  %5d ￨ \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
@@ -81,11 +71,11 @@ fncurl () {
 #--  Command Wrapper Functions. --
 diga()          {  dig +nocmd "$*" any +multiline +noall +answer }
 fed()           { find . -type f -name "$*" -exec vim {} \; }                       # find and edit the filename argument (usage: fed $filename) 
-connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of sean connery for fun
+connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of Sean Connery for fun
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
 
 # Simple calculator
-function calc() {
+calc() {
     # You will only need to escape multiplication (ie: "calc 2 \* 20").
     local result=""
     result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
@@ -100,6 +90,17 @@ function calc() {
         printf "$result"
     fi
     printf "\n"
+}
+
+#-- Powerline --
+function _update_ps1() {
+    export PROMPT="$(~/.config/carlcarl/powerline-zsh.py $?)"
+}
+
+# Update prompt & set tmux window name to username@hostname.
+function precmd() {
+    _update_ps1
+    printf "\033k`echo "$(whoami)@$(hostname -fs)"`\033\\"
 }
 
 # Source platform specific settings based on os 
