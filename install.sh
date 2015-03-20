@@ -149,6 +149,8 @@ symlink_dotfiles() {
 
         if [ ! -f ${softlink} ]; then
             ln -s ${file} ${softlink}
+        else 
+            rm ${softlink} && ln -s ${file} ${softlink}
         fi
     done
 
