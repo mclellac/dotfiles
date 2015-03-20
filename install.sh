@@ -98,15 +98,6 @@ github_grab() {
         echo "Updating: ${CYAN}${repository}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
     fi
-
-    if [ $repository = 'powerline-zsh' ]; then
-        # create symlink for powerline-zsh
-        if [ ! -f ${HOME}/.powerline-zsh.py ]; then
-            ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
-        else
-            rm ${HOME}/.powerline-zsh.py && ln -s ${dotconfig}/carlcarl/powerline-zsh.py ${HOME}/.powerline-zsh.py
-        fi
-    fi
 }
 
 install_deps() {

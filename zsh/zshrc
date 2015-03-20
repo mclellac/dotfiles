@@ -43,7 +43,7 @@ fi
 
 #-- Powerline --
 _update_ps1() {
-    export PROMPT="$(~/.powerline-zsh.py $?)"
+    export PROMPT="$(~/.config/carlcarl/powerline-zsh.py $?)"
 }
 
 precmd() {
@@ -51,22 +51,6 @@ precmd() {
     # Set tmux window name to username@hostname
     printf "\033k`echo "$(whoami)@$(hostname -fs)"`\033\\"
 }
-
-#-- Development --
-realname=$(finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ //')
-github_path=$HOME/Projects/src/github.com/
-work_git_path=$HOME/Projects/src/stash.nm.cbc.ca
-
-if [ ! -d $work_git_path ]; then
-    mkdir -p ~/Projects/{pkg,src,bin}
-    mkdir -p $github_path
-    mkdir -p $work_git_path
-fi
-
-#if ! grep -Fxq $work_email $HOME/.gitconfig; then
-#    git config --global user.name  "${realname}"
-#    git config --global user.email "${work_email}"  
-#fi
 
 #-- List the top 20 commands used in history. --
 cmdhist() {
