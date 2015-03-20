@@ -20,6 +20,7 @@ bindkey ';5C' emacs-forward-word
 source ~/.zprivate                  # .zprivate includes private aliases.
 alias ll="ls -al"
 alias rm="rm"                       # just in case I'm using something that defaults rm to sissy interactive mode. 
+alias cp="cp"                       # same as above, but for cp.
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gitstatus="git status -uno" # ignore untracked files, but show displayed (-u no doesn't show unstaged files.)
 alias history="history 0"
