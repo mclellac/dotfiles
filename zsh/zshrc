@@ -33,11 +33,11 @@ alias cp &>/dev/null && unalias cp
 alias mv &>/dev/null && unalias mv
 
 #-- Path Variables --
+export GOROOT='/usr/local/go'
+export GOPATH=$HOME/Projects
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 export EDITOR=vim
 export VISUAL=vim
-export GOROOT='/usr/local/go'
-export GOPATH=$HOME/Projects
 
 #-- Zprezto --
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
