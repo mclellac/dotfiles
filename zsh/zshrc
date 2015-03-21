@@ -27,9 +27,10 @@ alias calw="clear; gcalcli calw -w 12"
 alias calm="clear; gcalcli calm -w 20"
 
 #-- Unalias --
-unalias rm                           # just in case I'm using something that defaults rm to sissy interactive mode.
-unalias cp                           # same as above, but for cp.
-unalias mv                           # " "
+# just in case I'm using something that defaults to sissy interactive mode.
+alias rm &>/dev/null && unalias rm
+alias cp &>/dev/null && unalias cp
+alias mv &>/dev/null && unalias mv
 
 #-- Path Variables --
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
