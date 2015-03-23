@@ -24,6 +24,10 @@ _testmain.go
 *.test
 *.prof
 
+#-- temporary/swap files --
+*.sw?    # will match .swf files also. Perfect.
+*~
+
 #-- OSX --
 .DS_Store
 .AppleDouble
