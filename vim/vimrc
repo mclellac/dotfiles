@@ -55,6 +55,7 @@ set ruler                     " show the line number on the bar
 set more                      " use more prompt
 set autoread                  " watch for file changes
 syntax enable
+set t_Co=256
 set background=dark
 " Bundle related `Look & Feel` settings
 try
@@ -62,6 +63,9 @@ try
 catch
     colorscheme default
 endtry
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
+
 " indentLine settings
 let g:indentLine_char = '°'
 let g:indentLine_color_term = 235
