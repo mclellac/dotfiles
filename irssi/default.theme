@@ -250,7 +250,8 @@ abstracts = {
 
   # default background for all statusbars. You can also give
   # the default foreground color for statusbar items.
-  sb_background = "%4%w";
+  # sb_background = "%4%w";
+  sb_background = "%N" # Changes the color to "default color", removing  all other coloring and formatting. %N is always the terminal's default color.
 
   # default backround for "default" statusbar group
   #sb_default_bg = "%5";
