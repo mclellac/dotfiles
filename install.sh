@@ -44,7 +44,6 @@ check_deps() {
     # Check to see if powerline-zsh & prezto are available & install or update
     # them as needed.
     #--     
-    # github_grab function takes 3 arguments $localdir, $user, $repository 
     github_grab ${dotconfig}/carlcarl carlcarl powerline-zsh
     github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
 
@@ -82,6 +81,7 @@ get_os() {
     fi
 }
 
+# github_grab function takes 3 arguments $localdir, $user, $repository 
 github_grab() {
     localdir=$1
     user=$2
