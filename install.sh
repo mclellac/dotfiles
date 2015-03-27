@@ -48,6 +48,9 @@ check_deps() {
     github_grab ${dotconfig}/carlcarl carlcarl powerline-zsh
     github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
 
+    # Install powerline fonts.
+    github_grab ${dotconfig}/powerline-fonts powerline fonts && sh ${dotconfig}/powerline-fonts/install.sh 
+
     # if package list exists, then install else symlink conf files.
     [ -f $package_list ] && install_deps || symlink_dotfiles
 }
