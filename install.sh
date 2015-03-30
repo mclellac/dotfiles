@@ -26,7 +26,7 @@ NORMAL=$(tput sgr0)
 WHITE=$(tput setaf 7)
 RED=$(tput setaf 1)
 
-separator()  { printf '%.0s-' {1..79}; echo; }
+separator()  { printf $CYAN'%.0s-'$WHITE {1..79}; echo; }
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 check_deps() {
