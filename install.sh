@@ -18,6 +18,7 @@ declare -a deps=(
     git 
     tmux
 )
+sep=$(printf "%-73s" "-")
 len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
 GREEN=$(tput setaf 2)
@@ -25,6 +26,8 @@ CYAN=$(tput setaf 6)
 NORMAL=$(tput sgr0)
 WHITE=$(tput setaf 7)
 RED=$(tput setaf 1)
+
+separator()  { printf "${sep// /-}" }
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
@@ -88,22 +91,30 @@ github_grab() {
     repository=$3
 
     if [ ! -d ${localdir} ]; then
+        separator
         printf "Cloning: https://github.com/${CYAN}${user}${WHITE}/${CYAN}${repository}${WHITE} to ${CYAN}${localdir}${WHITE}\n"
         git clone https://github.com/${user}/${repository} ${localdir}
+        separator
     else
+        separator
         printf "Updating: ${CYAN}${repository}${WHITE} in ${CYAN}${localdir}${WHITE}\n"
         cd ${localdir} && git pull
+        separator
     fi
 
     # if zpresto has been installed, then update the submodules.
     if [ $repository = 'prezto.git' ]; then
+        separator
         cd ${HOME}/.zprezto
         echo "Updating: ${CYAN}${repository}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
+        separator
     fi
 }
 
 install_deps() {
+    separator
+    
     printf "${CYAN}Attempting to install missing packages.${WHITE}\n"
     for package in `(cat ${package_list})`; do
         if [ $os != "FreeBSD" ]; then
@@ -112,7 +123,9 @@ install_deps() {
             $bsd_install $package && make && sudo make install
         fi
     done
-
+    
+    separator
+    
     # delete /tmp/missing-packages.txt when done
     rm $package_list
 
