@@ -106,7 +106,6 @@ github_grab() {
         cd ${HOME}/.zprezto
         echo "Updating: ${CYAN}${repository}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
-        separator
     fi
 }
 
@@ -146,6 +145,7 @@ vim_setup() {
     printf "${WHITE}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${WHITE}\n"
     sleep 1
     vim +PluginInstall +qall
+
     separator
 }
 
