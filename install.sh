@@ -18,7 +18,6 @@ declare -a deps=(
     git 
     tmux
 )
-sep=$(printf "%-73s" "-")
 len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
 GREEN=$(tput setaf 2)
@@ -27,7 +26,7 @@ NORMAL=$(tput sgr0)
 WHITE=$(tput setaf 7)
 RED=$(tput setaf 1)
 
-separator()  { msgtr "${sep// /-}" }
+separator()  { printf '%.0s-' {1..73}; echo }
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 check_deps() {
