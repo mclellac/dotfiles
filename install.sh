@@ -16,15 +16,15 @@ declare -a dir=(
 declare -a deps=(
     vim 
     git 
-    hg
     tmux
 )
 len=${#deps[*]}
 package_list="/tmp/missing-packages.txt"
-GREEN='\033[00;32m'
-RED='\033[01;31m'
-WHITE='\033[00;00m'
-CYAN='\033[00;36m'
+GREEN=$(tput setaf 2)
+CYAN=$(tput setaf 6)
+NORMAL=$(tput sgr0)
+WHITE=$(tput setaf 7)
+RED=$(tput setaf 1)
 
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
