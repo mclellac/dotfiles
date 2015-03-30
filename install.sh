@@ -31,6 +31,7 @@ separator()  { printf $GREY'%.0s-'$WHITE {1..79}; echo; }
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 check_deps() {
+    separator
     printf "Checking to see if the following applications have been installed:\n"
 
     for (( i=0; i<=(($len -1)); i++)); do
@@ -145,6 +146,7 @@ vim_setup() {
     printf "${WHITE}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${WHITE}\n"
     sleep 1
     vim +PluginInstall +qall
+    separator
 }
 
 symlink_dotfiles() {
@@ -167,6 +169,8 @@ symlink_dotfiles() {
 
     vim_setup
 }
+
+separator
 
 # check to make sure ~/.conf directory exists
 [ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || make_dir directory=${dotconfig}
