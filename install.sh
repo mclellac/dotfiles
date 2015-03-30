@@ -92,12 +92,10 @@ github_grab() {
         separator
         printf "Cloning: https://github.com/${CYAN}${user}${WHITE}/${CYAN}${repository}${WHITE} to ${CYAN}${localdir}${WHITE}\n"
         git clone https://github.com/${user}/${repository} ${localdir}
-        separator
     else
         separator
         printf "Updating: ${CYAN}${repository}${WHITE} in ${CYAN}${localdir}${WHITE}\n"
         cd ${localdir} && git pull
-        separator
     fi
 
     # if zpresto has been installed, then update the submodules.
@@ -121,8 +119,6 @@ install_deps() {
             $bsd_install $package && make && sudo make install
         fi
     done
-    
-    separator
     
     # delete /tmp/missing-packages.txt when done
     rm $package_list
