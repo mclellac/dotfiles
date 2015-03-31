@@ -60,7 +60,8 @@ set t_Co=256
 set background=dark
 " Bundle related `Look & Feel` settings
 try
-    colorscheme solarized
+    colorscheme Tomorrow-Night-Bright
+    "colorscheme solarized
 catch
     colorscheme default
 endtry
