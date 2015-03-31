@@ -130,6 +130,12 @@ set diffopt=filler,iwhite     " ignore all whitespace and sync
 set backup
 set backupdir=~/.vim/backup
 
+" Ansible plugin options
+"""""""""""""""""""""""""""""""
+let g:ansible_options = {'ignore_blank_lines': 0}
+
+" Define command history
+"""""""""""""""""""""""""""""""
 let &viminfo='%,h,"4,''4,f0,/99,:' . &history 
 "           | |  |   |  |  |       +command-line history saved 
 "           | |  |   |  |  +search history saved 
