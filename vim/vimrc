@@ -19,6 +19,7 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'flazz/vim-colorschemes'
+Bundle 'chase/vim-ansible-yaml'
 Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 
