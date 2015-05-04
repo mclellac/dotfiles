@@ -2,6 +2,6 @@
 #Feature:
 #Fix:
 #Documentation:
-#Style (formatting, missing semi colons, etc; no code change):
+#Style:
 #Refactor:
-#Test (adding missing tests, refactoring tests; no production code change):
+#Test:
