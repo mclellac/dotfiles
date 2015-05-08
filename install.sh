@@ -165,6 +165,7 @@ symlink_dotfiles() {
     # Copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
     for file in `( ls ${dotdir}/git)`; do
         cp ${dotdir}/git/$file ${HOME}/.${file}
+        printf "\n${WHITE}Set name and email in ~/.gitconfig\n"
     done 
 
     vim_setup
