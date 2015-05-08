@@ -184,5 +184,5 @@ github_grab $dotconfig/dotfiles mclellac dotfiles
 get_os
 check_deps
 
-printf "\nSet your name and email variables in: ${CYAN}${HOME}/.gitconfig${WHITE}\n"
+printf "Install Complete.\n Don't forget to manually set your name and email variables in: ${CYAN}${HOME}/.gitconfig${WHITE}\n"
 
