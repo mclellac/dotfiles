@@ -60,13 +60,13 @@ check_deps() {
 get_os() {
     os=`uname -s`
 
-    if [ $os = 'Darwin' ]; then
+    if [ $os == 'Darwin' ]; then
         app_install="brew install"
         [ ! -f ${HOME}/.zsh.osx ] && touch ${HOME}/.zsh.osx
-    elif [ $os = 'FreeBSD' ]; then
+    elif [ $os == 'FreeBSD' ]; then
         bsd_install="cd /usr/ports/devel/"
         [ ! -f ${HOME}/.zsh.bsd ] && touch ${HOME}/.zsh.bsd
-    elif [ $os = 'Linux' ]; then
+    elif [ $os == 'Linux' ]; then
         [ ! -f ${HOME}/.zsh.gnu ] && touch ${HOME}/.zsh.gnu
         if [ $(cmd_exists apt-get) ]; then 
             app_install="sudo apt-get install"
