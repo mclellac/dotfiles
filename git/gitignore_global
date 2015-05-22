@@ -1,9 +1,32 @@
+#------------------------------------------#
+#         Project Related Ignores          #
+#------------------------------------------#
+#-- connery --
+build/
+dist/
+MANIFEST
+doc/build/*
+logs/*
+tests
+connery.wiki/*
+*.db
+*.pyc
+*.pyo
+*.txt
+*~
+*.rpm
+*.spec
+.*.sw*
+.pid-*
+
 #-- Gossip --
 gossip.conf
 gossipd
 gossip
 
-#-- Go --
+#------------------------------------------#
+#           Language Specific              #
+#------------------------------------------#
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
 *.a
@@ -24,10 +47,26 @@ _testmain.go
 *.test
 *.prof
 
+
+#------------------------------------------#
+#             Editor Related               #
+#------------------------------------------#
 #-- temporary/swap files --
 *.swp
 *~
 
+#-- IntelliJ idea --
+.idea
+*.iml
+
+#-- Eclipse/PyDev --
+.settings
+.project
+.pydevproject
+
+#------------------------------------------#
+#        Operating System Related          #
+#------------------------------------------#
 #-- OSX --
 .DS_Store
 .AppleDouble
@@ -45,4 +84,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
