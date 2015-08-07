@@ -24,6 +24,11 @@ gossip.conf
 gossipd
 gossip
 
+#-- ansible --
+vault.yml
+password.yml
+*vault.yml
+
 #------------------------------------------#
 #           Language Specific              #
 #------------------------------------------#
