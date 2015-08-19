@@ -11,7 +11,7 @@ export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export TERM='xterm-256color'
 #. ${HOME}/.config/powerline.zsh
-export PROMPT="$(~/.config/carlcarl/powerline-zsh.py $?)"
+#export PROMPT="$(~/.config/carlcarl/powerline-zsh.py $?)"
 
 alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 #unalias run-help
