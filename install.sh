@@ -2,7 +2,7 @@
 #--
 # Install script for github.com/mclellac dotfiles
 # Usage:
-#    sh <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
+#    bash <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
 #--
 dotconfig="${HOME}/.config"
 dotdir="${dotconfig}/dotfiles"
@@ -44,13 +44,13 @@ check_deps() {
     done
 
     #--
-    # Check to see if powerline-zsh & prezto are available & install or update
+    # check to see if powerline-zsh & prezto are available & install or update
     # them as needed.
     #--     
     github_grab ${dotconfig}/carlcarl carlcarl powerline-zsh
     github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
 
-    # Install powerline fonts.
+    # install powerline fonts.
     github_grab ${dotconfig}/powerline-fonts powerline fonts && sh ${dotconfig}/powerline-fonts/install.sh 
 
     # if package list exists, then install else symlink conf files.
@@ -152,7 +152,7 @@ vim_setup() {
 symlink_dotfiles() {
     # softlink variable stores the absolute path for the symlink
 
-    for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(img|irssi|git)')`; do
+    for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(img|irssi|git|weechat)')`; do
         softlink=${HOME}/.`(echo ${file} | awk -F/ '{print $7}')`
 
         if [ ! -f ${softlink} ]; then
@@ -162,10 +162,17 @@ symlink_dotfiles() {
         fi
     done
 
-    # Copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
-    for file in `( ls ${dotdir}/git)`; do
+    # copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
+    for file in `(ls ${dotdir}/git)`; do
         cp ${dotdir}/git/$file ${HOME}/.${file}
-    done 
+    done
+    
+    # copy weechat config files into $HOME/.weechat
+    [ ! -d ${HOME}/.weechat] && mkdir ${HOME}/.weechat
+
+    for file in `(ls ${dotdir}/weechat)`; do
+        cp ${dotdir}/weechat/$file ${HOME}/.weechat/${file}
+    done
 
     vim_setup
 }
