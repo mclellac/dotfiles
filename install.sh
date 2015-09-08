@@ -168,7 +168,7 @@ symlink_dotfiles() {
     done
     
     # copy weechat config files into $HOME/.weechat
-    [ ! -d ${HOME}/.weechat] && mkdir ${HOME}/.weechat
+    [ ! -d ${HOME}/.weechat ] && mkdir ${HOME}/.weechat
 
     for file in `(ls ${dotdir}/weechat)`; do
         cp ${dotdir}/weechat/$file ${HOME}/.weechat/${file}
