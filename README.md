@@ -22,6 +22,6 @@ You paste this into your terminal, press enter, and it should take care of the r
 
 ```bash
 
-sh <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
+bash <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
 
 ```
