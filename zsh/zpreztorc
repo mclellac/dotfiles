@@ -33,8 +33,9 @@ zstyle ':prezto:load' pmodule \
   'python' \
   'rails' \
   'ssh' \
-  'syntax-highlighting' \
   'completion'
+# syntax-highlighting
+
 # 'prompt'  disable prompt in favour of powerline.
 
 # Editor

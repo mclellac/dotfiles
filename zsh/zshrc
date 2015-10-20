@@ -90,6 +90,8 @@ calc() {
     printf "\n"
 }
 
+PROMPT="• "
+
 # update prompt & set tmux window name to username@hostname.
 #function precmd() {
 #    printf "\033k`echo "$(whoami)@$(hostname -fs)"`\033\\"
