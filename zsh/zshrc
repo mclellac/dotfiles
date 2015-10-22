@@ -90,7 +90,7 @@ calc() {
     printf "\n"
 }
 
-PROMPT="• "
+PROMPT="☢ "
 
 # update prompt & set tmux window name to username@hostname.
 #function precmd() {
