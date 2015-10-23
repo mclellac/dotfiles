@@ -107,7 +107,7 @@ elif [ $os = 'FreeBSD' ]; then
 elif [ $os = 'Darwin' ]; then
     alias ls="ls -G"
     #-- zsh-syntax-highlighting (brew package)
-    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     . ${HOME}/.iterm2_shell_integration.zsh
     . ${HOME}/.zsh.osx
 fi
