@@ -24,11 +24,17 @@ Bundle 'bling/vim-airline'
 "Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 
 " vim-airline settings
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
+
+
+" vim-airline settings
+let g:airline_powerline_fonts = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " bind ctrl+n to open/close nerdtree.
 map <C-n> :NERDTreeToggle<CR>

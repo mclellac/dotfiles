@@ -23,8 +23,6 @@ alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/C
 #autoload run-help
 HELPDIR=/usr/local/share/zsh/help
 
-#-- zsh-syntax-highlighting (brew package)
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #-- zsh-completions (brew package)
 fpath=(/usr/local/share/zsh-completions $fpath)
 
@@ -108,6 +106,8 @@ elif [ $os = 'FreeBSD' ]; then
     . ${HOME}/.zsh.bsd
 elif [ $os = 'Darwin' ]; then
     alias ls="ls -G"
+    #-- zsh-syntax-highlighting (brew package)
+    source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     . ${HOME}/.iterm2_shell_integration.zsh
     . ${HOME}/.zsh.osx
 fi
