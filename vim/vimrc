@@ -21,11 +21,6 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'chase/vim-ansible-yaml'
 Bundle 'bling/vim-airline'
-"Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
-" vim-airline settings
-"let g:airline#extensions#tabline#left_sep = ' '
-"let g:airline#extensions#tabline#left_alt_sep = '|'
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
@@ -33,8 +28,7 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
 
 " vim-airline settings
 let g:airline_powerline_fonts = 1
-"let g:airline#extensions#tabline#left_sep = ' '
-"let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline_theme='term'
 
 " bind ctrl+n to open/close nerdtree.
 map <C-n> :NERDTreeToggle<CR>
@@ -71,8 +65,8 @@ set t_Co=256
 set background=dark
 " Bundle related `Look & Feel` settings
 try
-    colorscheme Tomorrow-Night-Bright
-    "colorscheme solarized
+    colorscheme default
+    "colorscheme Tomorrow-Night-Bright
 catch
     colorscheme default
 endtry

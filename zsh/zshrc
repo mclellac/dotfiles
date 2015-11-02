@@ -18,8 +18,11 @@ export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export TERM='xterm-256color'
 
-# pip install pygments for pygmentize
-#alias ccat='pygmentize -g -O style=colorful,linenos=0'
+# ccat
+alias ccat="ccat -G String="brown" -G Keyword="darkblue" -G Comment="lightgrey"           \
+    -G Type="teal" -G Literal="teal" -G Punctuation="darkred" -G Plaintext="darkblue"     \
+    -G Tag="blue" -G HTMLTag="lightgreen" -G HTMLAttrName="blue" -G HTMLAttrValue="green" \
+    -G Decimal="darkblue" "$@""
 
 HELPDIR=/usr/local/share/zsh/help
 
@@ -64,7 +67,7 @@ cmdhist() {
 # and dont support the Content-Disposition header.
 fncurl () { fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ }
 
-#--  Command Wrapper Functions. --
+#--  command wrapper functions. --
 #diga()          { dig +nocmd "$*" any +multiline +noall +answer }
 fed()           { find . -type f -name "$*" -exec vim {} \; }                       # find and edit the filename argument (usage: fed $filename) 
 connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of Sean Connery for fun
@@ -77,7 +80,7 @@ calc() {
     result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
                           # └─ default (when `--mathlib` is used) is 20
     if [[ "$result" == *.* ]]; then
-        # Improve the output for decimal numbers
+        # improve the output for decimal numbers
         printf "$result" |
         sed -e 's/^\./0./'        `# add "0" for cases like ".5"` \
             -e 's/^-\./-0./'      `# add "0" for cases like "-.5"`\
