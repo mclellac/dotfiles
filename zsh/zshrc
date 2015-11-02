@@ -1,6 +1,6 @@
 #-- path variables --
-export GOROOT='/usr/local/go'
-export GOPATH=$HOME/Projects
+export GOROOT="/usr/local/go"
+export GOPATH="${HOME}/Projects"
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 export EDITOR=vim
 export VISUAL=vim
@@ -18,9 +18,9 @@ export SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export TERM='xterm-256color'
 
-alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
-#unalias run-help
-#autoload run-help
+# pip install pygments for pygmentize
+#alias ccat='pygmentize -g -O style=colorful,linenos=0'
+
 HELPDIR=/usr/local/share/zsh/help
 
 #-- zsh-completions (brew package)
@@ -106,6 +106,7 @@ elif [ $os = 'FreeBSD' ]; then
     . ${HOME}/.zsh.bsd
 elif [ $os = 'Darwin' ]; then
     alias ls="ls -G"
+    alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
     #-- zsh-syntax-highlighting (brew package)
     . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     . ${HOME}/.iterm2_shell_integration.zsh
