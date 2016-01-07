@@ -4,7 +4,9 @@ export GOPATH="${HOME}/Projects"
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 export EDITOR=vim
 export VISUAL=vim
-          
+# mutt background fix
+COLORFGBG="default;default" 
+
 #-- zsh options --
 HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
 HISTSIZE=1200                       # lines of history to maintain memory
@@ -35,7 +37,8 @@ bindkey ';5C' emacs-forward-word
 
 #-- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
-alias ll="ls -al"
+alias ll="ls -alG"
+alias ls="ls -G"
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 alias gitstatus="git status -uno" # ignore untracked files, but show displayed (-u no doesn't show unstaged files.)
 alias history="history 0"
@@ -91,7 +94,8 @@ calc() {
     printf "\n"
 }
 
-PROMPT="☢ "
+PROMPT='%B☢ %b'
+    
 
 # update prompt & set tmux window name to username@hostname.
 #function precmd() {

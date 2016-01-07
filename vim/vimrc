@@ -25,7 +25,6 @@ Bundle 'bling/vim-airline'
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
-
 " vim-airline settings
 let g:airline_powerline_fonts = 1
 let g:airline_theme='term'
@@ -74,12 +73,10 @@ highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
 " indentLine settings
-" let g:indentLine_char = '°'
+let g:indentLine_char = '°'
 let g:indentLine_color_term = 235
 " vim-gitgutter settings
 highlight SignColumn ctermbg=233
-" Powerline_symbols settings
-let g:Powerline_symbols = 'unicode'
 set laststatus=2
 set encoding=utf-8
 set t_Co=256
@@ -91,7 +88,6 @@ if has("gui_running")
       set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14
    endif
 endif
-
 
 " General settings
 """""""""""""""""""""""""""""""
