@@ -151,7 +151,6 @@ vim_setup() {
 
 symlink_dotfiles() {
     # softlink variable stores the absolute path for the symlink
-
     for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(img|irssi|git|weechat)')`; do
         softlink=${HOME}/.`(echo ${file} | awk -F/ '{print $7}')`
 
