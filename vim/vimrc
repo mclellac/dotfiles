@@ -8,11 +8,11 @@ call vundle#rc()
 " Bundles
 """""""""""""""""""""""""""""""
 Bundle 'gmarik/vundle'
-Bundle 'tpope/vim-endwise'
+"Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-surround'
+"Bundle 'tpope/vim-surround'
 Bundle 'fatih/vim-go'
-Bundle 'Blackrush/vim-gocode'
+"Bundle 'Blackrush/vim-gocode'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Yggdroot/indentLine'
 Bundle 'airblade/vim-gitgutter'
@@ -34,6 +34,10 @@ map <C-n> :NERDTreeToggle<CR>
 
 " close vim if nerdtree is the only open window.
  autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
+
+" speed up the annoying parens, brackets matching speed
+set showmatch
+set matchtime=0
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
