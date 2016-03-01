@@ -8,11 +8,11 @@ call vundle#rc()
 " Bundles
 """""""""""""""""""""""""""""""
 Bundle 'gmarik/vundle'
-"Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-git'
-"Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-surround'
 Bundle 'fatih/vim-go'
-"Bundle 'Blackrush/vim-gocode'
+Bundle 'Blackrush/vim-gocode'
 Bundle 'tpope/vim-fugitive'
 Bundle 'Yggdroot/indentLine'
 Bundle 'airblade/vim-gitgutter'
