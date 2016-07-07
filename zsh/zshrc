@@ -93,8 +93,8 @@ calc() {
     printf "\n"
 }
 
-PROMPT='%B☢ %b'
-    
+#PROMPT='%B☢ %b'
+export PROMPT="%B☢ (%b%n%B@%b%M%B) %b> "
 
 # update prompt & set tmux window name to username@hostname.
 #function precmd() {
