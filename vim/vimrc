@@ -20,6 +20,7 @@ Bundle 'altercation/vim-colors-solarized'
 Bundle 'scrooloose/nerdtree'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'chase/vim-ansible-yaml'
+Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
@@ -27,7 +28,7 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
 
 " vim-airline settings
 let g:airline_powerline_fonts = 1
-let g:airline_theme='term'
+let g:airline_theme='dracula'
 
 " bind ctrl+n to open/close nerdtree.
 map <C-n> :NERDTreeToggle<CR>
