@@ -118,3 +118,6 @@ elif [ $os = 'Darwin' ]; then
     . ${HOME}/.iterm2_shell_integration.zsh
     . ${HOME}/.zsh.osx
 fi
+
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+

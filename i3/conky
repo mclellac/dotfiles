@@ -1,0 +1,17 @@
+background no
+out_to_console yes
+out_to_x no
+own_window no
+update_interval 1
+total_run_times 0
+short_units yes
+pad_percents 2
+use_spacer right
+override_utf8_locale yes
+temperature_unit fahrenheit
+# Time am/pm = ${time %l:M %P}
+TEXT
+#${exec sleep 0.1}
+$font $if_mpd_playing ${if_match ${execi 5 expr length "`mpc --format %artist% | head -n 1`"} >= 30}${scroll 30 3 ${mpd_artist}}${else}${mpd_artist}${endif} - ${if_match ${execi 5 expr length "`mpc --format %title% | head -n 1`"} >= 30}${scroll 30 3 ${mpd_title}}${else}${mpd_title}${endif} $endif \
+${downspeed wlp1s0} //  cpu $cpu% //  temp $acpitemp° //  bat $battery_percent% // ${time %a %d %b} ${time %H:%M} // ${wireless_essid wlp1s0}\
+
