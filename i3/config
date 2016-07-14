@@ -6,11 +6,11 @@ set $editor vim
 exec --no-startup-id nitrogen --restore
 
 # application bindings
-bindsym $mod+Return     exec terminator
-bindsym $mod+Shift+Return     exec terminology
-bindsym $mod+Shift+f    exec firefox
-bindsym $mod+Shift+w    exec chromium
-bindsym $mod+Shift+F2   exec gmrun          # program launcher
+bindsym $mod+Return         exec urxvt
+bindsym $mod+Shift+Return   exec terminology
+bindsym $mod+Shift+f        exec firefox
+bindsym $mod+Shift+w        exec chromium
+bindsym $mod+Shift+F2       exec gmrun      # program launcher
 
 set_from_resource $darkred      color1  #000000
 set_from_resource $red          color9  #000000
@@ -43,18 +43,18 @@ set $ws9  "9:  "
 set $ws10 "10:  "
 
 # start some default applications on their respective workspaces
-exec --no-startup-id i3-msg 'workspace 1: ; exec /usr/bin/terminology'
+exec --no-startup-id i3-msg 'workspace 1: ; exec /usr/bin/urxvt'
 exec --no-startup-id i3-msg 'workspace 2: ; exec /usr/bin/chromium'
 exec --no-startup-id i3-msg 'workspace 3: ; exec /usr/bin/firefox'
-exec --no-startup-id i3-msg 'workspace 4:  ; exec /usr/bin/sublime ~/Projects'
+exec --no-startup-id i3-msg 'workspace 4: ; exec /usr/bin/sublime ~/Projects'
 
 set $default_gaps_inner 0
 set $default_gaps_outer 0
 gaps inner $default_gaps_inner
 gaps outer $default_gaps_outer
 
-workspace $ws1      gaps inner 0
-workspace $ws1      gaps outer 4
+workspace $ws1      gaps inner 10
+workspace $ws1      gaps outer 10
 workspace $ws2      gaps inner 0
 workspace $ws2      gaps outer 0
 workspace $ws9      gaps inner 0
@@ -285,7 +285,7 @@ mode "$mode_gaps_outer" {
 
 # fix graphics glitch
 new_window none
-#for_window [class=(?i)termite] border pixel 3
+for_window [class=(?i)urxvt] border pixel 1
 
 for_window [window_role="pop-up"]       floating enable
 for_window [window_role="bubble"]       floating enable
@@ -333,26 +333,4 @@ client.focused_inactive #073642 #073642 #eee8d5 #6c71c4
 client.unfocused #073642 #073642 #93a1a1 #586e75
 client.urgent #d33682 #d33682 #fdf6e3 #dc322f
 
-#bar {
-##    verbose yes
-#    status_command i3blocks
-#    i3bar_command i3bar -t
-#    position top
-#    font pango:Hack, FontAwesome 9
-#    strip_workspace_numbers yes
-#    separator_symbol "■"
-#    bindsym button4 nop
-#    bindsym button5 nop
-#    tray_padding 0
-#    height 15
-##    colors {
-##        statusline         $white
-#    #    background         $transparent
-#    #    separator          $transparent
-#
-#                           #BORDER       BACKGROUND   TEXT
-##        focused_workspace  $transparent $transparent $darkwhite
-##        inactive_workspace $transparent $transparent $white
-##        active_workspace   $transparent $tra
-#}
-#
+exec --no-startup-id xsetroot -solid '#42413C'

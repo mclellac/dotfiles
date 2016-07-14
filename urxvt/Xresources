@@ -1,0 +1,102 @@
+! URXVT GENERAL CONFIG
+!------------------------------------------------
+URxvt*iconFile: /usr/share/icons/Faenza/apps/32/utilities-terminal.png
+IRC*iconFile: /usr/share/icons/Faenza/apps/32/xchat.png
+URxvt.geometry: 80x22
+! URXVT FONTS
+!------------------------------------------------
+URxvt.font:xft:Hack:pixelsize=9
+URxvt.boldFont:xft:Hack:bold:pixelsize=9
+URxvt.italicfont:xft:Hack:italic:pixelsize=9
+URxvt.bolditalicFont:xft:Hack:bold:italic:pixelsize=9
+URxvt*letterSpace: -1
+URxvt*allow_bold: true
+! URXVT FONT SETTINGS
+!------------------------------------------------
+Xft.autohint: true
+Xft.antialias: true
+Xft.hinting: true
+Xft.hintstyle: hintslight
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
+! URXVT ENABLE LINK SUPPORT
+!------------------------------------------------
+URxvt.perl-lib: /home/mclellac/.config/dotfiles/urxvt/scripts
+URxvt.perl-ext-common: default,matcher,clipboard
+!tabbed
+URxvt.matcher.button: 1
+URxvt.perl-ext: default
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.url-select.launcher: /usr/bin/chromium
+URxvt.url-select.underline: true
+!disable the fucking bell
+URxvt.insecure: false
+! URXVT COPY PASTE SHORTCUTS
+!------------------------------------------------
+URxvt.iso14755: False
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+! URXVT SCROLLBAR AND CURSOR STYLE
+!------------------------------------------------
+URxvt*saveLines: 300000
+URxvt.scrollBar: false
+!URxvt*scrollstyle: plain
+URxvt*cursorBlink: true
+URxvt*cursorUnderline: false
+URxvt*cursorBlock: true
+
+! URXVT TABS
+!------------------------------------------------
+URxvt.tabbedex.autohide: yes
+URxvt.tabbedex.tabbar-fg: 2
+URxvt.tabbedex.tabbar-bg: 0
+URxvt.tabbedex.tab-fg: 10
+URxvt.tabbedex.tab-bg: 0
+URxvt.tabbedex.title: yes
+URxvt.tabbedex.new-button: no
+! URXVT FULLSCREEN TOGGLE
+!------------------------------------------------
+URxvt.keysym.F11: perl:fullscreen:switch
+
+! URXVT COLORS
+!------------------------------------------------
+! vim: set filetype=xdefaults :
+
+! special
+*.foreground: #B9C7C7
+*.background: #2E2D2A
+*.cursorColor: #93a1a1
+
+! black
+*.color0: #5f5f5f
+*.color8: #828282
+
+! red
+*.color1: #FA050D
+*.color9: #B84246
+
+! green
+*.color2: #85F00C
+*.color10: #BAF76D
+
+! yellow
+*.color3: #F7D70A
+*.color11: #EBF70A
+
+! blue
+*.color4: #0A97FC
+*.color12: #67ABDB
+
+! magenta
+*.color5: #A200FF
+*.color13: #C190DE
+
+! cyan
+*.color6: #00FFF6
+*.color14: #9DEDEA
+
+! white
+*.color7: #989898
+*.color15: #c5c5c5
