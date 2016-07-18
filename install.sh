@@ -174,7 +174,12 @@ symlink_dotfiles() {
     done
 
     if [ $os == 'Linux' ]; then
-        mkdir -p ${HOME}/.i3
+        if [ -d ${HOME}/.i3 ]; then
+            mv ${HOME}/.i3 ${HOME}/.i3.old && mkdir -p ${HOME}/.i3
+        else 
+            mkdir -p ${HOME}/.i3
+        fi
+        
         ln -s ${dotdir}/i3/config ${HOME}/.i3/config
         ln -s ${dotdir}/i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
         cp -R ${dotdir}/i3/scripts ${HOME}/.i3/scripts

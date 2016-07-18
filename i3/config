@@ -28,7 +28,7 @@ exec --no-startup-id i3-msg 'workspace 1:  ; exec /usr/bin/urxvt'
 exec --no-startup-id i3-msg 'workspace 2:  ; exec /usr/bin/chromium http://cbc.ca'
 exec --no-startup-id i3-msg 'workspace 3:  ; exec /usr/bin/evolution'
 exec --no-startup-id i3-msg 'workspace 4:   ; exec /usr/bin/sublime ~/Projects'
-exec --no-startup-id i3-msg 'workspace 5:  ; exec /usr/bin/terminator'
+exec --no-startup-id i3-msg 'workspace 5:  ; exec /usr/bin/terminnology'
 exec --no-startup-id i3-msg 'workspace 6:  ; exec /usr/bin/thunar'
 
 # application workspace assignments
@@ -36,7 +36,7 @@ assign [class="(?i)urxvt"]          $ws1
 assign [class="(?i)chromium"]       $ws2
 assign [class="(?i)evolution"]      $ws3
 assign [class="(?i)sublime"]        $ws4
-assign [class="(?i)terminator"]     $ws5
+assign [class="(?i)terminnology"]   $ws5
 assign [class="(?i)thunar"]         $ws6
 
 set $default_gaps_inner 0
@@ -44,16 +44,16 @@ set $default_gaps_outer 0
 gaps inner $default_gaps_inner
 gaps outer $default_gaps_outer
 
-workspace $ws1      gaps inner 7
-workspace $ws1      gaps outer 7
+workspace $ws1      gaps inner 10
+workspace $ws1      gaps outer 5
 workspace $ws2      gaps inner 0
 workspace $ws2      gaps outer 0
 workspace $ws3      gaps inner 0
 workspace $ws3      gaps outer 0
 workspace $ws4      gaps inner 0
 workspace $ws4      gaps outer 0
-workspace $ws5      gaps inner 7
-workspace $ws5      gaps outer 7
+workspace $ws5      gaps inner 10
+workspace $ws5      gaps outer 5
 workspace $ws9      gaps inner 0
 workspace $ws9      gaps outer 0
 workspace $ws10     gaps inner 0
@@ -277,12 +277,12 @@ bar {
     active_workspace #fdf6e3 #6CA5C4 #fdf6e3
     inactive_workspace #002b36 #545E61 #002b36
     #inactive_workspace $transparent $transparent $white
-    urgent_workspace #00FBFF #00FBFF #fdf6e3
+    urgent_workspace #00D5FF #00D5FF #fdf6e3
   }
 }
-client.focused #6CA5C4 #6CA5C4 #fdf6e3 #6CA5C4
+client.focused #B6E6FF #6CA5C4 #fdf6e3 #6CA5C4
 client.focused_inactive #073642 #073642 #eee8d5 #6CA5C4
 client.unfocused #073642 #073642 #93a1a1 #545E61
-client.urgent #00FBFF #00FBFF #fdf6e3 #dc322f
+client.urgent #00D5FF #00D5FF #fdf6e3 #dc322f
 
 exec --no-startup-id xsetroot -solid '#3d3d3d'
