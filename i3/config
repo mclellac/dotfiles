@@ -3,7 +3,7 @@ set $mod Mod4
 set $editor vim
 
 # set wallpaper with nitrogen
-exec --no-startup-id nitrogen --restore
+# exec --no-startup-id nitrogen --restore
 
 # application bindings
 bindsym $mod+Return         exec urxvt
@@ -12,61 +12,52 @@ bindsym $mod+Shift+f        exec firefox
 bindsym $mod+Shift+w        exec chromium
 bindsym $mod+Shift+F2       exec gmrun      # program launcher
 
-set_from_resource $darkred      color1  #000000
-set_from_resource $red          color9  #000000
-set_from_resource $darkgreen    color2  #000000
-set_from_resource $green        color10 #000000
-set_from_resource $darkyellow   color3  #000000
-set_from_resource $yellow       color11 #000000
-set_from_resource $darkblue     color4  #000000
-set_from_resource $blue         color12 #000000
-set_from_resource $darkmagenta  color5  #000000
-set_from_resource $magenta      color13 #000000
-set_from_resource $darkcyan     color6  #000000
-set_from_resource $cyan         color14 #000000
-set_from_resource $darkwhite    color7  #000000
-set_from_resource $white        color15 #000000
-# Use custom colors for black
-set $black       #282828
-set $darkblack   #1d2021
-set $transparent #00000000
-
 set $ws1  "1:  "
 set $ws2  "2:  "
 set $ws3  "3:  "
 set $ws4  "4:  "
-set $ws5  "5:  "
-set $ws6  "6:  "
+set $ws5  "5:  "
+set $ws6  "6:  "
 set $ws7  "7:  "
 set $ws8  "8:  "
 set $ws9  "9:  "
-set $ws10 "10:  "
+set $ws10 "10:  "
 
 # start some default applications on their respective workspaces
-exec --no-startup-id i3-msg 'workspace 1: ; exec /usr/bin/urxvt'
-exec --no-startup-id i3-msg 'workspace 2: ; exec /usr/bin/chromium'
-exec --no-startup-id i3-msg 'workspace 3: ; exec /usr/bin/firefox'
-exec --no-startup-id i3-msg 'workspace 4: ; exec /usr/bin/sublime ~/Projects'
+exec --no-startup-id i3-msg 'workspace 1:  ; exec /usr/bin/urxvt'
+exec --no-startup-id i3-msg 'workspace 2:  ; exec /usr/bin/chromium http://cbc.ca'
+exec --no-startup-id i3-msg 'workspace 3:  ; exec /usr/bin/evolution'
+exec --no-startup-id i3-msg 'workspace 4:   ; exec /usr/bin/sublime ~/Projects'
+exec --no-startup-id i3-msg 'workspace 5:  ; exec /usr/bin/terminator'
+exec --no-startup-id i3-msg 'workspace 6:  ; exec /usr/bin/thunar'
+
+# application workspace assignments
+assign [class="(?i)urxvt"]          $ws1
+assign [class="(?i)chromium"]       $ws2
+assign [class="(?i)evolution"]      $ws3
+assign [class="(?i)sublime"]        $ws4
+assign [class="(?i)terminator"]     $ws5
+assign [class="(?i)thunar"]         $ws6
 
 set $default_gaps_inner 0
 set $default_gaps_outer 0
 gaps inner $default_gaps_inner
 gaps outer $default_gaps_outer
 
-workspace $ws1      gaps inner 10
-workspace $ws1      gaps outer 10
+workspace $ws1      gaps inner 7
+workspace $ws1      gaps outer 7
 workspace $ws2      gaps inner 0
 workspace $ws2      gaps outer 0
+workspace $ws3      gaps inner 0
+workspace $ws3      gaps outer 0
+workspace $ws4      gaps inner 0
+workspace $ws4      gaps outer 0
+workspace $ws5      gaps inner 7
+workspace $ws5      gaps outer 7
 workspace $ws9      gaps inner 0
 workspace $ws9      gaps outer 0
 workspace $ws10     gaps inner 0
 workspace $ws10     gaps outer 0
-
-# application workspace assignments
-assign [class="(?i)terminology"]    $ws1
-assign [class="(?i)chromium"]       $ws2
-assign [class="(?i)firefox"]        $ws3
-assign [class="(?i)sublime"]        $ws4
 
 workspace_auto_back_and_forth yes
 force_display_urgency_hint 0 ms
@@ -77,13 +68,6 @@ floating_minimum_size -1 x -1
 floating_maximum_size -1 x -1
 
 font pango:Hack, FontAwesome 12
-
-#                       BORDER      BACKGROUND  TEXT        INDICATOR   CHILD_BORDER
-client.focused          $black      $black      $darkwhite  $darkblack  $darkblack
-client.unfocused        $black      $black      $white      $darkblack  $darkblack
-client.focused_inactive $black      $black      $white      $darkblack  $darkblack
-client.urgent           $darkred    $darkred    $black      $darkred    $darkred
-client.background       $black
 
 floating_modifier $mod
 #bindsym $mod+Return exec --no-startup-id $HOME/.i3/scripts/fullscreen_wrap.sh $editor
@@ -260,29 +244,6 @@ mode "$mode_gaps_outer" {
     bindsym Escape mode "default"
 }
 
-#set $mode_brightness brightness
-#bindsym $mod+Shift+b mode "$mode_brightness"
-#mode "$mode_brightness" {
-#    bindsym plus  exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -inc 10
-#    bindsym minus exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -dec 10
-#    bindsym Shift+plus  exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -inc 1
-#    bindsym Shift+minus exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -dec 1
-#
-#    bindsym 0     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 100
-#    bindsym 1     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 10
-#    bindsym 2     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 20
-#    bindsym 3     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 30
-#    bindsym 4     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 40
-#    bindsym 5     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 50
-#    bindsym 6     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 60
-#    bindsym 7     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 70
-#    bindsym 8     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 80
-#    bindsym 9     mode "default", exec --no-startup-id ${HOME}/.i3/scripts/backlight.sh -time 50 -set 90
-#
-#    bindsym Return mode "default"
-#    bindsym Escape mode "default"
-#}
-
 # fix graphics glitch
 new_window none
 for_window [class=(?i)urxvt] border pixel 1
@@ -297,14 +258,6 @@ for_window [window_type="menu"]         floating enable
 
 for_window [class="(?i)gsimplecal"]     floating enable, move position mouse
 for_window [class="(?i)qemu-system"]    floating enable
-for_window [class="(?i)blueman"]        floating enable
-
-#for_window [instance="sun-awt-X11-XFramePeer"] floating enable
-for_window [instance="__scratchpad"]    floating enable
-for_window [instance="__nmtui"]         floating enable
-
-for_window [class="(?i)pavucontrol"]    floating enable, move position mouse
-for_window [class="(?i)pavucontrol" instance="pavucontrol-bar"] move down 34px
 
 bar {
     #verbose yes
@@ -314,23 +267,22 @@ bar {
     bindsym button5 nop
     height 20
     strip_workspace_numbers yes
-    font pango:Source Sans Pro-10 10,FontAwesome 9
+    font pango:Source Sans Pro-10 10,FontAwesome 10
     status_command i3blocks -c ~/.i3/i3blocks.conf
   colors {
-    separator #268bd2
-    background #002b36
-
+    separator #00D5FF
+    background #1c1c1c
     statusline #839496
-    focused_workspace #fdf6e3 #6c71c4 #fdf6e3
-    active_workspace #fdf6e3 #6c71c4 #fdf6e3
-    inactive_workspace #002b36 #586e75 #002b36
+    focused_workspace #fdf6e3 #6CA5C4 #fdf6e3
+    active_workspace #fdf6e3 #6CA5C4 #fdf6e3
+    inactive_workspace #002b36 #545E61 #002b36
     #inactive_workspace $transparent $transparent $white
-    urgent_workspace #d33682 #d33682 #fdf6e3
+    urgent_workspace #00FBFF #00FBFF #fdf6e3
   }
 }
-client.focused #6c71c4 #6c71c4 #fdf6e3 #6c71c4
-client.focused_inactive #073642 #073642 #eee8d5 #6c71c4
-client.unfocused #073642 #073642 #93a1a1 #586e75
-client.urgent #d33682 #d33682 #fdf6e3 #dc322f
+client.focused #6CA5C4 #6CA5C4 #fdf6e3 #6CA5C4
+client.focused_inactive #073642 #073642 #eee8d5 #6CA5C4
+client.unfocused #073642 #073642 #93a1a1 #545E61
+client.urgent #00FBFF #00FBFF #fdf6e3 #dc322f
 
-exec --no-startup-id xsetroot -solid '#42413C'
+exec --no-startup-id xsetroot -solid '#3d3d3d'

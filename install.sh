@@ -151,7 +151,7 @@ vim_setup() {
 
 symlink_dotfiles() {
     # softlink variable stores the absolute path for the symlink
-    for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(img|irssi|git|weechat)')`; do
+    for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(i3|img|irssi|git|weechat)')`; do
         softlink=${HOME}/.`(echo ${file} | awk -F/ '{print $7}')`
 
         if [ ! -f ${softlink} ]; then
@@ -172,6 +172,13 @@ symlink_dotfiles() {
     for file in `(ls ${dotdir}/weechat)`; do
         cp ${dotdir}/weechat/$file ${HOME}/.weechat/${file}
     done
+
+    if [ $os == 'Linux' ]; then
+        mkdir -p ${HOME}/.i3
+        ln -s i3/config ${HOME}/.i3/config
+        ln -s i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
+        cp -R i3/scripts ${HOME}/.i3/scripts
+    fi
 
     vim_setup
 }
