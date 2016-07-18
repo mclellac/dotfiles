@@ -175,9 +175,9 @@ symlink_dotfiles() {
 
     if [ $os == 'Linux' ]; then
         mkdir -p ${HOME}/.i3
-        ln -s i3/config ${HOME}/.i3/config
-        ln -s i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
-        cp -R i3/scripts ${HOME}/.i3/scripts
+        ln -s ${dotdir}/i3/config ${HOME}/.i3/config
+        ln -s ${dotdir}/i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
+        cp -R ${dotdir}/i3/scripts ${HOME}/.i3/scripts
     fi
 
     vim_setup
