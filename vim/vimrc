@@ -22,6 +22,7 @@ Bundle 'flazz/vim-colorschemes'
 Bundle 'chase/vim-ansible-yaml'
 Bundle 'vim-airline/vim-airline'
 Bundle 'vim-airline/vim-airline-themes'
+Bundle 'smerrill/vcl-vim-plugin'
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on

@@ -1,7 +1,7 @@
 #-- path variables --
 emulate sh -c 'source /etc/profile'
 export GOPATH="${HOME}/Projects"
-export GOROOT="/usr/bin"
+export GOROOT="/usr/lib/go"
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 export EDITOR=vim
 export VISUAL=vim
@@ -95,8 +95,9 @@ calc() {
     printf "\n"
 }
 
+PROMPT='%B> %b'
 #PROMPT='%B☢ %b'
-export PROMPT="%B☢ (%b%n%B@%b%M%B) %b> "
+#export PROMPT="%B☢ (%b%n%B@%b%M%B) %b> "
 
 # update prompt & set tmux window name to username@hostname.
 #function precmd() {

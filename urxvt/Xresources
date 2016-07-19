@@ -5,10 +5,10 @@ IRC*iconFile: /usr/share/icons/Faenza/apps/32/xchat.png
 URxvt.geometry: 80x22
 ! URXVT FONTS
 !------------------------------------------------
-URxvt.font:xft:Hack:pixelsize=9
-URxvt.boldFont:xft:Hack:bold:pixelsize=9
-URxvt.italicfont:xft:Hack:italic:pixelsize=9
-URxvt.bolditalicFont:xft:Hack:bold:italic:pixelsize=9
+URxvt.font:xft:Hack:pixelsize=11:antialias=true
+URxvt.boldFont:xft:Hack:bold:pixelsize=11:antialias=true
+URxvt.italicfont:xft:Hack:italic:pixelsize=11
+URxvt.bolditalicFont:xft:Hack:bold:italic:pixelsize=11
 URxvt*letterSpace: -1
 URxvt*allow_bold: true
 ! URXVT FONT SETTINGS
@@ -79,23 +79,23 @@ URxvt.keysym.F11: perl:fullscreen:switch
 
 ! green
 *.color2: #85F00C
-*.color10: #BAF76D
+*.color10: #85F00C
 
 ! yellow
-*.color3: #F7D70A
+*.color3: #EBF70A
 *.color11: #EBF70A
 
 ! blue
 *.color4: #0A97FC
-*.color12: #67ABDB
+*.color12: #0A97FC
 
 ! magenta
 *.color5: #A200FF
-*.color13: #C190DE
+*.color13: #A200FF
 
 ! cyan
 *.color6: #00FFF6
-*.color14: #9DEDEA
+*.color14: #00FFF6
 
 ! white
 *.color7: #989898
