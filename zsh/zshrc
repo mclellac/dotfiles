@@ -61,6 +61,12 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# display certs for given host
+# usage: showcert hostname.domainname:sslport
+showcert() {
+    echo -n | openssl s_client -showcerts -connect $*
+}
+
 # list the top 20 commands used in history.
 cmdhist() {
     history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|  \
