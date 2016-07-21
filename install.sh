@@ -2,24 +2,24 @@
 #--
 # Install script for github.com/mclellac dotfiles
 # Usage:
-#    bash <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
+#    bash <(curl -s https://raw.githubUSERcontent.com/mclellac/dotfiles/master/install.sh -L)
 #--
-dotconfig="${HOME}/.config"
-dotdir="${dotconfig}/dotfiles"
-declare -a dir=(
+DOTCONFIG="${HOME}/.config"
+DOTDIR="${DOTCONFIG}/dotfiles"
+declare -a DIR=(
     ${HOME}/.vim
     ${HOME}/.vim/bundle
     ${HOME}/.vim/autoload
     ${HOME}/.vim/colors
     ${HOME}/.vim/backup
 )
-declare -a deps=(
+declare -a DEPS=(
     vim 
     git 
     tmux
 )
-len=${#deps[*]}
-package_list="/tmp/missing-packages.txt"
+LEN=${#DEPS[*]}
+PACKAGE_LIST="/tmp/missing-packages.txt"
 GREEN=$(tput setaf 2)
 CYAN=$(tput setaf 6)
 NORMAL=$(tput sgr0)
@@ -34,12 +34,12 @@ check_deps() {
     separator
     printf "Checking to see if the following applications have been installed:\n"
 
-    for (( i=0; i<=(($len -1)); i++)); do
-        if [ $(cmd_exists ${deps[$i]}) -eq 0 ]; then
-            printf "${GREEN}[✔]${WHITE} ${deps[$i]}\n"
+    for (( i=0; i<=(($LEN -1)); i++)); do
+        if [ $(cmd_exists ${DEPS[$i]}) -eq 0 ]; then
+            printf "${GREEN}[✔]${WHITE} ${DEPS[$i]}\n"
         else
-            printf "${RED}[✘] ${deps[$i]}${WHITE} is missing.\n"
-            echo ${deps[$i]} >> $package_list
+            printf "${RED}[✘] ${DEPS[$i]}${WHITE} is missing.\n"
+            echo ${DEPS[$i]} >> $PACKAGE_LIST
         fi
     done
 
@@ -47,33 +47,33 @@ check_deps() {
     # check to see if powerline-zsh & prezto are available & install or update
     # them as needed.
     #--     
-    github_grab ${dotconfig}/carlcarl carlcarl powerline-zsh
+    github_grab ${DOTCONFIG}/carlcarl carlcarl powerline-zsh
     github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
 
     # install powerline fonts.
-    github_grab ${dotconfig}/powerline-fonts powerline fonts && sh ${dotconfig}/powerline-fonts/install.sh 
+    github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
 
     # if package list exists, then install else symlink conf files.
-    [ -f $package_list ] && install_deps || symlink_dotfiles
+    [ -f $PACKAGE_LIST ] && install_deps || symlink_dotfiles
 }
 
 get_os() {
-    os=`uname -s`
+    OS=`uname -s`
 
-    if [ $os == 'Darwin' ]; then
-        app_install="brew install"
+    if [ $OS == 'Darwin' ]; then
+        APP_INSTALL="brew install"
         [ ! -f ${HOME}/.zsh.osx ] && touch ${HOME}/.zsh.osx
-    elif [ $os == 'FreeBSD' ]; then
-        bsd_install="cd /usr/ports/devel/"
+    elif [ $OS == 'FreeBSD' ]; then
+        BSD_INSTALL="cd /usr/ports/devel/"
         [ ! -f ${HOME}/.zsh.bsd ] && touch ${HOME}/.zsh.bsd
-    elif [ $os == 'Linux' ]; then
+    elif [ $OS == 'Linux' ]; then
         [ ! -f ${HOME}/.zsh.gnu ] && touch ${HOME}/.zsh.gnu
         if [ $(cmd_exists apt-get) ]; then 
-            app_install="sudo apt-get install"
+            APP_INSTALL="sudo apt-get install"
         elif [ $(cmd_exists yum) ]; then 
-            app_install="sudo yum install"
+            APP_INSTALL="sudo yum install"
         elif [ $(cmd_exists up2date) ]; then 
-            app_install="sudo up2date -i"
+            APP_INSTALL="sudo up2date -i"
         else
             printf "${RED}[✘] ${WHITE}No package manager found for this Linux system!\n"
             exit 2
@@ -84,27 +84,27 @@ get_os() {
     fi
 }
 
-# github_grab function takes 3 arguments $localdir, $user, $repository 
+# github_grab function takes 3 arguments $LOCALDIR, $USER, $REPOSITORY 
 github_grab() {
-    localdir=$1
-    user=$2
-    repository=$3
+    LOCALDIR=$1
+    USER=$2
+    REPOSITORY=$3
 
-    if [ ! -d ${localdir} ]; then
+    if [ ! -d ${LOCALDIR} ]; then
         separator
-        printf "Cloning: https://github.com/${CYAN}${user}${WHITE}/${CYAN}${repository}${WHITE} to ${CYAN}${localdir}${WHITE}\n"
-        git clone https://github.com/${user}/${repository} ${localdir}
+        printf "Cloning: https://github.com/${CYAN}${USER}${WHITE}/${CYAN}${REPOSITORY}${WHITE} to ${CYAN}${LOCALDIR}${WHITE}\n"
+        git clone https://github.com/${USER}/${REPOSITORY} ${LOCALDIR}
     else
         separator
-        printf "Updating: ${CYAN}${repository}${WHITE} in ${CYAN}${localdir}${WHITE}\n"
-        cd ${localdir} && git pull
+        printf "Updating: ${CYAN}${REPOSITORY}${WHITE} in ${CYAN}${LOCALDIR}${WHITE}\n"
+        cd ${LOCALDIR} && git pull
     fi
 
     # if zpresto has been installed, then update the submodules.
-    if [ $repository = 'prezto.git' ]; then
+    if [ $REPOSITORY = 'prezto.git' ]; then
         separator
         cd ${HOME}/.zprezto
-        echo "Updating: ${CYAN}${repository}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
+        echo "Updating: ${CYAN}${REPOSITORY}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
         git pull && git submodule update --init --recursive
     fi
 }
@@ -113,31 +113,31 @@ install_deps() {
     separator
     
     printf "${CYAN}Attempting to install missing packages.${WHITE}\n"
-    for package in `(cat ${package_list})`; do
+    for PACKAGE in `(cat ${PACKAGE_LIST})`; do
         if [ $os != "FreeBSD" ]; then
-            $app_install $package
+            $APP_INSTALL $PACKAGE
         else
-            $bsd_install $package && make && sudo make install
+            $BSD_INSTALL $PACKAGE && make && sudo make install
         fi
     done
     
     # delete /tmp/missing-packages.txt when done
-    rm $package_list
+    rm $PACKAGE_LIST
 
     symlink_dotfiles
 }
 
 make_dir() {
-    if [ ! -d $directory ]; then 
-        mkdir -p $directory >/dev/null 2>&1 && \
-            printf "${WHITE}Directory: ${CYAN}${directory} ${WHITE}created.\n" || \
-            printf "${RED}Error: ${WHITE}Failed to create ${RED}${directory} ${WHITE}directory.\n"
+    if [ ! -d $DIRECTORY ]; then 
+        mkdir -p $DIRECTORY >/dev/null 2>&1 && \
+            printf "${WHITE}DIRECTORY: ${CYAN}${DIRECTORY} ${WHITE}created.\n" || \
+            printf "${RED}Error: ${WHITE}Failed to create ${RED}${DIRECTORY} ${WHITE}directory.\n"
     fi
 }
 
 vim_setup() {
-    for directory in ${dir[@]}; do
-        make_dir $directory
+    for DIRECTORY in ${DIR[@]}; do
+        make_dir $DIRECTORY
     done
 
     github_grab ${HOME}/.vim/bundle/Vundle.vim gmarik vundle.git
@@ -150,39 +150,39 @@ vim_setup() {
 }
 
 symlink_dotfiles() {
-    # softlink variable stores the absolute path for the symlink
-    for file in `(find $dotdir -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(jhbuild|i3|img|irssi|git|weechat)')`; do
-        softlink=${HOME}/.`(echo ${file} | awk -F/ '{print $7}')`
+    # $SOFTLINK variable stores the absolute path for the symlink
+    for FILE in `(find $DOTDIR -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(jhbuild|i3|img|irssi|git|weechat)')`; do
+        SOFTLINK=${HOME}/.`(echo ${FILE} | awk -F/ '{print $7}')`
 
-        if [ ! -f ${softlink} ]; then
-            ln -s ${file} ${softlink}
+        if [ ! -f ${SOFTLINK} ]; then
+            ln -s ${FILE} ${SOFTLINK}
         else 
-            rm ${softlink} && ln -s ${file} ${softlink}
+            rm ${SOFTLINK} && ln -s ${FILE} ${SOFTLINK}
         fi
     done
 
     # copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
-    for file in `(ls ${dotdir}/git)`; do
-        cp ${dotdir}/git/$file ${HOME}/.${file}
+    for FILE in `(ls ${DOTDIR}/git)`; do
+        cp ${DOTDIR}/git/$FILE ${HOME}/.${FILE}
     done
     
     # copy weechat config files into $HOME/.weechat
     [ ! -d ${HOME}/.weechat ] && mkdir ${HOME}/.weechat
 
-    for file in `(ls ${dotdir}/weechat)`; do
-        cp ${dotdir}/weechat/$file ${HOME}/.weechat/${file}
+    for FILE in `(ls ${DOTDIR}/weechat)`; do
+        cp ${DOTDIR}/weechat/$FILE ${HOME}/.weechat/${FILE}
     done
 
-    if [ $os == 'Linux' ]; then
+    if [ $OS == 'Linux' ]; then
         if [ -d ${HOME}/.i3 ]; then
             mv ${HOME}/.i3 ${HOME}/.i3.old && mkdir -p ${HOME}/.i3
         else 
             mkdir -p ${HOME}/.i3
         fi
         
-        ln -s ${dotdir}/i3/config ${HOME}/.i3/config
-        ln -s ${dotdir}/i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
-        cp -R ${dotdir}/i3/scripts ${HOME}/.i3/scripts
+        ln -s ${DOTDIR}/i3/config ${HOME}/.i3/config
+        ln -s ${DOTDIR}/i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
+        cp -R ${DOTDIR}/i3/scripts ${HOME}/.i3/scripts
     fi
 
     vim_setup
@@ -191,13 +191,13 @@ symlink_dotfiles() {
 separator
 
 # check to make sure ~/.conf directory exists
-[ -d ${dotconfig} ] && echo "Using: ${CYAN}${dotconfig}${WHITE}" || make_dir directory=${dotconfig}
+[ -d ${DOTCONFIG} ] && echo "Using: ${CYAN}${DOTCONFIG}${WHITE}" || make_dir DIRECTORY=${DOTCONFIG}
 
 # check for ~/.zprivate file, create default if doesn't exist.
 [ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
 
 # clone or pull project from git
-github_grab $dotconfig/dotfiles mclellac dotfiles
+github_grab $DOTCONFIG/dotfiles mclellac dotfiles
 
 get_os
 check_deps
