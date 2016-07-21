@@ -7,7 +7,7 @@ exec --no-startup-id nitrogen --restore
 
 # application bindings
 bindsym $mod+Return         exec urxvt
-bindsym $mod+Shift+Return   exec terminology
+bindsym $mod+Shift+Return   exec gnome-terminal
 bindsym $mod+Shift+f        exec firefox
 bindsym $mod+Shift+w        exec chromium
 bindsym $mod+Shift+F2       exec gmrun      # program launcher
@@ -27,8 +27,8 @@ set $ws10 "10:  "
 exec --no-startup-id i3-msg 'workspace 1:  ; exec /usr/bin/urxvt'
 exec --no-startup-id i3-msg 'workspace 2:  ; exec /usr/bin/chromium http://cbc.ca'
 #exec --no-startup-id i3-msg 'workspace 3:  ; exec /usr/bin/evolution'
-#exec --no-startup-id i3-msg 'workspace 4:  ; exec /usr/bin/sublime ~/Projects'
-#exec --no-startup-id i3-msg 'workspace 5:  ; exec /usr/bin/terminnology'
+exec --no-startup-id i3-msg 'workspace 4:  ; exec /usr/bin/sublime ~/Projects'
+exec --no-startup-id i3-msg 'workspace 5:  ; exec /usr/bin/gnome-terminal'
 #exec --no-startup-id i3-msg 'workspace 6:  ; exec /usr/bin/thunar'
 
 # application workspace assignments
@@ -36,7 +36,7 @@ assign [class="(?i)urxvt"]          $ws1
 assign [class="(?i)chromium"]       $ws2
 assign [class="(?i)evolution"]      $ws3
 assign [class="(?i)sublime"]        $ws4
-assign [class="(?i)terminnology"]   $ws5
+assign [class="(?i)gnome-terminal"] $ws5
 assign [class="(?i)thunar"]         $ws6
 
 set $default_gaps_inner 0

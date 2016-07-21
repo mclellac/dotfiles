@@ -1,0 +1,59 @@
+# -*- mode: python -*-
+# -*- coding: utf-8 -*-
+
+# only rebuild modules that have changed
+build_policy = 'updated'
+
+nopoison = True
+
+# reduce what we build as much as possible
+ignore_suggests = True
+#ignore_suggests = False
+
+# repos to use when behind fw
+repos['git.gnome.org']='https://git.gnome.org/browse/'
+repos['git.freedesktop.org']= 'http://anongit.freedesktop.org/git/'
+repos['poppler.freedesktop.org'] = 'http://anongit.freedesktop.org/git/poppler/'
+
+# use local modified modules
+use_local_modulesets = True
+
+# what module set should be used.
+#moduleset = 'gnome-apps-3.22'
+
+# a list of the modules to build.  Defaults to the GNOME core and tested apps.
+#modules = [ 'meta-gnome-core', 'meta-gnome-apps-tested' ]
+
+# what directory should the source be checked out to?
+checkoutroot = '~/Projects/src/github.com/GNOME/'
+
+# the prefix to configure/install modules to.
+prefix = '/opt/gnome'
+
+# custom CFLAGS / environment pieces for the build
+os.environ['CFLAGS'] = '-g -O2'
+# colored output
+os.environ['CFLAGS'] += ' -fdiagnostics-color=auto'
+#AS_COMPILER_FLAG([-fdiagnostics-color=auto], [AM_CFLAGS="$AM_CFLAGS -fdiagnostics-color=auto"])
+
+
+# extra arguments to pass to all autogen.sh scripts
+# to speed up builds of GNOME, try '--disable-static --disable-gtk-doc'
+autogenargs='--disable-static --disable-gtk-doc'
+
+# A string listing additional arguments to be passed to make.
+# Set makeargs to 'V=1' for verbose build output.
+#makeargs = ''
+
+# Use system libraries for the builds
+#if use_lib64:
+#    _libdir = 'lib64'
+#else:
+#    _libdir = 'lib'
+#addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', _libdir, 'pkgconfig'))
+#addpath('PKG_CONFIG_PATH', os.path.join(os.sep, 'usr', 'share', 'pkgconfig'))
+
+# Look in /usr/share for icons, D-BUS service files, etc
+addpath('XDG_DATA_DIRS', '/usr/share')
+# Look in /etc/xdg for system-global autostart files
+addpath('XDG_CONFIG_DIRS', '/etc/xdg')

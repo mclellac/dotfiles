@@ -1,5 +1,11 @@
 ! URXVT GENERAL CONFIG
 !------------------------------------------------
+URxvt*termName: urxvt
+URxvt*transparent: true
+URxvt*shading: 15
+URxvt*highlightSelection: true
+!URxvt*tintColor: #2E2D2A
+URxvt*blurRadius: 10
 URxvt*iconFile: /usr/share/icons/Faenza/apps/32/utilities-terminal.png
 IRC*iconFile: /usr/share/icons/Faenza/apps/32/xchat.png
 URxvt.geometry: 80x22
@@ -46,7 +52,6 @@ URxvt.scrollBar: false
 URxvt*cursorBlink: true
 URxvt*cursorUnderline: false
 URxvt*cursorBlock: true
-
 ! URXVT TABS
 !------------------------------------------------
 URxvt.tabbedex.autohide: yes
@@ -59,7 +64,6 @@ URxvt.tabbedex.new-button: no
 ! URXVT FULLSCREEN TOGGLE
 !------------------------------------------------
 URxvt.keysym.F11: perl:fullscreen:switch
-
 ! URXVT COLORS
 !------------------------------------------------
 ! vim: set filetype=xdefaults :
