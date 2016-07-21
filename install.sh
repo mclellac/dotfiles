@@ -114,7 +114,7 @@ install_deps() {
     
     printf "${CYAN}Attempting to install missing packages.${WHITE}\n"
     for PACKAGE in `(cat ${PACKAGE_LIST})`; do
-        if [ $os != "FreeBSD" ]; then
+        if [ $OS != "FreeBSD" ]; then
             $APP_INSTALL $PACKAGE
         else
             $BSD_INSTALL $PACKAGE && make && sudo make install
