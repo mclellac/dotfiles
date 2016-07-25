@@ -78,7 +78,10 @@ cmdhist() {
 fncurl () { fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ }
 
 #--  command wrapper functions. --
-#diga()          { dig +nocmd "$*" any +multiline +noall +answer }
+digans()        { dig "$*" +noall +answer }
+digmx()         { dig "$*" MX +noall +answer }
+digns()         { dig "$*" NS +noall +answer }
+digany()        { dig "$*" ANY +noall +answer }
 fed()           { find . -type f -name "$*" -exec vim {} \; }                       # find and edit the filename argument (usage: fed $filename) 
 connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of Sean Connery for fun
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
