@@ -1,28 +1,31 @@
-" Bundles
+" Plugins
 """""""""""""""""""""""""""""""
 set nocompatible
 filetype off
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#rc()
+call vundle#begin()
 
-" Bundles
-"""""""""""""""""""""""""""""""
-Bundle 'gmarik/vundle'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-surround'
-Bundle 'fatih/vim-go'
-Bundle 'Blackrush/vim-gocode'
-Bundle 'tpope/vim-fugitive'
-Bundle 'Yggdroot/indentLine'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'scrooloose/nerdtree'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'chase/vim-ansible-yaml'
-Bundle 'vim-airline/vim-airline'
-Bundle 'vim-airline/vim-airline-themes'
-Bundle 'smerrill/vcl-vim-plugin'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+" Plugins
+""""""""""""""""""""""""""""""""
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-surround'
+Plugin 'fatih/vim-go'
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
+Plugin 'Blackrush/vim-gocode'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Yggdroot/indentLine'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdtree'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'chase/vim-ansible-yaml'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'smerrill/vcl-vim-plugin'
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
@@ -68,7 +71,6 @@ set autoread                  " watch for file changes
 syntax enable
 set t_Co=256
 set background=dark
-" Bundle related `Look & Feel` settings
 try
     colorscheme default
     "colorscheme Tomorrow-Night-Bright
