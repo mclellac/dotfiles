@@ -10,6 +10,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 " Plugins
 """"""""""""""""""""""""""""""""
+Plugin 'Shougo/neocomplete.vim'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
@@ -26,6 +27,7 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'smerrill/vcl-vim-plugin'
+call vundle#end() 
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
@@ -34,13 +36,18 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
 let g:airline_powerline_fonts = 1
 let g:airline_theme='base16_tomorrow'
 
+" neocomplete settings
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+
 " bind ctrl+n to open/close nerdtree.
-map <C-n> :NERDTreeToggle<CR>
-
+"map <C-n> :NERDTreeToggle<CR>
 " close vim if nerdtree is the only open window.
- autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
 
-" speed up the annoying parens, brackets matching speed
+" speed up the annoying parens & bracket matching speed
 set showmatch
 set matchtime=0
 
@@ -72,8 +79,8 @@ syntax enable
 set t_Co=256
 set background=dark
 try
-    colorscheme default
-    "colorscheme Tomorrow-Night-Bright
+    "colorscheme default
+    colorscheme Tomorrow-Night-Bright
 catch
     colorscheme default
 endtry
