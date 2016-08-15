@@ -10,29 +10,70 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 " Plugins
 """"""""""""""""""""""""""""""""
+Plugin 'Shougo/neocomplete.vim'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
 Plugin 'fatih/vim-go'
-Plugin 'nsf/gocode', {'rtp': 'vim/'}
+"Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'Blackrush/vim-gocode'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Yggdroot/indentLine'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'jstemmer/gotags'
+Plugin 'majutsushi/tagbar'
+Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'smerrill/vcl-vim-plugin'
-
+call vundle#end() 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
 " vim-airline settings
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:airline_theme='base16_tomorrow'
+
+" neocomplete settings
+let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
+let g:neocomplete#enable_smart_case = 1 " Use smartcase.
+
+" tagbar settings
+nmap <C-t> :TagbarToggle<CR>
+
+
+" gotags settings
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
 
 " bind ctrl+n to open/close nerdtree.
 map <C-n> :NERDTreeToggle<CR>
@@ -72,8 +113,8 @@ syntax enable
 set t_Co=256
 set background=dark
 try
-    colorscheme default
-    "colorscheme Tomorrow-Night-Bright
+    "colorscheme default
+    colorscheme Tomorrow-Night-Bright
 catch
     colorscheme default
 endtry
