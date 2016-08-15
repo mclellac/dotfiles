@@ -31,6 +31,7 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'smerrill/vcl-vim-plugin'
 call vundle#end() 
+
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
@@ -44,7 +45,6 @@ let g:neocomplete#enable_smart_case = 1 " Use smartcase.
 
 " tagbar settings
 nmap <C-t> :TagbarToggle<CR>
-
 
 " gotags settings
 let g:tagbar_type_go = {
@@ -76,12 +76,11 @@ let g:tagbar_type_go = {
     \ }
 
 " bind ctrl+n to open/close nerdtree.
-map <C-n> :NERDTreeToggle<CR>
-
+"map <C-n> :NERDTreeToggle<CR>
 " close vim if nerdtree is the only open window.
- autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
 
-" speed up the annoying parens, brackets matching speed
+" speed up the annoying parens & bracket matching speed
 set showmatch
 set matchtime=0
 
