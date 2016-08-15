@@ -1,7 +1,7 @@
 #-- path variables --
 emulate sh -c 'source /etc/profile'
 export GOPATH="${HOME}/Projects"
-export GOROOT="/usr/lib/go"
+export GOROOT="/usr/local/go"
 export PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 export EDITOR=vim
 export VISUAL=vim
@@ -85,6 +85,8 @@ digany()        { dig "$*" ANY +noall +answer }
 fed()           { find . -type f -name "$*" -exec vim {} \; }                       # find and edit the filename argument (usage: fed $filename) 
 connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of Sean Connery for fun
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
+killer()        {ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP}
+
 
 # simple calculator
 calc() {
@@ -118,7 +120,8 @@ os=`uname`
 
 if [ $os = 'Linux' ]; then
      alias ls="ls --color"
-    . ${HOME}/.zsh.gnu 
+    . ${HOME}/.zsh.gnu
+    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ $os = 'FreeBSD' ]; then
      alias ls="ls -G"
     . ${HOME}/.zsh.bsd
@@ -130,6 +133,3 @@ elif [ $os = 'Darwin' ]; then
     . ${HOME}/.iterm2_shell_integration.zsh
     . ${HOME}/.zsh.osx
 fi
-
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
