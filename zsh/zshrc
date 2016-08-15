@@ -106,7 +106,7 @@ calc() {
     printf "\n"
 }
 
-PROMPT='%B> %b'
+PROMPT='%m %B>> %b'
 
 os=`uname`
 
