@@ -16,6 +16,7 @@ Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
 Plugin 'fatih/vim-go'
 "Plugin 'nsf/gocode', {'rtp': 'vim/'}
+Plugin 'dracula/vim'
 Plugin 'Blackrush/vim-gocode'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Yggdroot/indentLine'
@@ -36,7 +37,7 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
 " vim-airline settings
-let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts = 1
 let g:airline_theme='base16_tomorrow'
 
 " neocomplete settings
@@ -112,8 +113,9 @@ syntax enable
 set t_Co=256
 set background=dark
 try
+    colorscheme dracula
     "colorscheme default
-    colorscheme Tomorrow-Night-Bright
+    "colorscheme Tomorrow-Night-Bright
 catch
     colorscheme default
 endtry

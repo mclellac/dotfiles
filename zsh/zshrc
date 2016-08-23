@@ -11,7 +11,7 @@ COLORFGBG="default;default"
 EVENTS=$(gcal | grep $(date "+%d"))
 if [[ ! -z $EVENTS ]]; then
     printf "Todays Meetings\n\n"
-    printf $EVENTS
+    printf "${EVENTS}\n\n"
 fi
 
 #-- zsh options --
@@ -48,11 +48,12 @@ alias python='python3'
 alias ll="ls -alG"
 alias ls="ls -G"
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gitstatus="git status -uno" # ignore untracked files, but show displayed (-u no doesn't show unstaged files.)
+alias gitstatus="git status -uno"   # ignore untracked files, but show displayed (-u no doesn't show unstaged files.)
 alias history="history 0"
 alias agenda="gcalcli agenda"
 alias calw="clear; gcalcli calw -w 12"
 alias calm="clear; gcalcli calm -w 20"
+alias hd='od -Ax -tx1z -v'          # what most people want from od (hexdump)
 
 #-- unalias --
 # just in case I'm using something that defaults to sissy interactive mode.
