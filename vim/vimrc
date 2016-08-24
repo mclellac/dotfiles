@@ -47,6 +47,9 @@ let g:neocomplete#enable_smart_case = 1 " Use smartcase.
 " tagbar settings
 nmap <C-t> :TagbarToggle<CR>
 
+" disable auto comment insertion
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 " gotags settings
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
