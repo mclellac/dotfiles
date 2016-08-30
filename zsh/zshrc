@@ -44,6 +44,7 @@ bindkey ';5C' emacs-forward-word
 
 #-- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
+alias diff="colordiff"
 alias python='python3'
 alias ll="ls -alG"
 alias ls="ls -G"
