@@ -8,41 +8,33 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+
 " Plugins
 """"""""""""""""""""""""""""""""
-Plugin 'Shougo/neocomplete.vim'
+Plugin 'jacoborus/tender'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
 Plugin 'fatih/vim-go'
-"Plugin 'nsf/gocode', {'rtp': 'vim/'}
-Plugin 'dracula/vim'
 Plugin 'Blackrush/vim-gocode'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Yggdroot/indentLine'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'jstemmer/gotags'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'chase/vim-ansible-yaml'
+Plugin 'smerrill/vcl-vim-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'smerrill/vcl-vim-plugin'
 call vundle#end() 
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
-" vim-airline settings
-let g:airline_powerline_fonts = 1
-let g:airline_theme='base16_tomorrow'
-
-" neocomplete settings
-let g:neocomplete#enable_at_startup = 1 " Use neocomplete.
-let g:neocomplete#enable_smart_case = 1 " Use smartcase.
+let g:tender_airline = 1        " enable tender airline theme
+let g:airline_theme = 'tender'  " set airline theme
 
 " tagbar settings
 nmap <C-t> :TagbarToggle<CR>
@@ -113,12 +105,9 @@ set ruler                     " show the line number on the bar
 set more                      " use more prompt
 set autoread                  " watch for file changes
 syntax enable
-set t_Co=256
 set background=dark
 try
-    colorscheme dracula
-    "colorscheme default
-    "colorscheme Tomorrow-Night-Bright
+    colorscheme tender
 catch
     colorscheme default
 endtry

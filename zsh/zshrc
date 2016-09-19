@@ -78,8 +78,8 @@ showcert() {
 
 # list the top 20 commands used in history.
 cmdhist() {
-    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|  \
-    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"•"; printf "\033[1;34m\%15s\033[0m  %5d ￨ \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
+    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|sed 's/.\///g'|  \
+    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"█"; printf "\033[1;34m\%15s\033[0m %4d \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
 }
 
 # get and preserve the filename on download URL's that redirect
