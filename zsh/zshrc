@@ -102,7 +102,7 @@ pull() {
     VCS_ROOT="/Users/mclellac/Projects/src/$*"
 
     for dir in `(ls $VCS_ROOT | grep -v uncommited)`; do 
-        printf "\e[1;36m${STASH_ROOT}/${dir} \e[1;40;92m"
+        printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
         cd $VCS_ROOT/${dir} && git pull &&  printf "\e[0m"; 
     done
 }
