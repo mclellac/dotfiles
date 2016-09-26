@@ -44,6 +44,7 @@ bindkey ';5C' emacs-forward-word
 
 #-- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
+alias loc="loc ${PWD}"
 alias diff="colordiff"
 alias python='python3'
 alias ll="ls -alG"
@@ -96,6 +97,16 @@ connerize()     { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g"
 connerize-say() { echo "$*" | sed 's/s/sh/g' | say -v "Alex" -i -r 200 }
 killer()        { ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP }
 gocd ()         { cd `go list -f '{{.Dir}}' $1` }
+
+pull() {
+    VCS_ROOT="/Users/mclellac/Projects/src/$*"
+
+    for dir in `(ls $VCS_ROOT | grep -v uncommited)`; do 
+        printf "\e[1;36m${STASH_ROOT}/${dir} \e[1;40;92m"
+        cd $VCS_ROOT/${dir} && git pull &&  printf "\e[0m"; 
+    done
+}
+
 # colour man
 man() {
     env \
@@ -117,8 +128,8 @@ calc() {
     if [[ "$result" == *.* ]]; then
         # improve the output for decimal numbers
         printf "$result" |
-        sed -e 's/^\./0./'        `# add "0" for cases like ".5"` \
-            -e 's/^-\./-0./'      `# add "0" for cases like "-.5"`\
+        sed -e 's/^\./0./'         # add "0" for cases like ".5"  \
+            -e 's/^-\./-0./'       # add "0" for cases like "-.5" \
             -e 's/0*$//;s/\.$//'   # remove trailing zeros
     else
         printf "$result"
