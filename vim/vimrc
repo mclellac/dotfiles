@@ -33,8 +33,9 @@ call vundle#end()
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
-let g:tender_airline = 1        " enable tender airline theme
-let g:airline_theme = 'tender'  " set airline theme
+" vim-airline settings
+let g:airline_powerline_fonts = 1
+let g:airline_theme='base16_ocean'
 
 " tagbar settings
 nmap <C-t> :TagbarToggle<CR>

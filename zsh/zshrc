@@ -8,12 +8,6 @@ export VISUAL=vim
 # mutt background fix
 COLORFGBG="default;default" 
 
-EVENTS=$(gcal | grep $(date "+%d"))
-if [[ ! -z $EVENTS ]]; then
-    printf "Todays Meetings\n\n"
-    printf "${EVENTS}\n\n"
-fi
-
 #-- zsh options --
 HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
 HISTSIZE=1200                       # lines of history to maintain memory
@@ -44,7 +38,6 @@ bindkey ';5C' emacs-forward-word
 
 #-- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
-alias loc="loc ${PWD}"
 alias diff="colordiff"
 alias python='python3'
 alias ll="ls -alG"
@@ -55,7 +48,7 @@ alias history="history 0"
 alias agenda="gcalcli agenda"
 alias calw="clear; gcalcli calw -w 12"
 alias calm="clear; gcalcli calm -w 20"
-alias hd='od -Ax -tx1z -v'          # what most people want from od (hexdump)
+alias hd='od -Ax -tx1 -v'          # what most people want from od (hexdump)
 
 #-- unalias --
 # just in case I'm using something that defaults to sissy interactive mode.
@@ -103,7 +96,7 @@ pull() {
 
     for dir in `(ls $VCS_ROOT | grep -v uncommited)`; do 
         printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
-        cd $VCS_ROOT/${dir} && git pull &&  printf "\e[0m"; 
+        cd $VCS_ROOT/${dir} && git pull &&  printf "\e[0m" && cd ..; 
     done
 }
 
@@ -127,9 +120,8 @@ calc() {
                           # └─ default (when `--mathlib` is used) is 20
     if [[ "$result" == *.* ]]; then
         # improve the output for decimal numbers
-        printf "$result" |
-        sed -e 's/^\./0./'         # add "0" for cases like ".5"  \
-            -e 's/^-\./-0./'       # add "0" for cases like "-.5" \
+        printf "$result" | sed -e 's/^\./0./'       `# add "0" for cases like ".5"`  \
+            -e 's/^-\./-0./'       `# add "0" for cases like "-.5"` \
             -e 's/0*$//;s/\.$//'   # remove trailing zeros
     else
         printf "$result"
