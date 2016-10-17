@@ -96,7 +96,7 @@ pull() {
 
     for dir in `(ls $VCS_ROOT | grep -v uncommited)`; do 
         printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
-        cd $VCS_ROOT/${dir} && git pull &&  printf "\e[0m" && cd ..; 
+        cd $VCS_ROOT/${dir} && printf "\e[0m" && git pull && cd ..; 
     done
 }
 
