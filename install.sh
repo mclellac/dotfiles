@@ -22,11 +22,13 @@ declare -a DIR=(
     ${HOME}/.vim/colors
     ${HOME}/.vim/backup
 )
+
 declare -a DEPS=(
     vim 
     git 
     tmux
 )
+
 LEN=${#DEPS[*]}
 
 separator()  { printf $GREY'%.0s-'$RESET {1..79}; echo; }
