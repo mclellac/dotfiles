@@ -6,6 +6,15 @@
 #--
 DOTCONFIG="${HOME}/.config"
 DOTDIR="${DOTCONFIG}/dotfiles"
+PACKAGE_LIST="/tmp/missing-packages.txt"
+# some colours for vanity output
+GREEN=$(tput setaf 2)
+CYAN=$(tput setaf 6)
+RESET=$(tput setaf 7)
+RED=$(tput setaf 1)
+GREY="$(tput bold ; tput setaf 0)"
+RESET=$(tput sgr0)
+
 declare -a DIR=(
     ${HOME}/.vim
     ${HOME}/.vim/bundle
@@ -19,15 +28,8 @@ declare -a DEPS=(
     tmux
 )
 LEN=${#DEPS[*]}
-PACKAGE_LIST="/tmp/missing-packages.txt"
-GREEN=$(tput setaf 2)
-CYAN=$(tput setaf 6)
-NORMAL=$(tput sgr0)
-WHITE=$(tput setaf 7)
-RED=$(tput setaf 1)
-GREY="$(tput bold ; tput setaf 0)"
 
-separator()  { printf $GREY'%.0s-'$WHITE {1..79}; echo; }
+separator()  { printf $GREY'%.0s-'$RESET {1..79}; echo; }
 cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 check_deps() {
@@ -36,9 +38,9 @@ check_deps() {
 
     for (( i=0; i<=(($LEN -1)); i++)); do
         if [ $(cmd_exists ${DEPS[$i]}) -eq 0 ]; then
-            printf "${GREEN}[✔]${WHITE} ${DEPS[$i]}\n"
+            printf "${GREEN}[✔]${RESET} ${DEPS[$i]}\n"
         else
-            printf "${RED}[✘] ${DEPS[$i]}${WHITE} is missing.\n"
+            printf "${RED}[✘] ${DEPS[$i]}${RESET} is missing.\n"
             echo ${DEPS[$i]} >> $PACKAGE_LIST
         fi
     done
@@ -92,11 +94,11 @@ github_grab() {
 
     if [ ! -d ${LOCALDIR} ]; then
         separator
-        printf "Cloning: https://github.com/${CYAN}${USER}${WHITE}/${CYAN}${REPOSITORY}${WHITE} to ${CYAN}${LOCALDIR}${WHITE}\n"
+        printf "Cloning: https://github.com/${CYAN}${USER}${RESET}/${CYAN}${REPOSITORY}${RESET} to ${CYAN}${LOCALDIR}${RESET}\n"
         git clone https://github.com/${USER}/${REPOSITORY} ${LOCALDIR}
     else
         separator
-        printf "Updating: ${CYAN}${REPOSITORY}${WHITE} in ${CYAN}${LOCALDIR}${WHITE}\n"
+        printf "Updating: ${CYAN}${REPOSITORY}${RESET} in ${CYAN}${LOCALDIR}${RESET}\n"
         cd ${LOCALDIR} && git pull
     fi
 
@@ -104,7 +106,7 @@ github_grab() {
     if [ $REPOSITORY = 'prezto.git' ]; then
         separator
         cd ${HOME}/.zprezto
-        echo "Updating: ${CYAN}${REPOSITORY}${WHITE} with ${CYAN}git pull && git submodule update --init --recursive${WHITE}"
+        echo "Updating: ${CYAN}${REPOSITORY}${RESET} with ${CYAN}git pull && git submodule update --init --recursive${RESET}"
         git pull && git submodule update --init --recursive
     fi
 }
@@ -112,7 +114,7 @@ github_grab() {
 install_deps() {
     separator
     
-    printf "${CYAN}Attempting to install missing packages.${WHITE}\n"
+    printf "${CYAN}Attempting to install missing packages.${RESET}\n"
     for PACKAGE in `(cat ${PACKAGE_LIST})`; do
         if [ $OS != "FreeBSD" ]; then
             $APP_INSTALL $PACKAGE
@@ -130,8 +132,8 @@ install_deps() {
 make_dir() {
     if [ ! -d $DIRECTORY ]; then 
         mkdir -p $DIRECTORY >/dev/null 2>&1 && \
-            printf "${WHITE}DIRECTORY: ${CYAN}${DIRECTORY} ${WHITE}created.\n" || \
-            printf "${RED}Error: ${WHITE}Failed to create ${RED}${DIRECTORY} ${WHITE}directory.\n"
+            printf "${RESET}DIRECTORY: ${CYAN}${DIRECTORY} ${RESET}created.\n" || \
+            printf "${RED}Error: ${RESET}Failed to create ${RED}${DIRECTORY} ${RESET}directory.\n"
     fi
 }
 
@@ -142,7 +144,7 @@ vim_setup() {
 
     github_grab ${HOME}/.vim/bundle/Vundle.vim gmarik vundle.git
 
-    printf "${WHITE}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${WHITE}\n"
+    printf "${RESET}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${RESET}\n"
     sleep 1
     vim +PluginInstall +qall
 
@@ -191,7 +193,7 @@ symlink_dotfiles() {
 separator
 
 # check to make sure ~/.conf directory exists
-[ -d ${DOTCONFIG} ] && echo "Using: ${CYAN}${DOTCONFIG}${WHITE}" || make_dir DIRECTORY=${DOTCONFIG}
+[ -d ${DOTCONFIG} ] && echo "Using: ${CYAN}${DOTCONFIG}${RESET}" || make_dir DIRECTORY=${DOTCONFIG}
 
 # check for ~/.zprivate file, create default if doesn't exist.
 [ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
@@ -202,5 +204,5 @@ github_grab $DOTCONFIG/dotfiles mclellac dotfiles
 get_os
 check_deps
 
-printf "Install Complete.\n** Don't forget to manually set your name and email variables in: ${CYAN}${HOME}/.gitconfig${WHITE} **\n"
+printf "Install Complete.\n** Don't forget to manually set your name and email variables in: ${CYAN}${HOME}/.gitconfig${RESET} **\n"
 

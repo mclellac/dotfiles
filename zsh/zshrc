@@ -83,6 +83,7 @@ fncurl () { fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}' | sed '
 
 #--  command wrapper functions. --
 digans()        { dig "$*" +noall +answer }
+digsoa()        { dig "$*" SOA +noall +answer }
 digmx()         { dig "$*" MX +noall +answer }
 digns()         { dig "$*" NS +noall +answer }
 digany()        { dig "$*" ANY +noall +answer }
