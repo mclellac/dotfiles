@@ -33,6 +33,12 @@ call vundle#end()
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
                              " filetype plugin on
 
+" Send more characters for redraws
+set ttyfast
+
+" Enable mouse use in all modes
+set mouse=a
+
 " vim-airline settings
 let g:airline_powerline_fonts = 1
 let g:airline_theme='base16_ocean'
@@ -73,9 +79,9 @@ let g:tagbar_type_go = {
     \ }
 
 " bind ctrl+n to open/close nerdtree.
-"map <C-n> :NERDTreeToggle<CR>
+map <C-n> :NERDTreeToggle<CR>
 " close vim if nerdtree is the only open window.
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
 
 " speed up the annoying parens & bracket matching speed
 set showmatch
