@@ -1,11 +1,18 @@
+# Source zim
+if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
+  source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
+fi
+
 #-- path variables --
 emulate sh -c 'source /etc/profile'
-GOPATH="${HOME}/Projects"
-GOROOT="/usr/local/go"
-PATH=$PATH:$HOME/bin:$GOROOT/bin:$GOPATH/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
+PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 EDITOR=vim
 VISUAL=vim
-export GOPATH GOROOT PATH EDITOR VISUAL
+export PATH EDITOR VISUAL
+# zsh does a nasty little thing and changes your bindings to vi/vim mode if it's your $EDITOR
+# so we have to set it back to Emacs here.
+bindkey -e
+
 # mutt background fix
 COLORFGBG="default;default" 
 
@@ -15,7 +22,8 @@ HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
 HISTSIZE=1200                       # lines of history to maintain memory
 SAVEHIST=1000                       # lines of history to maintain in history file.
 setopt MULTIOS                      # pipe to multiple outputs
-setopt CORRECT                      # spell check commands
+#setopt CORRECT                      # spell check commands
+unsetopt correct
 setopt APPEND_HISTORY               # append rather than overwrite history file.
 setopt HIST_EXPIRE_DUPS_FIRST       # allow dups, but expire old ones when I hit HISTSIZE
 setopt EXTENDED_HISTORY             # save timestamp and runtime information
@@ -33,11 +41,12 @@ HELPDIR=/usr/local/share/zsh/help
 #-- zsh-completions (brew package)
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-#-- bindings --
-bindkey ';5D' emacs-backward-word
-bindkey ';5C' emacs-forward-word
+# key bindings
+bindkey -e
+bindkey '\e\e[C' forward-word
+bindkey '\e\e[D' backward-word
 
-#-- aliases --
+# -- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
 alias diff="colordiff"
 alias python='python3'
@@ -93,6 +102,15 @@ connerize-say() { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g"
 killer()        { ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP }
 gocd ()         { cd `go list -f '{{.Dir}}' $1` }
 
+# Akamai curl
+#   example usage:  akcurl http://domain.tld/resource
+akcurl() {
+    local orig_dir=$(pwd)
+    cd $HOME/bin
+    curl -I -K akamai.curl "$*"
+    cd $orig_dir
+}
+
 pull() {
     VCS_ROOT="/Users/mclellac/Projects/src/$*"
 
@@ -131,18 +149,28 @@ calc() {
     printf "\n"
 }
 
-PROMPT='%m %B>> %b'
+#PROMPT='%m %B>> %b'
 
 os=`uname`
 
 if [ $os = 'Linux' ]; then
-     alias ls="ls --color"
+    GOPATH="${HOME}/Projects"
+    GOROOT="/usr/local/go"
+    PATH="PATH=$PATH:$GOROOT/bin:$GOPATH/bin"
+    export GOPATH GOROOT PATH
+
+    alias ls="ls --color"
     . ${HOME}/.zsh.gnu
     source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ $os = 'FreeBSD' ]; then
      alias ls="ls -G"
     . ${HOME}/.zsh.bsd
 elif [ $os = 'Darwin' ]; then
+    GOPATH="${HOME}/Projects"
+    GOROOT="/usr/local/opt/go/libexec"
+    PATH="PATH=$PATH:$GOROOT/bin:$GOPATH/bin"
+    export GOPATH GOROOT PATH
+
     alias ls="ls -G"
     alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
     #-- Google Cloud SDK 

@@ -47,12 +47,8 @@ check_deps() {
         fi
     done
 
-    #--
-    # check to see if powerline-zsh & prezto are available & install or update
-    # them as needed.
-    #--     
-    github_grab ${DOTCONFIG}/carlcarl carlcarl powerline-zsh
-    github_grab ${HOME}/.zprezto sorin-ionescu prezto.git
+    # if Zim framework doesn't exist, get it
+    [ ! -d ${HOME}/.zim ]; github_grab ${HOME}/.zim Eriner zim.git
 
     # install powerline fonts.
     github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
