@@ -168,14 +168,15 @@ elif [ $os = 'FreeBSD' ]; then
 elif [ $os = 'Darwin' ]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/local/opt/go/libexec"
-    PATH="PATH=$PATH:$GOROOT/bin:$GOPATH/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
     export GOPATH GOROOT PATH
 
     alias ls="ls -G"
     alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
     #-- Google Cloud SDK 
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+    source /opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+    source /opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+
     #-- zsh-syntax-highlighting (brew package)
     . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     . ${HOME}/.iterm2_shell_integration.zsh
