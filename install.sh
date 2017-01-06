@@ -48,7 +48,7 @@ check_deps() {
     done
 
     # if Zim framework doesn't exist, get it
-    [ ! -d ${HOME}/.zim ]; github_grab ${HOME}/.zim Eriner zim.git
+    github_grab ${HOME}/.zim Eriner zim.git
 
     # install powerline fonts.
     github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
@@ -93,7 +93,7 @@ github_grab() {
     if [ ! -d ${LOCALDIR} ]; then
         separator
         printf "Cloning: https://github.com/${CYAN}${USER}${RESET}/${CYAN}${REPOSITORY}${RESET} to ${CYAN}${LOCALDIR}${RESET}\n"
-        git clone https://github.com/${USER}/${REPOSITORY} ${LOCALDIR}
+        git clone --recursive https://github.com/${USER}/${REPOSITORY} ${LOCALDIR}
     else
         separator
         printf "Updating: ${CYAN}${REPOSITORY}${RESET} in ${CYAN}${LOCALDIR}${RESET}\n"
