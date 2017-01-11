@@ -156,7 +156,7 @@ os=`uname`
 if [ $os = 'Linux' ]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/local/go"
-    PATH="PATH=$PATH:$GOROOT/bin:$GOPATH/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
     export GOPATH GOROOT PATH
 
     alias ls="ls --color"
@@ -174,8 +174,8 @@ elif [ $os = 'Darwin' ]; then
     alias ls="ls -G"
     alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
     #-- Google Cloud SDK 
-    source /opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
-    source /opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 
     #-- zsh-syntax-highlighting (brew package)
     . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
