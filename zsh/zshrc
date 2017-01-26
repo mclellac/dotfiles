@@ -120,6 +120,13 @@ pull() {
     done
 }
 
+docker_img_rm() {
+    for image in `(docker image ls | awk '{print $3}' | grep -v IMAGE )`; do
+        docker image rm -f $image; 
+    done
+}
+
+
 # colour man
 man() {
     env \
