@@ -9,9 +9,6 @@ PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 EDITOR=vim
 VISUAL=vim
 export PATH EDITOR VISUAL
-# zsh does a nasty little thing and changes your bindings to vi/vim mode if it's your $EDITOR
-# so we have to set it back to Emacs here.
-bindkey -e
 
 # mutt background fix
 COLORFGBG="default;default" 
