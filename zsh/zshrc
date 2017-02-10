@@ -38,38 +38,24 @@ HELPDIR=/usr/local/share/zsh/help
 #-- zsh-completions (brew package)
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-# key bindings
-bindkey -e
-bindkey '\e\e[C' forward-word
-bindkey '\e\e[D' backward-word
-
 # -- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
 alias diff="colordiff"
 alias python='python3'
 alias ll="ls -alG"
-alias ls="ls -G"
 alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gitstatus="git status -uno"   # ignore untracked files, but show displayed (-u no doesn't show unstaged files.)
+alias gitstatus="git status -uno"
 alias history="history 0"
 alias agenda="gcalcli agenda"
 alias calw="clear; gcalcli calw -w 12"
 alias calm="clear; gcalcli calm -w 20"
-alias hd='od -Ax -tx1 -v'          # what most people want from od (hexdump)
+alias hd='od -Ax -tx1 -v' # what most people want from od (hexdump)
 
 #-- unalias --
 # just in case I'm using something that defaults to sissy interactive mode.
 alias rm &>/dev/null && unalias rm
 alias cp &>/dev/null && unalias cp
 alias mv &>/dev/null && unalias mv
-
-#-- zprezto --
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-setopt rmstarsilent
-
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
 
 # display certs for given host
 # usage: showcert hostname.domainname:sslport
@@ -85,22 +71,38 @@ cmdhist() {
 
 # get and preserve the filename on download URL's that redirect
 # and dont support the Content-Disposition header.
-fncurl () { fn=`curl -sI "$@" | grep 'location:' | awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ }
+fncurl () { 
+    fn=`curl -sI "$@" | grep 'location:' | \
+    awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ 
+}
 
 #--  command wrapper functions. --
-digans()        { dig "$*" +noall +answer }
-digsoa()        { dig "$*" SOA +noall +answer }
-digmx()         { dig "$*" MX +noall +answer }
-digns()         { dig "$*" NS +noall +answer }
-digany()        { dig "$*" ANY +noall +answer }
-fed()           { find . -type f -name "$*" -exec vim {} \; }                       # find and edit the filename argument (usage: fed $filename) 
-connerize()     { echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" }  # a bit of Sean Connery for fun
-connerize-say() { echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | say -v "Alex" -i -r 200 }
-killer()        { ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP }
-gocd ()         { cd `go list -f '{{.Dir}}' $1` }
+digans()   { dig "$*" +noall +answer }
+digsoa()   { dig "$*" SOA +noall +answer }
+digmx()    { dig "$*" MX +noall +answer }
+digns()    { dig "$*" NS +noall +answer }
+digany()   { dig "$*" ANY +noall +answer }
+
+# find and edit the filename argument (usage: fed $filename) 
+fed()      { find . -type f -name "$*" -exec vim {} \; }  
+
+connerize()     { 
+    echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" 
+}  # a bit of Sean Connery for fun
+
+connerize-say() { 
+    echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | \
+    say -v "Alex" -i -r 200 
+}
+
+killer() { 
+    ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP 
+}
+
+gocd () { cd `go list -f '{{.Dir}}' $1` }
 
 # Akamai curl
-#   example usage:  akcurl http://domain.tld/resource
+#   example usage:  akcurl http://example.com/resource
 akcurl() {
     local orig_dir=$(pwd)
     cd $HOME/bin
@@ -142,11 +144,10 @@ calc() {
     local result=""
     result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
                           # └─ default (when `--mathlib` is used) is 20
-    if [[ "$result" == *.* ]]; then
-        # improve the output for decimal numbers
-        printf "$result" | sed -e 's/^\./0./'       `# add "0" for cases like ".5"`  \
-            -e 's/^-\./-0./'       `# add "0" for cases like "-.5"` \
-            -e 's/0*$//;s/\.$//'   # remove trailing zeros
+    if [[ "$result" == *.* ]]; then        
+        printf "$result" | sed -e 's/^\./0./'  \
+            -e 's/^-\./-0./'       \
+            -e 's/0*$//;s/\.$//'   
     else
         printf "$result"
     fi
@@ -165,7 +166,7 @@ if [ $os = 'Linux' ]; then
 
     alias ls="ls --color"
     . ${HOME}/.zsh.gnu
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ $os = 'FreeBSD' ]; then
      alias ls="ls -G"
     . ${HOME}/.zsh.bsd
@@ -174,6 +175,11 @@ elif [ $os = 'Darwin' ]; then
     GOROOT="/usr/local/opt/go/libexec"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
     export GOPATH GOROOT PATH
+
+    # key bindings
+    bindkey -e
+    bindkey '\e\e[C' forward-word
+    bindkey '\e\e[D' backward-word
 
     alias ls="ls -G"
     alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
