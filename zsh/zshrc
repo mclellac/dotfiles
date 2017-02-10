@@ -19,7 +19,7 @@ HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
 HISTSIZE=1200                       # lines of history to maintain memory
 SAVEHIST=1000                       # lines of history to maintain in history file.
 setopt MULTIOS                      # pipe to multiple outputs
-#setopt CORRECT                      # spell check commands
+#setopt CORRECT                     # spell check commands
 unsetopt correct
 setopt APPEND_HISTORY               # append rather than overwrite history file.
 setopt HIST_EXPIRE_DUPS_FIRST       # allow dups, but expire old ones when I hit HISTSIZE
@@ -163,6 +163,11 @@ if [ $os = 'Linux' ]; then
     GOROOT="/usr/local/go"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
     export GOPATH GOROOT PATH
+
+    # key bindings
+    bindkey -e
+    bindkey "^[[1;5C" forward-word
+    bindkey "^[[1;5D" backward-word
 
     alias ls="ls --color"
     . ${HOME}/.zsh.gnu
