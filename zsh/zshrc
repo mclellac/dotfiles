@@ -57,8 +57,21 @@ alias rm &>/dev/null && unalias rm
 alias cp &>/dev/null && unalias cp
 alias mv &>/dev/null && unalias mv
 
+#--  command wrapper functions. --
+digans()   { dig "$*" +noall +answer }
+digsoa()   { dig "$*" SOA +noall +answer }
+digmx()    { dig "$*" MX +noall +answer }
+digns()    { dig "$*" NS +noall +answer }
+digany()   { dig "$*" ANY +noall +answer }
+
+pathln() {
+    #echo $PATH | sed -e 's/:/\n/g'
+    echo $PATH | tr : '\n'
+}
+
 # display certs for given host
-# usage: showcert hostname.domainname:sslport
+# usage: 
+#      > showcert example.com:443
 showcert() {
     echo -n | openssl s_client -showcerts -connect $*
 }
@@ -76,19 +89,13 @@ fncurl () {
     awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ 
 }
 
-#--  command wrapper functions. --
-digans()   { dig "$*" +noall +answer }
-digsoa()   { dig "$*" SOA +noall +answer }
-digmx()    { dig "$*" MX +noall +answer }
-digns()    { dig "$*" NS +noall +answer }
-digany()   { dig "$*" ANY +noall +answer }
-
 # find and edit the filename argument (usage: fed $filename) 
 fed()      { find . -type f -name "$*" -exec vim {} \; }  
 
+# some Sean Connery, because why not?
 connerize()     { 
     echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" 
-}  # a bit of Sean Connery for fun
+}
 
 connerize-say() { 
     echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | \
