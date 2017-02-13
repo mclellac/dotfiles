@@ -122,7 +122,7 @@ highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
 
 " indentLine settings
-"let g:indentLine_char = '°'
+let g:indentLine_char = ' '
 "let g:indentLine_color_term = 235
 " vim-gitgutter settings
 highlight SignColumn ctermbg=233

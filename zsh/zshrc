@@ -167,7 +167,7 @@ os=`uname`
 
 if [ $os = 'Linux' ]; then
     GOPATH="${HOME}/Projects"
-    GOROOT="/usr/local/go"
+    GOROOT="/usr/lib/golang"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
     export GOPATH GOROOT PATH
 
