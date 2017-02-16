@@ -118,11 +118,11 @@ akcurl() {
 }
 
 pull() {
-    VCS_ROOT="/Users/mclellac/Projects/src/$*"
+    VCS_ROOT="${HOME}/Projects/src/$*"
 
-    for dir in `(ls $VCS_ROOT | grep -v uncommited)`; do 
+    for dir in `(ls --color=never $VCS_ROOT | grep -v uncommited)`; do 
         printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
-        cd $VCS_ROOT/${dir} && printf "\e[0m" && git pull && cd ..; 
+        cd $VCS_ROOT/${dir} && git pull && cd ..; 
     done
 }
 
@@ -168,7 +168,7 @@ os=`uname`
 if [ $os = 'Linux' ]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/golang"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text"
     export GOPATH GOROOT PATH
 
     # key bindings
