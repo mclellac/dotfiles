@@ -38,6 +38,9 @@ HELPDIR=/usr/local/share/zsh/help
 #-- zsh-completions (brew package)
 fpath=(/usr/local/share/zsh-completions $fpath)
 
+autoload -U compinit compdef
+compinit
+
 # -- aliases --
 source ~/.zprivate                  # .zprivate includes private aliases.
 alias diff="colordiff"
@@ -163,12 +166,12 @@ calc() {
 
 #PROMPT='%m %B>> %b'
 
-os=`uname`
+os=`uname -s`
 
 if [ $os = 'Linux' ]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/golang"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text:/usr/lib64/google-cloud-sdk/bin"
     export GOPATH GOROOT PATH
 
     # key bindings
@@ -179,6 +182,8 @@ if [ $os = 'Linux' ]; then
     alias ls="ls --color"
     . ${HOME}/.zsh.gnu
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    # gcloud zsh tab completion
+    source /usr/share/google-cloud-sdk/completion.zsh.inc
 elif [ $os = 'FreeBSD' ]; then
      alias ls="ls -G"
     . ${HOME}/.zsh.bsd

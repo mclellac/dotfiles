@@ -37,7 +37,7 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
 set ttyfast
 
 " Enable mouse use in all modes
-set mouse=a
+"set mouse=a
 
 " vim-airline settings
 let g:airline_powerline_fonts = 1
