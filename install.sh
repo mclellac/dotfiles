@@ -2,7 +2,7 @@
 #--
 # Install script for github.com/mclellac dotfiles
 # Usage:
-#    bash <(curl -s https://raw.githubUSERcontent.com/mclellac/dotfiles/master/install.sh -L)
+#    bash <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
 #--
 DOTCONFIG="${HOME}/.config"
 DOTDIR="${DOTCONFIG}/dotfiles"
