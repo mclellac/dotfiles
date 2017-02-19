@@ -161,10 +161,11 @@ vim_setup() {
     vim +PluginInstall +qall
 }
 
-symlink_dotfiles() 
-    msg_box "Symlink files to ${HOME}"
-    # $SOFTLINK variable stores the absolute path for the symlink
+symlink_dotfiles() {
+    msg_box "Symlinking files to $HOME"
+
     for FILE in `(find $DOTDIR -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(iterm2|jhbuild|i3|img|irssi|git|weechat)')`; do
+        # SOFTLINK variable stores the absolute path for the symlink
         SOFTLINK=${HOME}/.`(echo ${FILE} | awk -F/ '{print $7}')`
 
         if [ ! -f ${SOFTLINK} ]; then
