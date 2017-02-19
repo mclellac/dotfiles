@@ -125,7 +125,7 @@ msg_box() {
     local term_width=80  # this should be dynamic with: term_width=`stty size | cut -d ' ' -f 2`
     local str=("$@") msg_width
 
-    printf '\n\n'
+    printf '\n'
     
     for line in "${str[@]}"; do
         ((msg_width<${#line})) && { msg_width="${#line}"; }
