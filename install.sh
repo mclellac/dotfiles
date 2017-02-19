@@ -7,12 +7,16 @@
 DOTCONFIG="${HOME}/.config"
 DOTDIR="${DOTCONFIG}/dotfiles"
 PACKAGE_LIST="/tmp/missing-packages.txt"
-# some colours for vanity output
+# global colour variables
+GREY="$(tput bold ; tput setaf 0)"
+RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 CYAN=$(tput setaf 6)
-RESET=$(tput setaf 7)
-RED=$(tput setaf 1)
-GREY="$(tput bold ; tput setaf 0)"
+WHITE=$(tput setaf 7)
+YELLOW=$(tput setaf 11)
+BLUE=$(tput setaf 68)
+BROWN=$(tput setaf 130)
+ORANGE=$(tput setaf 172)
 RESET=$(tput sgr0)
 
 declare -a DIR=(
@@ -28,15 +32,15 @@ declare -a DEPS=(
     git 
     tmux
 )
-
 LEN=${#DEPS[*]}
 
-separator()  { printf $GREY'%.0s-'$RESET {1..79}; echo; }
-cmd_exists() { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
+error_quit()    { message_error $err; exit 1; }
+message_ok()    { message=${@:-"[✘]: No OK content"};     printf "${GREEN}[✔] ${message}${RESET}\n"; }
+message_error() { message=${@:-"[✘]: No error content"};  printf "${RED}[✘] ${message}${RESET}\n";   }
+cmd_exists()    { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 check_deps() {
-    separator
-    printf "Checking to see if the following applications have been installed:\n"
+    msg_box "Checking to see if the following applications have been installed"
 
     for (( i=0; i<=(($LEN -1)); i++)); do
         if [ $(cmd_exists ${DEPS[$i]}) -eq 0 ]; then
@@ -47,26 +51,18 @@ check_deps() {
         fi
     done
 
-    # if Zim framework doesn't exist, get it
-    github_grab ${HOME}/.zim Eriner zim.git
-
-    # install powerline fonts.
-    github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
-
     # if package list exists, then install else symlink conf files.
     [ -f $PACKAGE_LIST ] && install_deps || symlink_dotfiles
 }
 
 get_os() {
-    OS=`uname -s`
-
-    if [ $OS == 'Darwin' ]; then
+    if [[ $OSTYPE == 'darwin'* ]]; then
         APP_INSTALL="brew install"
         [ ! -f ${HOME}/.zsh.osx ] && touch ${HOME}/.zsh.osx
-    elif [ $OS == 'FreeBSD' ]; then
+    elif [[ $OSTYPE == 'freebsd'* ]]; then
         BSD_INSTALL="cd /usr/ports/devel/"
         [ ! -f ${HOME}/.zsh.bsd ] && touch ${HOME}/.zsh.bsd
-    elif [ $OS == 'Linux' ]; then
+    elif [[ $OSTYPE == 'linux-gnu' ]]; then
         [ ! -f ${HOME}/.zsh.gnu ] && touch ${HOME}/.zsh.gnu
         if [ $(cmd_exists apt-get) ]; then 
             APP_INSTALL="sudo apt-get install"
@@ -90,31 +86,21 @@ github_grab() {
     USER=$2
     REPOSITORY=$3
 
-    if [ ! -d ${LOCALDIR} ]; then
-        separator
+    msg_box "Github: $USER/$REPOSITORY"
+
+    if [ ! -d ${LOCALDIR} ]; then   
         printf "Cloning: https://github.com/${CYAN}${USER}${RESET}/${CYAN}${REPOSITORY}${RESET} to ${CYAN}${LOCALDIR}${RESET}\n"
         git clone --recursive https://github.com/${USER}/${REPOSITORY} ${LOCALDIR}
     else
-        separator
         printf "Updating: ${CYAN}${REPOSITORY}${RESET} in ${CYAN}${LOCALDIR}${RESET}\n"
         cd ${LOCALDIR} && git pull
     fi
-
-    # if zpresto has been installed, then update the submodules.
-    if [ $REPOSITORY = 'prezto.git' ]; then
-        separator
-        cd ${HOME}/.zprezto
-        echo "Updating: ${CYAN}${REPOSITORY}${RESET} with ${CYAN}git pull && git submodule update --init --recursive${RESET}"
-        git pull && git submodule update --init --recursive
-    fi
 }
 
-install_deps() {
-    separator
-    
-    printf "${CYAN}Attempting to install missing packages.${RESET}\n"
+install_deps() {    
+    msg_box "Attempting to install missing packages."
     for PACKAGE in `(cat ${PACKAGE_LIST})`; do
-        if [ $OS != "FreeBSD" ]; then
+        if [[ $OSTYPE != "freebsd"* ]]; then
             $APP_INSTALL $PACKAGE
         else
             $BSD_INSTALL $PACKAGE && make && sudo make install
@@ -135,6 +121,34 @@ make_dir() {
     fi
 }
 
+msg_box() {
+    local term_width=80  # this should be dynamic with: term_width=`stty size | cut -d ' ' -f 2`
+    local str=("$@") msg_width
+
+    printf '\n\n'
+    
+    for line in "${str[@]}"; do
+        ((msg_width<${#line})) && { msg_width="${#line}"; }
+
+        if [ $msg_width -gt $term_width ]; then
+            error_quit "error: msg_box() >> \$msg_width exceeds \$term_width. Split message into multiple lines or decrease the number of characters.\n"
+        fi
+
+        x=$(($term_width - $msg_width))
+        pad=$(($x / 2))
+    done
+    
+    # draw box
+    printf '%s┌' "${ORANGE}" && printf '%.0s─' {0..79} && printf '┐\n' && printf '│%79s │\n'
+    
+    for line in "${str[@]}"; do
+        rpad=$((80 - $pad - $msg_width)) # make sure to close with width 80
+        printf "│%$pad.${pad}s" && printf '%s%*s' "$YELLOW" "-$msg_width" "$line" "${ORANGE}" && printf "%$rpad.${rpad}s│\n"
+    done
+    
+    printf '│%79s │\n' && printf  '└' && printf '%.0s─' {0..79}  && printf '┘\n%s' ${RESET}
+}
+
 vim_setup() {
     for DIRECTORY in ${DIR[@]}; do
         make_dir $DIRECTORY
@@ -145,8 +159,6 @@ vim_setup() {
     printf "${RESET}Installing vim plugins: ${CYAN} vim +PluginInstall +qall${RESET}\n"
     sleep 1
     vim +PluginInstall +qall
-
-    separator
 }
 
 symlink_dotfiles() {
@@ -173,7 +185,7 @@ symlink_dotfiles() {
         cp ${DOTDIR}/weechat/$FILE ${HOME}/.weechat/${FILE}
     done
 
-    if [ $OS == 'Linux' ]; then
+    if [[ $OSTYPE == 'linux-gnu' ]]; then
         if [ -d ${HOME}/.i3 ]; then
             mv ${HOME}/.i3 ${HOME}/.i3.old && mkdir -p ${HOME}/.i3
         else 
@@ -188,10 +200,8 @@ symlink_dotfiles() {
     vim_setup
 }
 
-separator
-
 # check to make sure ~/.conf directory exists
-[ -d ${DOTCONFIG} ] && echo "Using: ${CYAN}${DOTCONFIG}${RESET}" || make_dir DIRECTORY=${DOTCONFIG}
+[ -d ${DOTCONFIG} ] && msg_box "Using: ${DOTCONFIG}" || make_dir DIRECTORY=${DOTCONFIG}
 
 # check for ~/.zprivate file, create default if doesn't exist.
 [ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
@@ -202,5 +212,13 @@ github_grab $DOTCONFIG/dotfiles mclellac dotfiles
 get_os
 check_deps
 
-printf "Install Complete.\n** Don't forget to manually set your name and email variables in: ${CYAN}${HOME}/.gitconfig${RESET} **\n"
+
+# if Zim framework doesn't exist, get it
+github_grab ${HOME}/.zim Eriner zim.git
+
+# install powerline fonts.
+github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
+
+msg_box "Installation complete."
+printf "** Don't forget to manually set your name and email variables in: ${CYAN}${HOME}/.gitconfig${RESET} **\n"
 
