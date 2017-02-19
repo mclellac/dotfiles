@@ -51,7 +51,7 @@ check_deps() {
         fi
     done
 
-    # if package list exists, then install else symlink conf files.
+    # if package list exists; then install. Otherwise symlink files.
     [ -f $PACKAGE_LIST ] && install_deps || symlink_dotfiles
 }
 
