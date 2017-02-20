@@ -55,7 +55,7 @@ check_deps() {
     [ -f $PACKAGE_LIST ] && install_deps || symlink_dotfiles
 }
 
-get_os() {
+pkg_mgr() {
     if [[ $OSTYPE == 'darwin'* ]]; then
         APP_INSTALL="brew install"
         [ ! -f ${HOME}/.zsh.osx ] && touch ${HOME}/.zsh.osx
@@ -118,6 +118,8 @@ install_deps() {
 }
 
 make_dir() {
+    local DIRECTORY="$*"
+
     if [ ! -d $DIRECTORY ]; then 
         mkdir -p $DIRECTORY >/dev/null 2>&1 && \
             printf "${RESET}DIRECTORY: ${CYAN}${DIRECTORY} ${RESET}created.\n" || \
@@ -185,7 +187,7 @@ symlink_dotfiles() {
     done
     
     # copy weechat config files into $HOME/.weechat
-    [ ! -d ${HOME}/.weechat ] && mkdir ${HOME}/.weechat
+    [ ! -d ${HOME}/.weechat ] && make_dir ${HOME}/.weechat
 
     for FILE in `(ls ${DOTDIR}/weechat)`; do
         cp ${DOTDIR}/weechat/$FILE ${HOME}/.weechat/${FILE}
@@ -193,9 +195,9 @@ symlink_dotfiles() {
 
     if [[ $OSTYPE == 'linux-gnu' ]]; then
         if [ -d ${HOME}/.i3 ]; then
-            mv ${HOME}/.i3 ${HOME}/.i3.old && mkdir -p ${HOME}/.i3
+            mv ${HOME}/.i3 ${HOME}/.i3.old && make_dir ${HOME}/.i3
         else 
-            mkdir -p ${HOME}/.i3
+            make_dir ${HOME}/.i3
         fi
         
         ln -s ${DOTDIR}/i3/config ${HOME}/.i3/config
@@ -207,7 +209,7 @@ symlink_dotfiles() {
 }
 
 # check to make sure ~/.conf directory exists
-[ -d ${DOTCONFIG} ] && msg_box "Using: ${DOTCONFIG}" || make_dir DIRECTORY=${DOTCONFIG}
+[ -d ${DOTCONFIG} ] && msg_box "Using: ${DOTCONFIG}" || make_dir ${DOTCONFIG}
 
 # check for ~/.zprivate file, create default if doesn't exist.
 [ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
@@ -215,7 +217,7 @@ symlink_dotfiles() {
 # clone or pull project from git
 github_grab $DOTCONFIG/dotfiles mclellac dotfiles
 
-get_os
+pkg_mgr
 check_deps
 
 
@@ -226,5 +228,5 @@ github_grab ${HOME}/.zim Eriner zim.git
 github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
 
 msg_box "Installation complete."
-printf "** Don't forget to manually set your name and email variables in: ${CYAN}${HOME}/.gitconfig${RESET} **\n"
+printf "** Set your name and email in: ${CYAN}${HOME}/.gitconfig${RESET} **\n"
 
