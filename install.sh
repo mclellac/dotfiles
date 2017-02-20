@@ -64,8 +64,12 @@ get_os() {
         [ ! -f ${HOME}/.zsh.bsd ] && touch ${HOME}/.zsh.bsd
     elif [[ $OSTYPE == 'linux-gnu' ]]; then
         [ ! -f ${HOME}/.zsh.gnu ] && touch ${HOME}/.zsh.gnu
-        if [ $(cmd_exists apt-get) ]; then 
+        elif [ $(cmd_exists pacman) ]; then 
+            APP_INSTALL="sudo pacman -Syuu"
+        if [ $(cmd_exists apt-get) ]; then  
             APP_INSTALL="sudo apt-get install"
+        elif [ $(cmd_exists dnf) ]; then 
+            APP_INSTALL="sudo dnf install"
         elif [ $(cmd_exists yum) ]; then 
             APP_INSTALL="sudo yum install"
         elif [ $(cmd_exists up2date) ]; then 
