@@ -171,12 +171,12 @@ calc() {
     printf "\n"
 }
 
-#PROMPT='%m %B>> %b'
+PROMPT='%m %B>> %b'
 
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/golang"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text:/usr/lib64/google-cloud-sdk/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
     export GOPATH GOROOT PATH
 
     # key bindings
@@ -188,7 +188,7 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     . ${HOME}/.zsh.gnu
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     # gcloud zsh tab completion
-    source /usr/share/google-cloud-sdk/completion.zsh.inc
+    source /opt/google-cloud-sdk/completion.zsh.inc
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
      alias ls="ls -G"
     . ${HOME}/.zsh.bsd
