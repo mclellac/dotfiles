@@ -132,7 +132,7 @@ pull() {
 
     for dir in `(vcls $VCS_ROOT | grep -v uncommited)`; do 
         printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
-        cd $VCS_ROOT/${dir} && git pull && cd ..; 
+        cd $VCS_ROOT/${dir}  && printf "\e[0m" && git pull && cd ..; 
     done
 }
 
@@ -171,7 +171,7 @@ calc() {
     printf "\n"
 }
 
-PROMPT='%m %B>> %b'
+PROMPT='%B>> %b'
 
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
