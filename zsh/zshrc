@@ -1,216 +1,94 @@
-# Source zim
-if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
-  source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
+#-----------------------------------------------------------------------------#
+#  ██████████████████ ██████████████ ██████  ██████ 
+#  ██░░░░░░░░░░░░░░██ ██░░░░░░░░░░██ ██░░██  ██░░██ 
+#  ████████████░░░░██ ██░░██████████ ██░░██  ██░░██ 
+#          ████░░████ ██░░██         ██░░██  ██░░██ 
+#        ████░░████   ██░░██████████ ██░░██████░░██ 
+#      ████░░████     ██░░░░░░░░░░██ ██░░░░░░░░░░██ 
+#    ████░░████       ██████████░░██ ██░░██████░░██ 
+#  ████░░████                 ██░░██ ██░░██  ██░░██ 
+#  ██░░░░████████████ ██████████░░██ ██░░██  ██░░██ 
+#  ██░░░░░░░░░░░░░░██ ██░░░░░░░░░░██ ██░░██  ██░░██ 
+#  ██████████████████ ██████████████ ██████  ██████ 
+#-----------------------------------------------------------------------------#                            
+
+#-----------------------------------------------------------------------------#
+#                            init
+#-----------------------------------------------------------------------------#
+emulate sh -c 'source /etc/profile'
+autoload -U compinit compdef
+compinit
+
+source ~/.zplug/init.zsh
+
+#-----------------------------------------------------------------------------#
+#                           plugins
+#-----------------------------------------------------------------------------#
+zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
+zplug "zsh-users/zsh-history-substring-search"
+zplug "tcnksm/docker-alias", use:zshrc
+zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+zplug "felixr/docker-zsh-completion"                  
+zplug "b4b4r07/hello_bitbucket", \
+    from:bitbucket, \
+    as:command, \
+    use:"*.sh"
+
+zplug "b4b4r07/httpstat", \
+    as:command, \
+    use:'(*).sh', \
+    rename-to:'$1'
+
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
 fi
 
-#-- path variables --
-emulate sh -c 'source /etc/profile'
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
+#-----------------------------------------------------------------------------#
+#                           path variables
+#-----------------------------------------------------------------------------#
 PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
-EDITOR=vim
-VISUAL=vim
-export PATH EDITOR VISUAL
 
 # mutt background fix
 COLORFGBG="default;default" 
 
-#-- zsh options --
+#-----------------------------------------------------------------------------#
+#                             zsh options
+#-----------------------------------------------------------------------------#
 TERM='xterm-256color'
 HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
 HISTSIZE=1200                       # lines of history to maintain memory
 SAVEHIST=1000                       # lines of history to maintain in history file.
 setopt MULTIOS                      # pipe to multiple outputs
-#setopt CORRECT                     # spell check commands
 unsetopt correct
 setopt APPEND_HISTORY               # append rather than overwrite history file.
 setopt HIST_EXPIRE_DUPS_FIRST       # allow dups, but expire old ones when I hit HISTSIZE
 setopt EXTENDED_HISTORY             # save timestamp and runtime information
 export TERM SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
-
-# ccat
-alias ccat="ccat -G String="brown" -G Keyword="darkblue" -G Comment="lightgrey"           \
-    -G Type="teal" -G Literal="teal" -G Punctuation="darkred" -G Plaintext="darkblue"     \
-    -G Tag="blue" -G HTMLTag="lightgreen" -G HTMLAttrName="blue" -G HTMLAttrValue="green" \
-    -G Decimal="darkblue" "$@""
+export PATH EDITOR VISUAL
+export CLICOLOR=1;
+export LSCOLORS=exfxcxdxbxegedabagacad;
 
 HELPDIR=/usr/local/share/zsh/help
+EDITOR=vim
+VISUAL=vim
 
-#-- zsh-completions (brew package)
+#-----------------------------------------------------------------------------#
+#                       zsh-completions (brew package)
+#-----------------------------------------------------------------------------#
 fpath=(/usr/local/share/zsh-completions $fpath)
-autoload -U compinit compdef
-compinit
 
-# -- aliases --
-source ~/.zprivate                  # .zprivate includes private aliases.
-alias diff="colordiff"
-alias python='python3'
-alias ll="ls -alG"
-alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gitstatus="git status -uno"
-alias history="history 0"
-alias agenda="gcalcli agenda"
-alias calw="clear; gcalcli calw -w 12"
-alias calm="clear; gcalcli calm -w 20"
-alias hd='od -Ax -tx1 -v' # what most people want from od (hexdump)
+PROMPT='%F{6}%B%b%f '
 
-#-- unalias --
-# just in case I'm using something that defaults to sissy interactive mode.
-alias rm &>/dev/null && unalias rm
-alias cp &>/dev/null && unalias cp
-alias mv &>/dev/null && unalias mv
-
-#--  command wrapper functions. --
-digans()   { dig "$*" +noall +answer }
-digsoa()   { dig "$*" SOA +noall +answer }
-digmx()    { dig "$*" MX +noall +answer }
-digns()    { dig "$*" NS +noall +answer }
-digany()   { dig "$*" ANY +noall +answer }
-
-pathln() {
-    #echo $PATH | sed -e 's/:/\n/g'
-    echo $PATH | tr : '\n'
-}
-
-# display certs for given host
-# usage: 
-#      > showcert example.com:443
-showcert() {
-    echo -n | openssl s_client -showcerts -connect $*
-}
-
-# list the top 20 commands used in history.
-cmdhist() {
-    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|sed 's/.\///g'|  \
-    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"█"; printf "\033[1;34m\%15s\033[0m %4d \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
-}
-
-# get and preserve the filename on download URL's that redirect
-# and dont support the Content-Disposition header.
-fncurl () { 
-    fn=`curl -sI "$@" | grep 'location:' | \
-    awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ 
-}
-
-# find and edit the filename argument (usage: fed $filename) 
-fed()      { find . -type f -name "$*" -exec vim {} \; }  
-
-# some Sean Connery, because why not?
-connerize()     { 
-    echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" 
-}
-
-connerize-say() { 
-    echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | \
-    say -v "Alex" -i -r 200 
-}
-
-killer() { 
-    ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP 
-}
-
-gocd () { cd `go list -f '{{.Dir}}' $1` }
-
-# Akamai curl
-#   example usage:  akcurl http://example.com/resource
-akcurl() {
-    local orig_dir=$(pwd)
-    cd $HOME/bin
-    curl -I -K akamai.curl "$*"
-    cd $orig_dir
-}
-
-pull() {
-    VCS_ROOT="${HOME}/Projects/src/$*"
-
-    if [[ $OSTYPE = 'linux-gnu' ]]; then
-        alias vcls="ls --color=never"
-    elif [[ $OSTYPE = "darwin"* ]]; then
-        alias vcls="ls"
-    elif [[ "$OSTYPE" == "freebsd"* ]]; then
-        alias vcls="ls"
-    fi
-
-    for dir in `(vcls $VCS_ROOT | grep -v uncommited)`; do 
-        printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
-        cd $VCS_ROOT/${dir}  && printf "\e[0m" && git pull && cd ..; 
-    done
-}
-
-docker_img_rm() {
-    for image in `(docker image ls | awk '{print $3}' | grep -v IMAGE )`; do
-        docker image rm -f $image; 
-    done
-}
-
-
-# colour man
-man() {
-    env \
-        LESS_TERMCAP_md=$'\e[1;36m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[1;40;92m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[1;32m' \
-            man "$@"
-}
-
-# simple calculator
-calc() {
-    # you will only need to escape multiplication (ie: "calc 2 \* 20").
-    local result=""
-    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
-                          # └─ default (when `--mathlib` is used) is 20
-    if [[ "$result" == *.* ]]; then        
-        printf "$result" | sed -e 's/^\./0./'  \
-            -e 's/^-\./-0./'       \
-            -e 's/0*$//;s/\.$//'   
-    else
-        printf "$result"
-    fi
-    printf "\n"
-}
-
-PROMPT='%B>> %b'
-
-if [[ $OSTYPE = 'linux-gnu' ]]; then
-    GOPATH="${HOME}/Projects"
-    GOROOT="/usr/lib/golang"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
-    export GOPATH GOROOT PATH
-
-    # key bindings
-    bindkey -e
-    bindkey "^[[1;5C" forward-word
-    bindkey "^[[1;5D" backward-word
-
-    alias ls="ls --color"
-    . ${HOME}/.zsh.gnu
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    # gcloud zsh tab completion
-    source /opt/google-cloud-sdk/completion.zsh.inc
-elif [[ "$OSTYPE" == "freebsd"* ]]; then
-     alias ls="ls -G"
-    . ${HOME}/.zsh.bsd
-elif [[ $OSTYPE = "darwin"* ]]; then
-    GOPATH="${HOME}/Projects"
-    GOROOT="/usr/local/opt/go/libexec"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
-    export GOPATH GOROOT PATH
-
-    # key bindings
-    bindkey -e
-    bindkey '\e\e[C' forward-word
-    bindkey '\e\e[D' backward-word
-
-    alias ls="ls -G"
-    alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
-    #-- Google Cloud SDK 
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-
-    #-- zsh-syntax-highlighting (brew package)
-    . /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    . ${HOME}/.iterm2_shell_integration.zsh
-    . ${HOME}/.zsh.osx
-fi
+source ${HOME}/.config/dotfiles/zsh/zalias
+source ${HOME}/.config/dotfiles/zsh/zfunc     # source some utility functions
+source ${HOME}/.zprivate                      # .zprivate includes private aliases.

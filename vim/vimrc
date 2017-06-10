@@ -28,6 +28,7 @@ Plugin 'chase/vim-ansible-yaml'
 Plugin 'smerrill/vcl-vim-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'ryanoasis/vim-devicons'
 call vundle#end() 
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
@@ -37,19 +38,30 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
 set ttyfast
 
 " Enable mouse use in all modes
-"set mouse=a
+set mouse=a
 
 " vim-airline settings
+""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16_ocean'
+let g:airline_theme='minimalist'
+
+" vim-airline straight tabs
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
 
 " tagbar settings
+""""""""""""""""""""""""""""""""
 nmap <C-t> :TagbarToggle<CR>
 
 " disable auto comment insertion
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" gotags settings
+" gotags
 let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
     \ 'kinds'     : [
@@ -78,10 +90,24 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
     \ }
 
+
+
+" NERDTree settings
+""""""""""""""""""""""""""""""""
+
 " bind ctrl+n to open/close nerdtree.
 map <C-n> :NERDTreeToggle<CR>
+
 " close vim if nerdtree is the only open window.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
+
+" Open nerdtree automatically if no files were specified to be opened
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Open nerdtree when vim starts with a directory specified to be opened
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
 " speed up the annoying parens & bracket matching speed
 set showmatch
@@ -96,7 +122,7 @@ if has("autocmd")
     autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
 endif
 
-" For everything else, use a tab width of 4 space chars.
+" For everything else, use a tab width of 4 space col.
 set tabstop=4                 " The width of a TAB is set to 4.
                               " Still it is a \t. It is just that
                               " Vim will interpret it to be having
@@ -126,10 +152,9 @@ let g:indentLine_char = ' '
 "let g:indentLine_color_term = 235
 " vim-gitgutter settings
 highlight SignColumn ctermbg=233
-set laststatus=2
 set encoding=utf-8
 set t_Co=256
-set fillchars+=stl:\ ,stlnc:\
+"set fillchars+=stl:\ ,stlnc:\
 "set number                    " line numbers
 if has("gui_running")
    let s:uname = system("uname")

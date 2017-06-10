@@ -1,0 +1,118 @@
+
+#--  command wrapper functions. --
+digans()   { dig "$*" +noall +answer }
+digsoa()   { dig "$*" SOA +noall +answer }
+digmx()    { dig "$*" MX +noall +answer }
+digns()    { dig "$*" NS +noall +answer }
+digany()   { dig "$*" ANY +noall +answer }
+
+pathln() {
+    #echo $PATH | sed -e 's/:/\n/g'
+    echo $PATH | tr : '\n'
+}
+
+# display certs for given host
+# usage: 
+#      > showcert example.com:443
+showcert() {
+    echo -n | openssl s_client -showcerts -connect $*
+}
+
+ssldump() {
+    NIC=$1
+    PORT=$2
+    sudo tcpdump -ni $NIC "tcp port ${PORT} and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16)" -vvvv
+}
+
+# list the top 20 commands used in history.
+cmdhist() {
+    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|sed 's/.\///g'|  \
+    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"█"; printf "\033[1;34m\%15s\033[0m %4d \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
+}
+
+# get and preserve the filename on download URL's that redirect
+# and dont support the Content-Disposition header.
+fncurl () { 
+    fn=`curl -sI "$@" | grep 'location:' | \
+    awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ 
+}
+
+# find and edit the filename argument (usage: fed $filename) 
+fed()      { find . -type f -name "$*" -exec vim {} \; }  
+
+# some Sean Connery, because why not?
+connerize()     { 
+    echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" 
+}
+
+connerize-say() { 
+    echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | \
+    say -v "Alex" -i -r 200 
+}
+
+killer() { 
+    ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP 
+}
+
+gocd () { cd `go list -f '{{.Dir}}' $1` }
+
+# Akamai curl
+#   example usage:  akcurl http://example.com/resource
+akcurl() {
+    local orig_dir=$(pwd)
+    cd $HOME/bin
+    curl -I -K akamai.curl "$*"
+    cd $orig_dir
+}
+
+pull() {
+    VCS_ROOT="${HOME}/Projects/src/$*"
+
+    if [[ $OSTYPE = 'linux-gnu' ]]; then
+        alias vcls="ls --color=never"
+    elif [[ $OSTYPE = "darwin"* ]]; then
+        alias vcls="ls"
+    elif [[ "$OSTYPE" == "freebsd"* ]]; then
+        alias vcls="ls"
+    fi
+
+    for dir in `(vcls $VCS_ROOT | grep -v uncommited)`; do 
+        printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
+        cd $VCS_ROOT/${dir}  && printf "\e[0m" && git pull && cd ..; 
+    done
+}
+
+docker_img_rm() {
+    for image in `(docker image ls | awk '{print $3}' | grep -v IMAGE )`; do
+        docker image rm -f $image; 
+    done
+}
+
+
+# colour man
+man() {
+    env \
+        LESS_TERMCAP_md=$'\e[1;36m' \
+        LESS_TERMCAP_me=$'\e[0m' \
+        LESS_TERMCAP_se=$'\e[0m' \
+        LESS_TERMCAP_so=$'\e[1;40;92m' \
+        LESS_TERMCAP_ue=$'\e[0m' \
+        LESS_TERMCAP_us=$'\e[1;32m' \
+            man "$@"
+}
+
+# simple calculator
+calc() {
+    # you will only need to escape multiplication (ie: "calc 2 \* 20").
+    local result=""
+    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
+                          # └─ default (when `--mathlib` is used) is 20
+    if [[ "$result" == *.* ]]; then        
+        printf "$result" | sed -e 's/^\./0./'  \
+            -e 's/^-\./-0./'       \
+            -e 's/0*$//;s/\.$//'   
+    else
+        printf "$result"
+    fi
+    printf "\n"
+}

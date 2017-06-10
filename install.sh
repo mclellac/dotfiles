@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #--
-# Install script for github.com/mclellac dotfiles
+# Install script for github.com/mclellac/dotfiles
 # Usage:
 #    bash <(curl -s https://raw.githubusercontent.com/mclellac/dotfiles/master/install.sh -L)
 #--
 DOTCONFIG="${HOME}/.config"
 DOTDIR="${DOTCONFIG}/dotfiles"
 PACKAGE_LIST="/tmp/missing-packages.txt"
-# global colour variables
+# Global colour variables
 GREY="$(tput bold ; tput setaf 0)"
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -51,7 +51,7 @@ check_deps() {
         fi
     done
 
-    # if package list exists; then install. Otherwise symlink files.
+    # If package list exists; then install. Otherwise symlink files.
     [ -f $PACKAGE_LIST ] && install_deps || symlink_dotfiles
 }
 
@@ -111,7 +111,7 @@ install_deps() {
         fi
     done
     
-    # delete /tmp/missing-packages.txt when done
+    # Delete /tmp/missing-packages.txt when done
     rm $PACKAGE_LIST
 
     symlink_dotfiles
@@ -128,7 +128,7 @@ make_dir() {
 }
 
 msg_box() {
-    local term_width=80  # this should be dynamic with: term_width=`stty size | cut -d ' ' -f 2`
+    local term_width=80  # This should be dynamic with: term_width=`stty size | cut -d ' ' -f 2`
     local str=("$@") msg_width
 
     printf '\n'
@@ -170,7 +170,7 @@ vim_setup() {
 symlink_dotfiles() {
     msg_box "Symlinking files to $HOME"
 
-    for FILE in `(find $DOTDIR -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(iterm2|jhbuild|i3|img|irssi|git|weechat)')`; do
+    for FILE in `(find $DOTDIR -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE '(iterm2|jhbuild|i3|img|irssi|git|weechat|zsh)')`; do
         # SOFTLINK variable stores the absolute path for the symlink
         SOFTLINK=${HOME}/.`(echo ${FILE} | awk -F/ '{print $7}')`
 
@@ -181,12 +181,12 @@ symlink_dotfiles() {
         fi
     done
 
-    # copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
+    # Copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
     for FILE in `(ls ${DOTDIR}/git)`; do
         cp ${DOTDIR}/git/$FILE ${HOME}/.${FILE}
     done
     
-    # copy weechat config files into $HOME/.weechat
+    # Copy weechat config files into $HOME/.weechat
     [ ! -d ${HOME}/.weechat ] && make_dir ${HOME}/.weechat
 
     for FILE in `(ls ${DOTDIR}/weechat)`; do
@@ -205,27 +205,41 @@ symlink_dotfiles() {
         cp -R ${DOTDIR}/i3/scripts ${HOME}/.i3/scripts
     fi
 
+    # Only symlink zshrc to ~. Keep the rest of the zsh config
+    # files in ~/.config/dotfiles/zsh and source them from there.
+    ln -s ${DOTDIR}/zsh/zshrc ${HOME}/.zshrc
+
+    # Is zplug installed? Install if it isn't.
+    if [ ! -d ${HOME}/.zplug ]; then
+        msg_box "Installing zplug"
+        curl -sL --proto-redir -all,https \
+            https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+    fi 
+
     vim_setup
 }
 
-# check to make sure ~/.conf directory exists
+# Check to make sure ~/.conf directory exists
 [ -d ${DOTCONFIG} ] && msg_box "Using: ${DOTCONFIG}" || make_dir ${DOTCONFIG}
 
-# check for ~/.zprivate file, create default if doesn't exist.
+# Check for ~/.zprivate file, create default if doesn't exist.
 [ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
 
-# clone or pull project from git
+# Clone or pull project from git
 github_grab $DOTCONFIG/dotfiles mclellac dotfiles
 
 pkg_mgr
 check_deps
 
-
-# if Zim framework doesn't exist, get it
-github_grab ${HOME}/.zim Eriner zim.git
-
-# install powerline fonts.
+# Install powerline fonts.
+msg_box "Installing powerline fonts:" \
+        "https://github.com/powerline/fonts"
 github_grab ${DOTCONFIG}/powerline-fonts powerline fonts && sh ${DOTCONFIG}/powerline-fonts/install.sh 
+
+# Install nerd-fonts for terminal emulator
+msg_box "Installing nerd-font from:" \
+        "https://github.com/ryanoasis/nerd-fonts"
+github_grab ${DOTCONFIG}/nerd-fonts ryanoasis nerd-fonts && sh ${DOTCONFIG}/nerd-fonts/install.sh
 
 msg_box "Installation complete."
 printf "** Set your name and email in: ${CYAN}${HOME}/.gitconfig${RESET} **\n"

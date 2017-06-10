@@ -1,0 +1,21 @@
+# -- aliases --
+alias diff="colordiff"
+alias python='python3'
+alias ll="ls -alG"
+alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gitstatus="git status -uno"
+alias history="history 0"
+alias agenda="gcalcli agenda"
+alias calw="clear; gcalcli calw -w 12"
+alias calm="clear; gcalcli calm -w 20"
+alias hd='od -Ax -tx1 -v' # what most people want from od (hexdump)
+alias ccat="ccat -G String="brown" -G Keyword="darkblue" -G Comment="lightgrey"           \
+    -G Type="teal" -G Literal="teal" -G Punctuation="darkred" -G Plaintext="darkblue"     \
+    -G Tag="blue" -G HTMLTag="lightgreen" -G HTMLAttrName="blue" -G HTMLAttrValue="green" \
+    -G Decimal="darkblue" "$@""
+
+#-- unalias --
+# just in case I'm using something that defaults to sissy interactive mode.
+alias rm &>/dev/null && unalias rm
+alias cp &>/dev/null && unalias cp
+alias mv &>/dev/null && unalias mv
