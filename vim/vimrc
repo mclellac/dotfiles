@@ -29,6 +29,7 @@ Plugin 'smerrill/vcl-vim-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'tyrannicaltoucan/vim-quantum'
 call vundle#end() 
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
@@ -43,7 +44,8 @@ set mouse=a
 " vim-airline settings
 """"""""""""""""""""""""""""""""
 let g:airline_powerline_fonts = 1
-let g:airline_theme='minimalist'
+let g:airline_theme='quantum'
+"let g:airline_theme='minimalist'
 
 " vim-airline straight tabs
 let g:airline#extensions#tabline#left_sep = ' '
@@ -134,13 +136,19 @@ syntax on
 
 " Look & Feel
 """""""""""""""""""""""""""""""
+if &term =~# '^screen'
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+set termguicolors             " enable truecolor
 set ruler                     " show the line number on the bar
 set more                      " use more prompt
 set autoread                  " watch for file changes
 syntax enable
 set background=dark
 try
-    colorscheme tender
+    colorscheme quantum
 catch
     colorscheme default
 endtry

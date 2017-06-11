@@ -1,4 +1,4 @@
-#-----------------------------------------------------------------------------#
+#
 #  ██████████████████ ██████████████ ██████  ██████ 
 #  ██░░░░░░░░░░░░░░██ ██░░░░░░░░░░██ ██░░██  ██░░██ 
 #  ████████████░░░░██ ██░░██████████ ██░░██  ██░░██ 
@@ -10,38 +10,32 @@
 #  ██░░░░████████████ ██████████░░██ ██░░██  ██░░██ 
 #  ██░░░░░░░░░░░░░░██ ██░░░░░░░░░░██ ██░░██  ██░░██ 
 #  ██████████████████ ██████████████ ██████  ██████ 
-#-----------------------------------------------------------------------------#                            
+#
 
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
 #                            init
-#-----------------------------------------------------------------------------#
-emulate sh -c 'source /etc/profile'
+#------------------------------------------------------------------------------#
+#emulate sh -c 'source /etc/profile'
 autoload -U compinit compdef
 compinit
 
 source ~/.zplug/init.zsh
 
-#-----------------------------------------------------------------------------#
-#                           plugins
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+#                           Plugins
+#------------------------------------------------------------------------------#
+# Let zplug manage itself
+zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
-zplug "zsh-users/zsh-history-substring-search"
 zplug "tcnksm/docker-alias", use:zshrc
 zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 zplug "felixr/docker-zsh-completion"                  
-zplug "b4b4r07/hello_bitbucket", \
-    from:bitbucket, \
-    as:command, \
-    use:"*.sh"
-
-zplug "b4b4r07/httpstat", \
-    as:command, \
-    use:'(*).sh', \
-    rename-to:'$1'
-
+zplug "b4b4r07/hello_bitbucket", from:bitbucket, as:command, use:"*.sh"
+zplug "b4b4r07/httpstat", as:command, use:'(*).sh', rename-to:'$1'
+# load zsh-syntax-highlighting before zsh-history-substring-search
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:3
 
-# Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
     if read -q; then
@@ -49,8 +43,16 @@ if ! zplug check --verbose; then
     fi
 fi
 
-# Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug load
+
+#------------------------------------------------------------------------------#
+#                     Plugin configuration
+#------------------------------------------------------------------------------#
+# zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
+
+# powerlevel9k prompt settings
+source ${HOME}/.config/dotfiles/zsh/powerline9k.conf
+
 
 #-----------------------------------------------------------------------------#
 #                           path variables
@@ -60,18 +62,18 @@ PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 # mutt background fix
 COLORFGBG="default;default" 
 
-#-----------------------------------------------------------------------------#
-#                             zsh options
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+#                             Zsh options
+#------------------------------------------------------------------------------#
 TERM='xterm-256color'
-HISTFILE=$HOME/.zhistory            # enable history saving on shell exit
-HISTSIZE=1200                       # lines of history to maintain memory
-SAVEHIST=1000                       # lines of history to maintain in history file.
-setopt MULTIOS                      # pipe to multiple outputs
+HISTFILE=$HOME/.zhistory       # Enable history saving on shell exit
+HISTSIZE=1200                  # Lines of history to maintain memory
+SAVEHIST=1000                  # Lines of history to maintain in history file.
+setopt MULTIOS                 # Pipe to multiple outputs.
 unsetopt correct
-setopt APPEND_HISTORY               # append rather than overwrite history file.
-setopt HIST_EXPIRE_DUPS_FIRST       # allow dups, but expire old ones when I hit HISTSIZE
-setopt EXTENDED_HISTORY             # save timestamp and runtime information
+setopt APPEND_HISTORY          # Append rather than overwrite history file.
+setopt HIST_EXPIRE_DUPS_FIRST  # Allow dups unil HISTSIZE then expire oldest.
+setopt EXTENDED_HISTORY        # Save timestamp and runtime information.
 export TERM SAVEHIST HISTFILE HISTSIZE
 export HISTCONTROL=ignoredups
 export PATH EDITOR VISUAL
@@ -82,13 +84,15 @@ HELPDIR=/usr/local/share/zsh/help
 EDITOR=vim
 VISUAL=vim
 
-#-----------------------------------------------------------------------------#
-#                       zsh-completions (brew package)
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
+#                          Zsh tab completions 
+#------------------------------------------------------------------------------#
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-PROMPT='%F{6}%B%b%f '
+#PROMPT='%F{6}%B%b%f '
 
-source ${HOME}/.config/dotfiles/zsh/zalias
-source ${HOME}/.config/dotfiles/zsh/zfunc     # source some utility functions
-source ${HOME}/.zprivate                      # .zprivate includes private aliases.
+source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
+source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
+source ${HOME}/.config/dotfiles/zsh/zfunc     # Source some utility functions
+source ${HOME}/.config/dotfiles/zsh/zenv      # Platform specific configuration
+source ${HOME}/.zprivate                      # Includes private aliases

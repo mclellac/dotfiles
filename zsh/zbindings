@@ -1,0 +1,18 @@
+# key bindings
+bindkey -e
+
+if [[ $OSTYPE = 'linux-gnu' ]]; then
+    bindkey "^[[1;5C" forward-word
+    bindkey "^[[1;5D" backward-word
+elif [[ $OSTYPE = "darwin"* ]]; then
+    bindkey '[C' forward-word
+    bindkey '[D' backward-word
+fi
+
+# zplug search keybindings
+if zplug check zsh-users/zsh-history-substring-search; then
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+    bindkey -M emacs '^P' history-substring-search-up
+    bindkey -M emacs '^N' history-substring-search-down
+fi

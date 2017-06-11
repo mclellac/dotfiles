@@ -1,16 +1,21 @@
 # zenv
-
+# colour man
+man() {
+    env \
+        LESS_TERMCAP_md=$'\e[1;36m' \
+        LESS_TERMCAP_me=$'\e[0m' \
+        LESS_TERMCAP_se=$'\e[0m' \
+        LESS_TERMCAP_so=$'\e[1;40;92m' \
+        LESS_TERMCAP_ue=$'\e[0m' \
+        LESS_TERMCAP_us=$'\e[1;32m' \
+            man "$@"
+}
 
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/golang"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
     export GOPATH GOROOT PATH
-
-    # key bindings
-    bindkey -e
-    bindkey "^[[1;5C" forward-word
-    bindkey "^[[1;5D" backward-word
 
     alias ls="ls --color"
     source ${HOME}/.zsh.gnu
@@ -26,11 +31,6 @@ elif [[ $OSTYPE = "darwin"* ]]; then
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
     export GOPATH GOROOT PATH
 
-    # key bindings
-    bindkey -e
-    bindkey '^[[1;9C' forward-word
-    bindkey '^[[1;9D' backward-word
- 
     alias ls="ls -G"
     alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
     #-- Google Cloud SDK 

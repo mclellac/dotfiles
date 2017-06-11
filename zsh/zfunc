@@ -1,5 +1,6 @@
-
-#--  command wrapper functions. --
+#------------------------------------------------------------------------------#
+#                       Command wrapper functions
+#------------------------------------------------------------------------------#
 digans()   { dig "$*" +noall +answer }
 digsoa()   { dig "$*" SOA +noall +answer }
 digmx()    { dig "$*" MX +noall +answer }
@@ -82,23 +83,10 @@ pull() {
     done
 }
 
-docker_img_rm() {
+docker_rmi_all() {
     for image in `(docker image ls | awk '{print $3}' | grep -v IMAGE )`; do
         docker image rm -f $image; 
     done
-}
-
-
-# colour man
-man() {
-    env \
-        LESS_TERMCAP_md=$'\e[1;36m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[1;40;92m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[1;32m' \
-            man "$@"
 }
 
 # simple calculator
