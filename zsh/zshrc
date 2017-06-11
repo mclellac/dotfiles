@@ -16,8 +16,8 @@
 #                            init
 #------------------------------------------------------------------------------#
 #emulate sh -c 'source /etc/profile'
-autoload -U compinit compdef
-compinit
+#autoload -U compinit compdef
+#compinit
 
 source ~/.zplug/init.zsh
 
@@ -39,15 +39,14 @@ source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
 #------------------------------------------------------------------------------#
 # Let zplug manage itself
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
-zplug "tcnksm/docker-alias", use:zshrc
-zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-zplug "felixr/docker-zsh-completion"                  
-zplug "b4b4r07/hello_bitbucket", from:bitbucket, as:command, use:"*.sh"
-zplug "b4b4r07/httpstat", as:command, use:'(*).sh', rename-to:'$1'
+zplug "bhilburn/powerlevel9k", at:nerdfont-complete, use:powerlevel9k.zsh-theme
+#zplug "tcnksm/docker-alias", use:zshrc
+#zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+#zplug "felixr/docker-zsh-completion"                  
+#zplug "b4b4r07/hello_bitbucket", from:bitbucket, as:command, use:"*.sh"
 # load zsh-syntax-highlighting before zsh-history-substring-search
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:3
+#zplug "zsh-users/zsh-history-substring-search", defer:3
 
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
