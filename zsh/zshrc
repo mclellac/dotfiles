@@ -26,25 +26,10 @@ source ~/.zplug/init.zsh
 #------------------------------------------------------------------------------#
 # zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
 
-# Custom powerlevel9k segment for OpenShift information
-zsh_detect_openshift() {
 
-    # Check if we're able to reach OpenShift.
-    # Set WORK_DOMAIN variable in ~/.zprivate
-    if [[ $(grep "^domain" /etc/resolv.conf) =~ ${WORK_DOMAIN} ]]; then
-        local ose_logged_in=$((oc get projects) 2>&1)
-        local color='%F{red}'
-
-        if [[ $ose_logged_in =~ "^NAME" ]]; then
-            local ose_project_name=$(oc project | awk -F'"' '$0=$2')
-            local ose_environment=$(oc project | awk -F'"' '$0=$4'| cut -d"." -f2 | awk '{print toupper($0)}')
-        
-            echo -n "%{$color%}\uE7B7 ${ose_environment}:${ose_project_name} %{$color%}\uE7BB"
-        elif [[ $ose_logged_in =~ "^error|^Error" ]]; then 
-            echo -n "%F{grey%}\uE7B7"
-        fi
-    fi
-}
+# Must be sourced before powerlevel9k as it includes the $WORK_DOMAIN variable
+# for use with custom OpenShift segment
+source ${HOME}/.zprivate     
 
 # powerlevel9k prompt settings
 source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
@@ -115,4 +100,3 @@ source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
 source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
 source ${HOME}/.config/dotfiles/zsh/zfunc     # Source some utility functions
 source ${HOME}/.config/dotfiles/zsh/zenv      # Platform specific configuration
-source ${HOME}/.zprivate                      # Includes private aliases
