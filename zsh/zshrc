@@ -22,7 +22,35 @@ compinit
 source ~/.zplug/init.zsh
 
 #------------------------------------------------------------------------------#
-#                           Plugins
+#                     Plugin configuration
+#------------------------------------------------------------------------------#
+# zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
+
+# Custom powerlevel9k segment for OpenShift information
+zsh_detect_openshift() {
+
+    # Check if we're able to reach OpenShift.
+    # Set WORK_DOMAIN variable in ~/.zprivate
+    if [[ $(grep "^domain" /etc/resolv.conf) =~ ${WORK_DOMAIN} ]]; then
+        local ose_logged_in=$((oc get projects) 2>&1)
+        local color='%F{red}'
+
+        if [[ $ose_logged_in =~ "^NAME" ]]; then
+            local ose_project_name=$(oc project | awk -F'"' '$0=$2')
+            local ose_environment=$(oc project | awk -F'"' '$0=$4'| cut -d"." -f2 | awk '{print toupper($0)}')
+        
+            echo -n "%{$color%}\uE7B7 ${ose_environment}:${ose_project_name} %{$color%}\uE7BB"
+        elif [[ $ose_logged_in =~ "^error|^Error" ]]; then 
+            echo -n "%F{grey%}\uE7B7"
+        fi
+    fi
+}
+
+# powerlevel9k prompt settings
+source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
+
+#------------------------------------------------------------------------------#
+#                        Plugin Load
 #------------------------------------------------------------------------------#
 # Let zplug manage itself
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
@@ -45,14 +73,6 @@ fi
 
 zplug load
 
-#------------------------------------------------------------------------------#
-#                     Plugin configuration
-#------------------------------------------------------------------------------#
-# zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
-
-# powerlevel9k prompt settings
-source ${HOME}/.config/dotfiles/zsh/powerline9k.conf
-
 
 #-----------------------------------------------------------------------------#
 #                           path variables
@@ -68,10 +88,10 @@ COLORFGBG="default;default"
 TERM='xterm-256color'
 HISTFILE=$HOME/.zhistory       # Enable history saving on shell exit
 HISTSIZE=1200                  # Lines of history to maintain memory
-SAVEHIST=1000                  # Lines of history to maintain in history file.
+SAVEHIST=1000                  # Lines of history to maintain in history file
 setopt MULTIOS                 # Pipe to multiple outputs.
-unsetopt correct
-setopt APPEND_HISTORY          # Append rather than overwrite history file.
+unsetopt correct               
+setopt APPEND_HISTORY          # Append rather than overwrite history file
 setopt HIST_EXPIRE_DUPS_FIRST  # Allow dups unil HISTSIZE then expire oldest.
 setopt EXTENDED_HISTORY        # Save timestamp and runtime information.
 export TERM SAVEHIST HISTFILE HISTSIZE
