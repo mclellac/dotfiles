@@ -13,7 +13,7 @@
 #
 
 #------------------------------------------------------------------------------#
-#                            init
+#                             Init
 #------------------------------------------------------------------------------#
 #emulate sh -c 'source /etc/profile'
 #autoload -U compinit compdef
@@ -22,7 +22,7 @@
 source ~/.zplug/init.zsh
 
 #------------------------------------------------------------------------------#
-#                     Plugin configuration
+#                      Plugin configuration
 #------------------------------------------------------------------------------#
 # zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
 

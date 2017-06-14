@@ -43,7 +43,7 @@ set mouse=a
 
 " vim-airline settings
 """"""""""""""""""""""""""""""""
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 let g:airline_theme='quantum'
 "let g:airline_theme='minimalist'
 

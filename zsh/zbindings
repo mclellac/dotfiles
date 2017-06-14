@@ -1,6 +1,11 @@
 # key bindings
 bindkey -e
 
+bindkey "^[[3~"       delete-char
+bindkey "^[3;5~"      delete-char
+bindkey "^[[1;5C"     forward-word
+bindkey "^[[1;5D"     backward-word
+
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     bindkey "^[[1;5C" forward-word
     bindkey "^[[1;5D" backward-word
