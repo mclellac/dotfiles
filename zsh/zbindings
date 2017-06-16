@@ -1,4 +1,6 @@
-# key bindings
+
+### KEY BINDINGS ###
+KEYTIMEOUT=1 # Prevents key timeout lag.
 bindkey -e
 
 bindkey "^[[3~"       delete-char
@@ -14,7 +16,7 @@ elif [[ $OSTYPE = "darwin"* ]]; then
     bindkey '[D' backward-word
 fi
 
-# zplug search keybindings
+# zplug search keybindings arrow UP & arrow DOWN search
 if zplug check zsh-users/zsh-history-substring-search; then
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
