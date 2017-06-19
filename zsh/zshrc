@@ -1,39 +1,16 @@
-#
-#  ██████████████████ ██████████████ ██████  ██████ 
-#  ██░░░░░░░░░░░░░░██ ██░░░░░░░░░░██ ██░░██  ██░░██ 
-#  ████████████░░░░██ ██░░██████████ ██░░██  ██░░██ 
-#          ████░░████ ██░░██         ██░░██  ██░░██ 
-#        ████░░████   ██░░██████████ ██░░██████░░██ 
-#      ████░░████     ██░░░░░░░░░░██ ██░░░░░░░░░░██ 
-#    ████░░████       ██████████░░██ ██░░██████░░██ 
-#  ████░░████                 ██░░██ ██░░██  ██░░██ 
-#  ██░░░░████████████ ██████████░░██ ██░░██  ██░░██ 
-#  ██░░░░░░░░░░░░░░██ ██░░░░░░░░░░██ ██░░██  ██░░██ 
-#  ██████████████████ ██████████████ ██████  ██████ 
-#
+#------------------------------------------------------------------------------#
+#                   ███████╗███████╗██╗  ██╗██████╗  ██████╗                   #
+#                   ╚══███╔╝██╔════╝██║  ██║██╔══██╗██╔════╝                   #
+#                     ███╔╝ ███████╗███████║██████╔╝██║                        #
+#                    ███╔╝  ╚════██║██╔══██║██╔══██╗██║                        #
+#                   ███████╗███████║██║  ██║██║  ██║╚██████╗                   #
+#                   ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝                   #
+#------------------------------------------------------------------------------#
 
 #------------------------------------------------------------------------------#
 #                             Init
 #------------------------------------------------------------------------------#
-#emulate sh -c 'source /etc/profile'
-#autoload -U compinit compdef
-#compinit
-
 source ~/.zplug/init.zsh
-
-#------------------------------------------------------------------------------#
-#                      Plugin configuration
-#------------------------------------------------------------------------------#
-# zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
-
-
-### AUTOSUGGESTIONS ###
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=236"
-
-if zplug check zsh-users/zsh-autosuggestions; then
-  ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down) # Add history-substring-search-* widgets to list of widgets that clear the autosuggestion
-  ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}") # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to avoid conflict with history-substring-search-* widgets
-fi
 
 # Must be sourced before powerlevel9k as it includes the $WORK_DOMAIN variable
 # for use with custom OpenShift segment
@@ -48,18 +25,12 @@ source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
 # Let zplug manage itself
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "bhilburn/powerlevel9k", at:nerdfont-complete, use:powerlevel9k.zsh-theme
-
 zplug "plugins/git", from:oh-my-zsh
 zplug "plugins/git-flow", from:oh-my-zsh
 zplug "plugins/git-extras", from:oh-my-zsh
-
 zplug "plugins/command-not-found", from:oh-my-zsh
 zplug "plugins/fasd", from:oh-my-zsh
 zplug "plugins/tmux", from:oh-my-zsh
-#zplug "tcnksm/docker-alias", use:zshrc
-#zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-#zplug "felixr/docker-zsh-completion"                  
-#zplug "b4b4r07/hello_bitbucket", from:bitbucket, as:command, use:"*.sh"
 # load zsh-syntax-highlighting before zsh-history-substring-search
 zplug "zsh-users/zsh-autosuggestions", from:github
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -76,37 +47,47 @@ fi
 
 zplug load
 
-
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
 #                           path variables
-#-----------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#
 PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
-
-# mutt background fix
-COLORFGBG="default;default" 
 
 #------------------------------------------------------------------------------#
 #                             Zsh options
 #------------------------------------------------------------------------------#
 TERM='xterm-256color'
-HISTFILE=$HOME/.zhistory       # Enable history saving on shell exit
-HISTSIZE=1200                  # Lines of history to maintain memory
-SAVEHIST=10000                  # Lines of history to maintain in history file
-setopt MULTIOS                 # Pipe to multiple outputs.
-unsetopt correct               
-setopt APPEND_HISTORY          # Append rather than overwrite history file
-setopt HIST_EXPIRE_DUPS_FIRST  # Allow dups unil HISTSIZE then expire oldest.
-setopt EXTENDED_HISTORY        # Save timestamp and runtime information.
-export TERM SAVEHIST HISTFILE HISTSIZE
-export HISTCONTROL=ignoredups
-export PATH EDITOR VISUAL
-export CLICOLOR=1;
-export LSCOLORS=exfxcxdxbxegedabagacad;
+HISTFILE=$HOME/.zhistory         # Enable history saving on shell exit.
+HISTSIZE=1200                    # Lines of history to maintain memory.
+SAVEHIST=10000                   # Lines of history to maintain in history file.
+HISTCONTROL=ignoredups
+
+setopt MULTIOS                   # Pipe to multiple outputs.
+unsetopt correct                 # unset correct because it's annoyingly stupid.
+setopt APPEND_HISTORY            # Append rather than overwrite history file.
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+unsetopt HIST_BEEP               # Nope nope nope nope nope. Never in a million years.
 
 HELPDIR=/usr/local/share/zsh/help
 EDITOR=vim
 VISUAL=vim
+CLICOLOR=1;
+LSCOLORS=exfxcxdxbxegedabagacad;
+export HELPDIR EDITOR VISUAL CLICOLOR LSCOLORS TERM SAVEHIST HISTFILE HISTSIZE HISTCONTROL
 
+
+# mutt background fix
+export COLORFGBG="default;default" 
 #------------------------------------------------------------------------------#
 #                          Zsh tab completions 
 #------------------------------------------------------------------------------#
@@ -118,3 +99,19 @@ source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
 source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
 source ${HOME}/.config/dotfiles/zsh/zfunc     # Source some utility functions
 source ${HOME}/.config/dotfiles/zsh/zenv      # Platform specific configuration
+
+#------------------------------------------------------------------------------#
+#                      Plugin configuration
+#------------------------------------------------------------------------------#
+# zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
+
+# Autosuggest plugin configuration
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=242"
+
+if zplug check zsh-users/zsh-autosuggestions; then
+# Add history-substring-search-* widgets to list of widgets that clear the autosuggestion
+    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down) 
+    # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to 
+    # avoid conflict with history-substring-search-* widgets
+    ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
+fi
