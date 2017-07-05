@@ -48,16 +48,16 @@ fi
 zplug load
 
 #------------------------------------------------------------------------------#
-#                           path variables
+#                           PATH Variables
 #------------------------------------------------------------------------------#
 PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 
 #------------------------------------------------------------------------------#
-#                             Zsh options
+#                             Zsh Options
 #------------------------------------------------------------------------------#
 TERM='xterm-256color'
 HISTFILE=$HOME/.zhistory         # Enable history saving on shell exit.
-HISTSIZE=1200                    # Lines of history to maintain memory.
+HISTSIZE=1500                    # Lines of history to maintain memory.
 SAVEHIST=10000                   # Lines of history to maintain in history file.
 HISTCONTROL=ignoredups
 
@@ -89,19 +89,39 @@ export HELPDIR EDITOR VISUAL CLICOLOR LSCOLORS TERM SAVEHIST HISTFILE HISTSIZE H
 # mutt background fix
 export COLORFGBG="default;default" 
 #------------------------------------------------------------------------------#
-#                          Zsh tab completions 
+#                          Zsh Tab Completions 
 #------------------------------------------------------------------------------#
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-#PROMPT='%F{6}%B%b%f '
+# OpenShift tab completion
+if [ $commands[oc] ]; then
+    source <(oc completion zsh)
+fi
+# kubectl tab completion
+if [ $commands[kubectl] ]; then
+    source <(kubectl completion zsh)
+fi
+
+#------------------------------------------------------------------------------#
+#                        Colourful Man Pages
+#------------------------------------------------------------------------------#
+man() {
+    env \
+        LESS_TERMCAP_md=$'\e[1;36m' \
+        LESS_TERMCAP_me=$'\e[0m' \
+        LESS_TERMCAP_se=$'\e[0m' \
+        LESS_TERMCAP_so=$'\e[1;40;92m' \
+        LESS_TERMCAP_ue=$'\e[0m' \
+        LESS_TERMCAP_us=$'\e[1;32m' \
+            man "$@"
+}
 
 source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
 source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
 source ${HOME}/.config/dotfiles/zsh/zfunc     # Source some utility functions
 source ${HOME}/.config/dotfiles/zsh/zenv      # Platform specific configuration
-
 #------------------------------------------------------------------------------#
-#                      Plugin configuration
+#                       Plugin Configurations
 #------------------------------------------------------------------------------#
 # zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
 

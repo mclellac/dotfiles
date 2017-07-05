@@ -1,16 +1,4 @@
 # zenv
-# colour man
-man() {
-    env \
-        LESS_TERMCAP_md=$'\e[1;36m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[1;40;92m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[1;32m' \
-            man "$@"
-}
-
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/golang"
@@ -18,12 +6,15 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     export GOPATH GOROOT PATH
 
     alias ls="ls --color"
+    
     source ${HOME}/.zsh.gnu
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    
     # gcloud zsh tab completion
     source /opt/google-cloud-sdk/completion.zsh.inc
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
     alias ls="ls -G"
+ 
     source ${HOME}/.zsh.bsd
 elif [[ $OSTYPE = "darwin"* ]]; then
     GOPATH="${HOME}/Projects"
@@ -33,12 +24,11 @@ elif [[ $OSTYPE = "darwin"* ]]; then
 
     alias ls="ls -G"
     alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
+    
     #-- Google Cloud SDK 
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-    # openshift tab completion
-    source <(oc completion zsh)
-
+    
     #-- zsh-syntax-highlighting (brew package)
     source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source ${HOME}/.iterm2_shell_integration.zsh
