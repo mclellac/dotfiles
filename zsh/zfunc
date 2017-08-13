@@ -7,6 +7,11 @@ digmx()    { dig "$*" MX +noall +answer }
 digns()    { dig "$*" NS +noall +answer }
 digany()   { dig "$*" ANY +noall +answer }
 
+
+#kubepass() { kubectl config view -o jsonpath='{.users[?(@.name == "$*")].user.password}'" }
+#kubectx () { kubectl config current-context }
+#kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' } 
+
 pathln() {
     #echo $PATH | sed -e 's/:/\n/g'
     echo $PATH | tr : '\n'

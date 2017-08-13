@@ -19,6 +19,8 @@ source ${HOME}/.zprivate
 # powerlevel9k prompt settings
 source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
 
+#PROMPT="%{%F{000}%}$%{%F{default}%} "
+
 #------------------------------------------------------------------------------#
 #                        Plugin Load
 #------------------------------------------------------------------------------#
@@ -62,20 +64,20 @@ SAVEHIST=10000                   # Lines of history to maintain in history file.
 HISTCONTROL=ignoredups
 
 setopt MULTIOS                   # Pipe to multiple outputs.
-unsetopt correct                 # unset correct because it's annoyingly stupid.
+unsetopt correct                 # unset correct because it is annoyingly stupid.
 setopt APPEND_HISTORY            # Append rather than overwrite history file.
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY             # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
-setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_DUPS          # do not record an entry that was just recorded again.
 setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
 setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
-setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
-setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+setopt HIST_IGNORE_SPACE         # Do not record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Do not write duplicate entries in the history file.
 setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 unsetopt HIST_BEEP               # Nope nope nope nope nope. Never in a million years.
 
 HELPDIR=/usr/local/share/zsh/help
@@ -84,7 +86,6 @@ VISUAL=vim
 CLICOLOR=1;
 LSCOLORS=exfxcxdxbxegedabagacad;
 export HELPDIR EDITOR VISUAL CLICOLOR LSCOLORS TERM SAVEHIST HISTFILE HISTSIZE HISTCONTROL
-
 
 # mutt background fix
 export COLORFGBG="default;default" 
@@ -115,6 +116,11 @@ man() {
         LESS_TERMCAP_us=$'\e[1;32m' \
             man "$@"
 }
+
+#precmd() {
+#    [[ -n "$TMUX" ]] && PROMPT_COMMAND='echo -n -e "\e]2;${PWD##*/}\e\\"'
+#}
+
 
 source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
 source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
