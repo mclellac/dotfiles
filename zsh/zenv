@@ -5,13 +5,18 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
     export GOPATH GOROOT PATH
 
-    alias ls="ls --color"
-    
+    alias ls="ls --color"  
     source ${HOME}/.zsh.gnu
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    
-    # gcloud zsh tab completion
-    source /opt/google-cloud-sdk/completion.zsh.inc
+
+    # Check if zsh syntax highlighting is available.
+    if [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+        source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    fi
+
+    # Google Cloud CLI zsh tab completion
+    if [ -f "/opt/google-cloud-sdk/completion.zsh.inc" ]; then
+        source /opt/google-cloud-sdk/completion.zsh.inc
+    fi
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
     alias ls="ls -G"
  
