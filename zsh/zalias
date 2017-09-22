@@ -13,7 +13,12 @@ alias ccat="ccat -G String="brown" -G Keyword="darkblue" -G Comment="lightgrey" 
     -G Type="teal" -G Literal="teal" -G Punctuation="darkred" -G Plaintext="darkblue"     \
     -G Tag="blue" -G HTMLTag="lightgreen" -G HTMLAttrName="blue" -G HTMLAttrValue="green" \
     -G Decimal="darkblue" "$@""
+alias mutt="neomutt"
 
+alias podls="echo \"Pods running in current context, and the container images inside them\" && \
+    kubectl get pods --all-namespaces \
+    -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | \
+    grep -E -v '(fluent|heap|l7|kube)' | sed 's/;$//' | sort"
 
 #ls -lRU --time-style=long-iso "$PWD"/* | awk 'BEGIN {cont=0; oldd=strftime("%Y%m%d"); } { gsub(/-/,"",$6); if (substr($0,0,1)=="/") { pat=substr($0,0,length($0)-1)"/"; $6="" }; if( $6 ~ /^[0-9]+$/) {if ( $6 < oldd ) { oldd=$6; oldf=$8; for(i=9; i<=NF; i++) oldf=oldf $i; oldf=pat oldf; }; count++;}} END { print "Oldest date: ", oldd, "\nFile:", oldf, "\nTotal compared: ", count}'
 

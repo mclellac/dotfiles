@@ -54,6 +54,10 @@ zplug load
 #------------------------------------------------------------------------------#
 PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 
+if [ -d ${HOME}/Library/Android/tools ]; then
+    PATH=$PATH:${HOME}/Library/Android/sdk/platform-tools
+fi
+
 #------------------------------------------------------------------------------#
 #                             Zsh Options
 #------------------------------------------------------------------------------#
