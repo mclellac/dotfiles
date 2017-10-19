@@ -63,7 +63,7 @@ fi
 #------------------------------------------------------------------------------#
 TERM='xterm-256color'
 HISTFILE=$HOME/.zhistory         # Enable history saving on shell exit.
-HISTSIZE=1500                    # Lines of history to maintain memory.
+HISTSIZE=2000                    # Lines of history to maintain memory.
 SAVEHIST=10000                   # Lines of history to maintain in history file.
 HISTCONTROL=ignoredups
 
