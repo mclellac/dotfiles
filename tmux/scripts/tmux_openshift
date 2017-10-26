@@ -1,0 +1,38 @@
+#!/usr/bin/env zsh
+# tmux integration
+
+# First check if we're able to reach OpenShift by checking if /etc/resolv.conf 
+# search/domain line includes our VPN, WiFi, or BAN domains. 
+# (Set $WORK_DOMAIN variable in ~/.zprivate)
+if [[ $(grep -E '(^domain|^search)' /etc/resolv.conf) =~ "${WORK_DOMAIN}" ]]; then
+    # if it does; check if oc command exists
+    if  type oc > /dev/null; then
+        local ose_logged_in=$((oc get projects) 2>&1)
+
+        # Now we'll check if we're currently logged in or not. If so, get the info we want.
+        if [[ $ose_logged_in =~ "^NAME" ]]; then
+            local ose_prj=$(oc project | awk -F'"' '$0=$2')
+            local ose_env=$(oc project | awk -F'"' '$0=$4'| cut -d"." -f2 | awk '{print toupper($0)}')
+
+            # The above cut will end up being either DEV or NM. NM is our prod environment so we will
+            # rename it here.               
+            if [ -n "${ose_env}" ]; then
+                case "${ose_env}" in
+                    *NM*)    
+                        current_state="prod"
+                    ;;
+                    *DEV*)
+                        current_state="dev"
+                    ;;
+                esac
+            fi
+            
+            pods=$(oc get pods | sed 1d | grep Running | wc -l | tr -d ' ')
+            echo -n "#[fg=colour237]│ #[fg=colour001]\uE7B7 #[fg=colour255]OpenShift: #[fg=colour000]project #[fg=colour009]${ose_prj} #[fg=colour000]running #[fg=colour009]${pods} #[fg=colour000]pods on #[fg=colour009]${current_state} #[fg=colour237]│" # '\uE7BB' (glyph for RH logo)
+        elif [[ $ose_logged_in =~ "^error|^Error" ]]; then
+            # Not logged in, but on the corporate network? Display OShift glyph as grey.
+            echo -n " "
+        fi
+    fi
+fi
+

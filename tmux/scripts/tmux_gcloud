@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+
+gcloud_info() {
+
+
+    # First check if we're able to reach OpenShift by checking if /etc/resolv.conf 
+    # search/domain line includes our VPN, WiFi, or BAN domains. 
+    # (Set $WORK_DOMAIN variable in ~/.zprivate)
+    if [[ $(grep -E '(^domain|^search)' /etc/resolv.conf) =~ "${WORK_DOMAIN}" ]]; then
+        # Get current context
+        ctx=$(cat ~/.kube/config | grep "current-context:" | sed "s/current-context: //")
+    
+        if [ -n "${ctx}" ]; then
+            case "${ctx}" in
+                *CONTEXT_1*)
+                    pods=$(kubectl --namespace=ocelot get pods | sed 1d | wc -l | tr -d ' ')
+                    current_state="#[fg=colour006]primary #[fg=colour000]in #[fg=colour006]us-central1-b#[fg=colour000] running #[fg=colour006]${pods}#[fg=colour000] pods"
+                ;;
+                *CONTEXT_2*)
+                    pods=$(kubectl --namespace=ocelot get pods | sed 1d | wc -l | tr -d ' ')
+                    current_state="#[fg=colour006]failover #[fg=colour000]in #[fg=colour006]us-west1-b#[fg=colour000] running #[fg=colour006]${pods}#[fg=colour000] pods"
+                ;;
+                *CONTEXT_3*)
+                    pods=$(kubectl --namespace=ocelot get pods | sed 1d | wc -l | tr -d ' ')
+                    current_state="#[fg=colour006]production-primary #[fg=colour000]in #[fg=colour006]us-central1-b#[fg=colour000] running #[fg=colour006]${pods}#[fg=colour000] pods"
+                ;;
+                *CONTEXT_4*)
+                    pods=$(kubectl --namespace=ocelot get pods | sed 1d | wc -l | tr -d ' ')
+                    current_state="#[fg=colour006]production-failover #[fg=colour000]in #[fg=colour006]us-west1-b#[fg=colour000] running #[fg=colour006]${pods}#[fg=colour000] pods"
+                ;;
+            esac
+        fi
+    
+        if [ -n "$current_state" ]; then
+            echo -n "#[fg=colour237]│ #[fg=colour012]\uE7B2 #[fg=colour000]gcloud: ${current_state} #[fg=colour237]│"
+        fi
+    fi
+}
+
+gcloud_info
