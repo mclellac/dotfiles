@@ -52,7 +52,7 @@ zplug load
 #------------------------------------------------------------------------------#
 #                           PATH Variables
 #------------------------------------------------------------------------------#
-PATH=$PATH:$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
+PATH=$PATH:$HOME/bin:/usr/local/opt/python/libexec/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
 
 if [ -d ${HOME}/Library/Android/tools ]; then
     PATH=$PATH:${HOME}/Library/Android/sdk/platform-tools
@@ -125,7 +125,6 @@ man() {
 #    [[ -n "$TMUX" ]] && PROMPT_COMMAND='echo -n -e "\e]2;${PWD##*/}\e\\"'
 #}
 
-
 source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
 source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
 source ${HOME}/.config/dotfiles/zsh/zfunc     # Source some utility functions
@@ -145,3 +144,5 @@ if zplug check zsh-users/zsh-autosuggestions; then
     # avoid conflict with history-substring-search-* widgets
     ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
 fi
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
