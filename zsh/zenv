@@ -2,7 +2,7 @@
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/golang"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/vscode:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
     export GOPATH GOROOT PATH
 
     alias ls="ls --color"  
