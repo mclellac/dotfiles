@@ -22,7 +22,6 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jstemmer/gotags'
 Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'chase/vim-ansible-yaml'
 Plugin 'smerrill/vcl-vim-plugin'
@@ -30,6 +29,13 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'kristijanhusak/vim-hybrid-material'
+" Some JavaScript plugins
+Plugin 'maralla/completor.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'mxw/vim-jsx'
+Plugin 'othree/yajs.vim'
+Plugin 'w0rp/ale'
 call vundle#end() 
 
 filetype plugin indent on    " To ignore plugin indent changes, instead use:
@@ -42,6 +48,7 @@ set ttyfast
 set mouse=a
 
 " colorscheme settings
+""""""""""""""""""""""""""""""""
 set termguicolors             " enable truecolor
 syntax enable
 set background=dark
@@ -55,9 +62,9 @@ let g:enable_italic_font = 0
 
 " vim-airline settings
 """"""""""""""""""""""""""""""""
+
 let g:airline_powerline_fonts = 0
 let g:airline_theme='hybrid'
-"let g:airline_theme='minimalist'
 
 " vim-airline straight tabs
 let g:airline#extensions#tabline#left_sep = ' '
@@ -67,6 +74,20 @@ if !exists('g:airline_symbols')
   let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
+
+" JavaScript settings
+""""""""""""""""""""""""""""""""
+autocmd FileType javascript set formatprg=prettier\ --stdin
+
+let g:completor_node_binary = '/usr/bin/node'
+
+
+" Python Settings
+""""""""""""""""""""""""""""""""
+" python autocomplete settings required jedi package
+" $ pip install jedi 
+let g:completor_python_binary = '/usr/lib/python3.6/'
+
 
 " tagbar settings
 """"""""""""""""""""""""""""""""
