@@ -45,7 +45,7 @@ filetype plugin indent on    " To ignore plugin indent changes, instead use:
 set ttyfast
 
 " Enable mouse use in all modes
-set mouse=a
+"set mouse=a
 
 " colorscheme settings
 """"""""""""""""""""""""""""""""

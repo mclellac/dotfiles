@@ -1,7 +1,7 @@
 # zenv
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
-    GOROOT="/usr/lib/golang"
+    GOROOT="/usr/lib/go"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/opt/vscode:/opt/sublime_text_3:/opt/google-cloud-sdk/bin"
     export GOPATH GOROOT PATH
 
