@@ -212,7 +212,7 @@ symlink_dotfiles() {
     # Is zplug installed? Install if it isn't.
     if [ ! -d ${HOME}/.zplug ]; then
         msg_box "Installing zplug"
-        curl -sL --proto-redIRECTORIES -all,https \
+        curl -sL --proto-redir -all,https \
             https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
     fi 
 
