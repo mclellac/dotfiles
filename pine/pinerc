@@ -1,12 +1,12 @@
 # .pinerc
 
 # Personal settings
-personal-name="Firstname Lastname"
+personal-name=""
 user-domain="gmail.com"
 smtp-server=imap.gmail.com/novalidate-cert/user=user@domain/ssl
-inbox-path={imap.gmail.com/novalidate-cert/ssl/user=user@domain}INBOX
+inbox-path={imap.gmail.com/novalidate-cert/ssl/user=USER@DOMAIN}INBOX
 incoming-startup-rule=first-unseen
-folder-collections="user@domain" {imap.gmail.com:993/ssl/user=user@domain}[]
+folder-collections="USER@DOMAIN" {imap.gmail.com:993/ssl/user=USER@DOMAIN}[]
 
 
 # List of folder pairs; the first indicates a folder to archive, and the

@@ -1,106 +1,100 @@
-! URXVT GENERAL CONFIG
-!------------------------------------------------
-URxvt*termName: urxvt
-URxvt*transparent: true
-URxvt*shading: 15
-URxvt*highlightSelection: true
-!URxvt*tintColor: #2E2D2A
-URxvt*blurRadius: 10
-URxvt*iconFile: /usr/share/icons/Faenza/apps/32/utilities-terminal.png
-IRC*iconFile: /usr/share/icons/Faenza/apps/32/xchat.png
-URxvt.geometry: 80x22
-! URXVT FONTS
-!------------------------------------------------
-URxvt.font:xft:Hack:pixelsize=11:antialias=true
-URxvt.boldFont:xft:Hack:bold:pixelsize=11:antialias=true
-URxvt.italicfont:xft:Hack:italic:pixelsize=11
-URxvt.bolditalicFont:xft:Hack:bold:italic:pixelsize=11
-URxvt*letterSpace: -1
-URxvt*allow_bold: true
-! URXVT FONT SETTINGS
-!------------------------------------------------
-Xft.autohint: true
-Xft.antialias: true
-Xft.hinting: true
-Xft.hintstyle: hintslight
-Xft.rgba: rgb
-Xft.lcdfilter: lcddefault
-! URXVT ENABLE LINK SUPPORT
-!------------------------------------------------
-URxvt.perl-lib: /home/mclellac/.config/dotfiles/urxvt/scripts
-URxvt.perl-ext-common: default,matcher,clipboard
-!tabbed
-URxvt.matcher.button: 1
-URxvt.perl-ext: default
-URxvt.keysym.M-u: perl:url-select:select_next
-URxvt.url-select.launcher: /usr/bin/chromium
-URxvt.url-select.underline: true
-!disable the fucking bell
-URxvt.insecure: false
-! URXVT COPY PASTE SHORTCUTS
-!------------------------------------------------
-URxvt.iso14755: False
-URxvt.keysym.Shift-Control-C: perl:clipboard:copy
-URxvt.keysym.Shift-Control-V: perl:clipboard:paste
-URxvt.keysym.M-c: perl:clipboard:copy
-URxvt.keysym.M-v: perl:clipboard:paste
-! URXVT SCROLLBAR AND CURSOR STYLE
-!------------------------------------------------
-URxvt*saveLines: 300000
-URxvt.scrollBar: false
-!URxvt*scrollstyle: plain
-URxvt*cursorBlink: true
-URxvt*cursorUnderline: false
-URxvt*cursorBlock: true
-! URXVT TABS
-!------------------------------------------------
-URxvt.tabbedex.autohide: yes
-URxvt.tabbedex.tabbar-fg: 2
-URxvt.tabbedex.tabbar-bg: 0
-URxvt.tabbedex.tab-fg: 10
-URxvt.tabbedex.tab-bg: 0
-URxvt.tabbedex.title: yes
-URxvt.tabbedex.new-button: no
-! URXVT FULLSCREEN TOGGLE
-!------------------------------------------------
-URxvt.keysym.F11: perl:fullscreen:switch
-! URXVT COLORS
-!------------------------------------------------
-! vim: set filetype=xdefaults :
+! Google Material Design
 
-! special
-*.foreground: #B9C7C7
-*.background: #2E2D2A
-*.cursorColor: #93a1a1
+*background 		: #263238
+*foreground 		: #eceff1
 
 ! black
-*.color0: #5f5f5f
-*.color8: #828282
-
+*color0  			: #263238
+*color8  			: #37474f
 ! red
-*.color1: #FA050D
-*.color9: #B84246
-
+*color1  			: #ff9800
+*color9  			: #ffa74d
 ! green
-*.color2: #85F00C
-*.color10: #85F00C
-
+*color2  			: #8bc34a
+*color10 			: #9ccc65
 ! yellow
-*.color3: #EBF70A
-*.color11: #EBF70A
-
+*color3  			: #ffc107
+*color11 			: #ffa000
 ! blue
-*.color4: #0A97FC
-*.color12: #0A97FC
-
+*color4  			: #03a9f4
+*color12 			: #81d4fa
 ! magenta
-*.color5: #A200FF
-*.color13: #A200FF
-
+*color5  			: #e91e63
+*color13 			: #ad1457
 ! cyan
-*.color6: #00FFF6
-*.color14: #00FFF6
-
+*color6  			: #009688
+*color14 			: #26a69a
 ! white
-*.color7: #989898
-*.color15: #c5c5c5
+*color7  			: #cfd8dc
+*color15 			: #eceff1
+
+
+! ------------------------------------------------------------------------------
+! URxvt configs
+! ------------------------------------------------------------------------------
+
+URxvt*saveline:         2000
+URxvt*termName:         rxvt-256color
+URxvt*iso14755:         false
+URxvt*depth:            32
+URxvt.underlineColor:   #81a1c1
+URxvt.highlightColor:   #7191b1
+URxvt.throughColor:     #93e5cc
+URxvt*cursorColor:      #b48ead
+URxvt*cursorColor2:     #d8dee8
+URxvt*scrollBar:        false
+URxvt*scrollBar_right:  false
+URxvt*internalBorder:   0
+URxvt*externalBorder:   0
+URxvt.colorIT:      	#a3be8c
+URxvt.colorBD:      	#e5e9f0
+URxvt.colorUL:      	#81a1c1
+URxvt.geometry:         100x24
+URxvt.internalBorder:   30
+URxvt*letterSpace:      0
+URxvt.lineSpace:        1
+URxvt*imFont:           xft:RobotoMono Nerd Font:regular:size=8
+URxvt*font:             xft:RobotoMono Nerd Font:regular:size=8
+URxvt*boldFont:         xft:RobotoMono Nerd Font:bold:size=8
+URxvt*italicFont:       xft:RobotoMono Nerd Font:italic:size=8
+URxvt*boldItalicFont:   xft:RobotoMono Nerd Font:bold:size=8
+URxvt.perl-ext-common:  default,clipboard,url-select,keyboard-select
+URxvt.copyCommand:      xclip -i -selection clipboard
+URxvt.pasteCommand:     xclip -o -selection clipboard
+URxvt.keysym.M-c:       perl:clipboard:copy
+URxvt.keysym.M-v:       perl:clipboard:paste
+URxvt.keysym.M-C-v:     perl:clipboard:paste_escaped
+URxvt.keysym.M-Escape:  perl:keyboard-select:activate
+URxvt.keysym.M-s:       perl:keyboard-select:search
+URxvt.keysym.M-u:       perl:url-select:select_next
+URxvt.urlLauncher:      firefox
+URxvt.underlineURLs:    true
+URxvt.urlButton:        1
+URxvt.tabbed.tabbar-fg: 4
+URxvt.tabbed.tabbar-bg: 16
+URxvt.tabbed.tab-fg:    15
+URxvt.tabbed.tab-bg:    4
+URxvt*buffered:         false          
+URxvt.urgentOnBell: 	True
+
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+
+rofi.color-enabled: true
+rofi.color-window: #2f343f, #2f343f, #2f343f
+rofi.color-normal: #2f343f, #d8dee8, #2f343f, #2f343f, #81a1c1
+rofi.color-active: #2f343f, #b48ead, #2f343f, #2f343f, #93e5cc
+rofi.color-urgent: #2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b       
+
+! ------------------------------------------------------------------------------
+! Xft Font Configuration
+! ------------------------------------------------------------------------------
+Xft.dpi: 125
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintslight
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+                                                           

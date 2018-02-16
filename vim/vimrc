@@ -23,12 +23,13 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'jstemmer/gotags'
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
-Plugin 'chase/vim-ansible-yaml'
+Plugin 'pearofducks/ansible-vim'
 Plugin 'smerrill/vcl-vim-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'kristijanhusak/vim-hybrid-material'
+Plugin 'lepture/vim-jinja'
 " Some JavaScript plugins
 Plugin 'maralla/completor.vim'
 Plugin 'pangloss/vim-javascript'
@@ -37,9 +38,6 @@ Plugin 'mxw/vim-jsx'
 Plugin 'othree/yajs.vim'
 Plugin 'w0rp/ale'
 call vundle#end() 
-
-filetype plugin indent on    " To ignore plugin indent changes, instead use:
-                             " filetype plugin on
 
 " Send more characters for redraws
 set ttyfast
@@ -78,7 +76,6 @@ let g:airline_symbols.space = "\ua0"
 " JavaScript settings
 """"""""""""""""""""""""""""""""
 autocmd FileType javascript set formatprg=prettier\ --stdin
-
 let g:completor_node_binary = '/usr/bin/node'
 
 
@@ -238,6 +235,10 @@ set backupdir=~/.vim/backup
 " Ansible plugin options
 """""""""""""""""""""""""""""""
 let g:ansible_options = {'ignore_blank_lines': 0}
+let g:ansible_extra_keywords_highlight = 1
+let g:ansible_template_syntaxes = 1
+
+au BufRead,BufNewFile *.j2 set filetype=ansible
 
 " Define command history
 """""""""""""""""""""""""""""""
