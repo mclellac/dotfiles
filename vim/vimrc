@@ -1,6 +1,6 @@
 " Plugins
 """""""""""""""""""""""""""""""
-set nocompatible
+set nocompatible    " vim not vi
 filetype off
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -9,8 +9,6 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" Plugins
-""""""""""""""""""""""""""""""""
 Plugin 'jacoborus/tender'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-git'
@@ -61,7 +59,6 @@ let g:enable_italic_font = 0
 
 " vim-airline settings
 """"""""""""""""""""""""""""""""
-
 let g:airline_powerline_fonts = 0
 let g:airline_theme='hybrid'
 
@@ -204,7 +201,6 @@ set noautowrite               " don't automagically write on :next
 set lazyredraw                " don't redraw when don't have to
 set showmode
 set showcmd
-set nocompatible              " vim, not vi
 set scrolloff=5               " keep at least 5 lines above/below
 set sidescrolloff=5           " keep at least 5 lines left/right
 set history=200
@@ -249,13 +245,13 @@ let g:ansible_template_syntaxes = 1
 " Define command history
 """""""""""""""""""""""""""""""
 let &viminfo='%,h,"4,''4,f0,/99,:' . &history 
-"           | |  |   |  |  |       +command-line history saved 
-"           | |  |   |  |  +search history saved 
-"           | |  |   |  +marks 0-9,A-Z 0=NOT saved 
-"           | |  |   +files saved for marks 
-"           | |  +lines saved each register (old name for <, vi6.2) 
-"           | +disable 'hlsearch' loading viminfo 
-"           +save/restore buffer list 
+"             | |  |   |  |  |       +command-line history saved 
+"             | |  |   |  |  +search history saved 
+"             | |  |   |  +marks 0-9,A-Z 0=NOT saved 
+"             | |  |   +files saved for marks 
+"             | |  +lines saved each register (old name for <, vi6.2) 
+"             | +disable 'hlsearch' loading viminfo 
+"             +save/restore buffer list 
 
 " Spelling
 if v:version >= 700
