@@ -30,6 +30,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'kristijanhusak/vim-hybrid-material'
 Plugin 'lepture/vim-jinja'
+Plugin 'fgsch/vim-varnish'
 " Some JavaScript plugins
 Plugin 'maralla/completor.vim'
 Plugin 'pangloss/vim-javascript'
@@ -132,8 +133,11 @@ map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
 
 " Open nerdtree automatically if no files were specified to be opened
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Close nerdtree after opening a file with nerdtree
+let NERDTreeQuitOnOpen=1
 
 " Open nerdtree when vim starts with a directory specified to be opened
 autocmd StdinReadPre * let s:std_in=1
@@ -179,7 +183,9 @@ highlight nonText ctermbg=NONE
 let g:indentLine_char = ' '
 "let g:indentLine_color_term = 235
 " vim-gitgutter settings
-highlight SignColumn ctermbg=233
+highlight SignColumn ctermbg=006
+highlight Visual cterm=bold ctermbg=006 ctermfg=000
+
 set encoding=utf-8
 set t_Co=256
 "set fillchars+=stl:\ ,stlnc:\
@@ -238,7 +244,7 @@ let g:ansible_options = {'ignore_blank_lines': 0}
 let g:ansible_extra_keywords_highlight = 1
 let g:ansible_template_syntaxes = 1
 
-au BufRead,BufNewFile *.j2 set filetype=ansible
+"au BufRead,BufNewFile *.j2 set filetype=ansible
 
 " Define command history
 """""""""""""""""""""""""""""""

@@ -91,7 +91,7 @@ gocd () { cd `go list -f '{{.Dir}}' $1` }
 akcurl() {
     local orig_dir=$(pwd)
     cd $HOME/bin
-    curl -I -K akamai.curl "$*"
+    curl -i -K akamai.curl "$*"
     cd $orig_dir
 }
 
