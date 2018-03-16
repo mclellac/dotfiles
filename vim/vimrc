@@ -1,6 +1,6 @@
 " Plugins
 """""""""""""""""""""""""""""""
-set nocompatible    " vim not vi
+set nocompatible
 filetype off
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -26,11 +26,11 @@ Plugin 'smerrill/vcl-vim-plugin'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ryanoasis/vim-devicons'
-Plugin 'kristijanhusak/vim-hybrid-material'
 Plugin 'lepture/vim-jinja'
+Plugin 'joshdick/onedark.vim'
 Plugin 'fgsch/vim-varnish'
 " Some JavaScript plugins
-Plugin 'maralla/completor.vim'
+" Plugin 'maralla/completor.vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'mxw/vim-jsx'
@@ -44,30 +44,46 @@ set ttyfast
 " Enable mouse use in all modes
 "set mouse=a
 
+" onedark theme settings that need to be set before colorscheme onedark is
+" called.
+""""""""""""""""""""""""""""""""
+if (has("termguicolors"))
+    set termguicolors
+endif
+
+if (has("autocmd"))
+  augroup colorextend
+    autocmd!
+    " Make `Function`s bold in GUI mode
+    autocmd ColorScheme * call onedark#extend_highlight("Function", { "gui": "bold" })
+    " Override the `Statement` foreground color in 256-color mode
+    autocmd ColorScheme * call onedark#extend_highlight("Statement", { "fg": { "cterm": 12 } })
+    " Override the `Identifier` background color in GUI mode
+    autocmd ColorScheme * call onedark#extend_highlight("Identifier", { "bg": { "gui": "#333333" } })
+  augroup END
+endif
+
 " colorscheme settings
 """"""""""""""""""""""""""""""""
-set termguicolors             " enable truecolor
 syntax enable
 set background=dark
 try
-    colorscheme hybrid_material
+    colorscheme onedark
 catch
     colorscheme default
 endtry
-let g:enable_bold_font = 1
-let g:enable_italic_font = 0
 
 " vim-airline settings
 """"""""""""""""""""""""""""""""
 let g:airline_powerline_fonts = 0
-let g:airline_theme='hybrid'
+let g:airline_theme='onedark'
 
 " vim-airline straight tabs
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
 if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
+    let g:airline_symbols = {}
 endif
 let g:airline_symbols.space = "\ua0"
 
@@ -76,6 +92,9 @@ let g:airline_symbols.space = "\ua0"
 autocmd FileType javascript set formatprg=prettier\ --stdin
 let g:completor_node_binary = '/usr/bin/node'
 
+" JavaScript automatic standard formatting on save
+autocmd bufwritepost *.js silent !standard --fix %
+set autoread
 
 " Python Settings
 """"""""""""""""""""""""""""""""
@@ -122,7 +141,6 @@ let g:tagbar_type_go = {
 
 " NERDTree settings
 """"""""""""""""""""""""""""""""
-
 " bind ctrl+n to open/close nerdtree.
 map <C-n> :NERDTreeToggle<CR>
 
@@ -130,8 +148,8 @@ map <C-n> :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
 
 " Open nerdtree automatically if no files were specified to be opened
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Close nerdtree after opening a file with nerdtree
 let NERDTreeQuitOnOpen=1
@@ -197,6 +215,7 @@ endif
 " General settings
 """""""""""""""""""""""""""""""
 set hidden
+set nocompatible              " vim not vi
 set noautowrite               " don't automagically write on :next
 set lazyredraw                " don't redraw when don't have to
 set showmode
@@ -255,8 +274,8 @@ let &viminfo='%,h,"4,''4,f0,/99,:' . &history
 
 " Spelling
 if v:version >= 700
-  " Enable spell check for text files
-  autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
+    " Enable spell check for text files
+    autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
 endif
 
 " Mappings
