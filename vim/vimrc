@@ -1,82 +1,140 @@
 " Plugins
 """""""""""""""""""""""""""""""
-set nocompatible
+" Enable nocompatible
+if has('vim_starting')
+  if &compatible
+    set nocompatible
+  endif
+endif
+
 filetype off
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'jacoborus/tender'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-git'
-Plugin 'tpope/vim-surround'
-Plugin 'fatih/vim-go'
-Plugin 'Blackrush/vim-gocode'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Yggdroot/indentLine'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'jstemmer/gotags'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdtree'
-Plugin 'pearofducks/ansible-vim'
-Plugin 'smerrill/vcl-vim-plugin'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'lepture/vim-jinja'
-Plugin 'joshdick/onedark.vim'
-Plugin 'fgsch/vim-varnish'
+Plug 'jacoborus/tender'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-surround'
+Plug 'fatih/vim-go'
+Plug 'Blackrush/vim-gocode'
+Plug 'tpope/vim-fugitive'
+Plug 'Yggdroot/indentLine'
+Plug 'airblade/vim-gitgutter'
+Plug 'jstemmer/gotags'
+Plug 'majutsushi/tagbar'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'pearofducks/ansible-vim'
+Plug 'smerrill/vcl-vim-plugin'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons'
+Plug 'lepture/vim-jinja'
+Plug 'lifepillar/vim-solarized8'    " colorscheme
+Plug 'romainl/flattened'            " colorscheme
+Plug 'mhartington/oceanic-next'     " using for airline theme
+Plug 'fgsch/vim-varnish'
+" deoplete plugins
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+let g:deoplete#enable_at_startup = 1
 " Some JavaScript plugins
-" Plugin 'maralla/completor.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'mxw/vim-jsx'
-Plugin 'othree/yajs.vim'
-Plugin 'w0rp/ale'
-call vundle#end() 
+Plug 'pangloss/vim-javascript'
+Plug 'sheerun/vim-polyglot'
+Plug 'mxw/vim-jsx'
+Plug 'othree/yajs.vim'
+Plug 'w0rp/ale'
+call plug#end()
 
-" Send more characters for redraws
-set ttyfast
+" NERDTree settings
+"""""""""""""""""""""""""""""""""
+let NERDTreeShowHidden=1
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 
-" Enable mouse use in all modes
-"set mouse=a
+map <C-n> :NERDTreeToggle<CR> " bind ctrl+n to open/close nerdtree.
 
-" onedark theme settings that need to be set before colorscheme onedark is
-" called.
+" close vim if nerdtree is the only open window.
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
+
+" Open nerdtree automatically if no files were specified to be opened
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+let NERDTreeQuitOnOpen=1 " Close nerdtree after opening a file with nerdtree
+
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+
+" Deoplete settings.
+"""""""""""""""""""""""""""""""""
+set completeopt-=preview " Disable documentation window
+
+" Split settings
+"""""""""""""""""""""""""""""""""
+nnoremap <C-J> <C-W><C-J> " Remap CTRL+W then J to just CTRL+J
+nnoremap <C-K> <C-W><C-K> 
+nnoremap <C-L> <C-W><C-L> 
+nnoremap <C-H> <C-W><C-H> 
+
+" Vim defaults
+" Ctrl+W R ->  Swap top/bottom or left/right split
+" Ctrl+W T ->  Break out current window into a new tabview
+" Ctrl+W o ->  Close every window in the current tabview but the current one
+
+" Open new split panes to right and bottom, which feels more natural than Vim’s default:
+set splitbelow
+set splitright
+
+set mouse=a " Enable mouse use in all modes
+
+" set Vim-specific sequences for RGB colors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" Colouring
 """"""""""""""""""""""""""""""""
+" Enable truecolors
 if (has("termguicolors"))
-    set termguicolors
+ set termguicolors
 endif
 
-if (has("autocmd"))
-  augroup colorextend
-    autocmd!
-    " Make `Function`s bold in GUI mode
-    autocmd ColorScheme * call onedark#extend_highlight("Function", { "gui": "bold" })
-    " Override the `Statement` foreground color in 256-color mode
-    autocmd ColorScheme * call onedark#extend_highlight("Statement", { "fg": { "cterm": 12 } })
-    " Override the `Identifier` background color in GUI mode
-    autocmd ColorScheme * call onedark#extend_highlight("Identifier", { "bg": { "gui": "#333333" } })
-  augroup END
-endif
-
-" colorscheme settings
-""""""""""""""""""""""""""""""""
 syntax enable
 set background=dark
 try
-    colorscheme onedark
+    colorscheme solarized8
 catch
     colorscheme default
 endtry
 
+" Solarized
+let g:solarized_degrade = 0
+let g:solarized_termtrans = 1
+let g:solarized_bold = 1
+let g:solarized_underline = 1
+let g:solarized_italics = 0
+let g:solarized_contrast = 'normal'
+let g:solarized_visibility = 'high'
+
+" Custom styling
+" Vertical split bar
+set fillchars+=vert:│
+autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Green ctermbg=NONE
+
+" text colors
+"highlight Normal ctermbg=NONE
+"highlight Comment ctermbg=NONE
+"highlight nonText ctermbg=NONE
+
+" select colors
+highlight Visual cterm=bold ctermbg=006 ctermfg=000
+
+" vim-gitgutter settings
+highlight SignColumn ctermbg=002
+
 " vim-airline settings
 """"""""""""""""""""""""""""""""
 let g:airline_powerline_fonts = 0
-let g:airline_theme='onedark'
+let g:airline_theme='oceanicnext'
 
 " vim-airline straight tabs
 let g:airline#extensions#tabline#left_sep = ' '
@@ -90,25 +148,42 @@ let g:airline_symbols.space = "\ua0"
 " JavaScript settings
 """"""""""""""""""""""""""""""""
 autocmd FileType javascript set formatprg=prettier\ --stdin
-let g:completor_node_binary = '/usr/bin/node'
 
-" JavaScript automatic standard formatting on save
-autocmd bufwritepost *.js silent !standard --fix %
-set autoread
+" ALE settings
+""""""""""""""""""""""""""""""""
+" :ALEFix will try and fix your JS code with ESLint.
+let g:ale_fixers = {
+    \ 'javascript': ['eslint'],
+\}
+
+let g:ale_fix_on_save = 1
+let g:ale_completion_enabled = 1 " Enable completion where available.
+let g:airline#extensions#ale#enabled = 1 " Set this. Airline will handle the rest.
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+set statusline=%{LinterStatus()}
 
 " Python Settings
 """"""""""""""""""""""""""""""""
 " python autocomplete settings required jedi package
 " $ pip install jedi 
-let g:completor_python_binary = '/usr/lib/python3.6/'
-
+let g:completor_python_binary = '/usr/local/bin/python3.6'
 
 " tagbar settings
 """"""""""""""""""""""""""""""""
 nmap <C-t> :TagbarToggle<CR>
-
-" disable auto comment insertion
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " gotags
 let g:tagbar_type_go = {
@@ -139,72 +214,48 @@ let g:tagbar_type_go = {
     \ 'ctagsargs' : '-sort -silent'
     \ }
 
-" NERDTree settings
-""""""""""""""""""""""""""""""""
-" bind ctrl+n to open/close nerdtree.
-map <C-n> :NERDTreeToggle<CR>
-
-" close vim if nerdtree is the only open window.
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
-
-" Open nerdtree automatically if no files were specified to be opened
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Close nerdtree after opening a file with nerdtree
-let NERDTreeQuitOnOpen=1
-
-" Open nerdtree when vim starts with a directory specified to be opened
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
 " speed up the annoying parens & bracket matching speed
 set showmatch
 set matchtime=0
 
-" Only do this part when compiled with support for autocommands.
+""" Filetype-Specific Configurations
 if has("autocmd")
     " Use filetype detection and file-based automatic indenting.
     filetype plugin indent on
 
-    " Use actual tab chars in Makefiles.
+    " disable auto comment insertion
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+    " Makefiles
     autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
+
+    " HTML, XML, Jinja
+    autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
+    autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
+    autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
+
+    " Markdown and Journal
+    autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
 endif
 
 " For everything else, use a tab width of 4 space col.
-set tabstop=4                 " The width of a TAB is set to 4.
-                              " Still it is a \t. It is just that
-                              " Vim will interpret it to be having
-                              " a width of 4.
-set shiftwidth=4              " Indents will have a width of 4.
-set softtabstop=4             " Sets the number of columns for a TAB.
-set expandtab                 " Expand TABs to spaces.
-syntax on
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
 
-" Look & Feel
+" General editor settings
 """""""""""""""""""""""""""""""
-if &term =~# '^screen'
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-
-set ruler                     " show the line number on the bar
-set more                      " use more prompt
-set autoread                  " watch for file changes
-highlight Normal ctermbg=NONE
-highlight nonText ctermbg=NONE
+set ttyfast " Send more characters for redraws
 
 " indentLine settings
 let g:indentLine_char = ' '
 "let g:indentLine_color_term = 235
-" vim-gitgutter settings
-highlight SignColumn ctermbg=006
-highlight Visual cterm=bold ctermbg=006 ctermfg=000
 
-set encoding=utf-8
-set t_Co=256
-"set fillchars+=stl:\ ,stlnc:\
-"set number                    " line numbers
+set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
+
 if has("gui_running")
    let s:uname = system("uname")
    if s:uname == "Darwin\n"
@@ -212,10 +263,7 @@ if has("gui_running")
    endif
 endif
 
-" General settings
-"""""""""""""""""""""""""""""""
 set hidden
-set nocompatible              " vim not vi
 set noautowrite               " don't automagically write on :next
 set lazyredraw                " don't redraw when don't have to
 set showmode
@@ -229,7 +277,6 @@ set cmdheight=2               " command line two lines high
 set undolevels=1000           " 1000 undos
 set updatecount=100           " switch every 100 chars
 set complete=.,w,b,u,U,t,i,d  " do lots of scanning on tab completion
-set ttyfast                   " we have a fast terminal
 set noerrorbells              " No error bells please
 set shell=zsh
 set fileformats=unix
@@ -239,6 +286,14 @@ set wildmenu                  " menu has tab completion
 let maplocalleader=','        " all my macros start with ,
 set laststatus=2
 set nowrap
+set more                      " use more prompt
+set autoread                  " watch for file changes
+set ruler laststatus=2 showcmd showmode   " show the line number on the bar
+set list listchars=trail:»,tab:»-
+set wrap breakindent
+set encoding=utf-8
+"set number
+set title
 
 " Searching
 """""""""""""""""""""""""""""""
@@ -258,8 +313,6 @@ set backupdir=~/.vim/backup
 let g:ansible_options = {'ignore_blank_lines': 0}
 let g:ansible_extra_keywords_highlight = 1
 let g:ansible_template_syntaxes = 1
-
-"au BufRead,BufNewFile *.j2 set filetype=ansible
 
 " Define command history
 """""""""""""""""""""""""""""""
