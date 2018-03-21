@@ -1,3 +1,10 @@
+" Leader key to add extra key combinations
+let mapleader = ','
+let g:mapleader = ','
+
+" Time delay on <Leader> key
+set timeoutlen=3000 ttimeoutlen=100
+
 " Plugins
 """""""""""""""""""""""""""""""
 " Enable nocompatible
@@ -10,51 +17,62 @@ endif
 filetype off
 " set the runtime path to include Vundle and initialize
 call plug#begin('~/.vim/plugged')
-
-Plug 'jacoborus/tender'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-git'
-Plug 'tpope/vim-surround'
-Plug 'fatih/vim-go'
-Plug 'Blackrush/vim-gocode'
-Plug 'tpope/vim-fugitive'
-Plug 'Yggdroot/indentLine'
-Plug 'airblade/vim-gitgutter'
-Plug 'jstemmer/gotags'
-Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'pearofducks/ansible-vim'
-Plug 'smerrill/vcl-vim-plugin'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'ryanoasis/vim-devicons'
-Plug 'lepture/vim-jinja'
-Plug 'lifepillar/vim-solarized8'    " colorscheme
-Plug 'romainl/flattened'            " colorscheme
-Plug 'mhartington/oceanic-next'     " using for airline theme
-Plug 'fgsch/vim-varnish'
-" deoplete plugins
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-let g:deoplete#enable_at_startup = 1
-" Some JavaScript plugins
-Plug 'pangloss/vim-javascript'
-Plug 'sheerun/vim-polyglot'
-Plug 'mxw/vim-jsx'
-Plug 'othree/yajs.vim'
-Plug 'w0rp/ale'
+    " Languages
+    Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries'  }
+    Plug 'Blackrush/vim-gocode'
+    Plug 'jstemmer/gotags'
+    Plug 'JulesWang/css.vim'
+    Plug 'hail2u/vim-css3-syntax'
+    Plug 'itspriddle/vim-jquery'
+    Plug 'pangloss/vim-javascript'
+    Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+    Plug 'maksimr/vim-jsbeautify'
+    Plug 'Shougo/neco-syntax'
+    Plug 'vim-ruby/vim-ruby'
+    Plug 'sheerun/vim-polyglot'
+    Plug 'mxw/vim-jsx'
+    Plug 'othree/yajs.vim'
+    Plug 'pearofducks/ansible-vim'
+    Plug 'smerrill/vcl-vim-plugin'
+    Plug 'fgsch/vim-varnish'
+    Plug 'lepture/vim-jinja'
+    " Colorschemes & Icons
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'lifepillar/vim-solarized8'    " colorscheme
+    Plug 'romainl/flattened'            " colorscheme
+    Plug 'mhartington/oceanic-next'     " using for airline theme
+    Plug 'jacoborus/tender'
+    " Statusbar
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    " Deoplete plugins
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+    let g:deoplete#enable_at_startup = 1
+    " Git tools
+    Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
+    Plug 'junegunn/gv.vim'
+    " Tools
+    Plug 'majutsushi/tagbar'
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'tpope/vim-endwise'
+    Plug 'tpope/vim-git'
+    Plug 'tpope/vim-surround'
+    Plug 'Yggdroot/indentLine'
+    Plug 'w0rp/ale'
 call plug#end()
 
-" NERDTree settings
+" NERDTree settings.
 """""""""""""""""""""""""""""""""
 let NERDTreeShowHidden=1
-let g:NERDTreeDirArrowExpandable = ''
-let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowCollapsible = ''
 
 map <C-n> :NERDTreeToggle<CR> " bind ctrl+n to open/close nerdtree.
 
-" close vim if nerdtree is the only open window.
+" Close Vim if NERDtree is the only open window.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") &&  b:NERDTreeType == "primary") | q | endif
 
 " Open nerdtree automatically if no files were specified to be opened
@@ -65,31 +83,86 @@ let NERDTreeQuitOnOpen=1 " Close nerdtree after opening a file with nerdtree
 
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
-" Deoplete settings.
+" --- Autocomplete ---
 """""""""""""""""""""""""""""""""
-set completeopt-=preview " Disable documentation window
+" SuperTab settings
+"""""""""""""""""""""""""""""""""
+let g:SuperTabDefaultCompletionType = '<TAB>'
 
-" Split settings
+" Deoplete settings
+"""""""""""""""""""""""""""""""""
+" - «Deoplete requires Neovim with Python3 enabled»
+let g:python3_host_prog       = '/usr/local/bin/python3'
+let g:python3_host_skip_check = 1
+
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#omni#functions    = {}
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Python autocompletion
+let g:deoplete#sources#jedi#show_docstring = 1
+
+" Go autocompletion
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#sort_class    = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#use_cache     = 1
+
+" Javascript autocompletion
+let g:deoplete#omni#functions.javascript = [
+    \ 'tern#Complete',
+    \ 'jspc#omni',
+\ ]
+
+" Clang autocompletion
+let g:clang_complete_auto              = 0
+let g:clang_auto_select                = 0
+let g:clang_omnicppcomplete_compliance = 0
+let g:clang_make_default_keymappings   = 0
+let g:clang_use_library                = 1
+let g:clang_library_path               = '/usr/local/opt/llvm/lib'
+
+set completeopt-=preview " Disable documentation window
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>" " auto-insert
+
+" Split settings.
 """""""""""""""""""""""""""""""""
 nnoremap <C-J> <C-W><C-J> " Remap CTRL+W then J to just CTRL+J
 nnoremap <C-K> <C-W><C-K> 
 nnoremap <C-L> <C-W><C-L> 
 nnoremap <C-H> <C-W><C-H> 
 
-" Vim defaults
-" Ctrl+W R ->  Swap top/bottom or left/right split
-" Ctrl+W T ->  Break out current window into a new tabview
-" Ctrl+W o ->  Close every window in the current tabview but the current one
-
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
 set splitbelow
 set splitright
 
-set mouse=a " Enable mouse use in all modes
-
 " set Vim-specific sequences for RGB colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+" Terminal
+if has("terminal")
+    nnoremap <silent> <C-t> :call <SID>ToggleTerminal()<CR>
+    set termkey=<C-t>
+    set termsize=10x0
+endif
+
+" --- Git tools ---
+" Gitgutter settings
+let g:gitgutter_max_signs             = 5000
+let g:gitgutter_sign_added            = '⊕'
+let g:gitgutter_sign_modified         = '⊖'
+let g:gitgutter_sign_removed          = '⊗'
+let g:gitgutter_sign_modified_removed = '⊜'
+let g:gitgutter_map_keys              = 0
+let g:gitgutter_diff_args             = '--ignore-space-at-eol'
+
+nmap <Leader>j <Plug>GitGutterNextHunkzz
+nmap <Leader>k <Plug>GitGutterPrevHunkzz
+nnoremap <silent> <C-g> :call <SID>ToggleGGPrev()<CR>zz
+nnoremap <Leader>gs :GitGutterStageHunk<CR>
+nnoremap <Leader>gu :GitGutterUndoHunk<CR>
 
 " Colouring
 """"""""""""""""""""""""""""""""
@@ -121,9 +194,9 @@ set fillchars+=vert:│
 autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Green ctermbg=NONE
 
 " text colors
-"highlight Normal ctermbg=NONE
-"highlight Comment ctermbg=NONE
-"highlight nonText ctermbg=NONE
+highlight Normal ctermbg=NONE
+highlight Comment ctermbg=NONE
+highlight nonText ctermbg=NONE
 
 " select colors
 highlight Visual cterm=bold ctermbg=006 ctermfg=000
@@ -145,16 +218,21 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_symbols.space = "\ua0"
 
-" JavaScript settings
-""""""""""""""""""""""""""""""""
-autocmd FileType javascript set formatprg=prettier\ --stdin
-
 " ALE settings
 """"""""""""""""""""""""""""""""
 " :ALEFix will try and fix your JS code with ESLint.
 let g:ale_fixers = {
     \ 'javascript': ['eslint'],
 \}
+
+let g:ale_linters = {
+    \ 'python'     : ['pylint'],
+    \ 'javascript' : ['eslint'],
+\}
+
+" Navigate between errors
+nnoremap <Leader>h :lprevious<CR>zz
+nnoremap <Leader>l :lnext<CR>zz
 
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1 " Enable completion where available.
@@ -181,42 +259,59 @@ set statusline=%{LinterStatus()}
 " $ pip install jedi 
 let g:completor_python_binary = '/usr/local/bin/python3.6'
 
-" tagbar settings
-""""""""""""""""""""""""""""""""
-nmap <C-t> :TagbarToggle<CR>
-
-" gotags
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-    \ }
-
 " speed up the annoying parens & bracket matching speed
 set showmatch
 set matchtime=0
+
+" General settings
+"""""""""""""""""""""""""""""""
+set ttyfast " Send more characters for redraws
+
+" indentLine settings
+let g:indentLine_char = ' '
+"let g:indentLine_color_term = 235
+
+set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
+
+if has("gui_running")
+   let s:uname = system("uname")
+   if s:uname == "Darwin\n"
+      set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14
+   endif
+endif
+
+set mouse=a                   " Enable mouse use in all modes
+set hidden
+set noautowrite               " don't automagically write on :next
+set lazyredraw                " don't redraw when don't have to
+set showmode
+set showcmd
+set scrolloff=5               " keep at least 5 lines above/below
+set sidescrolloff=5           " keep at least 5 lines left/right
+set history=10000
+set backspace=indent,eol,start
+set linebreak
+set cmdheight=2               " command line two lines high
+set undolevels=1000           " 1000 undos
+set updatecount=100           " switch every 100 chars
+set complete=.,w,b,u,U,t,i,d  " do lots of scanning on tab completion
+set noerrorbells              " No error bells please
+set shell=zsh
+set fileformats=unix
+set ff=unix
+set wildmode=longest:full
+set wildmenu                  " menu has tab completion
+let maplocalleader=','        " all my macros start with ,
+set laststatus=2
+set nowrap
+set more                      " use more prompt
+set autoread                  " watch for file changes
+set ruler laststatus=2 showcmd showmode   " show the line number on the bar
+"set list listchars=trail:»,tab:»-
+set wrap breakindent
+set encoding=utf-8
+"set number
+set title
 
 """ Filetype-Specific Configurations
 if has("autocmd")
@@ -245,55 +340,6 @@ endif
 
 " For everything else, use a tab width of 4 space col.
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
-
-" General editor settings
-"""""""""""""""""""""""""""""""
-set ttyfast " Send more characters for redraws
-
-" indentLine settings
-let g:indentLine_char = ' '
-"let g:indentLine_color_term = 235
-
-set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
-
-if has("gui_running")
-   let s:uname = system("uname")
-   if s:uname == "Darwin\n"
-      set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14
-   endif
-endif
-
-set hidden
-set noautowrite               " don't automagically write on :next
-set lazyredraw                " don't redraw when don't have to
-set showmode
-set showcmd
-set scrolloff=5               " keep at least 5 lines above/below
-set sidescrolloff=5           " keep at least 5 lines left/right
-set history=200
-set backspace=indent,eol,start
-set linebreak
-set cmdheight=2               " command line two lines high
-set undolevels=1000           " 1000 undos
-set updatecount=100           " switch every 100 chars
-set complete=.,w,b,u,U,t,i,d  " do lots of scanning on tab completion
-set noerrorbells              " No error bells please
-set shell=zsh
-set fileformats=unix
-set ff=unix
-set wildmode=longest:full
-set wildmenu                  " menu has tab completion
-let maplocalleader=','        " all my macros start with ,
-set laststatus=2
-set nowrap
-set more                      " use more prompt
-set autoread                  " watch for file changes
-set ruler laststatus=2 showcmd showmode   " show the line number on the bar
-set list listchars=trail:»,tab:»-
-set wrap breakindent
-set encoding=utf-8
-"set number
-set title
 
 " Searching
 """""""""""""""""""""""""""""""
@@ -331,9 +377,94 @@ if v:version >= 700
     autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
 endif
 
+" --- Languages ---
+" Go settings
+let g:go_highlight_functions         = 1
+let g:go_highlight_methods           = 1
+let g:go_highlight_fields            = 1
+let g:go_highlight_types             = 1
+let g:go_highlight_operators         = 1
+let g:go_highlight_build_constraints = 1
+let g:go_bin_path                    = expand('~/Projects/bin')
+let g:go_list_type                   = 'quickfix'
+
+" CSS3 settings
+augroup VimCSS3Syntax
+	autocmd!
+	autocmd FileType css setlocal iskeyword+=-
+augroup END
+
+" Javascript settings
+autocmd FileType javascript set formatprg=prettier\ --stdin
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow  = 1
+
+" Tern_for_vim settings
+let g:tern#command   = ['tern']
+let g:tern#arguments = ['--persistent']
+
+" JS-Beautify
+let g:config_Beautifier = {}
+let g:config_Beautifier['js'] = {}
+let g:config_Beautifier['js'].indent_style = 'tab'
+let g:config_Beautifier['jsx'] = {}
+let g:config_Beautifier['jsx'].indent_style = 'tab'
+let g:config_Beautifier['json'] = {}
+let g:config_Beautifier['json'].indent_style = 'tab'
+let g:config_Beautifier['css'] = {}
+let g:config_Beautifier['css'].indent_style = 'tab'
+let g:config_Beautifier['html'] = {}
+let g:config_Beautifier['html'].indent_style = 'tab'
+
+augroup beautify
+	autocmd!
+	autocmd FileType javascript nnoremap <buffer> <Leader>bf :call JsBeautify()<cr>
+	autocmd FileType javascript vnoremap <buffer> <Leader>bf :call RangeJsBeautify()<cr>
+	autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
+	autocmd FileType json vnoremap <buffer> <Leader>bf :call RangeJsonBeautify()<cr>
+	autocmd FileType jsx nnoremap <buffer> <Leader>bf :call JsxBeautify()<cr>
+	autocmd FileType jsx vnoremap <buffer> <Leader>bf :call RangeJsxBeautify()<cr>
+	autocmd FileType html nnoremap <buffer> <Leader>bf :call HtmlBeautify()<cr>
+	autocmd FileType html vnoremap <buffer> <Leader>bf :call RangeHtmlBeautify()<cr>
+	autocmd FileType css nnoremap <buffer> <Leader>bf :call CSSBeautify()<cr>
+	autocmd FileType css vnoremap <buffer> <Leader>bf :call RangeCSSBeautify()<cr>
+augroup end
+
+" tagbar settings
+""""""""""""""""""""""""""""""""
+nmap <C-t> :TagbarToggle<CR>
+
+" gotags
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+    \ }
+
 " Mappings
 """""""""""""""""""""""""""""""
-" toggle list mode
-nmap <LocalLeader>tl :set list!<cr>
-" toggle paste mode
-nmap <LocalLeader>pp :set paste!<cr>
+nmap <LocalLeader>tl :set list!<cr>     " toggle list mode
+nmap <LocalLeader>pp :set paste!<cr>    " toggle paste mode

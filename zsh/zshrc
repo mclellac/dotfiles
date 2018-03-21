@@ -149,3 +149,5 @@ if zplug check zsh-users/zsh-autosuggestions; then
 fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# llvm path
+export PATH="/usr/local/opt/llvm/bin:$PATH"
