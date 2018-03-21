@@ -28,22 +28,16 @@ declare -a DIRECTORIES=(
 )
 
 declare -a DEPS=(
+    curl
     vim 
     git 
     tmux
     clang
-    llvm
-    ansible
     shellcheck
     ctags
-    gdbm
     libtool
     pkg-config
     python3
-    llvm
-    zsh-completions
-    rust
-    zsh-syntax-highlighting
 )
 LEN=${#DEPS[*]}
 
@@ -173,9 +167,9 @@ vim_setup() {
         make_dir $dir
     done
 
-    github_grab ${HOME}/.vim/autoload/plug.vim junegunn vim-plug
-
-    printf "${rst}Installing vim plugins: ${cyan} vim +PluginInstall +qall${rst}\n"
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    
+    printf "${rst}Installing vim plugins: ${cyan} vim +PlugInstall +qall${rst}\n"
     sleep 1
     vim +PlugInstall +qall
 }
