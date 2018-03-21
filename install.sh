@@ -31,6 +31,19 @@ declare -a DEPS=(
     vim 
     git 
     tmux
+    clang
+    llvm
+    ansible
+    shellcheck
+    ctags
+    gdbm
+    libtool
+    pkg-config
+    python3
+    llvm
+    zsh-completions
+    rust
+    zsh-syntax-highlighting
 )
 LEN=${#DEPS[*]}
 
