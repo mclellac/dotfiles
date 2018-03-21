@@ -18,24 +18,8 @@ filetype off
 " set the runtime path to include Vundle and initialize
 call plug#begin('~/.vim/plugged')
     " Languages
-    Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries'  }
-    Plug 'Blackrush/vim-gocode'
-    Plug 'jstemmer/gotags'
-    Plug 'JulesWang/css.vim'
-    Plug 'hail2u/vim-css3-syntax'
-    Plug 'itspriddle/vim-jquery'
-    Plug 'pangloss/vim-javascript'
     Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-    Plug 'maksimr/vim-jsbeautify'
-    Plug 'Shougo/neco-syntax'
-    Plug 'vim-ruby/vim-ruby'
     Plug 'sheerun/vim-polyglot'
-    Plug 'mxw/vim-jsx'
-    Plug 'othree/yajs.vim'
-    Plug 'pearofducks/ansible-vim'
-    Plug 'smerrill/vcl-vim-plugin'
-    Plug 'fgsch/vim-varnish'
-    Plug 'lepture/vim-jinja'
     " Colorschemes & Icons
     Plug 'ryanoasis/vim-devicons'
     Plug 'lifepillar/vim-solarized8'    " colorscheme
@@ -204,12 +188,10 @@ highlight Visual cterm=bold ctermbg=006 ctermfg=000
 " vim-gitgutter settings
 highlight SignColumn ctermbg=002
 
-" vim-airline settings
+" Airline settings
 """"""""""""""""""""""""""""""""
 let g:airline_powerline_fonts = 0
 let g:airline_theme='oceanicnext'
-
-" vim-airline straight tabs
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
@@ -220,14 +202,14 @@ let g:airline_symbols.space = "\ua0"
 
 " ALE settings
 """"""""""""""""""""""""""""""""
-" :ALEFix will try and fix your JS code with ESLint.
-let g:ale_fixers = {
-    \ 'javascript': ['eslint'],
-\}
-
 let g:ale_linters = {
     \ 'python'     : ['pylint'],
     \ 'javascript' : ['eslint'],
+\}
+
+" :ALEFix will try and fix your JS code with ESLint.
+let g:ale_fixers = {
+    \ 'javascript': ['eslint'],
 \}
 
 " Navigate between errors
@@ -259,9 +241,9 @@ set statusline=%{LinterStatus()}
 " $ pip install jedi 
 let g:completor_python_binary = '/usr/local/bin/python3.6'
 
-" speed up the annoying parens & bracket matching speed
+" speed up bracket matching speed
 set showmatch
-set matchtime=0
+set matchtime=2
 
 " General settings
 """""""""""""""""""""""""""""""
@@ -280,7 +262,9 @@ if has("gui_running")
    endif
 endif
 
-set mouse=a                   " Enable mouse use in all modes
+set mouse=a                   " enable mouse use in all modes
+set cursorline                " highlight curor line
+set nocursorcolumn
 set hidden
 set noautowrite               " don't automagically write on :next
 set lazyredraw                " don't redraw when don't have to
@@ -295,7 +279,8 @@ set cmdheight=2               " command line two lines high
 set undolevels=1000           " 1000 undos
 set updatecount=100           " switch every 100 chars
 set complete=.,w,b,u,U,t,i,d  " do lots of scanning on tab completion
-set noerrorbells              " No error bells please
+set noerrorbells              " no error bells please
+set novisualbell              " no vusual bell either, please.
 set shell=zsh
 set fileformats=unix
 set ff=unix
@@ -312,6 +297,19 @@ set wrap breakindent
 set encoding=utf-8
 "set number
 set title
+
+" Searching
+"""""""""""""""""""""""""""""""
+set incsearch                 " incremental search
+set ignorecase                " search ignoring case
+set hlsearch                  " highlight the search
+set showmatch                 " show matching bracket
+set diffopt=filler,iwhite     " ignore all whitespace and sync
+  
+" Backup
+"""""""""""""""""""""""""""""""
+set backup
+set backupdir=~/.vim/backup
 
 """ Filetype-Specific Configurations
 if has("autocmd")
@@ -341,25 +339,6 @@ endif
 " For everything else, use a tab width of 4 space col.
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
 
-" Searching
-"""""""""""""""""""""""""""""""
-set incsearch                 " incremental search
-set ignorecase                " search ignoring case
-set hlsearch                  " highlight the search
-set showmatch                 " show matching bracket
-set diffopt=filler,iwhite     " ignore all whitespace and sync
-  
-" Backup
-"""""""""""""""""""""""""""""""
-set backup
-set backupdir=~/.vim/backup
-
-" Ansible plugin options
-"""""""""""""""""""""""""""""""
-let g:ansible_options = {'ignore_blank_lines': 0}
-let g:ansible_extra_keywords_highlight = 1
-let g:ansible_template_syntaxes = 1
-
 " Define command history
 """""""""""""""""""""""""""""""
 let &viminfo='%,h,"4,''4,f0,/99,:' . &history 
@@ -377,7 +356,37 @@ if v:version >= 700
     autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
 endif
 
-" --- Languages ---
+" MatchTagAlways settings
+let g:mta_filetypes = {
+	\ 'html'  : 1,
+	\ 'xhtml' : 1,
+	\ 'xml'   : 1,
+	\ 'jinja' : 1,
+	\ 'php'   : 1,
+	\ }
+
+" ArgWrap settings
+let g:argwrap_tail_comma    = 1
+let g:argwrap_padded_braces = '[{'
+
+nnoremap <Leader>W :ArgWrap<CR>
+
+" --- Misc ---
+" Vim-tmux navigator settings
+let g:tmux_navigator_no_mappings = 1
+
+" Instant markdown settings
+let g:instant_markdown_autostart = 0
+
+nnoremap <Leader>im :InstantMarkdownPreview<CR>
+
+" Languages
+"""""""""""""""""""""""""""""""
+" Ansible plugin options
+let g:ansible_options = {'ignore_blank_lines': 0}
+let g:ansible_extra_keywords_highlight = 1
+let g:ansible_template_syntaxes = 1
+
 " Go settings
 let g:go_highlight_functions         = 1
 let g:go_highlight_methods           = 1
@@ -419,6 +428,11 @@ let g:config_Beautifier['html'].indent_style = 'tab'
 
 augroup beautify
 	autocmd!
+    autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+    autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+    autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+    autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+    autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
 	autocmd FileType javascript nnoremap <buffer> <Leader>bf :call JsBeautify()<cr>
 	autocmd FileType javascript vnoremap <buffer> <Leader>bf :call RangeJsBeautify()<cr>
 	autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
@@ -466,5 +480,6 @@ let g:tagbar_type_go = {
 
 " Mappings
 """""""""""""""""""""""""""""""
-nmap <LocalLeader>tl :set list!<cr>     " toggle list mode
-nmap <LocalLeader>pp :set paste!<cr>    " toggle paste mode
+nmap <LocalLeader>tl :set list!<cr>         " toggle list mode
+nmap <LocalLeader>pp :set paste!<cr>        " toggle paste mode
+nnoremap <Leader>bw :lcd %:p:h<CR>:pwd<CR>  " Switch CWD to the directory of the current buffer

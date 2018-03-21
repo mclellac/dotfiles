@@ -160,11 +160,11 @@ vim_setup() {
         make_dir $dir
     done
 
-    github_grab ${HOME}/.vim/bundle/Vundle.vim gmarik vundle.git
+    github_grab ${HOME}/.vim/autoload/plug.vim junegunn vim-plug
 
     printf "${rst}Installing vim plugins: ${cyan} vim +PluginInstall +qall${rst}\n"
     sleep 1
-    vim +PluginInstall +qall
+    vim +PlugInstall +qall
 }
 
 symlink_dotfiles() {
