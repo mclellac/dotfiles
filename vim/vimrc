@@ -50,7 +50,7 @@ call plug#end()
 
 " NERDTree settings.
 """""""""""""""""""""""""""""""""
-let g:NERDTreeWinPos = "right"
+let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
@@ -119,19 +119,31 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H> 
 
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
-set splitbelow
-set splitright
+"set splitbelow
+"set splitright
 
 " set Vim-specific sequences for RGB colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-" Terminal
-if has("terminal")
-    nnoremap <silent> <C-s> :call <SID>ToggleTerminal()<CR>
-    set termkey=<C-s>
-    set termsize=10x0
+if has('nvim')
+    fu! OpenTerminal()
+        " open split windows on the topleft
+        topleft split
+        " resize the height of terminal windows to 30
+        resize 30
+        :terminal
+    endf
+else
+    fu! OpenTerminal()
+        " open split windows on the topleft
+        topleft split
+        " resize the height of terminal windows to 30
+        resize 15
+        :call term_start('zsh', {'curwin' : 1, 'term_finish' : 'close'})
+    endf
 endif
+nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
 
 " Git tools
 " Gitgutter settings
@@ -176,18 +188,22 @@ endtry
 " Custom styling
 " Vertical split bar
 set fillchars+=vert:│
-autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Green ctermbg=NONE
+hi VertSplit ctermbg=NONE guibg=NONE
 
 " Text colors
-"highlight Normal ctermbg=NONE
-"highlight Comment ctermbg=NONE
-"highlight nonText ctermbg=NONE
+highlight Normal ctermbg=NONE
+highlight Comment ctermbg=NONE
+highlight nonText ctermbg=NONE
 
 " Select colors
-"highlight Visual cterm=bold ctermbg=6 ctermfg=000
+highlight Visual cterm=bold ctermbg=6 ctermfg=000
+
+" terminal
+highlight Terminal ctermbg=000 ctermfg=15 
+
 
 " vim-gitgutter settings
-"highlight SignColumn ctermbg=002
+highlight SignColumn ctermbg=002
 
 " Airline settings
 """"""""""""""""""""""""""""""""
@@ -245,6 +261,12 @@ let g:completor_python_binary = '/usr/local/bin/python3.6'
 " IndentLine settings
 let g:indentLine_char = ' '
 "let g:indentLine_color_term = 235
+
+" Reload vim config on changes.
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
 
 " General settings
 """""""""""""""""""""""""""""""
