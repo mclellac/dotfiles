@@ -9,9 +9,9 @@ set timeoutlen=3000 ttimeoutlen=100
 """""""""""""""""""""""""""""""
 " Enable nocompatible
 if has('vim_starting')
-  if &compatible
-    set nocompatible
-  endif
+    if &compatible
+        set nocompatible
+    endif
 endif
 
 filetype off
@@ -50,6 +50,7 @@ call plug#end()
 
 " NERDTree settings.
 """""""""""""""""""""""""""""""""
+let g:NERDTreeWinPos = "right"
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
@@ -67,7 +68,7 @@ let NERDTreeQuitOnOpen=1 " Close nerdtree after opening a file with nerdtree
 
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
-" --- Autocomplete ---
+" Autocomplete
 """""""""""""""""""""""""""""""""
 " SuperTab settings
 """""""""""""""""""""""""""""""""
@@ -75,7 +76,7 @@ let g:SuperTabDefaultCompletionType = '<TAB>'
 
 " Deoplete settings
 """""""""""""""""""""""""""""""""
-" - «Deoplete requires Neovim with Python3 enabled»
+" Deoplete requires Neovim with Python3 enabled
 let g:python3_host_prog       = '/usr/local/bin/python3'
 let g:python3_host_skip_check = 1
 
@@ -127,12 +128,12 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " Terminal
 if has("terminal")
-    nnoremap <silent> <C-t> :call <SID>ToggleTerminal()<CR>
-    set termkey=<C-t>
+    nnoremap <silent> <C-s> :call <SID>ToggleTerminal()<CR>
+    set termkey=<C-s>
     set termsize=10x0
 endif
 
-" --- Git tools ---
+" Git tools
 " Gitgutter settings
 let g:gitgutter_max_signs             = 5000
 let g:gitgutter_sign_added            = '⊕'
@@ -152,16 +153,8 @@ nnoremap <Leader>gu :GitGutterUndoHunk<CR>
 """"""""""""""""""""""""""""""""
 " Enable truecolors
 if (has("termguicolors"))
- set termguicolors
+    set termguicolors
 endif
-
-syntax enable
-set background=dark
-try
-    colorscheme solarized8
-catch
-    colorscheme default
-endtry
 
 " Solarized
 let g:solarized_degrade = 0
@@ -172,21 +165,29 @@ let g:solarized_italics = 0
 let g:solarized_contrast = 'normal'
 let g:solarized_visibility = 'high'
 
+syntax enable
+set background=dark
+try
+    colorscheme solarized8
+catch
+    colorscheme default
+endtry
+
 " Custom styling
 " Vertical split bar
 set fillchars+=vert:│
 autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=Green ctermbg=NONE
 
-" text colors
-highlight Normal ctermbg=NONE
-highlight Comment ctermbg=NONE
-highlight nonText ctermbg=NONE
+" Text colors
+"highlight Normal ctermbg=NONE
+"highlight Comment ctermbg=NONE
+"highlight nonText ctermbg=NONE
 
-" select colors
-highlight Visual cterm=bold ctermbg=006 ctermfg=000
+" Select colors
+"highlight Visual cterm=bold ctermbg=6 ctermfg=000
 
 " vim-gitgutter settings
-highlight SignColumn ctermbg=002
+"highlight SignColumn ctermbg=002
 
 " Airline settings
 """"""""""""""""""""""""""""""""
@@ -241,24 +242,22 @@ set statusline=%{LinterStatus()}
 " $ pip install jedi 
 let g:completor_python_binary = '/usr/local/bin/python3.6'
 
-" speed up bracket matching speed
-set showmatch
-set matchtime=2
+" IndentLine settings
+let g:indentLine_char = ' '
+"let g:indentLine_color_term = 235
 
 " General settings
 """""""""""""""""""""""""""""""
-set ttyfast " Send more characters for redraws
-
-" indentLine settings
-let g:indentLine_char = ' '
-"let g:indentLine_color_term = 235
+set ttyfast 					" send more characters for redraws
+set showmatch					" speed up bracket matching speed
+set matchtime=2
 
 set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
 
 if has("gui_running")
-   let s:uname = system("uname")
-   if s:uname == "Darwin\n"
-      set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14
+    let s:uname = system("uname")
+    if s:uname == "Darwin\n"
+        set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h14
    endif
 endif
 
@@ -286,7 +285,6 @@ set fileformats=unix
 set ff=unix
 set wildmode=longest:full
 set wildmenu                  " menu has tab completion
-let maplocalleader=','        " all my macros start with ,
 set laststatus=2
 set nowrap
 set more                      " use more prompt
@@ -339,6 +337,12 @@ endif
 " For everything else, use a tab width of 4 space col.
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
 
+" Spelling
+if v:version >= 700
+    " Enable spell check for text files
+    autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
+endif
+
 " Define command history
 """""""""""""""""""""""""""""""
 let &viminfo='%,h,"4,''4,f0,/99,:' . &history 
@@ -350,11 +354,6 @@ let &viminfo='%,h,"4,''4,f0,/99,:' . &history
 "             | +disable 'hlsearch' loading viminfo 
 "             +save/restore buffer list 
 
-" Spelling
-if v:version >= 700
-    " Enable spell check for text files
-    autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
-endif
 
 " MatchTagAlways settings
 let g:mta_filetypes = {
@@ -365,13 +364,7 @@ let g:mta_filetypes = {
 	\ 'php'   : 1,
 	\ }
 
-" ArgWrap settings
-let g:argwrap_tail_comma    = 1
-let g:argwrap_padded_braces = '[{'
-
-nnoremap <Leader>W :ArgWrap<CR>
-
-" --- Misc ---
+" Misc 
 " Vim-tmux navigator settings
 let g:tmux_navigator_no_mappings = 1
 
@@ -442,10 +435,10 @@ augroup beautify
 	autocmd FileType html nnoremap <buffer> <Leader>bf :call HtmlBeautify()<cr>
 	autocmd FileType html vnoremap <buffer> <Leader>bf :call RangeHtmlBeautify()<cr>
 	autocmd FileType css nnoremap <buffer> <Leader>bf :call CSSBeautify()<cr>
-	autocmd FileType css vnoremap <buffer> <Leader>bf :call RangeCSSBeautify()<cr>
+    autocmd FileType css vnoremap <buffer> <Leader>bf :call RangeCSSBeautify()<cr>
 augroup end
 
-" tagbar settings
+" Tagbar Settings
 """"""""""""""""""""""""""""""""
 nmap <C-t> :TagbarToggle<CR>
 
@@ -480,6 +473,6 @@ let g:tagbar_type_go = {
 
 " Mappings
 """""""""""""""""""""""""""""""
-nmap <LocalLeader>tl :set list!<cr>         " toggle list mode
-nmap <LocalLeader>pp :set paste!<cr>        " toggle paste mode
+nmap <Leader>tl :set list!<cr>         " toggle list mode
+nmap <Leader>pp :set paste!<cr>        " toggle paste mode
 nnoremap <Leader>bw :lcd %:p:h<CR>:pwd<CR>  " Switch CWD to the directory of the current buffer
