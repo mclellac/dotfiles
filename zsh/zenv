@@ -1,4 +1,7 @@
 # zenv
+export PYTHONPATH="${HOME}/bin"
+export PATH="$PATH:${HOME}/.cargo/bin"
+
 if [[ $OSTYPE = 'linux-gnu' ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/lib/go"

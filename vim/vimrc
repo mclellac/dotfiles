@@ -31,6 +31,7 @@ call plug#begin('~/.vim/plugged')
     " Languages
     Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
     Plug 'sheerun/vim-polyglot'
+    Plug 'maralla/completor.vim'
     " Colorschemes & Icons
     Plug 'ryanoasis/vim-devicons'
     Plug 'lifepillar/vim-solarized8'    " colorscheme
@@ -104,13 +105,15 @@ let g:airline_symbols.space = "\ua0"
 
 " Custom styling
 set fillchars+=vert:│                               " Vertical split bar
-highlight VertSplit ctermbg=NONE guibg=NONE
+highlight VertSplit ctermbg=NONE ctermfg=0 guibg=NONE
 highlight Normal ctermbg=NONE                       " Text colors
 highlight Comment ctermbg=NONE
 highlight nonText ctermbg=NONE
 highlight Visual cterm=bold ctermbg=6 ctermfg=000   " Visual select UI colors
-highlight Terminal ctermbg=000 ctermfg=15           " terminal UI
-highlight SignColumn ctermbg=002                    " vim-gitgutter UI settings
+highlight Terminal ctermbg=0 ctermfg=15           " terminal UI
+highlight SignColumn ctermbg=2                    " vim-gitgutter UI settings
+highlight Pmenu ctermbg=245 ctermfg=145
+highlight PmenuSel ctermfg=242 ctermbg=140
 
 "------------------------------------------------------------------------------"
 "                                Terminal
@@ -144,6 +147,16 @@ let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = ''
 let g:NERDTreeDirArrowCollapsible = ''
+let NERDTreeHighlightCursorline = 1
+let NERDTreeIgnore = ['\~$', '.*\.pyc$', 'pip-log\.txt$', 'whoosh_index',
+                    \ 'xapian_index', '.*.pid', 'monitor.py', '.*-fixtures-.*.json',
+                    \ '.*\.o$', 'db.db', 'tags.bak']
+
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+let NERDChristmasTree = 1
+let NERDTreeChDirMode = 2
+let NERDTreeMapJumpFirstChild = 'gK'
 
 map <C-n> :NERDTreeToggle<CR> " bind ctrl+n to open/close nerdtree.
 
@@ -162,7 +175,7 @@ autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in
 "                           Plugins: Autocomplete
 "------------------------------------------------------------------------------"
 " SuperTab settings
-let g:SuperTabDefaultCompletionType = '<TAB>'
+let g:SuperTabDefaultCompletionType = "<c-x>"
 
 " Deoplete settings
 " Deoplete requires Neovim with Python3 enabled
@@ -198,7 +211,6 @@ let g:clang_use_library                = 1
 let g:clang_library_path               = '/usr/local/opt/llvm/lib'
 
 set completeopt-=preview " Disable documentation window
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>" " auto-insert
 
 "------------------------------------------------------------------------------"
 "                         Plugins: Git tools
@@ -271,8 +283,9 @@ set ruler laststatus=2 showcmd showmode   " show the line number on the bar
 set wrap breakindent
 set encoding=utf-8
 "set number
-set title
-
+set title 
+set titleold="" 
+set titlestring=Vim:\ %F 
 " Searching
 set incsearch                 " incremental search
 set ignorecase                " search ignoring case
@@ -351,9 +364,19 @@ nnoremap <Leader>im :InstantMarkdownPreview<CR>
 "                                Languages
 "------------------------------------------------------------------------------"
 " ALE settings
+let g:ale_set_highlights = 0
+let g:ale_echo_msg_format = '[#%linter%#] %s [%severity%]'
+let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
+
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
+let g:ale_echo_msg_error_str = '•'
+let g:ale_echo_msg_warning_str = '•'
+
 let g:ale_linters = {
-    \ 'python'     : ['pylint'],
-    \ 'javascript' : ['eslint'],
+    \ 'python'      : ['pylint'],
+    \ 'javascript'  : ['eslint'],
+    \ 'rust'        : ['rustc']   
 \}
 
 " :ALEFix will try and fix your JS code with ESLint.
@@ -403,6 +426,18 @@ let g:go_highlight_operators         = 1
 let g:go_highlight_build_constraints = 1
 let g:go_bin_path                    = expand('~/Projects/bin')
 let g:go_list_type                   = 'quickfix'
+
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_command = "goimports"
+
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_array_whitespace_error = 0
+let g:go_highlight_trailing_whitespace_error = 0
+
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_extra_types = 0
+let g:go_highlight_methods = 0
+let g:go_highlight_functions = 0
 
 " CSS3 settings
 augroup VimCSS3Syntax
