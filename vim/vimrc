@@ -60,6 +60,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'majutsushi/tagbar'
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
     Plug 'tpope/vim-endwise'
+    Plug 'kana/vim-smartinput'
+    Plug 'cohama/vim-smartinput-endwise'
     Plug 'tpope/vim-git'
     Plug 'tpope/vim-surround'
     Plug 'Yggdroot/indentLine'
@@ -121,14 +123,13 @@ highlight SignColumn ctermbg=2                    " vim-gitgutter UI settings
 highlight Pmenu ctermbg=245 ctermfg=145
 highlight PmenuSel ctermfg=242 ctermbg=140
 
-"------------------------------------------------------------------------------"
-"                                Terminal
-"------------------------------------------------------------------------------"
-
 " set Vim-specific sequences for RGB colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
+"------------------------------------------------------------------------------"
+"                                Terminal
+"------------------------------------------------------------------------------"
 if has('nvim')
     fu! OpenTerminal()
         " open split windows on the topleft
@@ -148,7 +149,8 @@ else
 endif
 nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
 
-" NERDTree settings.
+"------------------------------------------------------------------------------"
+"                           Plugins: NERDtree "------------------------------------------------------------------------------"
 let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=1
 let g:NERDTreeDirArrowExpandable = ''
@@ -298,6 +300,7 @@ set ignorecase                " search ignoring case
 set hlsearch                  " highlight the search
 set showmatch                 " show matching bracket
 set diffopt=filler,iwhite     " ignore all whitespace and sync
+set smartindent  
 
 " Backup
 set backup
@@ -318,10 +321,6 @@ if has("autocmd")
     autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
-    autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
-    autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
 
     " Markdown and Journal
     autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -475,21 +474,21 @@ let g:config_Beautifier['html'] = {}
 let g:config_Beautifier['html'].indent_style = 'tab'
 
 augroup beautify
-	autocmd!
+    autocmd!
     autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
     autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
     autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
     autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
     autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-	autocmd FileType javascript nnoremap <buffer> <Leader>bf :call JsBeautify()<cr>
-	autocmd FileType javascript vnoremap <buffer> <Leader>bf :call RangeJsBeautify()<cr>
-	autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
-	autocmd FileType json vnoremap <buffer> <Leader>bf :call RangeJsonBeautify()<cr>
-	autocmd FileType jsx nnoremap <buffer> <Leader>bf :call JsxBeautify()<cr>
-	autocmd FileType jsx vnoremap <buffer> <Leader>bf :call RangeJsxBeautify()<cr>
-	autocmd FileType html nnoremap <buffer> <Leader>bf :call HtmlBeautify()<cr>
-	autocmd FileType html vnoremap <buffer> <Leader>bf :call RangeHtmlBeautify()<cr>
-	autocmd FileType css nnoremap <buffer> <Leader>bf :call CSSBeautify()<cr>
+    autocmd FileType javascript nnoremap <buffer> <Leader>bf :call JsBeautify()<cr>
+    autocmd FileType javascript vnoremap <buffer> <Leader>bf :call RangeJsBeautify()<cr>
+    autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
+    autocmd FileType json vnoremap <buffer> <Leader>bf :call RangeJsonBeautify()<cr>
+    autocmd FileType jsx nnoremap <buffer> <Leader>bf :call JsxBeautify()<cr>
+    autocmd FileType jsx vnoremap <buffer> <Leader>bf :call RangeJsxBeautify()<cr>
+    autocmd FileType html nnoremap <buffer> <Leader>bf :call HtmlBeautify()<cr>
+    autocmd FileType html vnoremap <buffer> <Leader>bf :call RangeHtmlBeautify()<cr>
+    autocmd FileType css nnoremap <buffer> <Leader>bf :call CSSBeautify()<cr>
     autocmd FileType css vnoremap <buffer> <Leader>bf :call RangeCSSBeautify()<cr>
 augroup end
 
@@ -529,6 +528,12 @@ let g:tagbar_type_go = {
 "------------------------------------------------------------------------------"
 "                                Misc. Mappings
 "------------------------------------------------------------------------------"
+" insert brackets
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
 nmap <Leader>tl :set list!<cr>         " toggle list mode
 nmap <Leader>pp :set paste!<cr>        " toggle paste mode
 nnoremap <Leader>bw :lcd %:p:h<CR>:pwd<CR>  " Switch CWD to the directory of the current buffer
