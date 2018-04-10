@@ -1,7 +1,9 @@
 ! Google Material Design
-
-*background 		: #263238
-*foreground 		: #eceff1
+*background: #222D32
+*foreground: #B2BBBF
+*secondary:  #AAB3C0
+*active:     #00BCD4
+*urgent:     #bf616a
 
 ! black
 *color0  			: #263238
@@ -28,45 +30,42 @@
 *color7  			: #cfd8dc
 *color15 			: #eceff1
 
-
 ! ------------------------------------------------------------------------------
 ! URxvt configs
 ! ------------------------------------------------------------------------------
-
-URxvt*saveline:         2000
+URxvt*depth:            32
+URxvt*saveline:         10000
 URxvt*termName:         rxvt-256color
 URxvt*iso14755:         false
-URxvt*depth:            32
 URxvt.underlineColor:   #81a1c1
-URxvt.highlightColor:   #7191b1
+! URxvt.highlightColor:   #7191b1
 URxvt.throughColor:     #93e5cc
 URxvt*cursorColor:      #b48ead
 URxvt*cursorColor2:     #d8dee8
 URxvt*scrollBar:        false
 URxvt*scrollBar_right:  false
-URxvt*internalBorder:   0
-URxvt*externalBorder:   0
+URxvt*internalBorder:   10
+URxvt*externalBorder:   10
 URxvt.colorIT:      	#a3be8c
 URxvt.colorBD:      	#e5e9f0
 URxvt.colorUL:      	#81a1c1
 URxvt.geometry:         100x24
-URxvt.internalBorder:   30
-URxvt*letterSpace:      0
-URxvt.lineSpace:        1
-URxvt*imFont:           xft:RobotoMono Nerd Font:regular:size=8
-URxvt*font:             xft:RobotoMono Nerd Font:regular:size=8
-URxvt*boldFont:         xft:RobotoMono Nerd Font:bold:size=8
-URxvt*italicFont:       xft:RobotoMono Nerd Font:italic:size=8
-URxvt*boldItalicFont:   xft:RobotoMono Nerd Font:bold:size=8
-URxvt.perl-ext-common:  default,clipboard,url-select,keyboard-select
-URxvt.copyCommand:      xclip -i -selection clipboard
-URxvt.pasteCommand:     xclip -o -selection clipboard
-URxvt.keysym.M-c:       perl:clipboard:copy
-URxvt.keysym.M-v:       perl:clipboard:paste
-URxvt.keysym.M-C-v:     perl:clipboard:paste_escaped
-URxvt.keysym.M-Escape:  perl:keyboard-select:activate
-URxvt.keysym.M-s:       perl:keyboard-select:search
-URxvt.keysym.M-u:       perl:url-select:select_next
+! URxvt*letterSpace:      1
+! URxvt.lineSpace:        1
+URxvt*font:             xft:RobotoMono Nerd Font:regular:size=11
+URxvt*imFont:           xft:RobotoMono Nerd Font:regular:size=11
+URxvt*boldFont:         xft:RobotoMono Nerd Font:bold:size=11
+URxvt*italicFont:       xft:RobotoMono Nerd Font:italic:size=11
+URxvt*boldItalicFont:   xft:RobotoMono Nerd Font:bold:size=11
+! URxvt.perl-ext-common:  default,clipboard,url-select,keyboard-select
+! URxvt.copyCommand:      xclip -i -selection clipboard
+! URxvt.pasteCommand:     xclip -o -selection clipboard
+! URxvt.keysym.M-c:       perl:clipboard:copy
+! URxvt.keysym.M-v:       perl:clipboard:paste
+! URxvt.keysym.M-C-v:     perl:clipboard:paste_escaped
+! URxvt.keysym.M-Escape:  perl:keyboard-select:activate
+! URxvt.keysym.M-s:       perl:keyboard-select:search
+! URxvt.keysym.M-u:       perl:url-select:select_next
 URxvt.urlLauncher:      firefox
 URxvt.underlineURLs:    true
 URxvt.urlButton:        1
@@ -77,10 +76,17 @@ URxvt.tabbed.tab-bg:    4
 URxvt*buffered:         false          
 URxvt.urgentOnBell: 	True
 
+! Vim bindings
+urxvt.keysym.Home:          \033[1~
+urxvt.keysym.End:           \033[4~
+urxvt.keysym.Control-Up:    \033[1;5A
+urxvt.keysym.Control-Down:  \033[1;5B
+urxvt.keysym.Control-Left:  \033[1;5D
+urxvt.keysym.Control-Right: \033[1;5C
+
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme
 ! ------------------------------------------------------------------------------
-
 rofi.color-enabled: true
 rofi.color-window: #2f343f, #2f343f, #2f343f
 rofi.color-normal: #2f343f, #d8dee8, #2f343f, #2f343f, #81a1c1

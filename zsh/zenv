@@ -9,6 +9,7 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     export GOPATH GOROOT PATH
 
     alias ls="ls --color"  
+    alias keepassxc="keepassxc -style adwaita-dark"
     source ${HOME}/.zsh.gnu
 
     # Check if zsh syntax highlighting is available.
