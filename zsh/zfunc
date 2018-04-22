@@ -36,7 +36,10 @@ pathln() {
 # usage: 
 #      > showcert example.com:443
 #--------------------------------------------------------------#
-showcert() { echo -n | openssl s_client -showcerts -connect $* }
+showcert() { 
+    echo openssl s_client -showcerts -connect $*
+    echo -n | openssl s_client -showcerts -connect $*
+}
 
 ssldump() {
     NIC=$1

@@ -18,5 +18,5 @@
 # Colors for neomutt sidebar
 
 # vim:filetype=muttrc
-color progress color28 default
-color sidebar_divider color28 default
+color progress color0 default
+color sidebar_divider color8 default
