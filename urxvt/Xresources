@@ -96,7 +96,7 @@ rofi.color-urgent: #2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b
 ! ------------------------------------------------------------------------------
 ! Xft Font Configuration
 ! ------------------------------------------------------------------------------
-Xft.dpi: 125
+Xft.dpi: 96
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintslight
