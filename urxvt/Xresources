@@ -87,11 +87,24 @@ urxvt.keysym.Control-Right: \033[1;5C
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme
 ! ------------------------------------------------------------------------------
+rofi.lines: 5
+rofi.eh: 2
+rofi.padding: 200
+rofi.fullscreen: true
+rofi.bw: 0
+rofi.separator-style: none
+rofi.hide-scrollbar: true
+!                  'background', 'border', 'separator'
+!rofi.color-window: argb:c82d303b, #7c8389, #1d1f21
+! State:           'bg',     'fg',     'bgalt',  'hlbg',   'hlfg'
+!rofi.color-normal: argb:31d1f21, #f3f4f5, argb:31d1f21, argb:31d1f21, #9575cd 
+rofi.font: RobotoMono Nerd Font 24
+
 rofi.color-enabled: true
-rofi.color-window: #2f343f, #2f343f, #2f343f
-rofi.color-normal: #2f343f, #d8dee8, #2f343f, #2f343f, #81a1c1
-rofi.color-active: #2f343f, #b48ead, #2f343f, #2f343f, #93e5cc
-rofi.color-urgent: #2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b       
+rofi.color-window: #506A75, #506A75, #506A75
+rofi.color-normal: #506A75, #d8dee8, #506A75, #506A75, #81a1c1
+rofi.color-active: #c82d303b, #b48ead, #506A75, #506A75, #93e5cc
+rofi.color-urgent: #506A75, #ebcb8b, #506A75, #506A75, #ebcb8b       
 
 ! ------------------------------------------------------------------------------
 ! Xft Font Configuration

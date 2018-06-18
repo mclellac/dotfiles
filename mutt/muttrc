@@ -3,26 +3,11 @@
 
 # Account
 # ------------------------------------------------------------------------------
-set imap_check_subscribed
-set imap_user 	= "user@domain"
-set imap_pass 	= ""
-set folder 	    = "imaps://imap.gmail.com:993"
-set smtp_url	= "smtps://user@domain@smtp.gmail.com/465"
-set smtp_pass 	= "" 
-set from 	    = "user@domain"
-set realname 	= ""
+folder-hook 'Personal' 'source ~/.mutt/acct/personal'
+folder-hook 'Work' 'source ~/.mutt/acct/work'
 
-set editor	    = "vim"
-set spoolfile 	= "+INBOX"
-set postponed 	= "+[Gmail]/Drafts"
-set trash		= "imaps://imap.gmail.com/[Gmail]/Bin" 
-set ispell="aspell --mode=email check"
-set include=yes
-
-
-set header_cache        =~/.mutt/cache/headers
-set message_cachedir 	=~/.mutt/cache/bodies
-set certificate_file 	=~/.mutt/certificates
+source $HOME/.mutt/acct/work
+#source $HOME/.mutt/acct/personal
 
 # headers to show
 ignore *                                      # ignore all headers
@@ -39,8 +24,10 @@ set menu_scroll                         # scroll in menus
 set smart_wrap                          # don't split words
 set tilde                               # show tildes like in vim
 set quote_regexp= "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
-set quit= ask-no
+set quit=ask-no
+set askcc=yes
 set delete
+set confirmappend=no    # Confirm when appending messages to an existing mailbox?
 unset record            # prevent dups in Sent
 unset move              # gmail does that
 unset mark_old          # read/new is good enough
@@ -58,7 +45,7 @@ set to_chars= ' »›-‹L'  # This should be ' »›-‹L' to match Gmail, but 
 # Auto check settings
 # ------------------------------------------------------------------------------
 unset imap_passive
-set imap_keepalive          = 300
+set imap_keepalive          = 100
 set check_new               = yes
 set imap_check_subscribed   = yes
 set mail_check	            = 60
@@ -79,6 +66,9 @@ set mailcap_path    = ~/.mutt/mailcap
 set implicit_autoview
 alternative_order text/plain text/html text/enriched text/calendar
 
+# Remove ""Autoview using"" message.
+#set display_filter="sed -e '/^\[-- Autoview using .* --]$/d'"
+
 # Contacts
 # ------------------------------------------------------------------------------
 #set display_filter='${HOME}/.mutt/aliases.sh'
@@ -97,13 +87,9 @@ set sidebar_visible = no  # don't show unless asked for
 set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 
-# You can use any gmail imap mailboxes
-# ---------------------------------------------------------------------------------------------------
-mailboxes =INBOX =[Gmail]/Starred =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
-
 # mutt settings
 set alias_file=$HOME/.mutt/aliases
-source $HOME/.mutt/crypto
+#source $HOME/.mutt/crypto
 source $HOME/.mutt/aliases
 source ${HOME}/.mutt/colors
 source ${HOME}/.mutt/formats

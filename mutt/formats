@@ -80,9 +80,9 @@ set folder_format= " %2C %t %N %2s %d %f" # mailbox list view
 set index_format="%S   • %D   %-20.20L  %T %s"
 
 #set forward_format="[%a: %:ws]"
-set forward_format=" Fwd: %s"
+set forward_format="Fwd: %s"
 
-set message_format=" %s"
+set message_format="%s"
 
 #set pager_format="-%Z- %C/%m: %-20.20n   %s"
 #set pager_format="%S [%C/%T] %l %n %s"

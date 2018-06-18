@@ -111,18 +111,6 @@ if !exists('g:airline_symbols')
 endif
 let g:airline_symbols.space = "\ua0"
 
-" Custom styling
-set fillchars+=vert:│                               " Vertical split bar
-highlight VertSplit ctermbg=NONE ctermfg=0 guibg=NONE
-highlight Normal ctermbg=NONE                       " Text colors
-highlight Comment ctermbg=NONE
-highlight nonText ctermbg=NONE
-highlight Visual cterm=bold ctermbg=6 ctermfg=000   " Visual select UI colors
-highlight Terminal ctermbg=0 ctermfg=15           " terminal UI
-highlight SignColumn ctermbg=2                    " vim-gitgutter UI settings
-highlight Pmenu ctermbg=245 ctermfg=145
-highlight PmenuSel ctermfg=242 ctermbg=140
-
 " set Vim-specific sequences for RGB colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -258,7 +246,7 @@ set matchtime=2
 
 set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
 
-set mouse=a                   " enable mouse use in all modes
+"set mouse=a                   " enable mouse use in all modes
 set cursorline                " highlight curor line
 set nocursorcolumn
 set hidden
@@ -317,14 +305,14 @@ if has("autocmd")
     " Makefiles
     autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
 
-    " HTML, XML, Jinja
-    autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    " HTML, XML, CSS
+    autocmd FileType html  setlocal shiftwidth=4 tabstop=4 softtabstop=4
+    autocmd FileType css   setlocal shiftwidth=4 tabstop=4 softtabstop=4
+    autocmd FileType xml   setlocal shiftwidth=4 tabstop=4 softtabstop=4
 
     " Markdown and Journal
     autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType journal  setlocal shiftwidth=2 tabstop=2 softtabstop=2
 endif
 
 " For everything else, use a tab width of 4 space col.
@@ -534,6 +522,22 @@ inoremap {<CR>  {<CR>}<Esc>O
 inoremap {{     {
 inoremap {}     {}
 
+" Auto-delete closing parenthesis/brace
+function! BetterBackSpace() abort
+    let cur_line = getline('.')
+    let before_char = cur_line[col('.')-2]
+    let after_char = cur_line[col('.')-1]
+    if (before_char == '(' && after_char == ')') || (before_char == '{' && after_char == '}')
+        return "\<Del>\<BS>"
+    else
+        return "\<BS>"
+endfunction
+inoremap <silent> <BS> <C-r>=BetterBackSpace()<CR>
+
+" Skip over closing parenthesis/brace
+inoremap <expr> ) getline('.')[col('.')-1] == ")" ? "\<Right>" : ")"
+inoremap <expr> } getline('.')[col('.')-1] == "}" ? "\<Right>" : "}"
+
 nmap <Leader>tl :set list!<cr>         " toggle list mode
 nmap <Leader>pp :set paste!<cr>        " toggle paste mode
 nnoremap <Leader>bw :lcd %:p:h<CR>:pwd<CR>  " Switch CWD to the directory of the current buffer
@@ -547,3 +551,15 @@ nnoremap <C-H> <C-W><C-H>
 " Open new split panes to right and bottom, which feels more natural than Vim’s default:
 "set splitbelow
 "set splitright
+
+" Custom styling
+set fillchars+=vert:│                               " Vertical split bar
+highlight VertSplit ctermbg=NONE ctermfg=0 guibg=NONE
+highlight Normal ctermbg=NONE                       " Text colors
+highlight Comment ctermbg=NONE
+highlight nonText ctermbg=NONE
+highlight Visual cterm=bold ctermbg=6 ctermfg=000   " Visual select UI colors
+highlight Terminal ctermbg=0 ctermfg=15             " terminal UI
+highlight SignColumn ctermbg=2                      " vim-gitgutter UI settings
+highlight Pmenu ctermbg=245 ctermfg=145
+highlight PmenuSel ctermfg=242 ctermbg=140

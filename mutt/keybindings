@@ -266,20 +266,19 @@ bind generic,pager,editor,index <Esc>* noop
 bind generic,pager,editor,index <Esc>( noop
 bind generic,pager,editor,index <Esc>) noop
 
-bind pager dd noop
-bind pager dt noop
-bind index dd noop
-bind index dt noop
-bind pager zA noop
-bind pager za noop
-bind index zA noop
-bind index za noop
-
+bind index,pager dd noop
+bind index,pager dt noop
+bind index,pager zA noop
+bind index,pager za noop
 
 # Generic can happen anywhere (except pager and editor)
 # Browser is the list of mailboxes
 # Index = the list of messages
 # Pager is when you have an email open
+
+# bindings to switch between accounts
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/acct/personal<enter><change-folder>!<enter>'                                                                                                                             
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/acct/work<enter><change-folder>!<enter>'
 
 ### General bindings ###
 # Jump to the beginning/end
@@ -329,7 +328,7 @@ bind  index w       set-flag
 macro index !       wN  "Mark email as unread"
 bind  index P       previous-new-then-unread
 bind  index N       next-new-then-unread
-macro index r       WN<up>n "Mark as read, then go to next"
+macro index -       WN<up>n "Mark as read, then go to next"
 bind  generic,index t   tag-entry   # gmail uses "x" but we'll use vim-like "t"
 bind  pager         t   tag-message # gmail uses "x" but we'll use vim-like "t"
 bind  index         T   tag-thread  # gmail uses "x" but we'll use vim-like "t"
@@ -345,13 +344,14 @@ bind  pager        za  toggle-quoted         # toggle quote section, similar to 
 
 # Reply/forward/etc.
 bind index m mail
-bind index \Cr reply
-bind index <Esc>r group-reply       # Control-r
+bind index \Cr reply    # Control-r
+bind index r group-reply       
 bind index R list-reply
 bind index b bounce-message
 bind index f forward-message
 
 # Odds and ends
+save-hook . '=Saved'
 bind  index <Return> display-message # TODO: This might not be needed
 bind  index <Right> display-message
 bind  index l       display-message
@@ -364,7 +364,7 @@ bind  index /       limit
 bind  index o       sort-mailbox
 macro index,pager s "<sync-mailbox>"
 bind  index |       pipe-message
-bind  index u       undelete-message
+bind  index,pager u undelete-thread
 bind  index n       next-unread
 bind  index,pager *  flag-message #Star a message
 macro index,pager + <save-message>=[Gmail]/Important<enter><enter><sync-mailbox> "Mark as important"
@@ -388,7 +388,7 @@ bind pager f forward-message
 macro index,pager dd "<purge-message><sync-mailbox>" "move message to trash"
 macro index,pager dt "<purge-thread><sync-mailbox>"  "deleted message thread"
 
-folder-hook +INBOX 'macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter><sync-mailbox>" "Archive conversation"'
+folder-hook +INBOX macro index,pager S <save-message>=Saved<enter><enter><sync-mailbox> "Archive conversation"
 folder-hook +[Gmail]/Bin macro index,pager y <save-message>=INBOX<enter><enter><sync-mailbox> "Move to inbox"
 #folder-hook +[Gmail]/Bin macro index,paper p <purge-message><sync-mailbox> "Purge mail"
 folder-hook +[Gmail]/Starred bind index,pager y flag-message #"Toggle star"

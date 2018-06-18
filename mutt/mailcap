@@ -1,20 +1,21 @@
-#text/html;          w3m -dump %s; nametemplate=%s.html; copiousoutput
+text/html;          w3m -dump %s; nametemplate=%s.html; copiousoutput
+#text/plain;         w3m -dump %s; nametemplate=%s.html; copiousoutput
 
-# MS Word documents
-application/msword; ~/.mutt/bin/view_attachment %s "-" '/Applications/TextEdit.app'
 
-# Images
-image/jpg;   ~/.mutt/bin/view_attachment %s jpg
-image/jpeg;  ~/.mutt/bin/view_attachment %s jpg
-image/pjpeg; ~/.mutt/bin/view_attachment %s jpg
-image/png;   ~/.mutt/bin/view_attachment %s png
-image/gif;   ~/.mutt/bin/view_attachment %s gif
+# auto view using w3m
+#text/html; w3m -I %{charset} -T text/html; copiousoutput;
+
+image/*; img2sixel '%s'
+
+#image/jpg;    w3m %s
+#image/jpeg;   w3m %s
+#image/pjpeg;  w3m %s
+#image/png;    w3m %s
+#image/gif;    w3m %s
+
 
 # PDFs
 application/pdf; ~/.mutt/bin/view_attachment %s pdf
-
-# HTML
-text/html; ~/.mutt/bin/view_attachment %s html
 
 # Unidentified files
 application/octet-stream; ~/.mutt/bin/view_attachment %s "-"

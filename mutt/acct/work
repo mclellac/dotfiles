@@ -1,0 +1,24 @@
+# Work Account
+# ------------------------------------------------------------------------------
+set imap_check_subscribed
+set imap_user 	= "user@domain"
+set imap_pass 	= ""
+set folder 	    = "imaps://imap.gmail.com:993"
+set smtp_url	= "smtps://user@domain@smtp.gmail.com/465"
+set smtp_pass 	= "" 
+set from 	    = "user@domain"
+set realname 	= "real name"
+
+set spoolfile 	= "+INBOX"
+set postponed 	= "+[Gmail]/Drafts"
+set trash		= "imaps://imap.gmail.com/[Gmail]/Bin" 
+set ispell      = "aspell --mode=email check"
+set include=yes
+
+set header_cache        =~/.mutt/cache/work/headers
+set message_cachedir 	=~/.mutt/cache/work/bodies
+set certificate_file 	=~/.mutt/work/certificates
+
+# You can use any gmail imap mailboxes
+# ---------------------------------------------------------------------------------------------------
+mailboxes =INBOX =[Gmail]/Starred =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
