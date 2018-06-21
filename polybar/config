@@ -8,14 +8,14 @@ underline = ${xrdb:active}
 green = ${xrdb:color2}
 
 [bar/default]
-monitor = Virtual1 
+monitor = ${env:MONITOR:} 
 width = ${env:WIDTH:}
 height = 28
 background = ${colors.background}
 foreground = ${colors.foreground}
-font-0 = AvantGarde LT Medium:size=11;3
-font-1 = RobotoMono Nerd Font:style=Regular:size:11;3
-font-2 = FontAwesome:style=Regular:size=11;3
+font-0 = cryptocoins:style=Regular;12;1
+font-1 = RobotoMono Nerd Font:style=Regular:size:12;2
+font-2 = FontAwesome:style=Regular:size=12;3
 fixed-center = true
 line-size = 1
 line-color = #f00
@@ -28,8 +28,13 @@ height = 28
 tray-position = right
 modules-left = i3 
 modules-center = xwindow i3msg
-modules-right = spotify dropbox memory dateTime powermenu
-#battery  cpu
+modules-right = memory dateTime battery powermenu 
+
+[module/crypto]
+type = custom/script
+interval = 300
+exec = /home/mclellac/.config/polybar/crypto.py
+
 
 [module/memory]
 type = internal/memory
@@ -183,7 +188,7 @@ format-prefix = " "
 [module/powermenu]
 type = custom/menu
 format-padding = 1
-label-open = ""
+label-open = "    "
 label-separator = "  "
 menu-0-0 = ""
 menu-0-0-exec = menu-open-1

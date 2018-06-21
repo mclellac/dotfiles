@@ -32,31 +32,28 @@ set_from_resource       $foreground   foreground
 ######################################################################
 #                                 Auostart apps 
 ######################################################################
-exec_always --no-startup-id nitrogen --restore # Set wallpaper
-exec_always --no-startup-id "killall polybar ; ~/.config/polybar/launch-polybar.sh" # polybar -r main 
-exec --no-startup-id compton # compositor for X11
-exec --no-startup-id pamac-tray
-exec --no-startup-id /usr/bin/vmware-user # copy & paste between guest/host
 exec_always --no-startup-id /home/mclellac/bin/set-res
+exec_always --no-startup-id "killall polybar ; ~/.config/polybar/launch-polybar.sh" # polybar -r main 
+exec_always --no-startup-id nitrogen --restore # Set wallpaper
+exec --no-startup-id compton # compositor for X11
+#exec --no-startup-id pamac-tray
+exec --no-startup-id /usr/bin/vmware-user # copy & paste between guest/host
 exec --no-startup-id /usr/lib/gsd-xsettings
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id dropbox start
-exec --no-startup-id unclutter -noevents -keystroke -idle 5 # make cursor invisible when you are taping text or after 5s of inactivity
+exec --no-startup-id unclutter -noevents -keystroke -idle 5 # make cursor invisible when you are typing text or after 5s of inactivity
 exec --no-startup-id xedgewarp -b # make easy to switch cursor between screen with different size
-#exec --no-startup-id volnoti #"A lightweight volume notification daemon
-#exec --no-startup-id nm-applet --sm-disable # Network manager
 exec --no-startup-id xfce4-clipman
 #exec --no-startup-id bitwarden # Password manager
 #exec --no-startup-id evolution # Mail
-exec --no-startup-id firefox
-#exec --no-startup-id slack
-exec --no-startup-id gnome-terminal
+#exec --no-startup-id firefox
+exec --no-startup-id google-chrome-stable
+exec --no-startup-id i3-msg 'workspace 2; exec gnome-terminal'
+exec --no-startup-id i3-msg 'workspace 5; exec gnome-terminal -- zsh && cointop'
+exec --no-startup-id i3-msg 'workspace 5; exec gnome-terminal -- zsh && mutt'
 #exec --no-startup-id gnome-terminal
-#exec --no-startup-id xfce4-panel
 exec --no-startup-id keepassxc -style kvantum
 
-
-# For authentification
-exec --no-startup-id /usr/libexec/polkit-gnome-authentication-agent-1 &
 # Lock in case of user inactivity under X
 #exec --no-startup-id xautolock -time 10 -corners 0-00 -locker "~/bin/lock" &
 
@@ -132,6 +129,44 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
+# gaps configuration
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
 # focus the child container
 #bindsym $mod+d focus child
 
@@ -203,7 +238,7 @@ assign [class="Nautilus|Thunar|Caja|Pcmanfm" ]  $ws1
 assign [class="keepassxc" ]  $ws1
 
 # Terminal in Workspace 2
-assign [class="st-256color|Gnome-terminal"]  $ws2
+#assign [class="st-256color|Gnome-terminal"]  $ws2
 
 # Browsers in Workspace 3
 assign [class="Chromium|Firefox|Opera" ]  $ws3
@@ -258,13 +293,15 @@ gaps outer 0
 
 #smart_gaps on
 smart_borders on
-workspace 1 gaps outer 80
-workspace 1 gaps inner 80
+workspace 1 gaps outer 20
+workspace 1 gaps inner 20
 workspace 2 gaps outer 20
 workspace 2 gaps inner 20
-workspace 3 gaps inner 10
-workspace 3 gaps outer 10
+workspace 3 gaps inner 20
+workspace 3 gaps outer 20
 #workspace 4 gaps inner 0
+workspace 5 gaps inner 20
+workspace 5 gaps outer 20
 workspace 6 gaps inner 20
 workspace 6 gaps outer 20
 #workspace 8 gaps inner 80

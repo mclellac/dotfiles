@@ -1,0 +1,24 @@
+[general]
+base_currency = CAD
+display = percentage
+
+[bitcoin]
+icon = 
+
+[litecoin]
+icon = 
+
+#[ardor]
+#icon = 
+
+[NEO]
+icon = 
+
+[ethereum]
+icon = 
+
+[monero]
+icon = 
+
+[vertcoin]
+icon = 
