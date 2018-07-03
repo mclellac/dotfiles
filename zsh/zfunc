@@ -1,140 +1,154 @@
 #------------------------------------------------------------------------------#
 #                       Command wrapper functions
 #------------------------------------------------------------------------------#
-digans()   { dig "$*" +noall +answer }
-digsoa()   { dig "$*" SOA +noall +answer }
-digmx()    { dig "$*" MX +noall +answer }
-digns()    { dig "$*" NS +noall +answer }
-digany()   { dig "$*" ANY +noall +answer }
+digans() { dig "$*" +noall +answer; }
+digsoa() { dig "$*" SOA +noall +answer; }
+digmx() { dig "$*" MX +noall +answer; }
+digns() { dig "$*" NS +noall +answer; }
+digany() { dig "$*" ANY +noall +answer; }
 
 gcluster() {
-    local ctx=$1
-    local zone=$2
-    local prj=$3
+	local ctx=$1
+	local zone=$2
+	local prj=$3
 
-    if [[ $# -ne 3 ]]; then
-        printf 'gcluster requires a context, region, and project arguments\nie:\n]\t' 
-        printf 'gcluster failover us-west1-b myproject\n'
-        return 1
-    fi
-    
-    echo "gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}"
-    gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}
+	if [[ $# -ne 3 ]]; then
+		printf 'gcluster requires a context, region, and project arguments\nie:\n]\t'
+		printf 'gcluster failover us-west1-b myproject\n'
+		return 1
+	fi
+
+	echo "gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}"
+	gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}
 }
 
 #kubepass() { kubectl config view -o jsonpath='{.users[?(@.name == "$*")].user.password}'" }
 #kubectx () { kubectl config current-context }
-#kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' } 
+#kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' }
 
-pathln() {
-    #echo $PATH | sed -e 's/:/\n/g'
-    echo $PATH | tr : '\n'
-}
+pathln() { echo $PATH | tr : '\n'; }
 
 #--------------------------------------------------------------#
 # display certs for given host
-# usage: 
+# usage:
 #      > showcert example.com:443
 #--------------------------------------------------------------#
-showcert() { 
-    echo openssl s_client -showcerts -connect $*
-    echo -n | openssl s_client -showcerts -connect $*
+showcert() {
+	echo openssl s_client -showcerts -connect $*
+	echo -n | openssl s_client -showcerts -connect $*
 }
 
 ssldump() {
-    NIC=$1
-    PORT=$2
-    sudo tcpdump -ni $NIC "tcp port ${PORT} and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16)" -vvvv
+	NIC=$1
+	PORT=$2
+	sudo tcpdump -ni $NIC "tcp port ${PORT} and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16)" -vvvv
 }
 
 #--------------------------------------------------------------#
 # list the top 20 commands used in history.
 #--------------------------------------------------------------#
 cmdhist() {
-    history|awk '{print $2}'|sort|uniq -c|sort -rn|head -20|sed 's/.\///g'|  \
-    awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"█"; printf "\033[1;34m\%15s\033[0m %4d \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
+	history | awk '{print $2}' | sort | uniq -c | sort -rn | head -20 | sed 's/.\///g' |
+		awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"█"; printf "\033[1;34m\%15s\033[0m %4d \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
 }
 
 #--------------------------------------------------------------#
 # get and preserve the filename on download URL's that redirect
 # and dont support the Content-Disposition header.
 #--------------------------------------------------------------#
-fncurl () { 
-    fn=`curl -sI "$@" | grep 'location:' | \
-    awk -F/ '{print $NF}' | sed 's/\r//'` curl -o $fn -L $@ 
+fncurl() {
+	local fn=$(curl -sI "$@" | grep 'location:' |
+		awk -F/ '{print $NF}' | sed 's/\r//') curl -o ${fn} -L $@
 }
 
 #--------------------------------------------------------------#
-# find and edit the filename argument (usage: fed $filename) 
+# find and edit the filename argument (usage: fed $filename)
 #--------------------------------------------------------------#
-fed()      { find . -type f -name "$*" -exec vim {} \; }  
+fed() {
+	find . -type f -name "$*" -exec vim {} \;
+}
 
 #--------------------------------------------------------------#
 # some Sean Connery, because why not?
 #--------------------------------------------------------------#
-connerize()     { 
-    echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" 
+connerize() {
+	echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g"
 }
 
-connerize-say() { 
-    echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | \
-    say -v "Alex" -i -r 200 
+connerize-say() {
+	echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" |
+		say -v "Alex" -i -r 200
 }
 
-killer() { 
-    ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP 
+killer() {
+	ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP
 }
-
-gocd () { cd `go list -f '{{.Dir}}' $1` }
 
 #--------------------------------------------------------------#
 # Akamai curl
 #   example usage:  akcurl http://example.com/resource
 #--------------------------------------------------------------#
 akcurl() {
-    local orig_dir=$(pwd)
-    cd $HOME/bin
-    curl -i -K akamai.curl "$*"
-    cd $orig_dir
+	local orig_dir=$(pwd)
+	cd $HOME/bin
+	curl -i -K akamai.curl "$*"
+	cd $orig_dir
 }
 
 pull() {
-    VCS_ROOT="${HOME}/Projects/src/$*"
+	local git_root="${HOME}/Projects/src/$*"
+	local project=""
+	local repo=""
 
-    if [[ $OSTYPE = 'linux-gnu' ]]; then
-        alias vcls="ls --color=never"
-    elif [[ $OSTYPE = "darwin"* ]]; then
-        alias vcls="ls"
-    elif [[ "$OSTYPE" == "freebsd"* ]]; then
-        alias vcls="ls"
-    fi
+	if [[ $OSTYPE == 'linux-gnu' ]]; then
+		alias gitls="ls --color=never"
+	else
+		alias gitls="ls"
+	fi
 
-    for dir in `(vcls $VCS_ROOT | grep -v uncommited)`; do 
-        printf "\e[1;36m${VCS_ROOT}/${dir} \e[1;40;92m"
-        cd $VCS_ROOT/${dir}  && printf "\e[0m" && git pull && cd ..; 
-    done
+	for url in $(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //'); do
+
+		if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
+			local icon=" "
+			if [[ "${url}" == *"https"* ]]; then
+				project=$(echo "${url}" | awk -F/ '{print $5}')
+				repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
+			elif [[ "${url}" == *"ssh"* ]]; then
+				project=$(echo "${url}" | awk -F/ '{print $4}')
+				repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
+			fi
+		elif [[ ${url} =~ "github.com" ]]; then
+			local icon=" "
+			git_root="${HOME}/Projects/src/github.com"
+			project="mclellac"
+			repo=$(echo "${url}" | awk -F/ '{print $5}')
+		fi
+
+		printf "\e[1;36m ${icon} ${project}/${repo}  "
+		cd "${git_root}"/"${project}"/"${repo}" && printf "\e[0m" && git pull && cd "${git_root}"
+	done
 }
 
 docker_rmi_all() {
-    for image in `(docker image ls | awk '{print $3}' | grep -v IMAGE )`; do
-        docker image rm -f $image; 
-    done
+	for image in $( (docker image ls | awk '{print $3}' | grep -v IMAGE)); do
+		docker image rm -f $image
+	done
 }
 
 #--------------------------------------------------------------#
 # simple calculator
 #--------------------------------------------------------------#
 calc() {
-    # you will only need to escape multiplication (ie: "calc 2 \* 20").
-    local result=""
-    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
-                          # └─ default (when `--mathlib` is used) is 20
-    if [[ "$result" == *.* ]]; then        
-        printf "$result" | sed -e 's/^\./0./'  \
-            -e 's/^-\./-0./'       \
-            -e 's/0*$//;s/\.$//'   
-    else
-        printf "$result"
-    fi
-    printf "\n"
+	# you will need to escape multiplication (ie: "calc 2 \* 20").
+	local result=""
+	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
+	# └─ default (when `--mathlib` is used) is 20
+	if [[ "$result" == *.* ]]; then
+		printf "$result" | sed -e 's/^\./0./' \
+			-e 's/^-\./-0./' \
+			-e 's/0*$//;s/\.$//'
+	else
+		printf "$result"
+	fi
+	printf "\n"
 }

@@ -6,6 +6,7 @@
 folder-hook 'Personal' 'source ~/.mutt/acct/personal'
 folder-hook 'Work' 'source ~/.mutt/acct/work'
 
+source $HOME/.mutt/colors
 source $HOME/.mutt/acct/work
 #source $HOME/.mutt/acct/personal
 
@@ -32,6 +33,7 @@ unset record            # prevent dups in Sent
 unset move              # gmail does that
 unset mark_old          # read/new is good enough
 unset markers           # no ugly plus signs
+set smtp_authenticators = 'gssapi:login'
 
 # to_chars
 # Controls the character used to indicate mail addressed to you. 
