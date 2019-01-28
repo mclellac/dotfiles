@@ -1,0 +1,36 @@
+# Command aliases
+alias diff="colordiff"
+alias python='python3'
+alias ll="ls -alG"
+alias gitlog="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gitstatus="git status -uno"
+alias history="history 0"
+alias agenda="gcalcli agenda"
+alias calw="clear; gcalcli calw -w 12"
+alias calm="clear; gcalcli calm -w 20"
+alias hd='od -Ax -tx1 -v' # what most people want from od (hexdump)
+alias ccat="ccat -G String="brown" -G Keyword="darkblue" -G Comment="lightgrey"           \
+    -G Type="teal" -G Literal="teal" -G Punctuation="darkred" -G Plaintext="darkblue"     \
+    -G Tag="blue" -G HTMLTag="lightgreen" -G HTMLAttrName="blue" -G HTMLAttrValue="green" \
+    -G Decimal="darkblue" "$@""
+alias mutt="neomutt"
+
+alias podls="echo \"Pods running in current context, and the container images inside them\" && \
+    kubectl get pods --all-namespaces \
+    -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | \
+    grep -E -v '(fluent|heap|l7|kube)' | sed 's/;$//' | sort"
+
+alias ose_services="oc get services --all-namespaces --template '{{range .items}}{{if ne .spec.clusterIP \"None\"}}{{.metadata.name}} {{.metadata.namespace}} {{.spec.clusterIP}} {{(index .spec.ports 0).protocol}} {{(index .spec.ports 0).port}}{{\"\n\"}}{{end}}{{end}}' | sed  -e 's/^/ ⎈ /g' -e 's/ TCP / tcp → /g' -e 's/ UDP / udp → /g'"
+
+alias ose_pods="oc get pods --all-namespaces --template '{{range .items}}{{if .status.containerStatuses}}{{if (index .status.containerStatuses 0).ready}}{{if not .spec.hostNetwork}}{{.spec.nodeName}} {{.status.hostIP}} {{.metadata.name}} {{.metadata.namespace}} {{.status.podIP}} {{printf \"%.21s\" (index .status.containerStatuses 0).containerID}}{{\"\n\"}}{{end}}{{end}}{{end}}{{end}}' | sed -e 's|docker://||'"
+
+alias cputop="top -bc -d 60 -n 5"
+
+#ls -lRU --time-style=long-iso "$PWD"/* | awk 'BEGIN {cont=0; oldd=strftime("%Y%m%d"); } { gsub(/-/,"",$6); if (substr($0,0,1)=="/") { pat=substr($0,0,length($0)-1)"/"; $6="" }; if( $6 ~ /^[0-9]+$/) {if ( $6 < oldd ) { oldd=$6; oldf=$8; for(i=9; i<=NF; i++) oldf=oldf $i; oldf=pat oldf; }; count++;}} END { print "Oldest date: ", oldd, "\nFile:", oldf, "\nTotal compared: ", count}'
+
+#-- unalias --
+# just in case I'm using something that defaults to sissy interactive mode.
+alias rm &>/dev/null && unalias rm
+alias cp &>/dev/null && unalias cp
+alias mv &>/dev/null && unalias mv
+
