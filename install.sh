@@ -114,13 +114,14 @@ github_grab() {
 
 install_deps() {
     msg_box "Attempting to install missing pkgs."
-    for pkg in $(cat "${pkg_list}"); do
+
+    while IFS= read -r pkg; do
         if [[ $OSTYPE != "freebsd"* ]]; then
             $app_installer "${pkg}"
         else
             $bsd_installer "${pkg}" && make && sudo make install
         fi
-    done
+    done < "${pkg_list}"
 
     # Delete /tmp/missing-pkgs.txt when done
     rm "${pkg_list}"
