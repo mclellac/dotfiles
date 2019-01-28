@@ -189,21 +189,20 @@ symlink_dotfiles() {
         softln="${HOME}"/.$(echo "${file}" | awk -F/ '{print $7}')
 
         if [ ! -f "${softln}" ]; then
-            echo "ln -s ${file} ${softln}"
+            echo "${cyan}Symlinking${rst} ${file} ${cyan}->${rst} ${softln}"
             ln -s "${file}" "${softln}"
         else
-            echo "\$ ln -sf ${file} ${softln}"
+            echo "${cyan}Symlinking${rst} ${file} ${cyan}->${rst} ${softln}"
             ln -sf "${file}" "${softln}"
         fi
     done
 
     # Copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
     for file in git/*; do
-        echo "${file}"
         [[ -e "${file}" ]] || break  # handle the case of no files
         f=$(echo "${file}" | awk -F/ '{print $2}')
-        echo "cp ${file} -> ${HOME}/.${f}"
-        cp "${file}" "${HOME}"/."${f}"
+        echo "${cyan}Copying${rst} ${file} ${cyan}->${rst} ${HOME}/.${f}"
+        cp -n "${file}" "${HOME}"/."${f}"
     done
 
     if [[ $OSTYPE == 'linux-gnu' ]]; then
