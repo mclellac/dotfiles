@@ -192,14 +192,18 @@ symlink_dotfiles() {
             echo "ln -s ${file} ${softln}"
             ln -s "${file}" "${softln}"
         else
-            echo "\$ rm ${softln} && ln -s ${file} ${softln}"
-            rm "\$ ${softln}" && ln -s "${file}" "${softln}"
+            echo "\$ ln -sf ${file} ${softln}"
+            ln -sf "${file}" "${softln}"
         fi
     done
 
     # Copy git config files into $HOME, as we don't want them symlinked and mistakenly git pushed
-    for file in $(ls "${dotdir}"/git); do
-        cp "${dotdir}"/git/"${file}" "${HOME}"/."${file}"
+    for file in git/*; do
+        echo "${file}"
+        [[ -e "${file}" ]] || break  # handle the case of no files
+        f=$(echo "${file}" | awk -F/ '{print $2}')
+        echo "cp ${file} -> ${HOME}/.${f}"
+        cp "${file}" "${HOME}"/."${f}"
     done
 
     if [[ $OSTYPE == 'linux-gnu' ]]; then
@@ -216,7 +220,7 @@ symlink_dotfiles() {
 
     # Only symlink zshrc to ~. Keep the rest of the zsh config
     # files in ~/.config/dotfiles/zsh and source them from there.
-    ln -s "${dotdir}"/zsh/zshrc "${HOME}"/.zshrc
+    ln -sf "${dotdir}"/zsh/zshrc "${HOME}"/.zshrc
 
     # Is zplug installed? Install if it isn't.
     if [ ! -d "${HOME}"/.zplug ]; then
