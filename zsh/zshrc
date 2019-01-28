@@ -6,31 +6,24 @@
 #                   ███████╗███████║██║  ██║██║  ██║╚██████╗                   #
 #                   ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝                   #
 #------------------------------------------------------------------------------#
+
 export TERM="xterm-256color"
 stty sane
-
 
 autoload -Uz compinit
 compinit -u
 
-#------------------------------------------------------------------------------#
-#                             Init
-#------------------------------------------------------------------------------#
 source ~/.zplug/init.zsh
 
 # Must be sourced before powerlevel9k as it includes the $WORK_DOMAIN variable
 # for use with custom OpenShift segment
-source ${HOME}/.zprivate     
+source ${HOME}/.zprivate
 
 # powerlevel9k prompt settings
 source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
 
-#PROMPT="%{%F{000}%}$%{%F{default}%} "
-
-#------------------------------------------------------------------------------#
-#                        Plugin Load
-#------------------------------------------------------------------------------#
-# Let zplug manage itself
+# Plugin Load
+#   Let zplug manage itself
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "bhilburn/powerlevel9k", at:nerdfont-complete, use:powerlevel9k.zsh-theme
 zplug "plugins/git", from:oh-my-zsh
@@ -43,6 +36,7 @@ zplug "plugins/tmux", from:oh-my-zsh
 zplug "zsh-users/zsh-autosuggestions", from:github
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:3 # Should be loaded last.
+zplug "mclellac/dotfiles", use:"config/dotfiles/zsh/zshrc.d/*"
 
 zplug load #--verbose
 
@@ -55,102 +49,28 @@ fi
 
 zplug load
 
-#------------------------------------------------------------------------------#
-#                           PATH Variables
-#------------------------------------------------------------------------------#
-PATH=$PATH:$HOME/bin:/usr/local/opt/python/libexec/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin
-
-if [ -d ${HOME}/Library/Android/tools ]; then
-    PATH=$PATH:${HOME}/Library/Android/sdk/platform-tools
-fi
-
-#------------------------------------------------------------------------------#
-#                             Zsh Options
-#------------------------------------------------------------------------------#
-TERM='xterm-256color'
-HISTFILE=$HOME/.zhistory         # Enable history saving on shell exit.
-HISTSIZE=2000                    # Lines of history to maintain memory.
-SAVEHIST=10000                   # Lines of history to maintain in history file.
-HISTCONTROL=ignoredups
-
-setopt MULTIOS                   # Pipe to multiple outputs.
-unsetopt correct                 # unset correct because it is annoyingly stupid.
-setopt APPEND_HISTORY            # Append rather than overwrite history file.
-setopt BANG_HIST                 # Treat the '!' character specially during expansion.
-setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
-setopt HIST_IGNORE_DUPS          # do not record an entry that was just recorded again.
-setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
-setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
-setopt HIST_IGNORE_SPACE         # Do not record an entry starting with a space.
-setopt HIST_SAVE_NO_DUPS         # Do not write duplicate entries in the history file.
-setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
-unsetopt HIST_BEEP               # Nope nope nope nope nope. Never in a million years.
-
-HELPDIR=/usr/local/share/zsh/help
-EDITOR=vim
-VISUAL=vim
-CLICOLOR=1;
-LSCOLORS=exfxcxdxbxegedabagacad;
-export HELPDIR EDITOR VISUAL CLICOLOR LSCOLORS TERM SAVEHIST HISTFILE HISTSIZE HISTCONTROL
-
-# mutt background fix
-export COLORFGBG="default;default" 
-#------------------------------------------------------------------------------#
-#                          Zsh Tab Completions 
-#------------------------------------------------------------------------------#
-#fpath=(/usr/local/share/zsh-completions $fpath)
-
-# OpenShift tab completion
-if [ $commands[oc] ]; then
-    source <(oc completion zsh)
-fi
-# kubectl tab completion
-if [ $commands[kubectl] ]; then
-    source <(kubectl completion zsh)
-fi
-
-#------------------------------------------------------------------------------#
-#                        Colourful Man Pages
-#------------------------------------------------------------------------------#
-man() {
-    env \
-        LESS_TERMCAP_md=$'\e[1;36m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[1;40;92m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[1;32m' \
-            man "$@"
-}
-
-#precmd() {
-#    [[ -n "$TMUX" ]] && PROMPT_COMMAND='echo -n -e "\e]2;${PWD##*/}\e\\"'
-#}
-
-source ${HOME}/.config/dotfiles/zsh/zalias    # Command aliases
-source ${HOME}/.config/dotfiles/zsh/zbindings # Keybinding configuration
-source ${HOME}/.config/dotfiles/zsh/zfunc     # Source some utility functions
-source ${HOME}/.config/dotfiles/zsh/zenv      # Platform specific configuration
-#------------------------------------------------------------------------------#
-#                       Plugin Configurations
-#------------------------------------------------------------------------------#
-# zsh-history-substring-search bindings are in ~/.config/dotfiles/zsh/zbindings
-
 # Autosuggest plugin configuration
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=242"
 
 if zplug check zsh-users/zsh-autosuggestions; then
-# Add history-substring-search-* widgets to list of widgets that clear the autosuggestion
-    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down) 
-    # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to 
+    # Add history-substring-search-* widgets to list of widgets that clear the autosuggestion
+    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
+    # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to
     # avoid conflict with history-substring-search-* widgets
     ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
 fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-# llvm path
+
+# LLVM path
 export PATH="/usr/local/opt/llvm/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Using highlight (http://www.andre-simon.de/doku/highlight/en/highlight.html)
+# export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+# export FZF_DEFAULT_OPTS="--preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500'"
+# Solarized colors
+export FZF_DEFAULT_OPTS='
+  --color=bg+:#1a473a,bg:#383838,spinner:#2CFFE0,hl:#35ad81
+  --color=fg:#839496,header:#20d9d3,info:#35ad81,pointer:#00f1f1
+  --color=marker:#1f454b,fg+:#41d99f,prompt:#2f9a73,hl+:#00ffd9'

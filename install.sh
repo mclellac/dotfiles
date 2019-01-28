@@ -29,8 +29,8 @@ declare -a DIRECTORIES=(
 
 declare -a DEPS=(
     curl
-    vim 
-    git 
+    vim
+    git
     tmux
     clang
     shellcheck
@@ -71,15 +71,15 @@ pkg_mgr() {
         [ ! -f ${HOME}/.zsh.bsd ] && touch ${HOME}/.zsh.bsd
     elif [[ $OSTYPE == 'linux-gnu' ]]; then
         [ ! -f ${HOME}/.zsh.gnu ] && touch ${HOME}/.zsh.gnu
-        elif [ $(cmd_exists pacman) ]; then 
+        elif [ $(cmd_exists pacman) ]; then
             app_installer="sudo pacman -Syuu"
-        if [ $(cmd_exists apt-get) ]; then  
+        if [ $(cmd_exists apt-get) ]; then
             app_installer="sudo apt-get install"
-        elif [ $(cmd_exists dnf) ]; then 
+        elif [ $(cmd_exists dnf) ]; then
             app_installer="sudo dnf install"
-        elif [ $(cmd_exists yum) ]; then 
+        elif [ $(cmd_exists yum) ]; then
             app_installer="sudo yum install"
-        elif [ $(cmd_exists up2date) ]; then 
+        elif [ $(cmd_exists up2date) ]; then
             app_installer="sudo up2date -i"
         else
             printf "${red}[✘] ${white}No pkg manager found for this Linux system!\n"
@@ -91,7 +91,7 @@ pkg_mgr() {
     fi
 }
 
-# github_grab function takes 3 arguments $local_dir, $user, $project 
+# github_grab function takes 3 arguments $local_dir, $user, $project
 github_grab() {
     local_dir=$1
     user=$2
@@ -99,7 +99,7 @@ github_grab() {
 
     msg_box "Github: $user/$project"
 
-    if [ ! -d ${local_dir} ]; then   
+    if [ ! -d ${local_dir} ]; then
         printf "Cloning: https://github.com/${cyan}${user}${rst}/${cyan}${project}${rst} to ${cyan}${local_dir}${rst}\n"
         git clone --recursive https://github.com/${user}/${project} ${local_dir}
     else
@@ -108,7 +108,7 @@ github_grab() {
     fi
 }
 
-install_deps() {    
+install_deps() {
     msg_box "Attempting to install missing pkgs."
     for pkg in `(cat ${pkg_list})`; do
         if [[ $OSTYPE != "freebsd"* ]]; then
@@ -117,7 +117,7 @@ install_deps() {
             $bsd_installer $pkg && make && sudo make install
         fi
     done
-    
+
     # Delete /tmp/missing-pkgs.txt when done
     rm $pkg_list
 
@@ -127,7 +127,7 @@ install_deps() {
 make_dir() {
     local directories="$*"
 
-    if [ ! -d ${directories} ]; then 
+    if [ ! -d ${directories} ]; then
         mkdir -p ${directories} >/dev/null 2>&1 && \
             printf "${rst}DIRECTORIES: ${cyan}${directories} ${rst}created.\n" || \
             printf "${red}Error: ${rst}Failed to create ${red}${directories} ${rst}directories.\n"
@@ -139,7 +139,7 @@ msg_box() {
     local str=("$@") msg_width
 
     printf '\n'
-    
+
     for line in "${str[@]}"; do
         ((msg_width<${#line})) && { msg_width="${#line}"; }
 
@@ -150,15 +150,15 @@ msg_box() {
         x=$(($term_width - $msg_width))
         pad=$(($x / 2))
     done
-    
+
     # draw box
     printf '%s┌' "${orange}" && printf '%.0s─' {0..79} && printf '┐\n' && printf '│%79s │\n'
-    
+
     for line in "${str[@]}"; do
         rpad=$((80 - $pad - $msg_width)) # make sure to close with width 80
         printf "│%$pad.${pad}s" && printf '%s%*s' "$yellow" "-$msg_width" "$line" "${orange}" && printf "%$rpad.${rpad}s│\n"
     done
-    
+
     printf '│%79s │\n' && printf  '└' && printf '%.0s─' {0..79}  && printf '┘\n%s' ${rst}
 }
 
@@ -168,7 +168,7 @@ vim_setup() {
     done
 
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    
+
     printf "${rst}Installing vim plugins: ${cyan} vim +PlugInstall +qall${rst}\n"
     sleep 1
     vim +PlugInstall +qall
@@ -183,7 +183,7 @@ symlink_dotfiles() {
 
         if [ ! -f ${soft_ln} ]; then
             ln -s ${file} ${soft_ln}
-        else 
+        else
             rm ${soft_ln} && ln -s ${file} ${soft_ln}
         fi
     done
@@ -192,21 +192,14 @@ symlink_dotfiles() {
     for file in `(ls ${dotdir}/git)`; do
         cp ${dotdir}/git/$file ${HOME}/.${file}
     done
-    
-    # Copy weechat config files into $HOME/.weechat
-    #[ ! -d ${HOME}/.weechat ] && make_dir ${HOME}/.weechat
-
-    #for file in `(ls ${dotdir}/weechat)`; do
-    #    cp ${dotdir}/weechat/$file ${HOME}/.weechat/${file}
-    #done
 
     if [[ $OSTYPE == 'linux-gnu' ]]; then
         if [ -d ${HOME}/.i3 ]; then
             mv ${HOME}/.i3 ${HOME}/.i3.old && make_dir ${HOME}/.i3
-        else 
+        else
             make_dir ${HOME}/.i3
         fi
-        
+
         ln -s ${dotdir}/i3/config ${HOME}/.i3/config
         ln -s ${dotdir}/i3/i3blocks.conf ${HOME}/.i3/i3blocks.conf
         cp -R ${dotdir}/i3/scripts ${HOME}/.i3/scripts
@@ -221,27 +214,25 @@ symlink_dotfiles() {
         msg_box "Installing zplug"
         curl -sL --proto-redir -all,https \
             https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
-    fi 
+    fi
 
     vim_setup
 }
 
 # Check to make sure ~/.conf DIRECTORIES exists
-[ -d ${dotcfg} ] && msg_box "Using: ${dotcfg}" || make_dir ${dotcfg}
+if [[ -d "${dotcfg}" ]]; then
+   msg_box "Using: ${dotcfg}"
+else
+   make_dir "${dotcfg}"
 
 # Check for ~/.zprivate file, create default if doesn't exist.
-[ ! -f ${HOME}/.zprivate ] && printf "#-- private variables --\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
+[ ! -f "${HOME}"/.zprivate ] && printf "# private variables\nexport WORK_DOMAIN=\"\"\nexport email=\"\"\nexport work_email=\"\"\n" >> .zprivate
 
 # Clone or pull project from git
 github_grab $dotcfg/dotfiles mclellac dotfiles
 
 pkg_mgr
 check_deps
-
-# Install powerline fonts.
-#msg_box "Installing powerline fonts:" \
-#        "https://github.com/powerline/fonts"
-#github_grab ${dotcfg}/powerline-fonts powerline fonts && sh ${dotcfg}/powerline-fonts/install.sh 
 
 # Install nerd-fonts for terminal emulator
 msg_box "Installing nerd-fonts from:" \

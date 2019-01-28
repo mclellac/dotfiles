@@ -1,4 +1,4 @@
-# vim: filetype=muttrc 
+# vim: filetype=muttrc
 
 # set default
 color normal    color7      default
@@ -18,7 +18,7 @@ uncolor index "~E"
 uncolor index "~P"
 uncolor index "~C @.ca"
 uncolor index "~N ~u"
-uncolor index "~N !~u" 
+uncolor index "~N !~u"
 uncolor index "~T"
 uncolor index "~D"
 

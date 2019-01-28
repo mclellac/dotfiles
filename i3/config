@@ -1,4 +1,5 @@
-# i3 config file (v4)
+exec_always xset +fp $HOME/.fonts
+exec_always xsef fp rehash
 
 set $mod Mod4
 set $alt Mod1
@@ -23,44 +24,29 @@ font Roboto 14
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# Set colors from Xresources
-set_from_resource       $active       active
-set_from_resource       $inactive     secondary
-set_from_resource       $background   background
-set_from_resource       $foreground   foreground
-
-######################################################################
-#                                 Auostart apps 
-######################################################################
+# Auostart apps 
 exec_always --no-startup-id /home/mclellac/bin/set-res
-exec_always --no-startup-id "killall polybar ; ~/.config/polybar/launch-polybar.sh" # polybar -r main 
-exec_always --no-startup-id nitrogen --restore # Set wallpaper
-exec --no-startup-id compton # compositor for X11
-#exec --no-startup-id pamac-tray
-exec --no-startup-id /usr/bin/vmware-user # copy & paste between guest/host
+exec --no-startup-id feh --bg-scale $HOME/.cache/wallpaper.jpg
+# python-pywal - generate colorschemes on the fly
+exec --no-startup-id wal -i $HOME/Pictures/.cache/wallpaper.jpg
+# compositor for X11
+exec --no-startup-id compton --config $HOME/.config/compton.conf
+exec_always --no-startup-id "killall polybar; ${HOME}/.config/polybar/launch-polybar.sh" # polybar -r main 
+exec --no-startup-id /usr/bin/vmware-user 
 exec --no-startup-id /usr/lib/gsd-xsettings
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id dropbox start
 exec --no-startup-id unclutter -noevents -keystroke -idle 5 # make cursor invisible when you are typing text or after 5s of inactivity
-exec --no-startup-id xedgewarp -b # make easy to switch cursor between screen with different size
+# make easy to switch cursor between screen with different size
+exec --no-startup-id xedgewarp -b 
 exec --no-startup-id xfce4-clipman
-#exec --no-startup-id bitwarden # Password manager
-#exec --no-startup-id evolution # Mail
-#exec --no-startup-id firefox
-exec --no-startup-id google-chrome-stable
-exec --no-startup-id i3-msg 'workspace 2; exec gnome-terminal'
-exec --no-startup-id i3-msg 'workspace 5; exec gnome-terminal -- zsh && cointop'
-exec --no-startup-id i3-msg 'workspace 5; exec gnome-terminal -- zsh && mutt'
-#exec --no-startup-id gnome-terminal
 exec --no-startup-id keepassxc -style kvantum
-
-# Lock in case of user inactivity under X
-#exec --no-startup-id xautolock -time 10 -corners 0-00 -locker "~/bin/lock" &
+exec --no-startup-id i3-msg 'workspace 2; exec gnome-terminal'
+exec --no-startup-id i3-msg 'workspace 3; exec google-chrome-beta'
 
 ######################################################################
 #                                 Keybindings
 ######################################################################
-
 bindsym $mod+Return exec gnome-terminal
 bindsym $mod+n exec nautilus
 bindsym $mod+t exec terminology
@@ -167,9 +153,6 @@ mode "$mode_gaps_outer" {
         bindsym Escape mode "default"
 }
 
-# focus the child container
-#bindsym $mod+d focus child
-
 # switch to workspace
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
@@ -201,6 +184,8 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+bindsym $mod+r mode "resize"
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -208,7 +193,7 @@ mode "resize" {
         # Pressing left will shrink the window’s width.
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
+        # Pressing down will grrw the window’s height.
         bindsym j resize shrink width 10 px or 10 ppt
         bindsym k resize grow height 10 px or 10 ppt
         bindsym l resize shrink height 10 px or 10 ppt
@@ -225,45 +210,35 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-bindsym $mod+r mode "resize"
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-#bar {
-#        status_command i3status
 
 #::::::::::::::::::::::::: App assigned in workspace ::::::::::::::::::::::::::#
 # Home Workspace 1
-assign [class="Nautilus|Thunar|Caja|Pcmanfm" ]  $ws1
-assign [class="keepassxc" ]  $ws1
-
-# Terminal in Workspace 2
-#assign [class="st-256color|Gnome-terminal"]  $ws2
+assign [class="Nautilus|Thunar|Caja|Pcmanfm"] $ws1
 
 # Browsers in Workspace 3
-assign [class="Chromium|Firefox|Opera" ]  $ws3
+assign [class="Chromium|google-chrome-beta|Google-chrome-betahrome|Firefox"] $ws3
+for_window [class="Google-chrome-beta"] move container to workspace 3
 
 # Code in Workspace 4
-assign [class="Code|Sublime" ]  $ws4
-assign [class="GitKraken" ]  $ws4
-assign [class="freeter"]  $ws4
+assign [class="Code|Sublime"] $ws4
+assign [class="freeter"] $ws4
 assign [class="PacketTracer7"] $ws4
 
 # Messaging Workspace 5
 assign [class="Geary|Evolution|Gnome-calendar"]  $ws5
 
 # Media Workspace 7
-assign [class="Spotify|spotify|Vlc|Rhythmbox|Musixmatch|Parole" ]  $ws7
+assign [class="Spotify|spotify|Vlc|Rhythmbox|Musixmatch|Parole"] $ws7
 
 # Communication Workspace 8
-assign [class="Slack"]  $ws8
+assign [class="Slack"] $ws8
 
-assign [class="Transmission|KeeWeb|Bitwarden"]  $ws9
+assign [class="Transmission|KeeWeb|keepassxc|Bitwarden"] $ws9
 
-assign [class="org.cryptomator.launcher.MainApplication|VirtualBox|Boostnote|Gnome-chess|Pychess|Zeal|MuPDF|Zathura" ]  $ws0
+assign [class="org.cryptomator.launcher.MainApplication|VirtualBox|Boostnote|Gnome-chess|Pychess|Zeal|MuPDF|Zathura"] $ws0
 
 # Office
-assign [class="Et|Wpp|Wps"]  $ws0
+assign [class="Et|Wpp|Wps"] $ws0
 
 # Force some app to move to their assigned workspace
 for_window [class="Spotify"] move to workspace $ws7
@@ -275,7 +250,7 @@ for_window [class="Nautilus|Caja|Thunar"] focus
 for_window [class="Code"] focus
 
 #::::::::::::::::::::::::: FLOATING or TILED ::::::::::::::::::::::::::#
-for_window [class="Peek|onionshare-gui"] floating enable
+for_window [class="keepass|onionshare-gui"] floating enable
 for_window [class="freeter|Catfish"] floating enable
 for_window [class="^Gpick$"] floating enable
 for_window [class="Pavucontrol"] floating enable
@@ -288,7 +263,7 @@ for_window [class="sample.Main|dev.Main"] floating enable # Floating for dev GUI
 
 #::::::::::::::::::::::::: APPEARANCE ::::::::::::::::::::::::::#
 for_window [class="^.*"] border pixel 2
-gaps inner 0
+gaps inner 40
 gaps outer 0
 
 #smart_gaps on
@@ -297,19 +272,29 @@ workspace 1 gaps outer 20
 workspace 1 gaps inner 20
 workspace 2 gaps outer 20
 workspace 2 gaps inner 20
-workspace 3 gaps inner 20
-workspace 3 gaps outer 20
+workspace 3 gaps inner 0
+workspace 3 gaps outer 0
 #workspace 4 gaps inner 0
-workspace 5 gaps inner 20
-workspace 5 gaps outer 20
-workspace 6 gaps inner 20
-workspace 6 gaps outer 20
+workspace 5 gaps inner 0
+workspace 5 gaps outer 0
+workspace 6 gaps inner 40
+workspace 6 gaps outer 0
 #workspace 8 gaps inner 80
 #workspace 8 gaps outer 0
 
-# window colors
-#                         border               background          text                   indicator
-client.focused            $active              $active             $active                 $active
-client.unfocused          $background          $background         $background
-client.urgent             $urgent              $urgent             $urgent                 $urgent
+# Set colors from Xresources
+# Change 'color7' and 'color2' to whatever colors you want i3 to use
+# from the generated scheme.
+# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
+# it fails to get colors from Xresources for some reason.
+set_from_resource $fg i3wm.color0 #263238
+set_from_resource $bg i3wm.color6 #26a69a
 
+# class                 border  backgr. text indicator child_border
+client.focused          $bg     $bg     $fg  $bg       $bg
+client.focused_inactive $bg     $bg     $fg  $bg       $bg
+client.unfocused        $fg     $fg     $fg  $fg       $fg
+client.urgent           $bg     $bg     $fg  $bg       $bg
+client.placeholder      $bg     $bg     $fg  $bg       $bg
+
+client.background       $bg

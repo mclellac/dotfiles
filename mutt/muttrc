@@ -18,10 +18,10 @@ hdr_order from: to: cc: date: subject:        # and in this order
 # Pager options
 # ------------------------------------------------------------------------------
 set help=no 		                    # hide help bar
-set pager_index_lines = 0               # number of index lines to show 
+set pager_index_lines = 0               # number of index lines to show
 set pager_context     = 10              # number of context lines to show
 set pager_stop                          # don't go to next message automatically
-set menu_scroll                         # scroll in menus 
+set menu_scroll                         # scroll in menus
 set smart_wrap                          # don't split words
 set tilde                               # show tildes like in vim
 set quote_regexp= "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
@@ -36,11 +36,11 @@ unset markers           # no ugly plus signs
 set smtp_authenticators = 'gssapi:login'
 
 # to_chars
-# Controls the character used to indicate mail addressed to you. 
+# Controls the character used to indicate mail addressed to you.
 # * The first character is the one used when the mail is NOT addressed to your address (default: space).
-# * The second is used when you are the only recipient of the message (default: +). 
-# * The third is when your address appears in the TO header field, but you are not the only recipient of the message (default: T). 
-# * The fourth character is used when your address is specified in the CC header field, but you are not the only recipient. 
+# * The second is used when you are the only recipient of the message (default: +).
+# * The third is when your address appears in the TO header field, but you are not the only recipient of the message (default: T).
+# * The fourth character is used when your address is specified in the CC header field, but you are not the only recipient.
 # * The fifth character is used to indicate mail that was sent by you. The sixth character is used to indicate when a mail was sent to a mailing-list you subscribe to (default: L).
 set to_chars= ' »›-‹L'  # This should be ' »›-‹L' to match Gmail, but $to_chars breaks on unicode.
 
