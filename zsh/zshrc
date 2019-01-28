@@ -13,10 +13,16 @@ stty sane
 autoload -Uz compinit
 compinit -u
 
-source ~/.zplug/init.zsh
+# Check if zplug is installed. Install it if it isn't.
+if [[ ! -d ~/.zplug ]]; then
+  git clone https://github.com/zplug/zplug ~/.zplug
+  source ~/.zplug/init.zsh && zplug update --self
+else
+    source ~/.zplug/init.zsh
+fi
 
 # Must be sourced before powerlevel9k as it includes the $WORK_DOMAIN variable
-# for use with custom OpenShift segment
+# the custom OpenShift segment uses.
 source ${HOME}/.zprivate
 
 # powerlevel9k prompt settings
@@ -36,7 +42,7 @@ zplug "plugins/tmux", from:oh-my-zsh
 zplug "zsh-users/zsh-autosuggestions", from:github
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:3 # Should be loaded last.
-zplug "mclellac/dotfiles", use:"config/dotfiles/zsh/zshrc.d/*"
+zplug "mclellac/dotfiles", use:"zsh/zshrc.d/*"
 
 zplug load #--verbose
 
