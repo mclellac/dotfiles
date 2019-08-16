@@ -6,6 +6,7 @@
 #                   ███████╗███████║██║  ██║██║  ██║╚██████╗                   #
 #                   ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝                   #
 #------------------------------------------------------------------------------#
+#zmodload zsh/zprof
 
 export TERM="xterm-256color"
 stty sane
@@ -13,70 +14,116 @@ stty sane
 autoload -Uz compinit
 compinit -u
 
-# Check if zplug is installed. Install it if it isn't.
-if [[ ! -d ~/.zplug ]]; then
-  git clone https://github.com/zplug/zplug ~/.zplug
-  source ~/.zplug/init.zsh && zplug update --self
-else
-    source ~/.zplug/init.zsh
-fi
-
-# Must be sourced before powerlevel9k as it includes the $WORK_DOMAIN variable
+# Must be sourced before powerlevel10k as it includes the $WORK_DOMAIN variable
 # the custom OpenShift segment uses.
 source ${HOME}/.zprivate
 
-# powerlevel9k prompt settings
-source ${HOME}/.config/dotfiles/zsh/powerlevel9k.conf
+# powerlevel10k prompt settings
+source ${HOME}/.config/dotfiles/zsh/powerlevel10k.conf
 
-# Plugin Load
-#   Let zplug manage itself
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-zplug "bhilburn/powerlevel9k", at:nerdfont-complete, use:powerlevel9k.zsh-theme
-zplug "plugins/git", from:oh-my-zsh
-zplug "plugins/git-flow", from:oh-my-zsh
-zplug "plugins/git-extras", from:oh-my-zsh
-zplug "plugins/command-not-found", from:oh-my-zsh
-zplug "plugins/fasd", from:oh-my-zsh
-zplug "plugins/tmux", from:oh-my-zsh
-# load zsh-syntax-highlighting before zsh-history-substring-search
-zplug "zsh-users/zsh-autosuggestions", from:github
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:3 # Should be loaded last.
-zplug "mclellac/dotfiles", use:"zsh/zshrc.d/*"
-
-zplug load #--verbose
-
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+if [[ ! -d "${HOME}/.zgen" ]]; then
+    echo "Zgen not found. Installing."
+    git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 fi
 
-zplug load
+# load zgen
+source "${HOME}/.zgen/zgen.zsh"
 
-# Autosuggest plugin configuration
+# If the init scipt doesn't exist.
+if ! zgen saved; then
+    echo "Creating a zgen save"
+
+    # Bulk load.
+    zgen loadall <<EOPLUGINS
+        zsh-users/zsh-syntax-highlighting
+        zsh-users/zsh-autosuggestions
+        bhilburn/powerlevel9k powerlevel9k
+        zsh-users/zsh-history-substring-search
+EOPLUGINS
+    # ^ Can't indent EOPLUGINS.
+
+    # Completions.
+    zgen load zsh-users/zsh-completions src
+
+    # Save all to init script.
+    zgen save
+fi
+
+# Go 1.11 modules support
+export GO111MODULE=on
+
+# Autosuggest plugin configuration.
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=242"
 
-if zplug check zsh-users/zsh-autosuggestions; then
-    # Add history-substring-search-* widgets to list of widgets that clear the autosuggestion
-    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
-    # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to
-    # avoid conflict with history-substring-search-* widgets
-    ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
+ # Add history-substring-search-* widgets to list of widgets that clear the autosuggestion.
+ ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
+ # Remove *-line-or-history widgets from list of widgets that clear the autosuggestion to
+ # avoid conflict with history-substring-search-* widgets.
+ ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
+
+if test -e "${HOME}/.iterm2_shell_integration.zsh"; then
+   source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+if [[ -n "$ITERM_SESSION_ID" ]]; then
+    tab-red()   { tab-color 255 46 46 }
+    tab-green() { tab-color 82 204 141 }
+    tab-blue()  { tab-color 101 127 173 }
+    tab-reset() { echo -ne "\033]6;1;bg;*;default\a" }
+
+    tab-color() {
+        echo -ne "\033]6;1;bg;red;brightness;$1\a"
+        echo -ne "\033]6;1;bg;green;brightness;$2\a"
+        echo -ne "\033]6;1;bg;blue;brightness;$3\a"
+    }
+
+    function iterm2_tab_precmd() {
+        tab-reset
+    }
+
+    function iterm2_tab_preexec() {
+        if [[ "$1" =~ "^ssh " ]]; then
+            if [[ "$1" =~ ".ca$" ]]; then
+                tab-color 252 3 3
+            elif [[ "$1" =~ "bastion" ]]; then
+                tab-color 255 153 0
+            else
+                tab-color 112 204 163
+            fi
+        else
+            tab-color 116 178 181
+        fi
+    }
+
+    autoload -U add-zsh-hook
+    add-zsh-hook precmd  iterm2_tab_precmd
+    add-zsh-hook preexec iterm2_tab_preexec
+fi
+
+function _pip_completion {
+  local words cword
+  read -Ac words
+  read -cn cword
+  reply=( $( COMP_WORDS="$words[*]" \
+             COMP_CWORD=$(( cword-1 )) \
+             PIP_AUTO_COMPLETE=1 $words[1] ) )
+}
+compctl -K _pip_completion pip
 
 # LLVM path
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# Using highlight (http://www.andre-simon.de/doku/highlight/en/highlight.html)
-# export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-# export FZF_DEFAULT_OPTS="--preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (highlight -O ansi -l {} || coderay {} || rougify {} || cat {}) 2> /dev/null | head -500'"
 # Solarized colors
 export FZF_DEFAULT_OPTS='
   --color=bg+:#1a473a,bg:#383838,spinner:#2CFFE0,hl:#35ad81
   --color=fg:#839496,header:#20d9d3,info:#35ad81,pointer:#00f1f1
   --color=marker:#1f454b,fg+:#41d99f,prompt:#2f9a73,hl+:#00ffd9'
+
+source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zoptions
+source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zbindings
+source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zalias
+source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zenv
+source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zfunc
+
+#zprof

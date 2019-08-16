@@ -44,7 +44,7 @@ LEN=${#DEPS[*]}
 cmd_exists()    { [ -x "$(command -v "$1")" ] && printf 0 || printf 1; }
 
 check_deps() {
-    msg_box "Checking to see if the following applications have been installed"
+    msg_box "Checking to see if the following applications have been installed."
 
     for (( i=0; i<=((LEN -1)); i++ )); do
         if [ "$(cmd_exists "${DEPS[$i]}")" -eq 0 ]; then
@@ -101,7 +101,7 @@ github_grab() {
     user=$2
     project=$3
 
-    msg_box "Github: $user/$project"
+    msg_box "Github: $user/$project."
 
     if [ ! -d "${local_dir}" ]; then
         printf "Cloning: https://github.com/%s%s%s/%s%s%s to %s%s%s\n" "${cyan}" "${user}" "${rst}" "${cyan}" "${project}" "${rst}" "${cyan}" "${local_dir}" "${rst}"
@@ -224,7 +224,7 @@ symlink_dotfiles() {
 
     # Is zplug installed? Install if it isn't.
     if [ ! -d "${HOME}"/.zplug ]; then
-        msg_box "Installing zplug"
+        msg_box "Installing zplug."
         curl -sL --proto-redir -all,https \
             https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
     fi
@@ -234,7 +234,7 @@ symlink_dotfiles() {
 
 # Check to make sure ~/.conf DIRECTORIES exists
 if [[ -d "${dotcfg}" ]]; then
-   msg_box "Using: ${dotcfg}"
+   msg_box "Using: ${dotcfg}."
 else
    make_dir "${dotcfg}"
 fi

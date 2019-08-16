@@ -31,6 +31,7 @@ endif
 
 call plug#begin('~/.vim/plugged')
 " Languages
+Plug 'lervag/vimtex'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'smerrill/vcl-vim-plugin'
@@ -64,6 +65,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 " Tools
+Plug 'RRethy/vim-illuminate'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -105,7 +107,15 @@ if (has("termguicolors"))
     set termguicolors
 endif
 
-" Rainbow configuration
+
+" Plugin: vim-illuminate
+" Time in milliseconds (default 250)
+let g:Illuminate_delay = 50
+
+" Don't highlight word under cursor (default: 1)
+let g:Illuminate_highlightUnderCursor = 0
+
+" Plugin: Rainbow
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 
 let g:rainbow_conf = {
@@ -221,7 +231,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "------------------------------------------------------------------------------"
 map ; :Files<CR> " bind ; key for fzf
 
-nmap ; :Files<CR>
+nmap <C-f> :Files<CR>
 nmap <C-o> :Buffers<CR>
 nmap <C-;> :Tags<CR>
 
@@ -572,6 +582,7 @@ let g:ale_echo_msg_warning_str = 'W'
 
 let g:ale_linters = {
             \ 'python'      : ['pylint', 'autopep8', 'flake8'],
+            \ 'latex'       : ['lacheck'],
             \ 'javascript'  : ['eslint'],
             \ 'rust'        : ['rustc']
             \}
@@ -658,8 +669,8 @@ let g:config_Beautifier['js'] = {}
 let g:config_Beautifier['js'].indent_style = 'tab'
 let g:config_Beautifier['jsx'] = {}
 let g:config_Beautifier['jsx'].indent_style = 'tab'
-let g:config_Beautifier['json'] = {}
-let g:config_Beautifier['json'].indent_style = 'tab'
+"let g:config_Beautifier['json'] = {}
+"let g:config_Beautifier['json'].indent_style = 'tab'
 let g:config_Beautifier['css'] = {}
 let g:config_Beautifier['css'].indent_style = 'tab'
 let g:config_Beautifier['html'] = {}
@@ -668,14 +679,14 @@ let g:config_Beautifier['html'].indent_style = 'tab'
 augroup beautify
     autocmd!
     autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-    autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+    "   autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
     autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
     autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
     autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
     autocmd FileType javascript nnoremap <buffer> <Leader>bf :call JsBeautify()<cr>
     autocmd FileType javascript vnoremap <buffer> <Leader>bf :call RangeJsBeautify()<cr>
-    autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
-    autocmd FileType json vnoremap <buffer> <Leader>bf :call RangeJsonBeautify()<cr>
+    "   autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
+    "   autocmd FileType json vnoremap <buffer> <Leader>bf :call RangeJsonBeautify()<cr>
     autocmd FileType jsx nnoremap <buffer> <Leader>bf :call JsxBeautify()<cr>
     autocmd FileType jsx vnoremap <buffer> <Leader>bf :call RangeJsxBeautify()<cr>
     autocmd FileType html nnoremap <buffer> <Leader>bf :call HtmlBeautify()<cr>
@@ -757,9 +768,9 @@ function! BetterBackSpace() abort
     set splitbelow
     set splitright
 
-"------------------------------------------------------------------------------"
-"           CursorShape: Toggle between bar and box based on mode.
-"------------------------------------------------------------------------------"
+    "------------------------------------------------------------------------------"
+    "           CursorShape: Toggle between bar and box based on mode.
+    "------------------------------------------------------------------------------"
     " For gnome-terminal (≥3.16) & Konsole (KDE5)
     if has("autocmd")
         au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
@@ -796,6 +807,8 @@ function! BetterBackSpace() abort
     hi GitGutterDelete          ctermfg=red    guifg=#c95656 guibg=NONE
     hi GitGutterChangeDelete    ctermfg=yellow guifg=#9c9e3c guibg=NONE
 
+    "
+    hi illuminatedWord          ctermfg=yellow guifg=#00faff guibg=#377987 gui=underline
     " Highlight trailing whitespace
     highlight ExtraWhitespace ctermbg=red guibg=red
     match ExtraWhitespace /\s\+$/

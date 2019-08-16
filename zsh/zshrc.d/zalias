@@ -1,3 +1,15 @@
+case ${OSTYPE} in
+darwin*)
+  # eval $(dircolors ${HOME}/.dir_colors)
+  alias ls='ls -G'
+  ;;
+linux*)
+  # stty -ixon -ixoff
+  # eval $(dircolors ${HOME}/.dir_colors)
+  alias ls='ls --color'
+  ;;
+esac
+
 # Command aliases
 alias diff="colordiff"
 alias python='python3'

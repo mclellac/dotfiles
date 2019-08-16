@@ -9,7 +9,6 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     export PYTHONPATH="${HOME}/.local/lib/python3.7/site-packages/:/home/mclellac/Projects/src/stash.nm.cbc.ca/op/apptoss/apptoss:/usr/local/lib64/python3.7/site-packages:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
 
     alias pip="pip3"
-    alias ls="ls --color"
     alias keepassxc="keepassxc -style adwaita-dark"
     source ${HOME}/.zsh.gnu
 
@@ -24,16 +23,12 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     fi
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
     alias ls="ls -G"
-
     source ${HOME}/.zsh.bsd
 elif [[ $OSTYPE = "darwin"* ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/local/opt/go/libexec"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/Library/Python/3.7/bin:/usr/local/opt/curl/bin"
     export GOPATH GOROOT PATH
-
-    alias ls="ls -G"
-    alias airport="/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport"
 
     if type "fzf" > /dev/null; then
         source /usr/local/opt/fzf/shell/key-bindings.zsh
@@ -46,7 +41,7 @@ elif [[ $OSTYPE = "darwin"* ]]; then
 
     # zsh-syntax-highlighting (brew package)
     source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    
+
     # iterm shell integration
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
     source ${HOME}/.zsh.osx

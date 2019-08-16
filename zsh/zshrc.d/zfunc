@@ -19,26 +19,26 @@ digmx() { dig "$*" MX +noall +answer; }
 digns() { dig "$*" NS +noall +answer; }
 digany() { dig "$*" ANY +noall +answer; }
 
-gcluster() {
-	local ctx=$1
-	local zone=$2
-	local prj=$3
+#gcluster() {
+#	local ctx=$1
+#	local zone=$2
+#	local prj=$3
+#
+#	if [[ $# -ne 3 ]]; then
+#		printf 'gcluster requires a context, region, and project arguments\nie:\n]\t'
+#		printf 'gcluster failover us-west1-b myproject\n'
+#		return 1
+#	fi
+#
+#	echo "gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}"
+#	gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}
+#}
 
-	if [[ $# -ne 3 ]]; then
-		printf 'gcluster requires a context, region, and project arguments\nie:\n]\t'
-		printf 'gcluster failover us-west1-b myproject\n'
-		return 1
-	fi
+kubepass() { kubectl config view -o jsonpath='{.users[?(@.name == "$*")].user.password}' }
+kubectx () { kubectl config current-context }
+kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' }
 
-	echo "gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}"
-	gcloud container clusters get-credentials ${ctx} --zone ${zone} --project ${prj}
-}
-
-#kubepass() { kubectl config view -o jsonpath='{.users[?(@.name == "$*")].user.password}'" }
-#kubectx () { kubectl config current-context }
-#kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' }
-
-pathln() { echo $PATH | tr : '\n'; }
+#pathln() { echo $PATH | tr : '\n'; }
 
 #--------------------------------------------------------------#
 # display certs for given host
@@ -60,24 +60,8 @@ ssldump() {
 # list the top 20 commands used in history.
 #--------------------------------------------------------------#
 cmdhist() {
-	history | awk '{print $2}' | sort | uniq -c | sort -rn | head -20 | sed 's/.\///g' |
-		awk '!max{max=$1;}{r="";i=s=60*$1/max;while(i-->0)r=r"█"; printf "\033[1;34m\%15s\033[0m %4d \033[1;36m\%s\033[0m %s",$2,$1,r,"\n";}'
-}
-
-#--------------------------------------------------------------#
-# get and preserve the filename on download URL's that redirect
-# and dont support the Content-Disposition header.
-#--------------------------------------------------------------#
-fncurl() {
-	local fn=$(curl -sI "$@" | grep 'location:' |
-		awk -F/ '{print $NF}' | sed 's/\r//') curl -o ${fn} -L $@
-}
-
-#--------------------------------------------------------------#
-# find and edit the filename argument (usage: fed $filename)
-#--------------------------------------------------------------#
-fed() {
-	find . -type f -name "$*" -exec vim {} \;
+	history | awk '{print $2}' | sort | uniq -c | sort -rn | head -20 | sed 's/.\///g' | \
+			awk '!max{max=$1;}{r=""; i=s=60 * $1/max; while(i-->0) r=r"█"; printf "\033[1;34m %15s \033[0m %4d \033[1;36m %s \033[0m %s", $2, $1, r, "\n";}'
 }
 
 #--------------------------------------------------------------#
@@ -92,10 +76,6 @@ connerize-say() {
 		say -v "Alex" -i -r 200
 }
 
-killer() {
-	ps aux | grep "$*" | grep -v grep | awk '{print $2}' | xargs kill -HUP
-}
-
 #--------------------------------------------------------------#
 # Akamai curl
 #   example usage:  akcurl http://example.com/resource
@@ -106,6 +86,11 @@ akcurl() {
 	cd $HOME/bin
 	curl -I ${AKFLAGS[@]} "$*"
 	cd $orig_dir
+}
+
+aklab() {
+    AKFLAGS=(-H "Pragma: akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-ssl-client-session-id, akamai-x-get-true-cache-key, akamai-x-get-request-id" -H "x-akamai-logging-mode: verbose" -vv -H "User-Agent: AU-KSD")
+    curl -I ${AKFLAGS[@]} "$*"
 }
 
 pull() {
@@ -144,26 +129,20 @@ pull() {
     cd "${git_root}"
 }
 
-docker_rmi_all() {
-	for image in $( (docker image ls | awk '{print $3}' | grep -v IMAGE)); do
-		docker image rm -f $image
-	done
-}
-
 #--------------------------------------------------------------#
 # simple calculator
 #--------------------------------------------------------------#
-calc() {
+#calc() {
 	# you will need to escape multiplication (ie: "calc 2 \* 20").
-	local result=""
-	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
+#	local result=""
+#	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
 	# └─ default (when `--mathlib` is used) is 20
-	if [[ "$result" == *.* ]]; then
-		printf "$result" | sed -e 's/^\./0./' \
-			-e 's/^-\./-0./' \
-			-e 's/0*$//;s/\.$//'
-	else
-		printf "$result"
-	fi
-	printf "\n"
-}
+#	if [[ "$result" == *.* ]]; then
+#		printf "$result" | sed -e 's/^\./0./' \
+#			-e 's/^-\./-0./' \
+#			-e 's/0*$//;s/\.$//'
+#	else
+#		printf "$result"
+#	fi
+#	printf "\n"
+#}
