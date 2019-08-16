@@ -2,11 +2,17 @@
 export PATH="$PATH:${HOME}/.cargo/bin"
 
 if [[ $OSTYPE = 'linux-gnu' ]]; then
+    if [[ $(uname -a) =~ "Microsoft" ]]; then
+        GOROOT="/usr/lib/go"
+    else
+        GOROOT="/usr/lib/golang"
+    fi
+
     GOPATH="${HOME}/Projects"
-    GOROOT="/usr/lib/golang"
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/.local/bin"
+   
     export GOPATH GOROOT PATH
-    export PYTHONPATH="${HOME}/.local/lib/python3.7/site-packages/:/home/mclellac/Projects/src/stash.nm.cbc.ca/op/apptoss/apptoss:/usr/local/lib64/python3.7/site-packages:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
+#    export PYTHONPATH="${HOME}/.local/lib/python3.7/site-packages/:/home/mclellac/Projects/src/stash.nm.cbc.ca/op/apptoss/apptoss:/usr/local/lib64/python3.7/site-packages:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
 
     alias pip="pip3"
     alias keepassxc="keepassxc -style adwaita-dark"

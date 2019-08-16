@@ -412,6 +412,7 @@ set updatecount=100           " switch every 100 chars
 set complete=.,w,b,u,U,t,i,d  " do lots of scanning on tab completion
 set noerrorbells              " no error bells please
 set novisualbell              " no vusual bell either, please.
+set belloff=all
 set shell=zsh
 set fileformats=unix
 set ff=unix
@@ -618,7 +619,7 @@ set statusline=%{LinterStatus()}
 " Python Settings
 " python autocomplete settings required jedi package
 " $ pip install jedi
-let g:completor_python_binary = '/usr/local/bin/python3'
+let g:completor_python_binary = '/usr/bin/python3'
 
 " Terraform plugin options
 let g:terraform_fold_sections=1
