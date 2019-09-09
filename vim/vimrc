@@ -42,11 +42,13 @@ Plug 'mattn/emmet-vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 Plug 'michaeljsmith/vim-indent-object'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 " Formatting
 Plug 'Chiel92/vim-autoformat'
 " Colorschemes & Icons
 Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'jacoborus/tender'
 Plug 'luochen1990/rainbow'
@@ -70,7 +72,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-endwise'
 Plug 'kana/vim-smartinput'
 Plug 'cohama/vim-smartinput-endwise'
@@ -106,6 +108,10 @@ endif
 if (has("termguicolors"))
     set termguicolors
 endif
+
+" Plugin: vim-markdown
+" let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_folding_style_pythonic = 1
 
 
 " Plugin: vim-illuminate
@@ -192,39 +198,39 @@ endif
 nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
 
 
-"------------------------------------------------------------------------------"
-"                       Plugin: NERDtree Syntax highlight
-"------------------------------------------------------------------------------"
-let g:NERDTreeFileExtensionHighlightFullName = 1
-let g:NERDTreeExactMatchHighlightFullName = 1
-let g:NERDTreePatternMatchHighlightFullName = 1
-let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
-
-"------------------------------------------------------------------------------"
-"                           Plugin: NERDtree
-"------------------------------------------------------------------------------"
-" open NERDtree if vim was started without loading any file(s)
-autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists(“s:std_in”) | NERDTree | endif
-autocmd vimenter * NERDTree
-
-" cosmetic settings - annoyance removal
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-
-" NERDtree ignore
-let NERDTreeIgnore = ['\.pyc$', '__*']
-
-" map to ,-f
-nnoremap <Leader>f :NERDTreeToggle<Enter>
-map <F2> :NERDTreeToggle<CR>
-
-" Keep NERDtree open when a file has been opened
-let NERDTreeQuitOnOpen = 1
-
-" close NERDtree if no other windows are open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+""------------------------------------------------------------------------------"
+""                       Plugin: NERDtree Syntax highlight
+""------------------------------------------------------------------------------"
+"let g:NERDTreeFileExtensionHighlightFullName = 1
+"let g:NERDTreeExactMatchHighlightFullName = 1
+"let g:NERDTreePatternMatchHighlightFullName = 1
+"let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
+"let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
+"
+""------------------------------------------------------------------------------"
+""                           Plugin: NERDtree
+""------------------------------------------------------------------------------"
+"" open NERDtree if vim was started without loading any file(s)
+"autocmd StdinReadPre * let s:std_in=1
+""autocmd VimEnter * if argc() == 0 && !exists(“s:std_in”) | NERDTree | endif
+"autocmd vimenter * NERDTree
+"
+"" cosmetic settings - annoyance removal
+"let NERDTreeMinimalUI = 1
+"let NERDTreeDirArrows = 1
+"
+"" NERDtree ignore
+"let NERDTreeIgnore = ['\.pyc$', '__*']
+"
+"" map to ,-f
+"nnoremap <Leader>f :NERDTreeToggle<Enter>
+"map <F2> :NERDTreeToggle<CR>
+"
+"" Keep NERDtree open when a file has been opened
+"let NERDTreeQuitOnOpen = 1
+"
+"" close NERDtree if no other windows are open
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "------------------------------------------------------------------------------"
 "                           Plugin: fzf
@@ -375,6 +381,9 @@ nnoremap <Leader>gs :GitGutterStageHunk<CR>
 nnoremap <Leader>gu :GitGutterUndoHunk<CR>
 
 " IndentLine settings
+" Disable annoying doube quote concealing with JSON.
+autocmd Filetype json let g:indentLine_setConceal = 0
+
 let g:indentLine_char = ' '
 "let g:indentLine_color_term = 235
 
@@ -479,16 +488,8 @@ if has("autocmd")
     autocmd BufRead,BufNewFile *.go set sw=4 sts=4
     autocmd BufRead,BufNewFile *.go set noexpandtab
 
-    " Go setup assumptions: golint, gocode, gotags all in path
-    "au BufRead,BufNewFile *.go set noexpandtab sw=4 sts=4 syntax=go listchars=tab:\|\ ,trail:- " Go uses tabs
-    "au BufWritePre *.go Fmt
-    "au BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
-
     " Python
     autocmd BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 expandtab autoindent fileformat=unix
-
-    " HTML, CSS, JS
-    autocmd BufNewFile,BufRead *.js, *.html, *.css set tabstop=2 softtabstop=2 shiftwidth=2
 
     " disable auto comment insertion
     autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -561,11 +562,6 @@ let g:mta_filetypes = {
 " Misc
 " Vim-tmux navigator settings
 let g:tmux_navigator_no_mappings = 1
-
-" Instant markdown settings
-let g:instant_markdown_autostart = 0
-
-nnoremap <Leader>im :InstantMarkdownPreview<CR>
 
 "------------------------------------------------------------------------------"
 "                                Languages
@@ -675,25 +671,6 @@ let g:config_Beautifier['css'] = {}
 let g:config_Beautifier['css'].indent_style = 'tab'
 let g:config_Beautifier['html'] = {}
 let g:config_Beautifier['html'].indent_style = 'tab'
-
-augroup beautify
-    autocmd!
-    autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
-    "   autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
-    autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
-    autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
-    autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
-    autocmd FileType javascript nnoremap <buffer> <Leader>bf :call JsBeautify()<cr>
-    autocmd FileType javascript vnoremap <buffer> <Leader>bf :call RangeJsBeautify()<cr>
-    "   autocmd FileType json nnoremap <buffer> <Leader>bf :call JsonBeautify()<cr>
-    "   autocmd FileType json vnoremap <buffer> <Leader>bf :call RangeJsonBeautify()<cr>
-    autocmd FileType jsx nnoremap <buffer> <Leader>bf :call JsxBeautify()<cr>
-    autocmd FileType jsx vnoremap <buffer> <Leader>bf :call RangeJsxBeautify()<cr>
-    autocmd FileType html nnoremap <buffer> <Leader>bf :call HtmlBeautify()<cr>
-    autocmd FileType html vnoremap <buffer> <Leader>bf :call RangeHtmlBeautify()<cr>
-    autocmd FileType css nnoremap <buffer> <Leader>bf :call CSSBeautify()<cr>
-    autocmd FileType css vnoremap <buffer> <Leader>bf :call RangeCSSBeautify()<cr>
-augroup end
 
 " Tagbar Settings
 "------------------------------------------------------------------------------"
