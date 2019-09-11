@@ -323,7 +323,7 @@ set completeopt+=noselect
 let g:deoplete#enable_yarp = 1
 
 " Deoplete requires Neovim with Python3 enabled
-let g:python3_host_prog       = '/usr/local/bin/python3'
+let g:python3_host_prog       = '/usr/bin/python3'
 let g:python3_host_skip_check = 1
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -437,6 +437,9 @@ set hlsearch                  " highlight the search
 set showmatch                 " show matching bracket
 set diffopt=filler,iwhite     " ignore all whitespace and sync
 set smartindent
+set number
+set relativenumber
+
 
 " Statusline
 if !&statusline

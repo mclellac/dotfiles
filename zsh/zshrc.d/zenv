@@ -5,7 +5,7 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     if [[ $(uname -a) =~ "Microsoft" ]]; then
         GOROOT="/usr/lib/go"
     else
-        GOROOT="/usr/lib/golang"
+        GOROOT="/usr/lib/go"
     fi
 
     GOPATH="${HOME}/Projects"
