@@ -132,17 +132,17 @@ pull() {
 #--------------------------------------------------------------#
 # simple calculator
 #--------------------------------------------------------------#
-#calc() {
+calc() {
 	# you will need to escape multiplication (ie: "calc 2 \* 20").
-#	local result=""
-#	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
+	local result=""
+	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
 	# └─ default (when `--mathlib` is used) is 20
-#	if [[ "$result" == *.* ]]; then
-#		printf "$result" | sed -e 's/^\./0./' \
-#			-e 's/^-\./-0./' \
-#			-e 's/0*$//;s/\.$//'
-#	else
-#		printf "$result"
-#	fi
-#	printf "\n"
-#}
+	if [[ "$result" == *.* ]]; then
+		printf "$result" | sed -e 's/^\./0./' \
+			-e 's/^-\./-0./' \
+			-e 's/0*$//;s/\.$//'
+	else
+		printf "$result"
+	fi
+	printf "\n"
+}
