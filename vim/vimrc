@@ -48,7 +48,6 @@ Plug 'plasticboy/vim-markdown'
 Plug 'Chiel92/vim-autoformat'
 " Colorschemes & Icons
 Plug 'ryanoasis/vim-devicons'
-"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'jacoborus/tender'
 Plug 'luochen1990/rainbow'
@@ -72,7 +71,6 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
-"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-endwise'
 Plug 'kana/vim-smartinput'
 Plug 'cohama/vim-smartinput-endwise'
@@ -112,7 +110,6 @@ endif
 " Plugin: vim-markdown
 " let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_style_pythonic = 1
-
 
 " Plugin: vim-illuminate
 " Time in milliseconds (default 250)
@@ -196,41 +193,6 @@ else
     endf
 endif
 nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
-
-
-""------------------------------------------------------------------------------"
-""                       Plugin: NERDtree Syntax highlight
-""------------------------------------------------------------------------------"
-"let g:NERDTreeFileExtensionHighlightFullName = 1
-"let g:NERDTreeExactMatchHighlightFullName = 1
-"let g:NERDTreePatternMatchHighlightFullName = 1
-"let g:NERDTreeHighlightFolders = 1 " enables folder icon highlighting using exact match
-"let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
-"
-""------------------------------------------------------------------------------"
-""                           Plugin: NERDtree
-""------------------------------------------------------------------------------"
-"" open NERDtree if vim was started without loading any file(s)
-"autocmd StdinReadPre * let s:std_in=1
-""autocmd VimEnter * if argc() == 0 && !exists(“s:std_in”) | NERDTree | endif
-"autocmd vimenter * NERDTree
-"
-"" cosmetic settings - annoyance removal
-"let NERDTreeMinimalUI = 1
-"let NERDTreeDirArrows = 1
-"
-"" NERDtree ignore
-"let NERDTreeIgnore = ['\.pyc$', '__*']
-"
-"" map to ,-f
-"nnoremap <Leader>f :NERDTreeToggle<Enter>
-"map <F2> :NERDTreeToggle<CR>
-"
-"" Keep NERDtree open when a file has been opened
-"let NERDTreeQuitOnOpen = 1
-"
-"" close NERDtree if no other windows are open
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "------------------------------------------------------------------------------"
 "                           Plugin: fzf
@@ -360,9 +322,6 @@ let g:clang_make_default_keymappings   = 0
 let g:clang_use_library                = 1
 let g:clang_library_path               = '/usr/lib63/clang/7.0.0/lib/'
 
-"set completeopt-=preview " Disable documentation window
-
-
 "------------------------------------------------------------------------------"
 "                         Plugin: Git tools
 "------------------------------------------------------------------------------"
@@ -448,7 +407,6 @@ set diffopt=filler,iwhite     " ignore all whitespace and sync
 set smartindent
 set number
 set relativenumber
-
 
 " Statusline
 if !&statusline

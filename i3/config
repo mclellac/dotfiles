@@ -41,22 +41,22 @@ exec --no-startup-id unclutter -noevents -keystroke -idle 5 # make cursor invisi
 #exec --no-startup-id xedgewarp -b
 exec --no-startup-id xfce4-clipman
 exec --no-startup-id keepassxc -style kvantum
-exec --no-startup-id i3-msg 'workspace 2; exec gnome-terminal'
+exec --no-startup-id i3-msg 'workspace 2; exec terminology'
 exec --no-startup-id i3-msg 'workspace 3; exec google-chrome'
 #exec --no-startup-id i3-msg 'workspace 3; exec firefox-esr'
 
 
 # Keybindings
-bindsym $mod+Return exec gnome-terminal
+bindsym $mod+t exec gnome-terminal
 bindsym $mod+n exec nautilus
-bindsym $mod+t exec terminology
+bindsym $mod+Return exec terminology
 
 # kill focused window
 bindsym $mod+q kill
 bindsym $alt+F4 kill
 
 # program launcher (i.e. Rofi)
-bindsym $mod+d exec rofi -show drun -display-drun "$ "
+bindsym $mod+d exec rofi -show drun -display-drun "$"
 
 # File manager
 bindsym $mod+z exec nautilus `xcwd`
@@ -212,27 +212,28 @@ mode "resize" {
 
 
 # App assigned in workspace
-# Home Workspace 1
+# Home Workspace (1)
 assign [class="Nautilus|Thunar|Caja|Pcmanfm"] $ws1
 
-# Browsers in Workspace 3
-assign [class="Google-chrome"] $ws3
-for_window [class="Google-chrome"] move container to workspace 3
-#assign [class="Chromium|google-chrome-beta|Google-chrome-beta|Google-chrome|google-chrome|Firefox"] $ws3
-#for_window [class="Google-chrome-beta"] move container to workspace 3
+# Browsers in Workspace (3)
+assign [class="Chromium|google-chrome-beta|Google-chrome-beta|Google-chrome|google-chrome|Firefox"] $ws3
+for_window [class="Google-chrome-beta"] move container to workspace 3
 
-# Code in Workspace 4
+# Code in Workspace (4)
 assign [class="Code|Sublime"] $ws4
 assign [class="freeter"] $ws4
 assign [class="PacketTracer7"] $ws4
 
-# Messaging Workspace 5
+# Messaging Workspace (5)
 assign [class="Geary|Evolution|Gnome-calendar"]  $ws5
 
-# Media Workspace 7
-assign [class="Spotify|spotify|Vlc|Rhythmbox|Musixmatch|Parole"] $ws7
+# Recon Workspace (6)
 
-# Communication Workspace 8
+# SecOps Workspace (7)
+assign [class="burp-StartBurp|Wireshark|wireshark|xhydra"] $ws7
+for_window [class="burp-StartBurp|Wireshark|wireshark|xhydra"] move container to workspace 7
+
+# Communication Workspace (8)
 assign [class="Slack"] $ws8
 
 assign [class="Transmission|KeeWeb|keepassxc|Bitwarden"] $ws9
@@ -265,13 +266,13 @@ for_window [class="sample.Main|dev.Main"] floating enable # Floating for dev GUI
 
 # APPEARANCE
 for_window [class="^.*"] border pixel 2
-gaps inner 10
-gaps outer 40
+gaps inner 20
+gaps outer 20
 
 #smart_gaps on
 smart_borders on
-workspace 1 gaps outer 20
-workspace 1 gaps inner 20
+workspace 1 gaps outer 10
+workspace 1 gaps inner 10
 workspace 2 gaps outer 10
 workspace 2 gaps inner 10
 workspace 3 gaps inner 10

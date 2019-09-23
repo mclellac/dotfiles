@@ -13,7 +13,7 @@ background = ${colors.background}
 foreground = ${colors.foreground}
 font-0 = Hack Nerd Font Mono:style=Regular:size:11;1
 font-1 = RobotoMono Nerd Font Mono:style=Regular:size:11;2
-font-2 = FontAwesome:style=Regular:size=11;3
+#font-2 = FontAwesome:style=Regular:size=11;3
 fixed-center = true
 line-size = 1
 line-color = #f00
@@ -57,15 +57,15 @@ label-visible-foreground = ${colors.active}
 label-urgent-foreground  = ${colors.urgent}
 
 ws-icon-0 = 1;
-ws-icon-1 = 2;
-ws-icon-2 = 3;
-ws-icon-3 = 4;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
 ws-icon-4 = 5;
-ws-icon-5 = 6;
-ws-icon-6 = 7;
-ws-icon-7 = 8;
-ws-icon-8 = 9;
-ws-icon-9 = 0;
+ws-icon-5 = 6;
+ws-icon-6 = 7;廬
+ws-icon-7 = 8;聆
+ws-icon-8 = 9;
+ws-icon-9 = 0;
 
 [module/xwindow]
 type = internal/xwindow
