@@ -26,7 +26,7 @@ floating_modifier $mod
 
 # Auostart apps
 #exec_always --no-startup-id /home/mclellac/bin/set-res
-exec --no-startup-id feh --bg-scale $HOME/Pictures/awakening.png
+exec --no-startup-id feh --bg-scale $HOME/Pictures/desert.jpg
 # python-pywal - generate colorschemes on the fly
 #exec --no-startup-id wal -i $HOME/Pictures/.cache/wallpaper.jpg
 # compositor for X11

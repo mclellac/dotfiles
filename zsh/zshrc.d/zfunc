@@ -84,6 +84,7 @@ akcurl() {
     AKFLAGS=(-H "Pragma: akamai-x-get-request-id, akamai-x-get-cache-key, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-get-true-cache-key, akamai-x-check-cacheable, akamai-x-get-extracted-values, akamai-x-feo-trace" -H "x-akamai-logging-mode: verbose" -vv -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17")
 	local orig_dir=$(pwd)
 	cd $HOME/bin
+	echo "curl -I ${AKFLAGS[@]} \"$*\""
 	curl -I ${AKFLAGS[@]} "$*"
 	cd $orig_dir
 }
