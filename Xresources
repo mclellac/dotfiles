@@ -1,7 +1,8 @@
 ! Google Material Design
-
+*active             : #43b58d
 *background 		: #263238
 *foreground 		: #eceff1
+*urgent             : #2f343f
 
 ! black
 *color0  			: #263238
@@ -32,7 +33,6 @@
 ! ------------------------------------------------------------------------------
 ! URxvt configs
 ! ------------------------------------------------------------------------------
-
 URxvt*saveline:         2000
 URxvt*termName:         rxvt-256color
 URxvt*iso14755:         false
@@ -80,22 +80,32 @@ URxvt.urgentOnBell: 	True
 ! ------------------------------------------------------------------------------
 ! ROFI Color theme
 ! ------------------------------------------------------------------------------
-
 rofi.color-enabled: true
 rofi.color-window: #2f343f, #2f343f, #2f343f
 rofi.color-normal: #2f343f, #d8dee8, #2f343f, #2f343f, #81a1c1
 rofi.color-active: #2f343f, #b48ead, #2f343f, #2f343f, #93e5cc
 rofi.color-urgent: #2f343f, #ebcb8b, #2f343f, #2f343f, #ebcb8b
 
+rofi.columns: 2
+rofi.lines: 5
+rofi.eh: 2
+rofi.padding: 200
+rofi.fullscreen: true
+rofi.bw: 0
+rofi.separator-style: none
+rofi.hide-scrollbar: true
+
+rofi.font: RobotoMono Nerd Font 16
+
 ! ------------------------------------------------------------------------------
 ! Xft Font Configuration
 ! ------------------------------------------------------------------------------
-Xft.dpi: 125
-Xft.autohint: 0
-Xft.lcdfilter: lcddefault
-Xft.hintstyle: hintslight
-Xft.hinting: 1
-Xft.antialias: 1
-Xft.rgba: rgb
+!Xft.dpi: 125
+!Xft.autohint: 0
+!Xft.lcdfilter: lcddefault
+!Xft.hintstyle: hintslight
+!Xft.hinting: 1
+!Xft.antialias: 1
+!Xft.rgba: rgb
 
 
