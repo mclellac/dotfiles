@@ -44,6 +44,7 @@ Plug 'mdempsky/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'OmniSharp/omnisharp-vim'
 " Formatting
 Plug 'Chiel92/vim-autoformat'
 " Colorschemes & Icons
@@ -193,6 +194,14 @@ else
     endf
 endif
 nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
+
+"------------------------------------------------------------------------------"
+"                           Plugin: OmniSharp
+"------------------------------------------------------------------------------"
+let g:OmniSharp_server_use_mono = 1
+
+
+
 
 "------------------------------------------------------------------------------"
 "                           Plugin: fzf
@@ -542,7 +551,8 @@ let g:ale_linters = {
             \ 'python'      : ['pylint', 'autopep8', 'flake8'],
             \ 'latex'       : ['lacheck'],
             \ 'javascript'  : ['eslint'],
-            \ 'rust'        : ['rustc']
+            \ 'rust'        : ['rustc'],
+            \ 'cs': ['OmniSharp']
             \}
 
 " :ALEFix will try and fix your JS code with ESLint.
