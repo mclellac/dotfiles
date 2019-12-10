@@ -11,10 +11,8 @@
 " Time delay on <Leader> key
 set timeoutlen=500 ttimeoutlen=100
 
+" Plugins
 "------------------------------------------------------------------------------"
-"                               Plugins
-"------------------------------------------------------------------------------"
-" Enable nocompatible
 if has('vim_starting')
     if &compatible
         set nocompatible
@@ -22,7 +20,6 @@ if has('vim_starting')
 endif
 
 filetype off
-" set the runtime path to include Vundle and initialize
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -30,7 +27,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-" Languages
+" Language Plugins
 Plug 'lervag/vimtex'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
@@ -81,8 +78,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'w0rp/ale'
 call plug#end()
 
-"------------------------------------------------------------------------------"
-"                               UI Settings
+" Settings: UI
 "------------------------------------------------------------------------------"
 if has("gui_running")
     let s:uname = system("uname")
@@ -109,10 +105,12 @@ if (has("termguicolors"))
 endif
 
 " Plugin: vim-markdown
+"------------------------------------------------------------------------------"
 " let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_style_pythonic = 1
 
 " Plugin: vim-illuminate
+"------------------------------------------------------------------------------"
 " Time in milliseconds (default 250)
 let g:Illuminate_delay = 50
 
@@ -120,6 +118,7 @@ let g:Illuminate_delay = 50
 let g:Illuminate_highlightUnderCursor = 0
 
 " Plugin: Rainbow
+"------------------------------------------------------------------------------"
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 
 let g:rainbow_conf = {
@@ -145,7 +144,8 @@ let g:rainbow_conf = {
             \	}
             \}
 
-" hybrid-material settings
+" Theme: hybrid-material settings
+"------------------------------------------------------------------------------"
 let g:hybrid_transparent_background = 1
 let g:enable_bold_font = 0
 let g:enable_italic_font = 0
@@ -173,8 +173,7 @@ let g:airline_symbols.space = "\ua0"
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-"------------------------------------------------------------------------------"
-"                                Terminal
+" Plugin: Terminal
 "------------------------------------------------------------------------------"
 if has('nvim')
     fu! OpenTerminal()
@@ -195,16 +194,12 @@ else
 endif
 nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
 
-"------------------------------------------------------------------------------"
-"                           Plugin: OmniSharp
+
+" Plugin: OmniSharp
 "------------------------------------------------------------------------------"
 let g:OmniSharp_server_use_mono = 1
 
-
-
-
-"------------------------------------------------------------------------------"
-"                           Plugin: fzf
+" Plugin: fzf
 "------------------------------------------------------------------------------"
 map ; :Files<CR> " bind ; key for fzf
 
@@ -268,8 +263,7 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 autocmd! VimEnter * command! -nargs=* -complete=file Ag :call fzf#vim#ag_raw(<q-args>, fzf#wrap('ag-raw', {'options': "--preview 'coderay $(cut -d: -f1 <<< {}) 2> /dev/null | sed -n $(cut -d: -f2 <<< {}),\\$p | head -".&lines."'"}))
 
-"------------------------------------------------------------------------------"
-"                           Plugin: Multiple Cursors
+" Plugin: Multiple Cursors
 "------------------------------------------------------------------------------"
 let g:multi_cursor_use_default_mapping=0
 
@@ -283,14 +277,12 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-"------------------------------------------------------------------------------"
-"                           Plugin: Autocomplete
+" Plugin: Autocomplete
 "------------------------------------------------------------------------------"
 " SuperTab settings
 let g:SuperTabDefaultCompletionType = "<c-x>"
 
-"------------------------------------------------------------------------------"
-" Deoplete settings
+" Plugin: Deoplete
 "------------------------------------------------------------------------------"
 " neocomplete like
 set completeopt+=noinsert
@@ -331,8 +323,7 @@ let g:clang_make_default_keymappings   = 0
 let g:clang_use_library                = 1
 let g:clang_library_path               = '/usr/lib63/clang/7.0.0/lib/'
 
-"------------------------------------------------------------------------------"
-"                         Plugin: Git tools
+" Plugin: Git tools
 "------------------------------------------------------------------------------"
 " Gitgutter settings
 let g:gitgutter_max_signs             = 5000
@@ -365,12 +356,7 @@ endif
 
 set showmatch					" speed up bracket matching speed
 set matchtime=2
-
 set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
-
-"set mouse=a                   " enable mouse use in all modes
-"map <ScrollWheelUp> <C-Y>
-"map <ScrollWheelDown> <C-E>
 set cursorline                " highlight curor line
 set nocursorcolumn
 set hidden
@@ -400,14 +386,11 @@ set nowrap
 set more                      " use more prompt
 set autoread                  " watch for file changes
 set ruler laststatus=2 showcmd showmode   " show the line number on the bar
-"set list listchars=trail:»,tab:»-
 set wrap breakindent
 set encoding=utf-8
-"set number
 set title
 set titleold=""
 set titlestring=Vim:\ %F
-" Searching
 set incsearch                 " incremental search
 set ignorecase                " search ignoring case
 set hlsearch                  " highlight the search
@@ -732,10 +715,6 @@ function! BetterBackSpace() abort
         au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
     endif
 
-    " For iTerm
-    "let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
-    "let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
-
     " Vertical split bar
     set fillchars+=vert:│
     hi VertSplit                ctermbg=NONE ctermfg=0 guifg=#595749 guibg=NONE
@@ -748,6 +727,7 @@ function! BetterBackSpace() abort
 
     "hi Pmenu      guibg=Grey38 guifg=#2e3135
     hi PmenuSel                 guibg=#577882 guifg=#364347
+
     " GitGutter styling
     hi clear SignColumn
     hi SignColumn               guibg=NONE
@@ -756,8 +736,8 @@ function! BetterBackSpace() abort
     hi GitGutterDelete          ctermfg=red    guifg=#c95656 guibg=NONE
     hi GitGutterChangeDelete    ctermfg=yellow guifg=#9c9e3c guibg=NONE
 
-    "
     hi illuminatedWord          ctermfg=yellow guifg=#00faff guibg=#377987 gui=underline
+
     " Highlight trailing whitespace
     highlight ExtraWhitespace ctermbg=red guibg=#38595c
     match ExtraWhitespace /\s\+$/
