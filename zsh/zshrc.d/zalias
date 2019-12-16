@@ -11,6 +11,7 @@ linux*)
 esac
 
 # Command aliases
+alias msfconsole="msfconsole -x \"db_connect postgres@msf\""
 alias diff="colordiff"
 alias python='python3'
 alias ll="ls -alG"
