@@ -27,7 +27,7 @@ alias ccat="ccat -G String="brown" -G Keyword="darkblue" -G Comment="lightgrey" 
     -G Tag="blue" -G HTMLTag="lightgreen" -G HTMLAttrName="blue" -G HTMLAttrValue="green" \
     -G Decimal="darkblue" "$@""
 alias mutt="neomutt"
-
+alias grep="grep --color"
 alias podls="echo \"Pods running in current context, and the container images inside them\" && \
     kubectl get pods --all-namespaces \
     -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | \
