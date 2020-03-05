@@ -571,7 +571,7 @@ set statusline=%{LinterStatus()}
 let g:completor_python_binary = '/usr/bin/python3'
 
 " Terraform plugin options
-let g:terraform_fold_sections=1
+let g:terraform_fold_sections=0
 let g:terraform_remap_spacebar=1
 let g:terraform_fmt_on_save=1
 
