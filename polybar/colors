@@ -1,8 +1,0 @@
-active = ${xrdb:active}
-background = ${xrdb:background}
-foreground = ${xrdb:foreground}
-urgent = ${xrdb:urgent}
-secondary = ${xrdb:secondary}
-underline = ${xrdb:active}
-green = ${xrdb:color2}
-

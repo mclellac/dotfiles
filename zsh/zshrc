@@ -14,7 +14,13 @@ stty sane
 alias vim=/usr/local/bin/vim
 
 autoload -Uz compinit
-compinit -u
+
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+
+compinit -C
+
 
 # Must be sourced before powerlevel10k as it includes the $WORK_DOMAIN variable
 # the custom OpenShift segment uses.

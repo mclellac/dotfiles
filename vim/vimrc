@@ -397,8 +397,8 @@ set hlsearch                  " highlight the search
 set showmatch                 " show matching bracket
 set diffopt=filler,iwhite     " ignore all whitespace and sync
 set smartindent
-set number
-set relativenumber
+"set number
+"set relativenumber
 
 " Statusline
 if !&statusline
@@ -745,6 +745,6 @@ function! BetterBackSpace() abort
     autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd InsertLeave * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
-
+    
     " Remove trailing whitespace with F5
     nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
