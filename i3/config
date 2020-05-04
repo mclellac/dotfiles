@@ -7,32 +7,21 @@ floating_modifier $mod
 # ------------------------------------------------------------- #
 # Auostart apps
 # ------------------------------------------------------------- #
-# Lockscreen
-#exec light-locker
-#exec xset s 600 300
 #exec xss-lock -n "$HOME/.config/i3/scripts/brightness.sh screensaver" -l -- $HOME/.config/i3/scripts/lockscreen.sh --suspend
 #exec_always --no-startup-id /home/mclellac/bin/set-res
 
 # Set wallpaper with feh
 exec --no-startup-id feh --bg-scale $HOME/Pictures/Wallpaper/yourstruly.jpg
-
 exec --no-startup-id /usr/bin/vmware-user
-#exec --no-startup-id /usr/lib/gsd-xsettings
-#exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-#exec --no-startup-id dropbox start
-
+exec --no-startup-id /usr/lib/gsd-xsettings
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id unclutter -noevents -keystroke -idle 5 # make cursor invisible when you are typing text or after 5s of inactivity
-
 # make easy to switch cursor between screen with different size
 #exec --no-startup-id xedgewarp -b
-#exec --no-startup-id xfce4-clipman
+exec --no-startup-id xfce4-clipman
 exec --no-startup-id keepassxc -style kvantum
-exec --no-startup-id i3-msg 'workspace 1; exec terminology'
+exec --no-startup-id i3-msg 'workspace 1; exec kitty'
 exec --no-startup-id i3-msg 'workspace 2; exec firefox'
-#exec --no-startup-id i3-msg 'workspace 3; exec firefox-esr'
-
-# Restore redshift state
-#exec $HOME/.config/i3/scripts/restoreRedshift.sh
 
 # Picom
 exec_always --no-startup-id picom
@@ -57,9 +46,6 @@ bindsym $mod+Return exec kitty
 # kill focused window
 bindsym $mod+q kill
 bindsym $alt+F4 kill
-
-# program launcher (i.e. Rofi)
-# bindsym $mod+d exec rofi -show drun -display-drun "$"
 
 # File manager
 bindsym $mod+z exec nautilus `xcwd`
@@ -134,7 +120,7 @@ bindsym $mod+Ctrl+Shift+p exec $HOME/.config/polybar/scripts/polybar-manager.sh 
 bindsym $mod+o exec $HOME/.config/polybar/scripts/polybar-manager.sh toggleTray
 
 # Lock the screen
-bindsym $mod+Ctrl+q exec $HOME/.config/i3/scripts/lockscreen.sh --lock
+#bindsym $mod+Ctrl+q exec $HOME/.config/i3/scripts/lockscreen.sh --lock
 
 # Adjust volume
 # -Ctrl is used to control the microphone
@@ -189,14 +175,13 @@ bindsym XF86Calculator exec --no-startup-id gnome-calculator
 # installed.
 
 # dmenu
-#
 
 # rofi
 # Themes available:
 #		DRUN: 	simonvic, simonvic_reverse, simonvic_fullscreen, simonvic_fullscreen_reverse
 #		WINDOW:	simonvic_window, simonvic_window_reverse, simonvic_window_fullscreen, simonvic_window_fullscreen_reverse
-bindsym $mod+d exec rofi -show drun -theme .config/rofi/themes/simonvic_window_fullscreen
-bindsym $mod+Ctrl+d	exec rofi -show run -theme .config/rofi/themes/simonvic_reverse
+bindsym $mod+d exec rofi -show drun -theme .config/rofi/themes/appsmenu
+bindsym $mod+Ctrl+d	exec rofi -show run -theme .config/rofi/themes/simonvic_window_fullscreen
 bindsym $mod+Tab	exec rofi -show window -theme .config/rofi/themes/simonvic_reverse
 
 # change container layout (stacked, tabbed, toggle split)
@@ -288,9 +273,9 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
-# ========================================================
-# ======COLORS============================================
-# ========================================================
+#
+# Colors
+#
 # Black / Bright Black
 set $color0              #232323
 set $color8              #444444
@@ -364,23 +349,23 @@ set $base0D ${color13}
 set $base0E ${color14}
 set $base0F ${color15}
 
-# ========================================================
-# ======PERSONALIZATION===================================
-# ========================================================
+#
+# Personalisation
+#
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:WorkSans 12
 
-# ======GAPS===================================
-gaps inner 10
-gaps outer -5
+# Gaps
+gaps inner 20
+gaps outer -15
 # Only enable gaps on a workspace when there is at least one container
 smart_gaps on
 
 # Only enable outer gaps when there is exactly one container
 # smart_gaps inverse_outer
 
-# ======WINDOWS===================================
+# Windows
 # Hide edge borders only if there is one window with no gaps
 hide_edge_borders smart_no_gaps
 
@@ -398,14 +383,14 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #333333
 
-#titles
+# titles
 title_align center
 
-#borders
+# borders
 # default_border normal 10
 
-# ========================================================
-# ======PER WINDOWS===================================
-# ========================================================
+#
+# Per window
+#
 for_window [class="sample.Main"] floating enable
 
