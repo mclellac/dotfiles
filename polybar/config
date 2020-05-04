@@ -239,7 +239,7 @@ ramp-volume-2 = 墳
 ramp-volume-3 = 
 
 [module/battery]
-:wq!type = internal/battery
+type = internal/battery
 battery = BAT0
 adapter = AC0
 full-at = 100
