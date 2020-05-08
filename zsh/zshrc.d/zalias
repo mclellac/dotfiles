@@ -32,6 +32,8 @@ alias podls="echo \"Pods running in current context, and the container images in
     kubectl get pods --all-namespaces \
     -o=jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\":\t\"}{range .spec.containers[*]}{.image}{\", \"}{end}{end}' | \
     grep -E -v '(fluent|heap|l7|kube)' | sed 's/;$//' | sort"
+alias nmap-scripts-dir="cd /usr/share/nmap/scripts"
+
 
 alias ose_services="oc get services --all-namespaces --template '{{range .items}}{{if ne .spec.clusterIP \"None\"}}{{.metadata.name}} {{.metadata.namespace}} {{.spec.clusterIP}} {{(index .spec.ports 0).protocol}} {{(index .spec.ports 0).port}}{{\"\n\"}}{{end}}{{end}}' | sed  -e 's/^/ ⎈ /g' -e 's/ TCP / tcp → /g' -e 's/ UDP / udp → /g'"
 
