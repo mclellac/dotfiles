@@ -15,7 +15,7 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
 #    export PYTHONPATH="${HOME}/.local/lib/python3.7/site-packages/:/home/mclellac/Projects/src/stash.nm.cbc.ca/op/apptoss/apptoss:/usr/local/lib64/python3.7/site-packages:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
 
     alias pip="pip3"
-    alias keepassxc="keepassxc -style adwaita-dark"
+    #alias keepassxc="keepassxc -style adwaita-dark"
     source ${HOME}/.zsh.gnu
 
     # Check if zsh syntax highlighting is available.

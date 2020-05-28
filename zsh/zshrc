@@ -131,11 +131,7 @@ source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zbindings
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zalias
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zenv
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zfunc
-source /etc/profile.d/apps-bin-path.sh # snap support
-
-#if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
-#        source /etc/profile.d/vte.sh
-#fi
+source /etc/profile.d/*.sh
 
 #zprof
 
