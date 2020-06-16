@@ -9,7 +9,7 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     fi
 
     GOPATH="${HOME}/Projects"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/.local/bin:/snap/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/.local/bin:/snap/bin:${HOME}/.emacs.d/bin"
 
     export GOPATH GOROOT PATH
 #    export PYTHONPATH="${HOME}/.local/lib/python3.7/site-packages/:/home/mclellac/Projects/src/stash.nm.cbc.ca/op/apptoss/apptoss:/usr/local/lib64/python3.7/site-packages:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
