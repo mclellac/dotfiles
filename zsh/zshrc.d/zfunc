@@ -56,6 +56,11 @@ ssldump() {
 	sudo tcpdump -ni $NIC "tcp port ${PORT} and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16)" -vvvv
 }
 
+check_compression() {
+  curl -s -I -H 'Accept-Encoding: br,gzip,deflate' $1 |grep -i "Content-Encoding"
+}
+
+
 #--------------------------------------------------------------#
 # list the top 20 commands used in history.
 #--------------------------------------------------------------#
