@@ -104,6 +104,10 @@ if (has("termguicolors"))
     set termguicolors
 endif
 
+" Plugin: vimtex
+"------------------------------------------------------------------------------"
+ let g:tex_flavor = 'latex'
+
 " Plugin: vim-markdown
 "------------------------------------------------------------------------------"
 " let g:vim_markdown_folding_disabled = 1
