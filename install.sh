@@ -206,19 +206,19 @@ symlink_dotfiles() {
         cp -n "${file}" "${HOME}"/."${f}"
     done
 
-    if [[ $OSTYPE == 'linux-gnu' ]]; then
-        if [ -d "${HOME}"/.i3 ]; then
-            mv "${HOME}"/.i3 "${HOME}"/.i3.old && make_dir "${HOME}"/.i3
-        else
-            make_dir "${HOME}"/.i3
-        fi
+    #if [[ $OSTYPE == 'linux-gnu' ]]; then
+    #    if [ -d "${HOME}"/.i3 ]; then
+    #        mv "${HOME}"/.i3 "${HOME}"/.i3.old && make_dir "${HOME}"/.i3
+    #    else
+    #        make_dir "${HOME}"/.i3
+    #    fi
 
-        ln -s "${dotdir}"/i3/config "${HOME}"/.i3/config
-        ln -s "${dotdir}"/i3/i3blocks.conf "${HOME}"/.i3/i3blocks.conf
-        cp -R "${dotdir}"/i3/scripts "${HOME}"/.i3/scripts
-    fi
+    #    ln -s "${dotdir}"/i3/config "${HOME}"/.i3/config
+    #    ln -s "${dotdir}"/i3/i3blocks.conf "${HOME}"/.i3/i3blocks.conf
+    #    cp -R "${dotdir}"/i3/scripts "${HOME}"/.i3/scripts
+    #fi
 
-    # Only symlink zshrc to ~. Keep the rest of the zsh config
+    # Only symlink zshrc to the home directory. Keep the rest of the zsh config
     # files in ~/.config/dotfiles/zsh and source them from there.
     ln -sf "${dotdir}"/zsh/zshrc "${HOME}"/.zshrc
 
