@@ -65,7 +65,7 @@ check_deps() {
 
 pkg_mgr() {
     if [[ $OSTYPE == 'darwin'* ]]; then
-        app_regex='(weechat|mutt|polybar|i3|img|git|zsh)'
+        app_regex='(weechat|mutt|polybar|i3|img|git|zsh|doom.d)'
         app_installer="brew install"
         [ ! -f "${HOME}"/.zsh.osx ] && touch "${HOME}"/.zsh.osx
     elif [[ $OSTYPE == 'freebsd'* ]]; then
@@ -73,7 +73,7 @@ pkg_mgr() {
         bsd_installer="cd /usr/ports/devel/"
         [ ! -f "${HOME}"/.zsh.bsd ] && touch "${HOME}"/.zsh.bsd
     elif [[ $OSTYPE == 'linux-gnu' ]]; then
-        app_regex='(mutt|polybar|i3|img|git|zsh)'
+        app_regex='(mutt|polybar|i3|img|git|zsh|doom.d)'
         [ ! -f "${HOME}"/.zsh.gnu ] && touch "${HOME}"/.zsh.gnu
         elif [ "$(cmd_exists pacman)" ]; then
             app_installer="sudo pacman -Syuu"
@@ -223,11 +223,11 @@ symlink_dotfiles() {
     ln -sf "${dotdir}"/zsh/zshrc "${HOME}"/.zshrc
 
     # Is zplug installed? Install if it isn't.
-    if [ ! -d "${HOME}"/.zplug ]; then
-        msg_box "Installing zplug."
-        curl -sL --proto-redir -all,https \
-            https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
-    fi
+    #if [ ! -d "${HOME}"/.zplug ]; then
+    #    msg_box "Installing zplug."
+    #    curl -sL --proto-redir -all,https \
+    #        https://raw.githubusercontent.com/zplug/installer/master/installer.zsh| zsh
+    #fi
 
     vim_setup
 }
