@@ -294,7 +294,7 @@ set completeopt+=noinsert
 set completeopt+=noselect
 
 " Deoplete requires Neovim with Python3 enabled
-let g:python3_host_prog       = '/usr/bin/python3'
+let g:python3_host_prog       = '/usr/local/bin/python3'
 let g:python3_host_skip_check = 1
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -737,6 +737,6 @@ function! BetterBackSpace() abort
     autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd InsertLeave * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
-    
+
     " Remove trailing whitespace with F5
     nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>

@@ -13,8 +13,12 @@ stty sane
 
 autoload -Uz compinit
 
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
+#for dump in ~/.zcompdump(N.mh+24); do
+#  compinit
+#done
+
+for dump in ~/.zcompdump*; do
+    compinit
 done
 
 compinit -C
@@ -130,10 +134,27 @@ source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zbindings
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zalias
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zenv
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zfunc
-source /etc/profile.d/*.sh
+#source /etc/profile.d/*.sh
+
+set -k
+# To enable zsh auto-completion, run: eval "$(/usr/local/bin/akamai --zsh)"
+# We recommend adding this to your .zshrc file
+autoload -U compinit && compinit
+autoload -U bashcompinit && bashcompinit
+_akamai_cli_bash_autocomplete() {
+    local cur opts base
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    opts=$( ${COMP_WORDS[@]:0:$COMP_CWORD} --generate-auto-complete )
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    return 0
+}
+
+complete -F _akamai_cli_bash_autocomplete akamai
 
 #zprof
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin"
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+export PATH="/usr/local/opt/yq@3/bin:$PATH"
