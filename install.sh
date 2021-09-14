@@ -65,7 +65,7 @@ check_deps() {
 
 pkg_mgr() {
     if [[ $OSTYPE == 'darwin'* ]]; then
-        app_regex='(weechat|mutt|polybar|i3|img|git|zsh|doom.d)'
+        app_regex='(weechat|mutt|img|git|zsh|doom.d|httpie)'
         app_installer="brew install"
         [ ! -f "${HOME}"/.zsh.osx ] && touch "${HOME}"/.zsh.osx
     elif [[ $OSTYPE == 'freebsd'* ]]; then
@@ -73,7 +73,7 @@ pkg_mgr() {
         bsd_installer="cd /usr/ports/devel/"
         [ ! -f "${HOME}"/.zsh.bsd ] && touch "${HOME}"/.zsh.bsd
     elif [[ $OSTYPE == 'linux-gnu' ]]; then
-        app_regex='(mutt|polybar|i3|img|git|zsh|doom.d)'
+        app_regex='(mutt|polybar|i3|img|git|zsh|doom.d|httpie)'
         [ ! -f "${HOME}"/.zsh.gnu ] && touch "${HOME}"/.zsh.gnu
         elif [ "$(cmd_exists pacman)" ]; then
             app_installer="sudo pacman -Syuu"
@@ -187,7 +187,7 @@ symlink_dotfiles() {
 
     for file in $(find "${dotdir}" -mindepth 2 -maxdepth 2 -type f -not -path '\(.*)' | grep -vE "${app_regex}"); do
         # soft_ln variable stores the absolute path for the symlink
-        softln="${HOME}"/.$(echo "${file}" | awk -F/ '{print $7}')
+        softln="${HOME}"/.config/$(echo "${file}" | awk -F/ '{print $7}')
 
         if [ ! -f "${softln}" ]; then
             echo "${cyan}Symlinking${rst} ${file} ${cyan}->${rst} ${softln}"
