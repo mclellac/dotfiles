@@ -15,8 +15,8 @@ reset=$(tput sgr0)
 #------------------------------------------------------------------------------#
 digans() { dig "$*" +noall +answer; }
 digsoa() { dig "$*" SOA +noall +answer; }
-digmx() { dig "$*" MX +noall +answer; }
-digns() { dig "$*" NS +noall +answer; }
+digmx()  { dig "$*" MX +noall +answer; }
+digns()  { dig "$*" NS +noall +answer; }
 digany() { dig "$*" ANY +noall +answer; }
 
 #gcluster() {
@@ -46,18 +46,18 @@ kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type
 #      > showcert example.com:443
 #--------------------------------------------------------------#
 showcert() {
-	echo openssl s_client -showcerts -connect $*
-	echo -n | openssl s_client -showcerts -connect $*
+    echo openssl s_client -showcerts -connect $*
+    echo -n | openssl s_client -showcerts -connect $*
 }
 
 ssldump() {
-	NIC=$1
-	PORT=$2
-	sudo tcpdump -ni $NIC "tcp port ${PORT} and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16)" -vvvv
+    NIC=$1
+    PORT=$2
+    sudo tcpdump -ni $NIC "tcp port ${PORT} and (tcp[((tcp[12] & 0xf0) >> 2)] = 0x16)" -vvvv
 }
 
 check_compression() {
-  curl -s -I -H 'Accept-Encoding: br,gzip,deflate' $1 |grep -i "Content-Encoding"
+    curl -s -I -H 'Accept-Encoding: br,gzip,deflate' $1 |grep -i "Content-Encoding"
 }
 
 
@@ -65,90 +65,97 @@ check_compression() {
 # list the top 20 commands used in history.
 #--------------------------------------------------------------#
 cmdhist() {
-	history | awk '{print $2}' | sort | uniq -c | sort -rn | head -20 | sed 's/.\///g' | \
-			awk '!max{max=$1;}{r=""; i=s=60 * $1/max; while(i-->0) r=r"█"; printf "\033[1;34m %15s \033[0m %4d \033[1;36m %s \033[0m %s", $2, $1, r, "\n";}'
+    history | awk '{print $2}' | sort | uniq -c | sort -rn | head -20 | sed 's/.\///g' | \
+        awk '!max{max=$1;}{r=""; i=s=60 * $1/max; while(i-->0) r=r"█"; printf "\033[1;34m %15s \033[0m %4d \033[1;36m %s \033[0m %s", $2, $1, r, "\n";}'
 }
 
 #--------------------------------------------------------------#
 # some Sean Connery, because why not?
 #--------------------------------------------------------------#
 connerize() {
-	echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g"
+    echo "connery: $*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g"
 }
 
 connerize-say() {
-	echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" |
-		say -v "Alex" -i -r 200
+    echo "$*" | sed -e "s/s/sh/g" -e "s/shsh/sh/g" -e "s/shh/sh/g" | say -v "Alex" -i -r 200
 }
 
 #--------------------------------------------------------------#
-# Akamai curl
-#   example usage:  akcurl http://example.com/resource
+# Akamai cURL
+#   Usage:  akcurl http://example.com/resource
 #--------------------------------------------------------------#
 akcurl() {
     AKFLAGS=(-H "Pragma: akamai-x-get-request-id, akamai-x-get-cache-key, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-get-true-cache-key, akamai-x-check-cacheable, akamai-x-get-extracted-values, akamai-x-feo-trace" -H "x-akamai-logging-mode: verbose" -vv -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17")
-	local orig_dir=$(pwd)
-	cd $HOME/bin
-	echo "curl -I ${AKFLAGS[@]} \"$*\""
-	curl -I ${AKFLAGS[@]} "$*"
-	cd $orig_dir
+        echo "curl -siL -D - -o /dev/null ${AKFLAGS[@]} \"$*\""
+        curl -siL -D - -o /dev/null ${AKFLAGS[@]} "$*"
+}
+
+#--------------------------------------------------------------#
+# Akamai HTTPie
+#   Usage:  akhttp http://example.com/resource
+#--------------------------------------------------------------#
+akhttp() {
+    AKFLAGS=("Pragma: akamai-x-get-request-id, akamai-x-get-cache-key, akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-get-true-cache-key, akamai-x-check-cacheable, akamai-x-get-extracted-values, akamai-x-feo-trace, x-akamai-logging-mode: verbose, User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17")
+        echo "http --headers \"$*\" ${AKFLAGS[@]}"
+        http  --headers "$*" ${AKFLAGS[@]}
 }
 
 aklab() {
     AKFLAGS=(-H "Pragma: akamai-x-cache-on, akamai-x-cache-remote-on, akamai-x-check-cacheable, akamai-x-get-cache-key, akamai-x-get-ssl-client-session-id, akamai-x-get-true-cache-key, akamai-x-get-request-id" -H "x-akamai-logging-mode: verbose" -vv -H "User-Agent: AU-KSD")
-    curl -I ${AKFLAGS[@]} "$*"
+        curl -I ${AKFLAGS[@]} "$*"
 }
 
 pull() {
-	local git_root="${HOME}/Projects/src/$*"
-	local project=""
-	local repo=""
+    local git_root="${HOME}/Projects/src/$*"
+        local project=""
+        local repo=""
 
-	if [[ $OSTYPE == 'linux-gnu' ]]; then
-		alias gitls="ls --color=never"
-	else
-		alias gitls="ls"
-	fi
+        if [[ $OSTYPE == 'linux-gnu' ]]; then
+            alias gitls="ls --color=never"
+        else
+            alias gitls="ls"
+        fi
 
-	for url in $(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //'); do
+        for url in $(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //'); do
 
-		if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
-			local icon=" "
-			if [[ "${url}" == *"https"* ]]; then
-				project=$(echo "${url}" | awk -F/ '{print $5}')
-				repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
-			elif [[ "${url}" == *"ssh"* ]]; then
-				project=$(echo "${url}" | awk -F/ '{print $4}')
-				repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
-			fi
-		elif [[ ${url} =~ "github.com" ]]; then
-			local icon=" "
-			git_root="${HOME}/Projects/src/github.com"
-			project="mclellac"
-			repo=$(echo "${url}" | awk -F/ '{print $5}')
-		fi
+            if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
+                local icon=" "
+                
+                if [[ "${url}" == *"https"* ]]; then
+                    project=$(echo "${url}" | awk -F/ '{print $5}')
+                    repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
+                elif [[ "${url}" == *"ssh"* ]]; then
+                    project=$(echo "${url}" | awk -F/ '{print $4}')
+                    repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
+                fi
+            elif [[ ${url} =~ "github.com" ]]; then
+                local icon=" "
+                git_root="${HOME}/Projects/src/github.com"
+                project="mclellac"
+                repo=$(echo "${url}" | awk -F/ '{print $5}')
+            fi
 
-		printf "%s %s %s %s/%s %s  >> %s" ${cyan} ${icon} ${grey} ${project} ${repo} ${cyan} ${reset}
-		cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
-	done
+            printf "%s %s %s %s/%s %s  >> %s" ${cyan} ${icon} ${grey} ${project} ${repo} ${cyan} ${reset}
+            cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
+        done
 
-    cd "${git_root}"
+        cd "${git_root}"
 }
 
 #--------------------------------------------------------------#
 # simple calculator
 #--------------------------------------------------------------#
 calc() {
-	# you will need to escape multiplication (ie: "calc 2 \* 20").
-	local result=""
-	result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
-	# └─ default (when `--mathlib` is used) is 20
-	if [[ "$result" == *.* ]]; then
-		printf "$result" | sed -e 's/^\./0./' \
-			-e 's/^-\./-0./' \
-			-e 's/0*$//;s/\.$//'
-	else
-		printf "$result"
-	fi
-	printf "\n"
+    # you will need to escape multiplication (ie: "calc 2 \* 20").
+    local result=""
+    result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
+                            # └─ default (when `--mathlib` is used) is 20
+        if [[ "$result" == *.* ]]; then
+            printf "$result" | sed -e 's/^\./0./' \
+                -e 's/^-\./-0./' \
+                -e 's/0*$//;s/\.$//'
+        else
+            printf "$result"
+                fi
+                printf "\n"
 }
