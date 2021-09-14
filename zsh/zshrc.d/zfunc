@@ -120,7 +120,7 @@ pull() {
 
             if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
                 local icon=" "
-                
+
                 if [[ "${url}" == *"https"* ]]; then
                     project=$(echo "${url}" | awk -F/ '{print $5}')
                     repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
