@@ -12,7 +12,6 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/.local/bin:/snap/bin:${HOME}/.emacs.d/bin"
 
     export GOPATH GOROOT PATH
-#    export PYTHONPATH="${HOME}/.local/lib/python3.7/site-packages/:/home/mclellac/Projects/src/stash.nm.cbc.ca/op/apptoss/apptoss:/usr/local/lib64/python3.7/site-packages:/usr/local/lib/python3.7/site-packages:/usr/lib/python3.7/site-packages"
 
     alias pip="pip3"
     #alias keepassxc="keepassxc -style adwaita-dark"
@@ -33,12 +32,20 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 elif [[ $OSTYPE = "darwin"* ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/local/opt/go/libexec"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/Library/Python/3.7/bin:/usr/local/opt/curl/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/usr/local/opt/curl/bin:${HOME}/Library/Python/3.9/bin:/usr/local/opt/curl/bin"
     export GOPATH GOROOT PATH
 
     if type "fzf" > /dev/null; then
         source /usr/local/opt/fzf/shell/key-bindings.zsh
         source /usr/local/opt/fzf/shell/completion.zsh
+    fi
+
+    # zsh completions Homebrew
+    if type brew &>/dev/null; then
+        FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+        autoload -Uz compinit
+        compinit
     fi
 
     # Google Cloud SDK
