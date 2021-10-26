@@ -31,7 +31,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'lervag/vimtex'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
-Plug 'smerrill/vcl-vim-plugin'
+Plug 'fgsch/vim-varnish'
 Plug 'hashivim/vim-terraform'
 Plug 'stephpy/vim-yaml'
 Plug 'maralla/completor.vim'
@@ -45,6 +45,7 @@ Plug 'OmniSharp/omnisharp-vim'
 " Formatting
 Plug 'Chiel92/vim-autoformat'
 " Colorschemes & Icons
+"Plug 'wuelnerdotexe/vim-enfocado'
 Plug 'ryanoasis/vim-devicons'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'jacoborus/tender'
@@ -104,6 +105,10 @@ if (has("termguicolors"))
     set termguicolors
 endif
 
+"Plugin: vim-varnish
+"------------------------------------------------------------------------------"
+let g:vcl_fold = 0
+
 " Plugin: vimtex
 "------------------------------------------------------------------------------"
  let g:tex_flavor = 'latex'
@@ -155,6 +160,7 @@ let g:enable_italic_font = 0
 
 syntax enable
 set background=dark
+
 try
     colorscheme hybrid_material
 catch
