@@ -11,7 +11,13 @@
 " Time delay on <Leader> key
 set timeoutlen=500 ttimeoutlen=100
 
+"------------------------------------------------------------------------------"
 " Plugins
+"------------------------------------------------------------------------------"
+" Run Below Curl command in a terminal to install vimplug. Works for vim on
+" Unix Systems
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "------------------------------------------------------------------------------"
 if has('vim_starting')
     if &compatible
@@ -27,7 +33,60 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+"------------------------------------------------------------------------------"
+" Editor Plugins
+"------------------------------------------------------------------------------"
+""""""""""""""""""""""""""""
+"       Start Screen       "
+""""""""""""""""""""""""""""
+Plug 'mhinz/vim-startify'
+
+""""""""""""""""""""""""""""
+"         Surround         "
+""""""""""""""""""""""""""""
+" This plugin has fuckedup Keybindings but its useful
+" ysiw" surrounds one word with the " sign
+" yss) surrounds entire line with )
+" yss<p> surrounds line with the <p> tag and auto completes the closing tag
+" to surround multiple lines with a tag like a <li></li> use visual selection
+" then press St and type the tag. Notice that the first < is already written
+" so dont type it twice otherwise you'll get <<li>
+" remember that its not about speed! vim doesnt care about how fast you input
+" the combinations. We're not typing GTA cheats!
+Plug 'https://github.com/tpope/vim-surround.git'
+
+""""""""""""""""""""""""""""
+" Fix Vim clipboardproblem "
+""""""""""""""""""""""""""""
+Plug 'christoomey/vim-system-copy'
+
+""""""""""""""""""""""""""""
+"       Syntax Check       "
+""""""""""""""""""""""""""""
+Plug 'https://github.com/vim-syntastic/syntastic.git'
+""""""""""""""""""""""""""""
+"        Alignment         "
+""""""""""""""""""""""""""""
+" use :TAB /[character] to align
+" example :TAB /= alignes the =
+Plug 'https://github.com/godlygeek/tabular.git'
+
+""""""""""""""""""""""""""""
+" Search & open prev files "
+""""""""""""""""""""""""""""
+Plug 'https://github.com/yegappan/mru.git'
+
+""""""""""""""""""""""""""""
+"    A menu that helps     "
+"    learning the leader   "
+"    Keybindings press     "
+"   <leader>h to activate  "
+""""""""""""""""""""""""""""
+Plug 'liuchengxu/vim-which-key'
+
+"------------------------------------------------------------------------------"
 " Language Plugins
+"------------------------------------------------------------------------------"
 Plug 'lervag/vimtex'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
@@ -42,43 +101,71 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'OmniSharp/omnisharp-vim'
+
 " Formatting
 Plug 'Chiel92/vim-autoformat'
+
+"------------------------------------------------------------------------------"
 " Colorschemes & Icons
+"------------------------------------------------------------------------------"
 "Plug 'wuelnerdotexe/vim-enfocado'
 Plug 'ryanoasis/vim-devicons'
-Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'https://github.com/sainnhe/everforest.git'
 Plug 'jacoborus/tender'
 Plug 'luochen1990/rainbow'
+
+"------------------------------------------------------------------------------"
 " Statusbar
+"------------------------------------------------------------------------------"
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Deoplete plugins
-Plug 'Shougo/deoplete.nvim'
-Plug 'zchee/deoplete-jedi'
-Plug 'zchee/deoplete-go', { 'do': 'make'}
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-let g:deoplete#enable_at_startup = 1
+
+"------------------------------------------------------------------------------"
 " Git tools
+"------------------------------------------------------------------------------"
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+
+"------------------------------------------------------------------------------"
 " Tools
+"------------------------------------------------------------------------------"
 Plug 'RRethy/vim-illuminate'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar'
 Plug 'tpope/vim-endwise'
 Plug 'kana/vim-smartinput'
 Plug 'cohama/vim-smartinput-endwise'
 Plug 'tpope/vim-git'
-Plug 'tpope/vim-surround'
 Plug 'Yggdroot/indentLine'
 Plug 'w0rp/ale'
 call plug#end()
 
+" Cursor "
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set mouse=a
+
+"------------------------------------------------------------------------------"
+" clipboard
+"------------------------------------------------------------------------------"
+" Using the clipboard plugin c-p can be used to copy to system clipboard
+" and c-v to paste from system clipboard(works in visual mode) - xsel is a dependency
+" For modern terminals such as konsole-xfce-mate etc... Ctrl Shift V works as
+" usual
+
+" The default mapping is cp for copying and cv for pasting, and can be followed by any motion or text object. For instance:
+" cpiw => copy word into system clipboard
+" cpi' => copy inside single quotes to system clipboard
+" cvi' => paste inside single quotes from system clipboard
+" In addition, cP is mapped to copy the current line directly.
+" The sequence cV is mapped to paste the content of system clipboard to the next line.
+"------------------------------------------------------------------------------"
+set clipboard=unnamedplus
+
+"------------------------------------------------------------------------------"
 " Settings: UI
 "------------------------------------------------------------------------------"
 if has("gui_running")
@@ -105,19 +192,35 @@ if (has("termguicolors"))
     set termguicolors
 endif
 
-"Plugin: vim-varnish
+"------------------------------------------------------------------------------"
+" Plugin: syntastic
+"------------------------------------------------------------------------------"
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+"------------------------------------------------------------------------------"
+" Plugin: vim-varnish
 "------------------------------------------------------------------------------"
 let g:vcl_fold = 0
 
+"------------------------------------------------------------------------------"
 " Plugin: vimtex
 "------------------------------------------------------------------------------"
  let g:tex_flavor = 'latex'
 
+"------------------------------------------------------------------------------"
 " Plugin: vim-markdown
 "------------------------------------------------------------------------------"
 " let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_folding_style_pythonic = 1
 
+"------------------------------------------------------------------------------"
 " Plugin: vim-illuminate
 "------------------------------------------------------------------------------"
 " Time in milliseconds (default 250)
@@ -125,6 +228,7 @@ let g:Illuminate_delay = 50
 " Don't highlight word under cursor (default: 1)
 let g:Illuminate_highlightUnderCursor = 0
 
+"------------------------------------------------------------------------------"
 " Plugin: Rainbow
 "------------------------------------------------------------------------------"
 let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
@@ -152,22 +256,31 @@ let g:rainbow_conf = {
 \	}
 \}
 
-" Theme: hybrid-material settings
 "------------------------------------------------------------------------------"
-let g:hybrid_transparent_background = 1
-let g:enable_bold_font = 0
-let g:enable_italic_font = 0
+" Theme: everforest
+"------------------------------------------------------------------------------"
+if has('termguicolors')
+    set termguicolors
+endif
 
-syntax enable
 set background=dark
 
+" This configuration option should be placed before `colorscheme everforest`.
+" Available values: 'hard', 'medium'(default), 'soft'
+let g:everforest_background = 'hard'
+" For better performance
+let g:everforest_better_performance = 1
+let g:everforest_enable_italic = 1
+
 try
-    colorscheme hybrid_material
+    colorscheme everforest
 catch
     colorscheme default
 endtry
 
+"------------------------------------------------------------------------------"
 " Theme: Airline settings
+"------------------------------------------------------------------------------"
 let g:airline_powerline_fonts = 0
 let g:airline_theme = "hybrid"
 let g:airline#extensions#tabline#left_sep = ' '
@@ -182,6 +295,7 @@ let g:airline_symbols.space = "\ua0"
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
+"------------------------------------------------------------------------------"
 " Plugin: Terminal
 "------------------------------------------------------------------------------"
 if has('nvim')
@@ -203,11 +317,12 @@ else
 endif
 nnoremap <silent> <Leader>t :call OpenTerminal()<cr>
 
-
+"------------------------------------------------------------------------------"
 " Plugin: OmniSharp
 "------------------------------------------------------------------------------"
 let g:OmniSharp_server_use_mono = 1
 
+"------------------------------------------------------------------------------"
 " Plugin: fzf
 "------------------------------------------------------------------------------"
 map ; :Files<CR> " bind ; key for fzf
@@ -264,14 +379,17 @@ command! -bang -nargs=* GGrep
 command! -bang -nargs=? -complete=dir Files
             \ call fzf#vim#files(<q-args>, fzf#vim#with_preview('right:70%'), <bang>0)
 
+"------------------------------------------------------------------------------"
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
 " previous-history instead of down and up. If you don't like the change,
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+"------------------------------------------------------------------------------"
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 autocmd! VimEnter * command! -nargs=* -complete=file Ag :call fzf#vim#ag_raw(<q-args>, fzf#wrap('ag-raw', {'options': "--preview 'coderay $(cut -d: -f1 <<< {}) 2> /dev/null | sed -n $(cut -d: -f2 <<< {}),\\$p | head -".&lines."'"}))
 
+"------------------------------------------------------------------------------"
 " Plugin: Multiple Cursors
 "------------------------------------------------------------------------------"
 let g:multi_cursor_use_default_mapping=0
@@ -286,44 +404,19 @@ let g:multi_cursor_prev_key            = '<C-p>'
 let g:multi_cursor_skip_key            = '<C-x>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
+"------------------------------------------------------------------------------"
 " Plugin: Autocomplete
 "------------------------------------------------------------------------------"
 " SuperTab settings
 let g:SuperTabDefaultCompletionType = "<c-x>"
 
-" Plugin: Deoplete
 "------------------------------------------------------------------------------"
-" neocomplete like
-set completeopt+=noinsert
-
-" deoplete.nvim recommend
-set completeopt+=noselect
-
-" Deoplete requires Neovim with Python3 enabled
-let g:python3_host_prog       = '/usr/local/bin/python3'
-let g:python3_host_skip_check = 1
-
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-" Python autocompletion
-let g:deoplete#sources#jedi#show_docstring = 1
-
-" Go autocompletion
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#sort_class    = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#use_cache     = 1
-
-" Clang autocompletion
-let g:clang_complete_auto              = 0
-let g:clang_auto_select                = 0
-let g:clang_omnicppcomplete_compliance = 0
-let g:clang_make_default_keymappings   = 0
-let g:clang_use_library                = 1
-let g:clang_library_path               = '/usr/lib63/clang/7.0.0/lib/'
-
-" Plugin: Git tools
+"                          Git tools
 "------------------------------------------------------------------------------"
-" Gitgutter settings
+"------------------------------------------------------------------------------"
+"  Plugin: Gitgutter settings
+"------------------------------------------------------------------------------"
+
 let g:gitgutter_max_signs             = 5000
 let g:gitgutter_sign_added            = '⊕'
 let g:gitgutter_sign_modified         = '⊖'
@@ -352,7 +445,7 @@ if has ('autocmd')
     augroup END
 endif
 
-set showmatch					" speed up bracket matching speed
+set showmatch				  " speed up bracket matching speed
 set matchtime=2
 set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
 set cursorline                " highlight curor line
@@ -398,7 +491,93 @@ set smartindent
 "set number
 "set relativenumber
 
+"------------------------------------------------------------------------------"
+" Custom Mappings "
+"------------------------------------------------------------------------------"
+" Set leader key to space
+let mapleader =" "
+" Leader key maps
+map <leader>f :Goyo <Cr>
+map <leader>v :Vi <Cr>
+map <leader>r :Ra <Cr>
+map <leader>t :tabnew file <Cr>
+map <F2> :Bracey <Cr>
+map <F3> :BraceyReload <Cr>
+map <F4> :BraceyStop <Cr>
+map <leader>d :g/^\(.*\)$\n\1/d<Cr>
+map <leader>m :MRU<Cr>
+map <leader>h :WhichKey '<Space>'<Cr>
+"--------------------------------------
+inoremap jj <esc>
+nnoremap bs i#!/bin/bash<ESC>0
+nnoremap cn iconsole.log<ESC>0
+nmap <leader>w :w!<cr>
+"nnoremap sh :!chmod +x % && source %
+"--------------------------------------
+"""""""""""""""""""""""""""""""""
+" Spell Check
+"""""""""""""""""""""""""""""""""
+map <F6> :setlocal spell! spelllang=en_us<cr>
+set wildmode=longest,list,full
+"--------------------------------------
+"""""""""""""""""""""""""""""""""
+" Keybindings for sane buffer
+"           navigation
+"""""""""""""""""""""""""""""""""
+set splitbelow splitright
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+map <C-LEFT> <C-w>h
+map <C-DOWN> <C-w>j
+map <C-UP> <C-w>k
+map <C-RIGHT> <C-w>l
+
+map <s-+> :vertical resize +5 <Cr>
+"map <s--> :vertical resize -5 <Cr>
+"map <s-UP> :resize +5 <Cr>
+"map <s-DOWN> :resize -5 <Cr>
+
+nnoremap <M-Left> :tabprevious<CR>
+nnoremap <M-Right> :tabnext<CR>
+"""""""""""""""""""""""""""""""""
+" Keybindings for tab navigation
+"    with leader and number
+"""""""""""""""""""""""""""""""""
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+
+noremap <leader>0 :tablast<cr>
+nnoremap <leader>x :tabclose<Cr>
+map <leader>tm :tabmove<Cr>
+
+map <leader>c :Colors<Cr>
+map <leader>b :Buffers<Cr>
+map <leader>s :Files<Cr>
+map <leader>W :Windows<Cr>
+map <leader>H :History<Cr>
+map <leader>Hc :History:<Cr>
+map <leader>M :Maps<Cr>
+
+"""""""""""""""""""""""""""""""""
+"  Commands and filemanagers    "
+"""""""""""""""""""""""""""""""""
+:command Ra !ranger
+:command Vi !vifm
+:command Na  tabnew file
+
+"------------------------------------------------------------------------------"
 " Statusline
+"------------------------------------------------------------------------------"
 if !&statusline
     " https://shapeshed.com/vim-statuslines/
     " http://vim.wikia.com/wiki/Writing_a_valid_statusline
@@ -432,7 +611,9 @@ endif
 set backup
 set backupdir=~/.vim/backup
 
+"------------------------------------------------------------------------------"
 " Filetype-Specific Configurations
+"------------------------------------------------------------------------------"
 if has("autocmd")
     " Use filetype detection and file-based automatic indenting.
     filetype plugin indent on
@@ -451,7 +632,7 @@ if has("autocmd")
 
     " Markdown, YAML and Journal
     autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
-    autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType yaml     setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType journal  setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
     " set .vcl.j2 files to be treated as vcl files and not Jinja2 for
@@ -486,7 +667,9 @@ set wildignore+=*.class" Python byte code
 set wildignore+=*.spl " compiled spelling word lists
 set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
 
+"------------------------------------------------------------------------------"
 " Spelling
+"------------------------------------------------------------------------------"
 if v:version >= 700
     " Enable spell check for text files
     autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en
@@ -511,14 +694,17 @@ let g:mta_filetypes = {
             \ 'php'   : 1,
             \ }
 
+"------------------------------------------------------------------------------"
 " Misc
 " Vim-tmux navigator settings
+"------------------------------------------------------------------------------"
 let g:tmux_navigator_no_mappings = 1
 
 "------------------------------------------------------------------------------"
 "                                Languages
 "------------------------------------------------------------------------------"
 " ALE settings
+"------------------------------------------------------------------------------"
 let g:ale_set_highlights = 0
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
@@ -541,9 +727,6 @@ let g:ale_fixers = {
             \ 'javascript': ['eslint'],
             \}
 
-" Navigate between errors
-nnoremap <Leader>h :lprevious<CR>zz
-nnoremap <Leader>l :lnext<CR>zz
 
 let g:ale_fix_on_save = 1
 let g:ale_completion_enabled = 1 " Enable completion where available.
@@ -564,7 +747,9 @@ endfunction
 
 set statusline=%{LinterStatus()}
 
+"------------------------------------------------------------------------------"
 " Python Settings
+"------------------------------------------------------------------------------"
 " python autocomplete settings required jedi package
 " $ pip install jedi
 let g:completor_python_binary = '/usr/bin/python3'
@@ -596,13 +781,17 @@ let g:go_highlight_extra_types = 0
 let g:go_highlight_methods = 0
 let g:go_highlight_functions = 0
 
+"------------------------------------------------------------------------------"
 " CSS3 settings
+"------------------------------------------------------------------------------"
 augroup VimCSS3Syntax
     autocmd!
     autocmd FileType css setlocal iskeyword+=-
 augroup END
 
+"------------------------------------------------------------------------------"
 " Javascript settings
+"------------------------------------------------------------------------------"
 autocmd FileType javascript set formatprg=prettier\ --stdin
 let g:javascript_plugin_jsdoc = 1
 let g:javascript_plugin_ngdoc = 1
@@ -612,7 +801,9 @@ let g:javascript_plugin_flow  = 1
 let g:tern#command   = ['tern']
 let g:tern#arguments = ['--persistent']
 
+"------------------------------------------------------------------------------"
 " JS-Beautify
+"------------------------------------------------------------------------------"
 let g:config_Beautifier = {}
 let g:config_Beautifier['js'] = {}
 let g:config_Beautifier['js'].indent_style = 'tab'
@@ -625,11 +816,14 @@ let g:config_Beautifier['css'].indent_style = 'tab'
 let g:config_Beautifier['html'] = {}
 let g:config_Beautifier['html'].indent_style = 'tab'
 
+"------------------------------------------------------------------------------"
 " Tagbar Settings
 "------------------------------------------------------------------------------"
 nmap <C-t> :TagbarToggle<CR>
 
+"------------------------------------------------------------------------------"
 " gotags
+"------------------------------------------------------------------------------"
 let g:tagbar_type_go = {
             \ 'ctagstype' : 'go',
             \ 'kinds'     : [
@@ -746,3 +940,81 @@ function! BetterBackSpace() abort
 
     " Remove trailing whitespace with F5
     nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+
+
+"""""""""""""""""""""""""""""""""
+"Dictionary Setting For WhichKey"
+"""""""""""""""""""""""""""""""""
+let g:which_key_map = {
+      \ 'f'     : ['Goyo'                , 'Goyo']                   ,
+      \ 'v'     : ['Vifm'                , 'Vifm']                   ,
+      \ 'r'     : ['Ranger'              , 'Ranger']                 ,
+      \ 't'     : ['tabnew'              , 'Open New Tab']           ,
+      \ 'd'     : ['Duplicate Cleaner'   , 'Delete Duplicate Lines'] ,
+      \ 'm'     : ['MRU'                 , 'View File History']      ,
+      \ 'h'     : ['This Menu'           , 'This Menu']              ,
+      \ 'cc'    : ['Comment Out'         , 'Comment Out']            ,
+      \ 'cu'    : ['Uncomment'           , 'Uncomment']              ,
+      \ '1-9'   : ['Go To Tab By Number'               , 'Go To Tab By Number 0 Is Tab 10'] ,
+      \ 'F8'    : ['Open MD Server'                    , 'MD Server']                       ,
+      \ 'F2'    : ['Web Server'                        , 'Web Server']                      ,
+      \ 'F3'    : ['Web Server'                        , 'Web Server Reload']               ,
+      \ 'F4'    : ['Web Server'                        , 'Web Server Stop']                 ,
+      \ 'F6'    : ['Spellcheck'                        , 'Spellcheck']                      ,
+      \ 'C-vimkeys/arrows' : ['Move Between Splits'    , 'Move Between Splits']             ,
+      \ 'S-Plus/S-Minus'   : ['Resize Splits'          , 'Resize Splits']                   ,
+      \ 'Alt-arrows'       : ['Tab Right Or Left'      , 'Tab Right OR Left']               ,
+      \ 'c'     : ['Colors'                            , 'Colors']                          ,
+      \ 'b'     : ['Buffers'                           , 'Buffers']                         ,
+      \ 's'     : ['Files'                             , 'Files']                           ,
+      \ 'W'     : ['Windows'                           , 'Windows']                         ,
+      \ 'H'     : ['History'                           , 'History']                         ,
+      \ 'Hc'    : ['CMD History'                       , 'CMD History']                     ,
+      \ 'M'     : ['Maps'                              , 'Maps']                            ,
+      \ 'C-f'   : ['Beautify'                          , 'Brautify']                        ,
+      \ 'w'     : ['Quick Save'                        , 'Quick Save']                      ,
+      \ 'tm'    : ['TabMove'                           , 'TaBMove']                         ,
+      \ }
+
+let g:which_key_map.1 = 'which_key_ignore'
+let g:which_key_map.2 = 'which_key_ignore'
+let g:which_key_map.3 = 'which_key_ignore'
+let g:which_key_map.4 = 'which_key_ignore'
+let g:which_key_map.5 = 'which_key_ignore'
+let g:which_key_map.6 = 'which_key_ignore'
+let g:which_key_map.7 = 'which_key_ignore'
+let g:which_key_map.8 = 'which_key_ignore'
+let g:which_key_map.9 = 'which_key_ignore'
+let g:which_key_map.0 = 'which_key_ignore'
+
+call which_key#register('<Space>', "g:which_key_map")
+"""""""""""""""""""""""""""""""
+"Options For The Startify Menu"
+"""""""""""""""""""""""""""""""
+ let g:startify_custom_header =
+       \ startify#pad(split(system('figlet -w 100 Wim'), '\n'))
+"Incase you are insane and want to open a new tab with Goyo enabled
+ autocmd BufEnter *
+       \ if !exists('t:startify_new_tab') && empty(expand('%')) && !exists('t:goyo_master') |
+       \   let t:startify_new_tab = 1 |
+       \   Startify |
+       \ endif
+"Bookmarks.
+let g:startify_bookmarks = [ {'I': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/varnish'},{'L': '~/Projects/src/gitlab.nm.cbc.ca/'},{'Z': '~/.zshrc'},{'B': '~/.bashrc'},{'V': '~/.vimrc'}]
+    let g:startify_lists = [
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+          \ { 'type': 'files',     'header': ['   Recent']            },
+          \ { 'type': 'sessions',  'header': ['   Sessions']       },
+          \ { 'type': 'commands',  'header': ['   Commands']       },
+          \ ]
+"cant tell wtf it does so its commented
+" \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+
+hi StartifyBracket ctermfg=240
+hi StartifyFile    ctermfg=147
+hi StartifyFooter  ctermfg=240
+hi StartifyHeader  ctermfg=114
+hi StartifyNumber  ctermfg=215
+hi StartifyPath    ctermfg=245
+hi StartifySlash   ctermfg=240
+hi StartifySpecial ctermfg=240
