@@ -1,3 +1,7 @@
 #-- private variables --
 export email=""
 export work_email=""
+
+if [[ $OSTYPE == 'darwin' ]]; then
+    export HOMEBREW_GITHUB_API_TOKEN=
+fi
