@@ -233,9 +233,9 @@ let g:Illuminate_delay = 50
 " Don't highlight word under cursor (default: 1)
 let g:Illuminate_highlightUnderCursor = 0
 
-"""""""""""
-"NERDTree "
-"""""""""""
+"------------------------------------------------------------------------------"
+" Plugin: nerdtree
+"------------------------------------------------------------------------------"
 " Start NERDTree and leave the cursor in it.
 " autocmd VimEnter * NERDTree
 
