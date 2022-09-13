@@ -242,14 +242,15 @@ let g:Illuminate_highlightUnderCursor = 0
 "start nerdtree and put cursor in empty buffer or file
 autocmd VimEnter * NERDTree | wincmd p
 
-" Start NERDTree when Vim is started without file arguments. 
+" Start NERDTree when Vim is started without file arguments.
 " below 2 lines were commented for startify to work
 "" autocmd StdinReadPre * let s:std_in=1
 "" autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+            \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
@@ -286,7 +287,7 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1
 
 """""""""""""""""""""""""""""""""
@@ -598,7 +599,9 @@ set smartindent
 " Set leader key to space
 let mapleader =" "
 " Leader key maps
-nnoremap <leader>n :NERDTree <Cr>
+nnoremap <leader>n :NERDTreeToggle <Cr>
+
+
 "map <leader>f :Goyo <Cr>
 map <leader>v :Vi <Cr>
 map <leader>r :Ra <Cr>
@@ -1102,10 +1105,17 @@ call which_key#register('<Space>', "g:which_key_map")
        \   Startify |
        \ endif
 "Bookmarks.
-let g:startify_bookmarks = [ {'I': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/varnish'},{'L': '~/Projects/src/gitlab.nm.cbc.ca/'},{'Z': '~/.zshrc'},{'B': '~/.bashrc'},{'V': '~/.vimrc'}]
+let g:startify_bookmarks = [ 
+            \ {'A': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/apache'},
+            \ {'B': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/varnish'},
+            \ {'C': '~/Projects/src/stash.nm.cbc.ca/cloud/varnish'},
+            \ {'D': '~/Projects/src/gitlab.nm.cbc.ca/'},
+            \ {'E': '~/.zshrc'},
+            \ {'F': '~/.vimrc'}
+            \ ]
     let g:startify_lists = [
           \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-          \ { 'type': 'files',     'header': ['   Recent']            },
+          \ { 'type': 'files',     'header': ['   Recent']         },
           \ { 'type': 'sessions',  'header': ['   Sessions']       },
           \ { 'type': 'commands',  'header': ['   Commands']       },
           \ ]
