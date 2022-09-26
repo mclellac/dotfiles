@@ -88,7 +88,7 @@ Plug 'liuchengxu/vim-which-key'
 " Language Plugins
 "------------------------------------------------------------------------------"
 Plug 'lervag/vimtex'
-Plug 'Vimjas/vim-python-pep8-indent'
+"Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'fgsch/vim-varnish'
 Plug 'hashivim/vim-terraform'
@@ -218,7 +218,7 @@ let g:vcl_fold = 0
 " Plugin: vim-markdown
 "------------------------------------------------------------------------------"
 " let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_folding_style_pythonic = 1
+"let g:vim_markdown_folding_style_pythonic = 1
 
 "------------------------------------------------------------------------------"
 " Plugin: vim-illuminate
@@ -663,7 +663,7 @@ set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
 set wildignore+=*.so,*.out,*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
 set wildignore+=*.luac " Lua byte code
 set wildignore+=*.pyc " Python byte code
-set wildignore+=*.class" Python byte code
+set wildignore+=*.class " Python byte code
 set wildignore+=*.spl " compiled spelling word lists
 set wildignore+=*/tmp/*,.DS_Store  " MacOSX/Linux
 
