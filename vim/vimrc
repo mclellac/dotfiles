@@ -1097,7 +1097,7 @@ call which_key#register('<Space>', "g:which_key_map")
 "Options For The Startify Menu"
 """""""""""""""""""""""""""""""
  let g:startify_custom_header =
-       \ startify#pad(split(system('figlet -w 100 Wim'), '\n'))
+       \ startify#pad(split(system('figlet -w 100 Vim'), '\n'))
 "Incase you are insane and want to open a new tab with Goyo enabled
  autocmd BufEnter *
        \ if !exists('t:startify_new_tab') && empty(expand('%')) && !exists('t:goyo_master') |
