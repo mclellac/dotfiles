@@ -129,7 +129,7 @@ pull() {
                 repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
             fi
 
-            # if ~mclellac is found, remove the tilde from project.
+            # if ~mclellac is found in the url, remove the tilde.
             if [[ "${url}" == *"~mclellac"* ]]; then
                 project="mclellac"
             fi
