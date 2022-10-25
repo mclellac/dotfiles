@@ -44,15 +44,13 @@ Plug 'mhinz/vim-startify'
 """"""""""""""""""""""""""""
 "         Surround         "
 """"""""""""""""""""""""""""
-" This plugin has fuckedup Keybindings but its useful
+" This plugin has fucked up Keybindings but it's useful
 " ysiw" surrounds one word with the " sign
 " yss) surrounds entire line with )
 " yss<p> surrounds line with the <p> tag and auto completes the closing tag
 " to surround multiple lines with a tag like a <li></li> use visual selection
 " then press St and type the tag. Notice that the first < is already written
 " so dont type it twice otherwise you'll get <<li>
-" remember that its not about speed! vim doesnt care about how fast you input
-" the combinations. We're not typing GTA cheats!
 Plug 'https://github.com/tpope/vim-surround.git'
 
 """"""""""""""""""""""""""""
@@ -151,7 +149,6 @@ call plug#end()
 " Cursor "
 let &t_SI = "\<Esc>]50;CursorShape=1\x7"
 let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-set mouse=a
 
 "------------------------------------------------------------------------------"
 " clipboard
