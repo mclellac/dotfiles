@@ -107,39 +107,45 @@ aklab() {
 
 pull() {
     local git_root="${HOME}/Projects/src/$*"
-        local project=""
-        local repo=""
+    local project=""
+    local repo=""
 
-        if [[ $OSTYPE == 'linux-gnu' ]]; then
-            alias gitls="ls --color=never"
-        else
-            alias gitls="ls"
-        fi
+    if [[ $OSTYPE == 'linux-gnu' ]]; then
+        alias gitls="ls --color=never"
+    else
+        alias gitls="ls"
+    fi
 
-        for url in $(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //'); do
+    for url in $(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //'); do
 
-            if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
-                local icon=" "
+        if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
+            local icon=" "
 
-                if [[ "${url}" == *"https"* ]]; then
-                    project=$(echo "${url}" | awk -F/ '{print $5}')
-                    repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
-                elif [[ "${url}" == *"ssh"* ]]; then
-                    project=$(echo "${url}" | awk -F/ '{print $4}')
-                    repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
-                fi
-            elif [[ ${url} =~ "github.com" ]]; then
-                local icon=" "
-                git_root="${HOME}/Projects/src/github.com"
-                project="mclellac"
-                repo=$(echo "${url}" | awk -F/ '{print $5}')
+            if [[ "${url}" == *"https"* ]]; then
+                project=$(echo "${url}" | awk -F/ '{print $5}')
+                repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
+            elif [[ "${url}" == *"ssh"* ]]; then
+                project=$(echo "${url}" | awk -F/ '{print $4}')
+                repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
             fi
 
-            printf "%s %s %s %s/%s %s  >> %s" ${cyan} ${icon} ${grey} ${project} ${repo} ${cyan} ${reset}
-            cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
-        done
+            # if ~mclellac is found in the url, remove the tilde.
+            if [[ "${url}" == *"~mclellac"* ]]; then
+                project="mclellac"
+            fi
 
-        cd "${git_root}"
+        elif [[ ${url} =~ "github.com" ]]; then
+            local icon=" "
+            git_root="${HOME}/Projects/src/github.com"
+            project="mclellac"
+            repo=$(echo "${url}" | awk -F/ '{print $5}')
+        fi
+
+        printf "%s %s %s %s/%s %s  >> %s" ${cyan} ${icon} ${grey} ${project} ${repo} ${cyan} ${reset}
+        cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
+    done
+
+    cd "${git_root}"
 }
 
 #--------------------------------------------------------------#
