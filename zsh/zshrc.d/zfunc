@@ -141,7 +141,7 @@ pull() {
             repo=$(echo "${url}" | awk -F/ '{print $5}')
         fi
 
-        printf "%s %s %s %s/%s %s  >> %s" ${cyan} ${icon} ${grey} ${project} ${repo} ${cyan} ${reset}
+        printf "%s %s %s %s/%s %s           \t %s" ${cyan} ${icon} ${green} ${project} ${repo} ${cyan} ${reset}
         cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
     done
 
