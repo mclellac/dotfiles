@@ -334,7 +334,7 @@ If you experience stuttering, increase this.")
 (setq font-lock-maximum-decoration t)   ; We have CPU to spare; highlight all syntax categories.
 
 (setq default-input-method "bengali-probhat")
-(set-fontset-font "fontset-default" 'bengali (font-spec :family "Kalpurush" :size 16))
+(set-fontset-font "fontset-default" 'bengali (font-spec :family "Fira Code" :size 20))
 
 (defun remove-quail-show-guidance ()
   "Function for removing guidance."
@@ -485,10 +485,10 @@ If you experience stuttering, increase this.")
 ;;________________________________________________________________
 ;;		Identity Who I Am ?
 ;;________________________________________________________________
-(setq user-full-name       "Likhon Barai"
-      user-login-name      "likhon"
-      user-real-login-name "raxit"
-      user-mail-address    "likhonhere007@gmail.com")
+(setq user-full-name       "Carey McLelland"
+      user-login-name      "mclellac"
+      user-real-login-name "mclellac"
+      user-mail-address    "careymclelland@gmail.com")
 ;;________________________________________________________________
 ;;		Highlight Current LINE
 ;;________________________________________________________________
