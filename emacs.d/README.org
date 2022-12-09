@@ -1,0 +1,317 @@
+#+TITLE:  Likhon's GNU Emacs Configuration
+#+AUTHOR: Likhon Barai
+#+EMAIL:  likhonhere007@gmail.com
+#+DATE:   2022 Nov 19
+#+TAGS:   emacs
+
+[[https://www.gnu.org/licenses/gpl-3.0.txt][https://img.shields.io/badge/license-GPL_3-green.svg?style=flat&logo=appveyor]]
+[[https://github.com/ellerbrock/open-source-badges/][https://badges.frapsoft.com/os/v1/open-source.png?v=103]]
+#+begin_quote
+An infinite number of monkeys typing into GNU Emacs would never make a good program.\\
+——— Linus Torvalds
+#+end_quote
+
+* Table of Contents                                                     :TOC:
+- [[#about][About]]
+  - [[#about-readme][About README]]
+- [[#screenshots][Screenshots]]
+- [[#installation][Installation]]
+  - [[#further-updates][Further Updates]]
+  - [[#contribution][Contribution]]
+  - [[#special-thanks][Special Thanks]]
+- [[#prerequisites][Prerequisites]]
+  - [[#user-information][User Information]]
+  - [[#install-packages][Install Packages]]
+- [[#user-guidance][User Guidance]]
+- [[#custom-configurations][Custom Configurations]]
+  - [[#custom-key-bindings][Custom key bindings]]
+  - [[#custom-functions][Custom functions]]
+  - [[#custom-input-methods][Custom input methods]]
+- [[#recommendation][Recommendation]]
+  - [[#replace-capslock-with-ctrl][Replace CapsLock with CTRL]]
+- [[#ask-me-anything][Ask Me Anything]]
+
+* About
+Emacs changes how you *think* about programming.
+
+Emacs is *totally introspectable*. You can always find out /what code runs when I press this button?/.
+
+Emacs is an *incremental programming environment*. There's no edit-compile-run cycle. There isn't even an edit-run cycle. You can execute snippets of code and gradually turn them into a finished project. There's no distinction between your editor and your interpreter.
+
+Emacs is a *mutable environment*. You can set variables, tweak functions with advice, or redefine entire functions. Nothing is off-limits.
+
+Emacs provides *functionality without applications*. Rather than separate applications, functionality is all integrated into your Emacs instance. Amazingly, this works. Ever wanted to use the same snippet tool for writing C++ classes as well as emails?
+
+Emacs is full of *incredible software concepts that haven't hit the mainstream yet*. For example:
+
+-   Many platforms have a single item clipboard. Emacs has an *infinite clipboard*.
+-   If you undo a change, and then continue editing, you can't redo the original change. Emacs allows *undoing to any historical state*, even allowing tree-based exploration of history.
+-   Emacs supports a *reverse variable search*: you can find variables with a given value.
+-   You can perform *structural editing* of code, allowing you to make changes without breaking syntax. This works for lisps (paredit) and non-lisps (smartparens).
+-   Many applications use a modal GUI: for example, you can't do other edits during a find-and-replace operation. Emacs provides *recursive editing* that allow you to suspend what you're currently doing, perform other edits, then continue the original task.
+
+Emacs has a *documentation culture*. Emacs includes a usage manual, a lisp programming manual, pervasive docstrings and even an interactive tutorial.
+
+Emacs has a *broad ecosystem*. If you want to edit code in a niche language, there's probably an Emacs package for it.
+
+Emacs doesn't have a monopoly on good ideas, and there are other great tools out there. Nonetheless, we believe the [[https://i.stack.imgur.com/7Cu9Z.jpg][Emacs learning curve]] pays off.
+
+This beautifully written *About EMACS* section credits to [[https://github.com/remacs/remacs][Remacs]].
+
+** About README
+Welcome to the /Emacs Of Dreams/. Wait no, I meant the *Emacs Operating System*. \\
+This repository contains my personal configuration for *GNU Emacs* that I use on
+the daily and port around from system to system with me.
+
+The configuration depends on [[file:init.el][init.el]], [[https://github.com/Likhon-baRoy/.emacs.d/tree/main/my-lisp][my-lisp]](dir) and [[file:early-init.el][early-init.el]] (sets up a few initial GUI settings), bootstraps [[https://github.com/jwiegley/use-package][use-package]]. and loads [[file:init.el][init.el]], which is where the majority of the configuration magic happens.
+
+This is an Emacs distribution that aims to enhance the default Emacs experience. It alters a lot of the default settings, bundles of additional packages and adds its own core library to the mix. The final product offers an easy to use Emacs configuration for Emacs newcomers and lots of additional power for Emacs power users.
+
+It's able to run on /Windows/, /GNU Linux/ and /macOS/. It is compatible *ONLY with GNU Emacs 26.1 and above*. In general you're advised to always run with the latest stable release - currently *28.2*.
+
+* Screenshots
+/Here are some demo.../ \\
+
+/A dashboard on startup can clean my mind/.😌
+
+[[./image-dired/ss-1.png]]
+
+/Center text in the frame, looks nice ;) and =flycheck= with BitMap-Arrow on the right-fringe/ 😎
+
+[[./image-dired/ss-2.png]]
+
+/default Transparent mod/ 👍🏻
+
+[[./image-dired/ss-3.png]]
+
+/File navigation with Speed-bar./
+
+[[./image-dired/ss-4.png]]
+
+/feel the Org-mode/ :D
+
+[[./image-dired/ss-5.png]]
+
+/Company-mode with yasnippet/ 🔥
+
+[[./image-dired/ss-6.png]]
+
+
+#+html: <p><img alt="GitHub repo size" align="right" src="https://img.shields.io/github/repo-size/Likhon-baRoy/.emacs.d?color=blue&logo=github&style=for-the-badge"></p>
+* Installation
+[[https://GitHub.com/Likhon-baRoy/][http://ForTheBadge.com/images/badges/built-with-swag.svg]]
+
+1. Install [[https://www.gnu.org/software/emacs/][GNU Emacs]].
+2. Move =~/.emacs= or =~/.emacs.d=, if you already have it.
+3. Clone this repo to =HOME= or =~/= path using git and update all the submodules.\\
+   /Run this snippets on your terminal:/
+#+begin_src
+cd ~
+git clone https://github.com/Likhon-baRoy/.emacs.d.git
+cd.emacs.d
+#+end_src
+4. Ensure a stable connection to Melpa Packages, then open Emacs.
+5. Enter =y= when prompted with =Auto-update packages now?=, wait for all packages to install. /(Ignore the warnings on the first launch.)/
+6. In your favorite browser, =Ctrl-f Prerequisite= through this README and follow the *Prerequisite* instructions.
+7. Restart Emacs and Start using your *Dream Emacs*! :tada:
+
+** Further Updates
+I will be updating My-EMACS from time to time, it is best to =git pull= once a while to stay up to date.
+
+Please also execute ~git submodule update --recursive --remote~ to sync with all the submodules.
+
+** Contribution
+If you spotted a bug or you have any suggestions, please fill in an issue. If you have something to fix, feel free to create a pull request.
+
+** Special Thanks
+Everyone starts somewhere, and I started here.
+My heart whelming *Thanks* 🙏🏽 to you guy's 💜, who put all their effort always makes *Emacs* go one-step further.
+
+- *Uncle Dev* ([[https://github.com/daedreth/UncleDavesEmacs#readme][GitHub]], [[https://www.youtube.com/watch?v=d6iY_1aMzeg&list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n][YouTube]])
+- *Mike Zamansky* ([[https://github.com/zamansky/emacs.dz#readme][GitHub]], [[https://www.youtube.com/watch?v=49kBWM3RQQ8&list=PL9KxKa8NpFxIcNQa9js7dQQIHc81b0-Xg][YouTube]], [[https://cestlaz.github.io/posts/using-emacs-1-setup/][Website]])
+- *Mingde* (Matthew) *Zeng* ([[https://github.com/MatthewZMD/.emacs.d#readme][GitHub]])
+- *System Crafters* ([[https://www.youtube.com/@SystemCrafters/playlists][YouTube]], [[https://systemcrafters.cc/][Website]], [[https://config.daviwil.com/emacs][Website]])
+- *Protesilaos Stavrou* ([[https://github.com/protesilaos/dotfiles/tree/master/emacs/.emacs.d][GitHub]], [[https://www.youtube.com/@protesilaos/playlists][YouTube]], [[https://protesilaos.com/emacs/dotemacs][Website]])
+
+And many other people from the *Internet World*.
+
+* Prerequisites
+
+** User Information
+Please update this file your personal info.
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name       "Likhon Barai"
+      user-login-name      "likhon"
+      user-real-login-name "raxit"
+      user-mail-address    "likhonhere007@gmail.com")
+#+END_SRC
+
+** Install Packages
+Also this project relies on the following list of applications:
+
+- [[http://ctags.sourceforge.net][Exuberant Ctags]] (=ctags=)
+- Install [[https://cmake.org/install/][cmake]], [[https://clang.llvm.org/get_started.html][clang]], [[https://clang.llvm.org/get_started.html][llvm]], [[http://www.gdbtutorial.com/tutorial/how-install-gdb][gdb]] for programming purpose
+- Install [[https://www.jetbrains.com/lp/mono/][JetBrains Mono]] (=font=)
+- Install [[https://github.com/googlefonts/noto-emoji][emoji font]] (*Noto Emoji* & =noto-cjk=, /for all the fonts imaginable/) for Linux
+- Install [[https://github.com/domtronn/all-the-icons.el][all-the-icons]] fonts: =M-x all-the-icons-install-fonts=
+- [[https://www.gnu.org/software/global][GNU GLOBAL (=global=)]]
+- [[https://git-scm.com][Git (=git=)]]
+- [[https://www.gnupg.org][GnuPG (=gpg=)]]
+- [[https://hunspell.github.io][Hunspell (=hunspell=)]] with [[https://stackoverflow.com/a/9436234/1661465][dictionaries]]
+- [[https://www.gnu.org/software/idutils/][ID Utils (=mkid=, =lid=, =fid=, =fnid=, =xtokid=)]]
+- [[https://www.passwordstore.org][Password Store (=pass=)]]
+- [[https://github.com/BurntSushi/ripgrep][ripgrep (=rg=)]]
+
+* User Guidance
+📝 *Note:* (/for beginners/) I'll be using =Ctrl= as =C=, =Alt= as =M=, =Space= as =S= and =BackSpace= as =BS=. \\
+
+After installation process is done.  Whenever you open a files within Emacs, the whole file will be opened in folding mode.  Which you'll obviously won't see until you find the shortcut key-binding.  There is a default feature for this which called *hs-minor-mode* I just change some default key-bindings for more useful. \\
+
+*check this out:*
+#+begin_example
+C-c h (hide-all)
+C-c s (show-all)
+S-BS  (hide-block)
+C-BS  (show-block)
+C-TAB (toggle-hiding) - fold the current section.
+S-TAB (hide-level) - fold the sub sections of the current section.
+#+end_example
+
+* Custom Configurations
+Here is my some personal changes for *Emacs* which comes default with this configuration. Checkout full documentation of *Keybindings* in [[https://github.com/Likhon-baRoy/org-notes/blob/main/emacs_user-manual.org][Emacs user-manual]].
+** Custom key bindings
+
+#+BEGIN_SRC emacs-lisp
+;; Disable Ctrl-z.
+(global-unset-key "\^z")
+;; (global-set-key "\C-z" 'call-last-kbd-macro) ; call-last-kbd-macro frequently used key on a double key sequence (I think original is ^Xe)
+(global-set-key "\C-w" 'backward-kill-word)
+;; I use `C-h' for backspace in Emacs and move `help-command' elsewhere:
+(global-set-key "\^h" 'backward-delete-char)
+(define-key isearch-mode-map "\C-h" 'isearch-delete-char)
+(global-set-key (kbd "C-S-H") 'kill-whole-line)
+;; this lets us have long lines go off the side of the screen instead of hosing up the ascii art
+(global-set-key "\C-x\C-l" 'toggle-truncate-lines)
+(global-set-key "\C-c\C-d" "\C-a\C- \C-n\M-w\C-y")	; Duplicate a whole line
+(global-set-key (kbd "C-S-R") 'rename-file)
+(global-set-key "\C-cD" 'Delete-current-file)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region)
+(global-set-key "\M-o"  'other-window)
+(global-set-key "\M-n"  'next-buffer)
+(global-set-key "\M-p"  'previous-buffer)
+(global-set-key (kbd "M-<tab>") 'company-complete-common-or-cycle)
+(global-set-key "\M-TAB"  'company-complete-common-or-cycle)
+(global-set-key (kbd "C-.") #'other-window)
+(global-set-key (kbd "C-,") #'prev-window)
+#+END_SRC
+
+** Custom functions
+
+#+BEGIN_SRC emacs-lisp
+;; Unfill paragraph
+;; Might be good. For instance for canceling all of the paragraph quickly or for commenting it away.
+(defun unfill-paragraph ()
+  "Convert a multi-line paragraph into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+	(fill-paragraph nil)))
+;; Handy key definition
+(define-key global-map "\M-Q" 'unfill-paragraph)
+#+END_SRC
+
+- Now now, how much you like *transparency*?  With this config this method comes default. \\
+  you can *toggle* =on= / =off= *transparency* /using/ =C-c t= keystrokes.
+
+#+BEGIN_SRC emacs-lisp
+;;________________________________________________________________
+;;    Transparent Emacs
+;;________________________________________________________________
+(set-frame-parameter (selected-frame) 'alpha '(85 . 50))
+(add-to-list 'default-frame-alist '(alpha . (85 . 50)))
+;; (set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+;; (set-frame-parameter (selected-frame) 'alpha <both>)
+
+;; Use the following snippet after you’ve set the alpha as above to assign a toggle to “C-c t”:
+(defun toggle-transparency ()
+  "Crave for transparency!"
+  (interactive)
+  (let ((alpha (frame-parameter nil 'alpha)))
+    (set-frame-parameter
+     nil 'alpha
+     (if (eql (cond ((numberp alpha) alpha)
+                    ((numberp (cdr alpha)) (cdr alpha))
+                    ;; Also handle undocumented (<active> <inactive>) form.
+                    ((numberp (cadr alpha)) (cadr alpha)))
+              100)
+         '(85 . 50) '(100 . 100)))))
+(global-set-key (kbd "C-c t") 'toggle-transparency)
+#+END_SRC
+
+** Custom input methods
+
+Here's a input method for =Bengali= or =Bangla= language.  Which I used with =Probhat= key-layout.
+#+BEGIN_SRC emacs-lisp
+(setq default-input-method "bengali-probhat")
+(set-fontset-font "fontset-default" 'bengali (font-spec :family "Kalpurush" :size 16))
+
+(defun remove-quail-show-guidance ()
+  "Function for removing guidance."
+  nil)
+(defun remove-quail-completion ()
+  "Function for removing completion."
+  (quail-select-current))
+(defun bn-company-wordfreq ()
+  "Bangla auto-suggestion with company-wordfreq."
+  (interactive)
+  (advice-add 'quail-show-guidance :override #'remove-quail-show-guidance)
+  (advice-add 'quail-completion :override #'remove-quail-completion)
+  (setq ispell-local-dictionary "bengali")
+  (setq-local company-backends '(company-wordfreq))
+  (setq-local company-transformers nil))
+(add-hook 'text-mode-hook (lambda ()
+                            (setq-local company-backends '(company-wordfreq))
+                            (setq-local company-transformers nil)))
+#+END_SRC
+
+* Recommendations
+Here are some general recommendations on Emacs usage that you might find helpful:
+
+** Replace CapsLock with CTRL
+Most people don't use the CapsLock key (unless you like YELLING ON THE INTERNET) so you can use this simple fix to replace it with the CTRL to make your Emacs life easier.  Doing this will prevent you from having to bend your pinky down all day long to hit all those fabled Emacs keybindings, allowing you to keep your hands on the home row of the keyboard.
+
+Here's how to do it across all 3 major operating systems:
+
+*Linux X11*
+There are [[https://askubuntu.com/questions/33774/how-do-i-remap-the-caps-lock-and-ctrl-keys][many ways]] to accomplish this in Linux, but the easiest (and most repeatable) I've found is to use [[https://wiki.archlinux.org/index.php/Xmodmap][xmodmap]].  First, create a file named =.Xmodmap= in your home folder and populate it like so:
+
+#+begin_src
+clear lock
+clear control
+keycode 66 = Control_L
+add control = Control_L
+add Lock = Control_R
+#+end_src
+
+This replaces CapsLock with control and also replaces the Ctrl key on the right side with CapsLock just in case you ever need to use it.  Most login systems (GDM, KDM, etc) will load this file when you log in so you might not need to do anything extra for it to take effect, just log out and log back in again.  If that doesn't seem to work, you can add this line to one of your startup files (=.xinitrc=, =.profile=, window manager configuration, etc):
+
+#+begin_src sh
+xmodmap ~/.Xmodmap
+#+end_src
+
+This beautifully written *Replace CapsLock with CTRL* section credits to [[https://github.com/daviwil/emacs-from-scratch/blob/master/README.org][Emacs From Scratch]]
+
+* Ask Me Anything!
+#+html: <a href="../../issues/new">:speech_balloon: <b>Ask a question</b></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="../../issues?q=is%3Aissue+is%3Aclosed+sort%3Aupdated-desc">:book: <b>Read questions</b></a>
+/I get questions by email, occasionally. This way anyone can read the answer!/
+
+[[https://GitHub.com/Likhon-baRoy/.emacs.d][https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg]]
+
+Anything means *anything*. Personal questions. Money. Work. Life. Code.
+Cooking. Traveling. Sports. Teaching. Pokémon. Whatever. :joy:
+
+* :scroll: License
+
+This project is open source software licensed under the [[https://github.com/sergeyklay/bnf-mode/blob/master/LICENSE][GNU General Public Licence version 3]].
+
+Copyright © 2020, 2022, Free Software Foundation, Inc.
