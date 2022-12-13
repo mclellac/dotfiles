@@ -126,7 +126,7 @@ If you experience stuttering, increase this.")
 (eval-and-compile
   (setq use-package-verbose (not (bound-and-true-p byte-compile-current-file))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+
 
 ;; Install use-package if not installed
 (unless (package-installed-p 'use-package)
@@ -159,6 +159,14 @@ If you experience stuttering, increase this.")
 
     ;; just process the next keywords
     (use-package-process-keywords name-symbol rest state)))
+
+    ;; Download Evil
+    (unless (package-installed-p 'evil)
+        (package-install 'evil))
+
+    ;; Enable Evil
+    (require 'evil)
+    (evil-mode 1)
 
 ;; github.com/doomemacs/doomemacs/blob/develop/core/core.el#L296
 (use-package gcmh
