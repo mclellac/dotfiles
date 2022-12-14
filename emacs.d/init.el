@@ -1,20 +1,20 @@
-;;; init.el --- -*- lexical-binding: t -*-
+;;; init.el --- Initialization file -*- lexical-binding: t; -*-
 ;;
 ;; Filename: init.el
-;; Description: Initialize Z-MACS (obviously Emacs :smile:)
+;; Description: Initialize Zmacs (obviously Emacs :smile:)
 ;; Author: Likhon Sapiens
 ;; Copyright © 2022 Likhon Sapiens
 ;; Created: Thu Oct 29 10:15:28 2022 (-0400)
 ;; Version: 0.1
 ;; URL: https://github.com/Likhon-baRoy/.emacs.d
 ;; Keywords: Z-MACS .emacs.d init
-;; Compatibility: emacs-version >= 27.1
+;; Compatibility: emacs-version >= 28.2
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;;; Commentary:
 ;;
-;; This is the init.el file for Z-MACS
+;; This is the init.el file for Zmacs
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -72,34 +72,19 @@ If you experience stuttering, increase this.")
             (add-hook 'minibuffer-exit-hook #'gc-minibuffer-exit-hook)))
 ;; -AutoGC
 
-;;Load Path
-;; Since all the configuration files are stored in a folder, they need to be added to `load-path' now.
-(defun update-to-load-path (folder)
-  "Update FOLDER and its subdirectories to `load-path'."
-  (let ((base folder))
-    (unless (member base load-path)
-      (add-to-list 'load-path base))
-    (dolist (f (directory-files base))
-      (let ((name (concat base "/" f)))
-        (when (and (file-directory-p name)
-                   (not (equal f ".."))
-                   (not (equal f ".")))
-          (unless (member base load-path)
-            (add-to-list 'load-path name)))))))
-
-(update-to-load-path (expand-file-name "elpa" user-emacs-directory))
-
 ;; ────────────────────────────────── ENCODING ─────────────────────────────────
-(set-default-coding-systems 'utf-8-unix)
-(prefer-coding-system 'utf-8-unix)
-(set-language-environment "UTF-8")
-(set-locale-environment "en_US.UTF-8")
-(set-selection-coding-system 'utf-8-unix)
-(set-buffer-file-coding-system 'utf-8-unix)
-(set-clipboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+(setq locale-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-clipboard-coding-system 'utf-8)
+(set-locale-environment "en_US.UTF-8")
+(set-buffer-file-coding-system 'utf-8-unix)
 (when window-system (global-prettify-symbols-mode t))
+
 ;; ────────────────────────────── Generic packages ─────────────────────────────
 ;; Select the folder to store packages
 ;; Comment / Uncomment to use desired sites
@@ -126,7 +111,7 @@ If you experience stuttering, increase this.")
 (eval-and-compile
   (setq use-package-verbose (not (bound-and-true-p byte-compile-current-file))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;
 
 ;; Install use-package if not installed
 (unless (package-installed-p 'use-package)
@@ -135,12 +120,17 @@ If you experience stuttering, increase this.")
 (eval-and-compile
   (require 'use-package)
   (require 'bind-key)
-  (setq use-package-verbose t)
-  (setq use-package-always-ensure t)
-  (setq use-package-expand-minimally t)
-  (setq use-package-compute-statistics t)
-  (setq warning-minimum-level :emergency)
-  (setq use-package-enable-imenu-support t))
+  (setq warning-minimum-level :emergency)) ; :error (default is :warning)
+
+;;; Configure use-package
+(use-package use-package
+  :custom
+  (use-package-verbose t)
+  (use-package-always-defer nil)        ; :defer t by default
+  (use-package-always-ensure t)         ; :ensure t by default
+  (use-package-expand-minimally t)
+  (use-package-compute-statistics t)
+  (use-package-enable-imenu-support t))
 
 ;; ─────────────────── Additional Packages and Configurations ──────────────────
 ;; Add `:doc' support for use-package so that we can use it like what a doc-strings is for
@@ -160,14 +150,6 @@ If you experience stuttering, increase this.")
     ;; just process the next keywords
     (use-package-process-keywords name-symbol rest state)))
 
-    ;; Download Evil
-    (unless (package-installed-p 'evil)
-        (package-install 'evil))
-
-    ;; Enable Evil
-    (require 'evil)
-    (evil-mode 1)
-
 ;; github.com/doomemacs/doomemacs/blob/develop/core/core.el#L296
 (use-package gcmh
   :init (gcmh-mode 1)
@@ -177,6 +159,14 @@ If you experience stuttering, increase this.")
    gcmh-auto-idle-delay-factor 10
    gcmh-high-cons-threshold (* 16 1024 1024)) ; 16mb
   :delight " Ⓖ")
+
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
+
+;; Enable Evil
+(require 'evil)
+(evil-mode 1)
 
 ;; ──────────────────────────── Startup Performance ────────────────────────────
 ;; make startup faster by reducing the frequency of garbage collection and then use a hook to measure Emacs startup time.
@@ -342,7 +332,7 @@ If you experience stuttering, increase this.")
 (setq font-lock-maximum-decoration t)   ; We have CPU to spare; highlight all syntax categories.
 
 (setq default-input-method "bengali-probhat")
-(set-fontset-font "fontset-default" 'bengali (font-spec :family "Fira Code" :size 20))
+(set-fontset-font "fontset-default" 'bengali (font-spec :family "Kalpurush" :size 16))
 
 (defun remove-quail-show-guidance ()
   "Function for removing guidance."
@@ -376,11 +366,7 @@ If you experience stuttering, increase this.")
 ;; (set-face-attribute 'font-lock-function-name-face nil :foreground "#c678dd" :slant 'italic :weight 'bold)
 ;; (set-face-attribute 'font-lock-variable-name-face nil :foreground "#dcaeea" :weight 'bold)
 
-;; (set-frame-font "Comic Mono-10.5" nil t)
-;; (set-frame-font "Monaco-9" nil t)
-;; (set-frame-font "Fantasque Sans Mono-10.5" nil t)
-;; (set-frame-font "Source Code Pro-10" nil t)
-;; (set-frame-font "Fira Code-10" nil t)
+;; (set-frame-font "Comic Mono-12.5" nil t) ; "Monaco-11" "Fantasque Sans Mono-12.5" "Source Code Pro-12" "Fira Code-12"
 
 ;; ──────────────────────── General But Better Defaults ────────────────────────
 (setq-default
@@ -424,6 +410,8 @@ If you experience stuttering, increase this.")
 (save-place-mode 1)
 (show-paren-mode 1)         ; Highlight matching parenthesis.
 (global-auto-revert-mode 1) ; Automatically revert buffer when it changes on disk.
+;; space around the windows
+(set-fringe-style '(8 . 8))
 ;; (fringe-mode '(8 . 0))      ; Enable fringe on the left for git-gutter-fringe+.
 (global-subword-mode 1)     ; Iterate through CamelCase words.
 (electric-pair-mode t)      ; Enable Matching delimeters.
@@ -439,6 +427,13 @@ If you experience stuttering, increase this.")
 ;; which isn't so bad.
 (unless (daemonp)
   (advice-add #'display-startup-echo-area-message :override #'ignore))
+
+;; display white spaces and newlines
+;; (setq whitespace-style '(face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark missing-newline-at-eof))
+;; (global-whitespace-mode)
+
+;; show zero-width characters
+(set-face-background 'glyphless-char "red")
 
 (setq
  debug-on-error init-file-debug     ; Reduce debug output, well, unless we've asked for it.
@@ -477,6 +472,7 @@ If you experience stuttering, increase this.")
  show-paren-style 'mixed      		; alternatives are 'expression' and 'parenthesis'.
  ffap-machine-p-known 'reject       ; Don't ping things that look like domain names.
  pgtk-wait-for-event-timeout 0.001
+ display-line-numbers-type 'relative
  frame-title-format '(buffer-file-name "Emacs: %b (%f)" "Emacs: %b") ; name of the file I am editing as the name of the window.
  )
 
@@ -493,10 +489,10 @@ If you experience stuttering, increase this.")
 ;;________________________________________________________________
 ;;		Identity Who I Am ?
 ;;________________________________________________________________
-(setq user-full-name       "Carey McLelland"
-      user-login-name      "mclellac"
-      user-real-login-name "mclellac"
-      user-mail-address    "careymclelland@gmail.com")
+(setq user-full-name       "Likhon Barai"
+      user-login-name      "likhon"
+      user-real-login-name "raxit"
+      user-mail-address    "likhonhere007@gmail.com")
 ;;________________________________________________________________
 ;;		Highlight Current LINE
 ;;________________________________________________________________
@@ -525,6 +521,8 @@ If you experience stuttering, increase this.")
 (use-package delight
   :delight)
 (delight '((abbrev-mode " Abv" abbrev)
+           (auto-fill-function " AF")
+           (visual-line-mode)
            (smart-tab-mode " \\t" smart-tab)
            (eldoc-mode nil "eldoc")
            (rainbow-mode)
@@ -559,72 +557,6 @@ If you experience stuttering, increase this.")
 ;; (cl-defun all-the-icons-faicon (icon &rest _)
 ;;   #("" 0 1 (rear-nonsticky t display (raise -0.24) font-lock-face (:family "FontAwesome" :height 1.2) face (:family "FontAwesome" :height 1.2)))))
 
-;; ───────────────────────────────── DASHBOARD ─────────────────────────────────
-;; A dashboard on startup can clean my mind
-(use-package dashboard
-  :after all-the-icons
-  :init (add-hook 'dashboard-mode-hook (lambda () (setq show-trailing-whitespace nil)))
-  :custom
-  (dashboard-set-navigator t)
-  (dashboard-center-content t)
-  (dashboard-set-file-icons t)
-  (dashboard-set-heading-icons t)
-  (dashboard-image-banner-max-height 250)
-  (dashboard-banner-logo-title "[Π Ο Σ Ε Ι Δ Ο Ν 🔱 Ε Δ Ι Τ Ο Ρ]") ; [Ποσειδον 🔱 εδιτορ]
-  (dashboard-startup-banner (concat user-emacs-directory "etc/banners/emacs_pen.png"))
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-footer-icon (all-the-icons-octicon "calendar"
-                                                     :height 1.1
-                                                     :v-adjust -0.05
-                                                     :face 'font-lock-keyword-face))
-
-  (setq dashboard-navigator-buttons
-        `(;; line1
-          ((,(all-the-icons-octicon "octoface" :height 1.1 :v-adjust 0.0)
-            "Homepage"
-            "Browse homepage"
-            (lambda (&rest _) (browse-url "https://github.com/Likhon-baRoy/.emacs.d")) nil "" " |")
-           (,(all-the-icons-faicon "refresh" :height 1.1 :v-adjust 0.0)
-            "Update"
-            "Update Zmacs"
-            (lambda (&rest _) (auto-package-update-maybe)) warning "" " |")
-           (,(all-the-icons-faicon "flag" :height 1.1 :v-adjust 0.0) nil
-            "Report a BUG"
-            (lambda (&rest _) (browse-url "https://github.com/Likhon-baRoy/.emacs.d/issues/new")) error "" ""))
-          ;; line 2
-          ;; ((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
-          ;;   "AlienFriend"
-          ;;   "Browse Alien Page"
-          ;;   (lambda (&rest _) (browse-url "https://github.com/b-coimbra/.emacs.d")) nil "" ""))
-          ;; Empty line
-          (("" "\n" "" nil nil "" ""))
-
-          ;; Keybindings
-          ((,(all-the-icons-octicon "search" :height 0.9 :v-adjust -0.1)
-            " Find file" nil
-            (lambda (&rest _) (counsel-find-file)) nil "" "            C-x C-f"))
-          ((,(all-the-icons-octicon "file-directory" :height 1.0 :v-adjust -0.1)
-            " Open project" nil
-            (lambda (&rest _) (counsel-projectile-switch-project)) nil "" "         C-x p d"))
-          ((,(all-the-icons-octicon "three-bars" :height 1.1 :v-adjust -0.1)
-            " File explorer" nil
-            (lambda (&rest _) (counsel-projectile-switch-project)) nil "" "        C-x p D"))
-          ((,(all-the-icons-octicon "settings" :height 0.9 :v-adjust -0.1)
-            " Open settings" nil
-            (lambda (&rest _) (open-config-file)) nil "" "        C-c e  "))))
-
-  (setq
-   dashboard-projects-backend 'project-el
-   dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name
-   dashboard-items '((recents        . 5)
-                     (projects       . 5)
-                     (bookmarks      . 5)
-                     (agenda         . 5)
-                     (registers      . 5)))
-  :custom-face
-  (dashboard-heading ((t (:foreground nil :weight bold))))) ; "#f1fa8c"
-
 (use-package avy
   :bind(("C-'" . 'avy-goto-char)
         ("C-:" . 'avy-goto-char-2)
@@ -642,6 +574,9 @@ If you experience stuttering, increase this.")
 ;; :custom-face
 ;; (avy-lead-face ((t (:background "#51afef" :foreground "#870000" :weight bold)))))
 
+;; allow to edit files which require `root' permission with emacs.
+;; (use-package sudo-edit
+;;   :bind ("s-e" . sudo-edit))
 
 (use-package uniquify-files
   :config
@@ -664,12 +599,15 @@ If you experience stuttering, increase this.")
   :doc "Recent buffers in a new Emacs session"
   :hook (after-init . recentf-mode)
   :custom
-  (recentf-auto-cleanup 'never) ; "05:00am") ; or, recentf-auto-cleanup 'never
+  (recentf-auto-cleanup 'never) ; "05:00am") or (recentf-auto-cleanup 'never)
   (recentf-max-saved-items 300)
   (recentf-max-menu-items 50))
 
 (use-package magit
   :doc "Git integration for Emacs"
+  :config
+  (setq magit-push-always-verify nil)
+  (setq git-commit-summary-max-length 50)
   :bind ("C-x g" . magit-status)
   :delight)
 
@@ -686,6 +624,7 @@ If you experience stuttering, increase this.")
   (set-face-foreground 'git-gutter:deleted "Red"))
 
 (use-package which-key
+  :defer t
   :delight
   :init (which-key-mode)
   (setq which-key-sort-order 'which-key-key-order-alpha
@@ -724,12 +663,15 @@ If you experience stuttering, increase this.")
 ;; (use-package goto-last-change)
 ;; :bind (("C-;" . goto-last-change)))
 
-(use-package goto-chg)
+(use-package goto-chg
+  :defer t)
+
+(use-package try
+  :defer t)
 
 (use-package winner
   :doc "a minor mode that records your window configurations and lets you undo and redo changes made to it."
-  :config
-  (winner-mode 1)
+  :config (winner-mode 1)
   :bind (("M-[" . winner-undo)
          ("M-]" . winner-redo))
   :custom
@@ -746,30 +688,10 @@ If you experience stuttering, increase this.")
      "*esh command on file*")))
 
 (use-package aggressive-indent
+  :defer t
   :doc "Intended Indentation"
   :init (add-hook 'prog-mode-hook #'aggressive-indent-mode)
   :delight)
-
-;; Opening Files Externally
-(use-package openwith
-  :config
-  (setq openwith-associations
-        (list
-         (list (openwith-make-extension-regexp
-                '("mpg" "mpeg" "mp3" "mp4"
-                  "avi" "wmv" "wav" "mov" "flv"
-                  "ogm" "ogg" "mkv"))
-               "mpv"
-               '(file))
-         (list (openwith-make-extension-regexp
-                '("xbm" "pbm" "pgm" "ppm" "pnm"
-                  "png" "gif" "bmp" "tif" "jpeg")) ; Removed jpg because Telega was
-               "sxiv" ; causing feh to be opened...
-               '(file))
-         (list (openwith-make-extension-regexp
-                '("pdf"))
-               "zathura"
-               '(file)))))
 
 (use-package beacon
   :init (beacon-mode t)
@@ -799,6 +721,7 @@ If you experience stuttering, increase this.")
 
 (setq custom-safe-themes t)
 (use-package doom-themes
+  :if window-system
   :custom-face
   (cursor ((t (:background "BlanchedAlmond"))))
   :config
@@ -818,7 +741,6 @@ If you experience stuttering, increase this.")
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 ;; ───────────────────────────────── MODE-LINE ─────────────────────────────────
-;; When displaying the time with display-time-mode, I don’t care about the load average.
 (size-indication-mode)
 ;; (display-battery-mode)
 ;; (display-time-mode)
@@ -829,15 +751,15 @@ If you experience stuttering, increase this.")
 ;; (setq display-time-format "%l:%M%P (%a)%e %b ♪") ; %D for date format
 
 (cond ((aorst/font-installed-p "JetBrainsMono")
-       (set-face-attribute 'default nil :font "JetBrainsMono 10"))
+       (set-face-attribute 'default nil :font "JetBrainsMono 12"))
       ((aorst/font-installed-p "Source Code Pro")
-       (set-face-attribute 'default nil :font "Source Code Pro 10")))
+       (set-face-attribute 'default nil :font "Source Code Pro 12")))
 ;; For variable pitched fonts DejaVu font is used if available.
 (when (aorst/font-installed-p "DejaVu Sans")
-  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans 10"))
+  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans 12"))
 
 (use-package ligature
-  :load-path "path-to-ligature-repo"
+  ;; :load-path "path-to-ligature-repo"
   :config
   ;; Enable the "www" ligature in every possible major mode
   (ligature-set-ligatures 't '("www"))
@@ -900,6 +822,7 @@ If you experience stuttering, increase this.")
   :delight " 𝛁")
 
 (use-package doom-modeline
+  :after all-the-icons
   :init (doom-modeline-mode)
   :custom
   ;; Don't compact font caches during GC. Windows Laggy Issue
@@ -913,7 +836,7 @@ If you experience stuttering, increase this.")
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-height 35))
 ;; (set-face-background 'mode-line nil)
-;; ────────────────────────────────── IVY-MODE ─────────────────────────────────
+;; ────────────────────────────────── IVY ─────────────────────────────────
 (use-package ivy
   :doc "A generic completion mechanism"
   :init (ivy-mode 1)
@@ -929,66 +852,19 @@ If you experience stuttering, increase this.")
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-switch-buffer-kill))
   :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-truncate-lines t)
   (ivy-wrap t)
+  (ivy-truncate-lines t)
+  (ivy-use-virtual-buffers t)
   (ivy-use-selectable-prompt t)
   (ivy-count-format "【%d/%d】")
+  (ivy-initial-inputs-alist nil) ; by default, all ivy prompts start with `^'
+  (ivy-on-del-error-function nil)
   (enable-recursive-minibuffers t)
-  ;; By default, all ivy prompts start with `^'. Disable that.
-  (ivy-initial-inputs-alist nil)
+  (ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-create)
   :delight)
-
-(use-package ivy-avy
-  :after ivy)
-
-(use-package ivy-hydra
-  :after ivy)
-
-(use-package ivy-rich
-  :doc "Have additional information in empty space of ivy buffers."
-  :after ivy
-  :custom
-  (ivy-rich-path-style 'abbreviate)
-  :config
-  (setcdr (assq t ivy-format-functions-alist)
-          #'ivy-format-function-line)
-  (ivy-rich-mode 1)
-  :delight)
-
-(use-package ivy-posframe
-  :doc "Custom positions for ivy buffers."
-  :after ivy
-  :custom
-  (ivy-posframe-border-width 6)
-  :config
-  (when (member "Hasklig" (font-family-list))
-    (setq ivy-posframe-parameters
-          '((font . "Hasklig"))))
-  (setq ivy-posframe-display-functions-alist
-        '((complete-symbol . ivy-posframe-display-at-point)
-          (swiper . ivy-display-function-fallback)
-          (swiper-isearch . ivy-display-function-fallback)
-          (counsel-rg . ivy-display-function-fallback)
-          (t . ivy-posframe-display-at-frame-center)))
-  (ivy-posframe-mode t)
-  :delight " Ⓥ")
-
-;; Prescient sorts and filters candidate lists for avy/counsel.
-(use-package prescient
-  :delight)
-
-(use-package ivy-prescient
-  :after ivy
-  :config (ivy-prescient-mode t)
-  :delight)
-
-(use-package swiper
-  :doc "A better search"
-  :bind (("C-s" . swiper-isearch)) ; ("C-s" . swiper))
-  :delight)
-;; ──────────────────────────────── COUNSEL-MODE ───────────────────────────────
+;; ──────────────────────────────── COUNSEL ───────────────────────────────
 (use-package counsel
+  :after ivy
   :bind (("M-x" . counsel-M-x)
          ("M-y" . counsel-yank-pop)
          ("C-x b" . counsel-switch-buffer)
@@ -1014,12 +890,62 @@ If you experience stuttering, increase this.")
 		 ("<f2> i" . counsel-info-lookup-symbol)
 		 ("<f2> j" . counsel-set-variable)
 		 ("<f2> u" . counsel-unicode-char))
-                                        ; ("C-c /" . counsel-ag)
-                                        ; ("C-c s" . counsel-rg)
-                                        ; ("C-S-o" . counsel-rhythmbox)
+  ;; ("C-c /" . counsel-ag)
+  ;; ("C-c s" . counsel-rg)
+  ;; ("C-S-o" . counsel-rhythmbox)
   (:map counsel-find-file-map
         ("RET" . ivy-alt-done))
   :delight)
+
+(use-package ivy-avy
+  :after ivy)
+
+(use-package ivy-hydra
+  :after ivy)
+
+(use-package ivy-rich
+  :doc "Have additional information in empty space of ivy buffers."
+  :after ivy
+  :custom
+  (ivy-rich-path-style 'abbreviate)
+  :config
+  (ivy-rich-mode 1)
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  :delight)
+
+;; Prescient sorts and filters candidate lists for avy/counsel.
+(use-package prescient
+  :delight)
+
+;; history for ivy completion, it sometimes makes ivy really slow, so maybe remove the cache file every once in a while
+(use-package ivy-prescient
+  :after ivy
+  :config (ivy-prescient-mode t)
+  :delight)
+
+(use-package swiper
+  :defer t
+  :doc "A better search"
+  :bind (("C-s" . swiper-isearch)) ; ("C-s" . swiper))
+  :delight)
+
+(use-package ivy-posframe
+  :doc "Custom positions for ivy buffers."
+  :after ivy
+  :custom
+  (ivy-posframe-border-width 6)
+  :config
+  (when (member "Hasklig" (font-family-list))
+    (setq ivy-posframe-parameters
+          '((font . "Hasklig"))))
+  (setq ivy-posframe-display-functions-alist
+        '((complete-symbol . ivy-posframe-display-at-point)
+          (swiper . ivy-display-function-fallback)
+          (swiper-isearch . ivy-display-function-fallback)
+          (counsel-rg . ivy-display-function-fallback)
+          (t . ivy-posframe-display-at-frame-center)))
+  (ivy-posframe-mode t)
+  :delight " Ⓥ")
 
 (use-package projectile
   :delight '(:eval (concat " [" projectile-project-name "]"))
@@ -1119,6 +1045,23 @@ If you experience stuttering, increase this.")
 (setq speedbar-show-unknown-files t)
 ;; (setq company-backends (delete 'company-semantic company-backends))
 
+;;Load Path
+;; Since all the configuration files are stored in a folder, they need to be added to `load-path' now.
+(defun update-to-load-path (folder)
+  "Update FOLDER and its subdirectories to `load-path'."
+  (let ((base folder))
+    (unless (member base load-path)
+      (add-to-list 'load-path base))
+    (dolist (f (directory-files base))
+      (let ((name (concat base "/" f)))
+        (when (and (file-directory-p name)
+                   (not (equal f ".."))
+                   (not (equal f ".")))
+          (unless (member base load-path)
+            (add-to-list 'load-path name)))))))
+
+(update-to-load-path (expand-file-name "elpa" user-emacs-directory))
+
 ;; ──────────── This snippet loads all *.el files in a directory ───────────
 (defun load-directory (dir)
   "Load all *.el from your .emacs.d directory."
@@ -1126,9 +1069,74 @@ If you experience stuttering, increase this.")
                    (load-file (concat (file-name-as-directory dir) f)))))
     (mapc load-it (directory-files dir nil "\\.el$"))))
 
-(load-directory "~/.emacs.d/elpa/")   ; load installed packages
+;; (load-directory "~/.emacs.d/elpa/") ; load installed packages
 (load-directory "~/.emacs.d/my-lisp") ; load my configuration of packages
 
+;; ───────────────────────────────── DASHBOARD ─────────────────────────────────
+;; A dashboard on startup can clean my mind
+(use-package dashboard
+  :after all-the-icons
+  :init (add-hook 'dashboard-mode-hook (lambda () (setq show-trailing-whitespace nil)))
+  :custom
+  (dashboard-set-navigator t)
+  (dashboard-center-content t)
+  (dashboard-set-file-icons t)
+  (dashboard-set-heading-icons t)
+  (dashboard-image-banner-max-height 250)
+  (dashboard-banner-logo-title "[Π Ο Σ Ε Ι Δ Ο Ν 🔱 Ε Δ Ι Τ Ο Ρ]") ; [Ποσειδον 🔱 εδιτορ]
+  (dashboard-startup-banner (concat user-emacs-directory "etc/banners/emacs_pen.png"))
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-footer-icon (all-the-icons-octicon "calendar"
+                                                     :height 1.1
+                                                     :v-adjust -0.05
+                                                     :face 'font-lock-keyword-face))
+
+  (setq dashboard-navigator-buttons
+        `(;; line1
+          ((,(all-the-icons-octicon "octoface" :height 1.1 :v-adjust 0.0)
+            "Homepage"
+            "Browse homepage"
+            (lambda (&rest _) (browse-url "https://github.com/Likhon-baRoy/.emacs.d")) nil "" " |")
+           (,(all-the-icons-faicon "refresh" :height 1.1 :v-adjust 0.0)
+            "Update"
+            "Update Zmacs"
+            (lambda (&rest _) (auto-package-update-maybe)) warning "" " |")
+           (,(all-the-icons-faicon "flag" :height 1.1 :v-adjust 0.0) nil
+            "Report a BUG"
+            (lambda (&rest _) (browse-url "https://github.com/Likhon-baRoy/.emacs.d/issues/new")) error "" ""))
+          ;; line 2
+          ;; ((,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+          ;;   "AlienFriend"
+          ;;   "Browse Alien Page"
+          ;;   (lambda (&rest _) (browse-url "https://github.com/b-coimbra/.emacs.d")) nil "" ""))
+          ;; Empty line
+          (("" "\n" "" nil nil "" ""))
+
+          ;; Keybindings
+          ((,(all-the-icons-octicon "search" :height 0.9 :v-adjust -0.1)
+            " Find file" nil
+            (lambda (&rest _) (counsel-find-file)) nil "" "            C-x C-f"))
+          ((,(all-the-icons-octicon "file-directory" :height 1.0 :v-adjust -0.1)
+            " Open project" nil
+            (lambda (&rest _) (counsel-projectile-switch-project)) nil "" "         C-x p d"))
+          ((,(all-the-icons-octicon "three-bars" :height 1.1 :v-adjust -0.1)
+            " File explorer" nil
+            (lambda (&rest _) (counsel-projectile-switch-project)) nil "" "        C-x p D"))
+          ((,(all-the-icons-octicon "settings" :height 0.9 :v-adjust -0.1)
+            " Open settings" nil
+            (lambda (&rest _) (open-config-file)) nil "" "        C-c e  "))))
+
+  (setq
+   dashboard-projects-backend 'project-el
+   dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name
+   dashboard-items '((recents        . 5)
+                     (projects       . 5)
+                     (bookmarks      . 5)
+                     (agenda         . 5)
+                     (registers      . 5)))
+  :custom-face
+  (dashboard-heading ((t (:foreground nil :weight bold))))) ; "#f1fa8c"
 
 (put 'scroll-left 'disabled nil)
 (put 'narrow-to-page 'disabled nil)
