@@ -148,7 +148,7 @@
 (use-package dashboard
   :config
   (dashboard-setup-startup-hook)
-  (Setq Dashboard-startup-banner 'logo
+  (setq Dashboard-startup-banner 'logo
         dashboard-banner-logo-title "Yay Evil!"
         dashboard-items nil
         dashboard-set-footer nil))
