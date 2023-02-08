@@ -58,11 +58,6 @@ Plug 'https://github.com/tpope/vim-surround.git'
 """"""""""""""""""""""""""""
 Plug 'christoomey/vim-system-copy'
 
-""""""""""""""""""""""""""""
-"       Syntax Check       "
-""""""""""""""""""""""""""""
-Plug 'https://github.com/vim-syntastic/syntastic.git'
-
 "Nerdtree File Manager"fF
 """""""""""""""""""""""
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -193,18 +188,6 @@ endif
 if (has("termguicolors"))
     set termguicolors
 endif
-
-"------------------------------------------------------------------------------"
-" Plugin: syntastic
-"------------------------------------------------------------------------------"
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 "------------------------------------------------------------------------------"
 " Plugin: vim-varnish
@@ -544,6 +527,7 @@ if has ('autocmd')
     augroup END
 endif
 
+set mouse=a
 set showmatch				  " speed up bracket matching speed
 set matchtime=2
 set t_Co=256 " https://vi.stackexchange.com/questions/7112/tmux-messing-with-vim-highlighting
