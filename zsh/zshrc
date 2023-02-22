@@ -155,4 +155,9 @@ complete -F _akamai_cli_bash_autocomplete akamai
 #zprof
 
 export PATH="/usr/local/opt/yq@3/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=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
+HOMEBREW_GITHUB_API_TOKEN=$(cat ~/.github_token)
+export HOMEBREW_GITHUB_API_TOKEN
+
+if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+    export MOZ_ENABLE_WAYLAND=1
+fi
