@@ -158,6 +158,6 @@ export PATH="/usr/local/opt/yq@3/bin:$PATH"
 HOMEBREW_GITHUB_API_TOKEN=$(cat ~/.github_token)
 export HOMEBREW_GITHUB_API_TOKEN
 
-if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
     export MOZ_ENABLE_WAYLAND=1
 fi
