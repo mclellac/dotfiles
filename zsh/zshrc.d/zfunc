@@ -92,6 +92,12 @@ akcurl() {
     curl -sIXGET "$@" -H "${headers[*]}"
 }
 
+cache-key-curl() {
+    local headers="Pragma: akamai-x-get-cache-key,akamai-x-get-true-cache-key,akamai-x-check-cacheable"
+
+    echo "curl -sIXGET \"$@\" -H \"${headers[*]}\""
+    curl -sIXGET "$@" -H "${headers[*]}"
+}
 #--------------------------------------------------------------#
 # Akamai cURL
 #   Usage:  akcurl https://www.cbc.ca/lite
@@ -166,7 +172,7 @@ pull() {
             repo=$(echo "${url}" | awk -F/ '{print $5}')
         fi
 
-        printf "%s %s %s %s/%s %s           \t %s" ${cyan} ${icon} ${green} ${project} ${repo} ${cyan} ${reset}
+        printf "%s %s %s %s/%s %s\n\t\t┗━━━%s  %s" ${cyan} ${icon} ${green} ${project} ${repo} ${reset} ${cyan} ${reset}
         cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
     done
 
