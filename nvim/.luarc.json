@@ -1,0 +1,12 @@
+{
+    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "Lua.diagnostics.disable": [
+        "need-check-nil"
+    ],
+    "Lua.diagnostics.globals": [
+        "vim",
+        "normal_fg",
+        "has_words_before"
+    ],
+    "Lua.workspace.checkThirdParty": false
+}

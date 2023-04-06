@@ -1,28 +1,13 @@
-local options = {
-  ensure_installed = { "lua-language-server" }, -- not an option from mason.nvim
+local ok, mason = pcall(require, "mason")
 
-  PATH = "skip",
+if not ok then
+    return
+end
 
-  ui = {
-    icons = {
-      package_pending = " ",
-      package_installed = " ",
-      package_uninstalled = " ﮊ",
-    },
+-- INSTALL_ROOT_PATH = path.concat { vim.fn.stdpath "data", "mason" }
+INSTALL_ROOT_PATH = os.getenv("HOME") .. "/.local/share/nvim/mason"
+LSP_ROOT_PATH = INSTALL_ROOT_PATH .. "/packages"
 
-    keymaps = {
-      toggle_server_expand = "<CR>",
-      install_server = "i",
-      update_server = "u",
-      check_server_version = "c",
-      update_all_servers = "U",
-      check_outdated_servers = "C",
-      uninstall_server = "X",
-      cancel_installation = "<C-c>",
-    },
-  },
-
-  max_concurrent_installers = 10,
-}
-
-return options
+mason.setup({
+    install_root_dir = INSTALL_ROOT_PATH,
+})
