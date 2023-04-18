@@ -182,20 +182,18 @@ pull() {
 #--------------------------------------------------------------#
 pullall() {
   local git_root="${HOME}/Projects/src"
-  local project=""
-  local repo=""
   local branch=""
-
+  
   if [[ "$(uname)" == "Linux" ]]; then
-    alias gitls="ls --color=never"
+    gitls="ls --color=never"
   else
-    alias gitls="ls"
+    gitls="ls"
   fi
 
   find "${git_root}" -path "*/.git/config" -type f -print0 | while read -d $'\0' file; do
     url=$(grep -oE 'url = .*' "${file}" | awk '{print $3}' | sed 's/\.git$//')
     if [[ "${url}" =~ "stash.nm.cbc.ca" ]]; then
-      local icon=" "
+      icon=" "
       project=$(echo "${url}" | awk -F/ '{print $5}')
       repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
       # if ~mclellac is found in the url, remove the tilde.
@@ -203,7 +201,7 @@ pullall() {
         project="mclellac"
       fi
     elif [[ "${url}" =~ "github.com" ]]; then
-      local icon=" "
+      icon=" "
       git_root="${HOME}/Projects/src/github.com"
       project="mclellac"
       repo=$(echo "${url}" | awk -F/ '{print $5}')
@@ -211,19 +209,20 @@ pullall() {
       continue
     fi
 
-    printf "%s %s %s %s/%s %s" "${cyan}" "${icon}" "${green}" "${project}" "${repo}" "${reset}"
+    printf "%s %s %s %s/%s %s\n" "${cyan}" "${icon}" "${green}" "${project}" "${repo}" "${reset}"
 
     if [[ -z "${branch}" ]]; then
       branch=$(git -C "$(dirname "${file}")" rev-parse --abbrev-ref HEAD)
     fi
-    printf "\n\t┗  %s%s%s/%s %s" "${yellow}" "${branch}" "${reset}" "${cyan}" "$(git -C "$(dirname "${file}")" log --oneline @{u}.. 2>/dev/null | wc -l | awk '{$1=$1;print}')" "${reset}"
-    printf '\n\t┗'
-    printf '%.0s━' {1..5}
+    printf "\t┗" '%.0s━' {1..2}
+    printf "%s%s%s/" "${yellow}" "${branch}" "${reset}"
+    printf " %s\n" "$(git -C "$(dirname "${file}")" log --oneline @{u}.. 2>/dev/null | wc -l | awk '{$1=$1;print}')"
+    printf '\t┗' '%.0s━' {1..5}
     printf "•%s  %s\n" "${cyan}" "${reset}"
 
     cd "$(dirname "${file}")"
     if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
-      if [[ "$2" == "--dry-run" ]]; then
+      if [[ "$1" == "--dry-run" ]]; then
         git fetch --dry-run && printf "Dry-run mode. No changes were made.\n\n" || true
       else
         git pull

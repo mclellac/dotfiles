@@ -120,7 +120,7 @@ function _pip_completion {
 compctl -K _pip_completion pip
 
 # LLVM path & DOOM emacs
-export PATH="/usr/local/opt/llvm/bin:${HOME}/.emacs.d/bin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:${HOME}/.emacs.d/bin:${HOME}/.local/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Solarized colors
