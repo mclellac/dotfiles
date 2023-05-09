@@ -1,11 +1,10 @@
 // vim:ft=rasi
 @import "vars"
 
-// Rofi defaults
-
 configuration {
   font:                             "Inconsolata Nerd Font 14";
   show-icons:                       false;
+  icon-theme:                       "Papirus";
   disable-history:                  false;
   hide-scrollbar:                   true;
 }
@@ -13,15 +12,18 @@ configuration {
 window {
   background-color:                 @bg;
   text-color:                       @fg;
-  border:                           2px;
+  border:                           2;
   border-color:                     @border;
   border-radius:                    @bordrad;
+  width:                            900;
+  location:                         center;
 }
 
 prompt {
+  padding:                          -5 20 0 0;
   background-color:                 @transparent;
   text-color:                       @accent;
-  font:                             "Inconsolata NF 25";
+  font:                             "Inconsolata Nerd Font 20";
 }
 
 entry {
@@ -30,13 +32,14 @@ entry {
   placeholder-color:                @fg-dimmed;
   expand:                           true;
   horizontal-align:                 0;
+  placeholder:                      " Read";
   blink:                            false;
 }
 
 inputbar {
   children:                         [ prompt, entry ];
   background-color:                 @bg-light;
-  text-color:                       @fg;
+  text-color:                       @bg;
   padding:                          15 20 6 20;
 }
 
@@ -44,7 +47,7 @@ listview {
   background-color:                 @bg;
   padding:                          3;
   columns:                          1;
-  lines:                            5;
+  lines:                            10;
   cycle:                            false;
   dynamic:                          true;
   layout:                           vertical;
@@ -55,8 +58,7 @@ listview {
 }
 
 mainbox {
-  background-color:                 @border;
-  border-color:                     @border;
+  background-color:                 @bg-light;
   children:                         [ inputbar, listview ];
 }
 
@@ -64,11 +66,11 @@ element {
   background-color:                 @transparent;
   orientation:                      vertical;
   border-radius:                    @bordrad;
-  padding:                          10 0;
+  padding:                          8 0;
 }
 
 element-text {
-  text-color:                       @fg;
+  text-color:                       @fg-dimmed;
   background-color:                 @transparent;
   expand:                           true;
   horizontal-align:                 0.5;
@@ -78,4 +80,8 @@ element-text {
 element selected {
   background-color:                 @bg-element-selected;
   border-radius:                    @bordrad;
+}
+
+element-text selected {
+  text-color:                       @fg;
 }
