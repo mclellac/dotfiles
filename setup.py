@@ -131,11 +131,11 @@ ERROR: zgen not found. Double check the submodule exists, and you have a valid ~
         '# zgen update (Skipped)'
 ]
 
-post_actions += [
-    '''#!/bin/bash
-    # validate neovim package installation on python2/3 and automatically install if missing
-    bash "etc/install-neovim-py.sh"
-''']
+#post_actions += [
+#    '''#!/bin/bash
+#    # validate neovim package installation on python2/3 and automatically install if missing
+#    bash "etc/install-neovim-py.sh"
+#''']
 
 vim = 'nvim' if find_executable('nvim') else 'vim'
 post_actions += [
@@ -385,8 +385,6 @@ else:
               color_fn=GREEN, use_bold=True)
 
 log("- Please restart shell (e.g. " + CYAN("`exec zsh`") + ") if necessary.")
-log("- To install some packages locally (e.g. neovim, tmux), try " + CYAN("`dotfiles install <package>`"))
-log("- If you want to update dotfiles (or have any errors), try " + CYAN("`dotfiles update`"))
 log("\n\n", cr=False)
 
 sys.exit(len(errors))
