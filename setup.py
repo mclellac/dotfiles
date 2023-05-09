@@ -33,19 +33,23 @@ current_os = platform.system().lower()
 # Task Definition
 # (path of target symlink) : (location of source file in the repository)
 tasks = {
-    # SHELLS
+    # shells
     '~/.zshrc' : 'zsh/zshrc',
-    '~/.screenrc' : 'screenrc',
+    '~/.zsh'   : 'zsh', 
+    
+    # tmux
+    '~/.tmux'      : 'tmux',
+    '~/.tmux.conf' : 'tmux/tmux.conf',
 
-    # VIM
+    # Vim
     '~/.vimrc' : 'vim/vimrc',
     '~/.vim' : 'vim',
     '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
 
-    # NeoVIM
+    # Neovim
     '~/.config/nvim' : 'nvim',
 
-    # GIT
+    # Git
     '~/.gitconfig' : 'git/gitconfig',
     '~/.gitignore' : 'git/gitignore_global',
 
@@ -56,13 +60,9 @@ tasks = {
     # Hypr
     '~/.config/hypr' : 'hypr',
 
-    # kitty
+    # Kitty
     '~/.config/kitty/kitty.conf': 'kitty/kitty.conf',
     '~/.config/kitty/gruvbox_dark.conf': 'kitty/gruvbox_dark.conf',
-    
-    # tmux
-    '~/.tmux'      : 'tmux',
-    '~/.tmux.conf' : 'tmux/tmux.conf',
 }
 
 # OS-specific tasks
@@ -107,7 +107,7 @@ post_actions += [
     }
     ret=0
     set -v
-    _download "$HOME/.local/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
+    _download "$HOME/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
     exit $ret;
 ''']
 
@@ -131,11 +131,11 @@ ERROR: zgen not found. Double check the submodule exists, and you have a valid ~
         '# zgen update (Skipped)'
 ]
 
-#post_actions += [
-#    '''#!/bin/bash
-#    # validate neovim package installation on python2/3 and automatically install if missing
-#    bash "etc/install-neovim-py.sh"
-#''']
+post_actions += [
+    '''#!/bin/bash
+    # validate neovim package installation on python2/3 and automatically install if missing
+    bash "install-neovim-py.sh"
+''']
 
 vim = 'nvim' if find_executable('nvim') else 'vim'
 post_actions += [
@@ -147,9 +147,6 @@ post_actions += [
 ]
 
 post_actions += [
-    # Install tmux plugins via tpm
-    '~/.tmux/plugins/tpm/bin/install_plugins',
-
     r'''#!/bin/bash
     # Check tmux version >= 2.3 (or use `dotfiles install tmux`)
     _version_check() {    # target_ver current_ver
@@ -163,24 +160,6 @@ post_actions += [
     else
         echo "$(which tmux): $(tmux -V)"
     fi
-''']
-
-post_actions += [
-    r'''#!/bin/bash
-    # Setting up for coc.nvim (~/.config/coc, node.js)
-
-    # (i) create ~/.config/coc directory if not exists
-    GREEN="\033[0;32m"; YELLOW="\033[0;33m"; RESET="\033[0m";
-    coc_dir="$HOME/.config/coc/"
-    if [ ! -d "$coc_dir" ]; then
-        mkdir -p "$coc_dir" || exit 1;
-        echo "Created: $coc_dir"
-    else
-        echo -e "${GREEN}coc directory:${RESET}   $coc_dir"
-    fi
-
-    # (ii) validate or auto-install node.js locally
-    bash "etc/install-node.sh" || exit 1;
 ''']
 
 post_actions += [
