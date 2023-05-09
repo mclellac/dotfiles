@@ -14,6 +14,12 @@ print(__doc__)
 import argparse
 import os
 import platform
+import sys
+import subprocess
+import unicodedata
+
+from signal import signal, SIGPIPE, SIG_DFL
+from sys import stderr
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--force', action="store_true", default=False,
@@ -219,12 +225,7 @@ CYAN   = _wrap_colors("\033[0;36m")
 BLUE   = _wrap_colors("\033[0;34m")
 
 
-import os
-import sys
-import subprocess
 
-from signal import signal, SIGPIPE, SIG_DFL
-from sys import stderr
 
 if sys.version_info[0] >= 3:  # python3
     unicode = lambda s, _: str(s)
@@ -239,7 +240,6 @@ def log(msg, cr=True):
         stderr.write('\n')
 
 def log_boxed(msg, color_fn=WHITE, use_bold=False, len_adjust=0):
-    import unicodedata
     pad_msg = (" " + msg + "  ")
     l = sum(not unicodedata.combining(ch) for ch in unicode(pad_msg, 'utf-8')) + len_adjust
     if use_bold:
