@@ -38,5 +38,6 @@
   "vim-kitty": { "branch": "main", "commit": "11ed0c3f97596e402c9aef226535e2fefd65f3d7" },
   "vim-rhubarb": { "branch": "master", "commit": "ee69335de176d9325267b0fd2597a22901d927b1" },
   "vim-sleuth": { "branch": "master", "commit": "1cc4557420f215d02c4d2645a748a816c220e99b" },
-  "vim-varnish": { "branch": "main", "commit": "a75937613a34118475a311d379025eb57ea101fb" }
+  "vim-varnish": { "branch": "main", "commit": "a75937613a34118475a311d379025eb57ea101fb" },
+  "which-key.nvim": { "branch": "main", "commit": "015fdf3e3e052d4a9fee997ca0aa387c2dd3731c" }
 }

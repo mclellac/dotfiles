@@ -3,5 +3,6 @@ return {
     "tpope/vim-sleuth",
     "tpope/vim-rhubarb",
     "fladson/vim-kitty", -- provides syntax highlighting for kitty.conf
+    "folke/which-key.nvim",
 }
 
