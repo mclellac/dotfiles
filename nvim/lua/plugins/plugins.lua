@@ -1,30 +1,22 @@
--- every spec file under config.plugins will be loaded automatically by lazy.nvim
---
--- In your plugin files, you can:
--- * add extra plugins
--- * disable/enabled LazyVim plugins
--- * override the configuration of LazyVim plugins
 return {
-  -- add gruvbox
+  -- add themes
+  { "folke/tokyonight.nvim" },  
   { "ellisonleao/gruvbox.nvim" },
+  { "navarasu/onedark.nvim" },
 
-  -- Configure LazyVim to load gruvbox
+  -- set theme
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "onedark",
     },
   },
 
   -- change trouble config
   {
     "folke/trouble.nvim",
-    -- opts will be merged with the parent spec
     opts = { use_diagnostic_signs = true },
   },
-
-  -- disable trouble
-  -- { "folke/trouble.nvim", enabled = false },
 
   -- add symbols-outline
   {
@@ -45,19 +37,15 @@ return {
     end,
   },
 
-  -- change some telescope options and a keymap to browse plugin files
   {
     "nvim-telescope/telescope.nvim",
     keys = {
-      -- add a keymap to browse plugin files
-      -- stylua: ignore
       {
         "<leader>fp",
         function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,
         desc = "Find Plugin File",
       },
     },
-    -- change some options
     opts = {
       defaults = {
         layout_strategy = "horizontal",
@@ -113,17 +101,12 @@ return {
         -- tsserver will be automatically installed with mason and loaded with lspconfig
         tsserver = {},
       },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
       ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
       setup = {
-        -- example to setup with typescript.nvim
         tsserver = function(_, opts)
           require("typescript").setup({ server = opts })
           return true
         end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
       },
     },
   },
@@ -155,44 +138,7 @@ return {
     },
   },
 
-  -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
-  -- would overwrite `ensure_installed` with the new value.
-  -- If you'd rather extend the default config, use the code below instead:
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      -- add tsx and treesitter
-      vim.list_extend(opts.ensure_installed, {
-        "tsx",
-        "typescript",
-      })
-    end,
-  },
-
-  -- the opts function can also be used to change the default opts:
-  --  {
-  --    "nvim-lualine/lualine.nvim",
-  --    event = "VeryLazy",
-  --    opts = function(_, opts)
-  --      table.insert(opts.sections.lualine_x, "😄")
-  --    end,
-  --  },
-
-  -- or you can return new options to override all the defaults
-  --{
-  --  "nvim-lualine/lualine.nvim",
-  --  event = "VeryLazy",
-  --  opts = function()
-  --    return {
-  --[[add your custom lualine config here]]
-  --    }
-  --  end,
-  --},
-
-  -- use mini.starter instead of alpha
   { import = "lazyvim.plugins.extras.ui.mini-starter" },
-
-  -- add jsonls and schemastore ans setup treesitter for json, json5 and jsonc
   { import = "lazyvim.plugins.extras.lang.json" },
 
   -- add any tools you want to have installed below
@@ -238,8 +184,6 @@ return {
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
-            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-            -- they way you will only jump inside the snippet region
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
           elseif has_words_before() then
