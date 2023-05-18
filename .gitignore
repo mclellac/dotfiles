@@ -5,6 +5,7 @@ cabal-dev
 *.chs.h
 .virthualenv
 xmonad-x86_64-linux
+lazy-lock.json
 
 # Object files
 *.o

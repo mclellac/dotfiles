@@ -134,6 +134,8 @@ pull() {
     local git_root="${HOME}/Projects/src/$*"
     local project=""
     local repo=""
+    local max_project_length=0
+    local max_repo_length=0
 
     if [[ $OSTYPE == 'linux-gnu' ]]; then
         alias gitls="ls --color=never"
@@ -141,8 +143,44 @@ pull() {
         alias gitls="ls"
     fi
 
-    for url in $(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //'); do
+    # Find the maximum length of project and repo names
+    while read -r url; do
+        if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
+            if [[ "${url}" == *"https"* ]]; then
+                project=$(echo "${url}" | awk -F/ '{print $5}')
+                repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
+            elif [[ "${url}" == *"ssh"* ]]; then
+                project=$(echo "${url}" | awk -F/ '{print $4}')
+                repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
+            fi
 
+            # if ~mclellac is found in the url, remove the tilde.
+            if [[ "${url}" == *"~mclellac"* ]]; then
+                project="mclellac"
+            fi
+
+        elif [[ ${url} =~ "github.com" ]]; then
+            git_root="${HOME}/Projects/src/github.com"
+            project="mclellac"
+            repo=$(echo "${url}" | awk -F/ '{print $5}')
+        elif [[ ${url} =~ "gitlab.nm.cbc.ca" ]]; then
+            git_root="${HOME}/Projects/src/gitlab.nm.cbc.ca"
+            project="mclellac"
+            repo=$(echo "${url}" | awk -F/ '{print $5}'| sed 's/.git//')
+        fi
+
+
+        if [[ ${#project} -gt ${max_project_length} ]]; then
+            max_project_length=${#project}
+        fi
+
+        if [[ ${#repo} -gt ${max_repo_length} ]]; then
+            max_repo_length=${#repo}
+        fi
+    done < <(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //')
+
+    # Output the results in columns
+    while read -r url; do
         if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
             local icon=" "
 
@@ -166,73 +204,30 @@ pull() {
             repo=$(echo "${url}" | awk -F/ '{print $5}')
         fi
 
-        printf "%s %s %s %s/%s %s\n\t┗" ${cyan} ${icon} ${green} ${project} ${repo} ${reset} \
-        && printf '%.0s━' {1..5} \
-        && printf "•%s    %s" ${cyan} ${reset}
+        printf "%s %s %s %s/%s %s" ${cyan} ${icon} ${green} ${project} ${repo} ${reset}
+
+        # Calculate the number of spaces needed to pad the project and repo names
+        local project_padding=$((max_project_length - ${#project}))
+        local repo_padding=$((max_repo_length - ${#repo}))
+
+        # Output the padding spaces
+        for ((i=0; i<project_padding; i++)); do
+            printf " "
+        done
+
+        for ((i=0; i<repo_padding; i++)); do
+            printf " "
+        done
+
+        printf '%.0s━' {1..5}
+        printf "•%s    %s " ${cyan} ${reset}
 
         cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
-    done
+    done < <(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //')
 
     cd "${git_root}"
 }
 
-#--------------------------------------------------------------#
-# "pullall" pulls changes from all Git repositories located in 
-# the directory specified by the variable "git_root". 
-#--------------------------------------------------------------#
-pullall() {
-  local git_root="${HOME}/Projects/src"
-  local branch=""
-  
-  if [[ "$(uname)" == "Linux" ]]; then
-    gitls="ls --color=never"
-  else
-    gitls="ls"
-  fi
-
-  find "${git_root}" -path "*/.git/config" -type f -print0 | while read -d $'\0' file; do
-    url=$(grep -oE 'url = .*' "${file}" | awk '{print $3}' | sed 's/\.git$//')
-    if [[ "${url}" =~ "stash.nm.cbc.ca" ]]; then
-      icon=" "
-      project=$(echo "${url}" | awk -F/ '{print $5}')
-      repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
-      # if ~mclellac is found in the url, remove the tilde.
-      if [[ "${url}" == *"~mclellac"* ]]; then
-        project="mclellac"
-      fi
-    elif [[ "${url}" =~ "github.com" ]]; then
-      icon=" "
-      git_root="${HOME}/Projects/src/github.com"
-      project="mclellac"
-      repo=$(echo "${url}" | awk -F/ '{print $5}')
-    else
-      continue
-    fi
-
-    printf "%s %s %s %s/%s %s\n" "${cyan}" "${icon}" "${green}" "${project}" "${repo}" "${reset}"
-
-    if [[ -z "${branch}" ]]; then
-      branch=$(git -C "$(dirname "${file}")" rev-parse --abbrev-ref HEAD)
-    fi
-    printf "\t┗" '%.0s━' {1..2}
-    printf "%s%s%s/" "${yellow}" "${branch}" "${reset}"
-    printf " %s\n" "$(git -C "$(dirname "${file}")" log --oneline @{u}.. 2>/dev/null | wc -l | awk '{$1=$1;print}')"
-    printf '\t┗' '%.0s━' {1..5}
-    printf "•%s  %s\n" "${cyan}" "${reset}"
-
-    cd "$(dirname "${file}")"
-    if [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]; then
-      if [[ "$1" == "--dry-run" ]]; then
-        git fetch --dry-run && printf "Dry-run mode. No changes were made.\n\n" || true
-      else
-        git pull
-      fi
-    fi
-    cd "${git_root}"
-  done
-
-  cd "${git_root}"
-}
 
 #--------------------------------------------------------------#
 # A simple calculator for a simple person.
