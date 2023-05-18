@@ -6,6 +6,7 @@ cabal-dev
 .virthualenv
 xmonad-x86_64-linux
 lazy-lock.json
+vim/autoload/
 
 # Object files
 *.o
