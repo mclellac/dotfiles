@@ -131,58 +131,25 @@ aklab() {
 }
 
 pull() {
+    # Set the root directory for Git repositories
     local git_root="${HOME}/Projects/src/$*"
-    local project=""
-    local repo=""
-    local max_project_length=0
-    local max_repo_length=0
 
+    # Set the alias for ls based on the OS
     if [[ $OSTYPE == 'linux-gnu' ]]; then
-        alias gitls="ls --color=never"
+        local ls_alias="ls --color=never"
     else
-        alias gitls="ls"
+        local ls_alias="ls"
     fi
 
-    # Find the maximum length of project and repo names
+    # Loop through each Git repository and pull changes
     while read -r url; do
+        local project=""
+        local repo=""
+        local icon=""
+
+        # Determine the project and repository names based on the Git URL
         if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
-            if [[ "${url}" == *"https"* ]]; then
-                project=$(echo "${url}" | awk -F/ '{print $5}')
-                repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
-            elif [[ "${url}" == *"ssh"* ]]; then
-                project=$(echo "${url}" | awk -F/ '{print $4}')
-                repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
-            fi
-
-            # if ~mclellac is found in the url, remove the tilde.
-            if [[ "${url}" == *"~mclellac"* ]]; then
-                project="mclellac"
-            fi
-
-        elif [[ ${url} =~ "github.com" ]]; then
-            git_root="${HOME}/Projects/src/github.com"
-            project="mclellac"
-            repo=$(echo "${url}" | awk -F/ '{print $5}')
-        elif [[ ${url} =~ "gitlab.nm.cbc.ca" ]]; then
-            git_root="${HOME}/Projects/src/gitlab.nm.cbc.ca"
-            project="mclellac"
-            repo=$(echo "${url}" | awk -F/ '{print $5}'| sed 's/.git//')
-        fi
-
-
-        if [[ ${#project} -gt ${max_project_length} ]]; then
-            max_project_length=${#project}
-        fi
-
-        if [[ ${#repo} -gt ${max_repo_length} ]]; then
-            max_repo_length=${#repo}
-        fi
-    done < <(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //')
-
-    # Output the results in columns
-    while read -r url; do
-        if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
-            local icon=" "
+            icon=" "
 
             if [[ "${url}" == *"https"* ]]; then
                 project=$(echo "${url}" | awk -F/ '{print $5}')
@@ -192,18 +159,49 @@ pull() {
                 repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
             fi
 
-            # if ~mclellac is found in the url, remove the tilde.
-            if [[ "${url}" == *"~mclellac"* ]]; then
-                project="mclellac"
+            # Remove the tilde from the project name if the URL contains it
+            if [[ "${url}" == *"~"* ]]; then
+                project=$(echo "${project}" | sed 's/~//')
+            fi
+
+        elif [[  ${url} =~ "gitlab.nm.cbc.ca" ]]; then
+            icon=" "
+
+            if [[ "${url}" == *"https"* ]]; then
+                project=$(echo "${url}" | awk -F/ '{print $4}')
+                repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
+            elif [[ "${url}" == *"git@"* ]]; then
+                project=$(echo "${url}" | awk -F: '{print $2}' | awk -F/ '{print $1}')
+                repo=$(echo "${url}" | awk -F: '{print $2}' | awk -F/ '{print $2}' | sed 's/.git//')
             fi
 
         elif [[ ${url} =~ "github.com" ]]; then
-            local icon=" "
+            icon=" "
             git_root="${HOME}/Projects/src/github.com"
-            project="mclellac"
-            repo=$(echo "${url}" | awk -F/ '{print $5}')
+            project=$(echo "${url}" | awk -F/ '{print $4}')
+            repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
         fi
 
+        # Change to the Git repository directory and pull changes
+        cd "${git_root}"/"${project}"/"${repo}"
+        if [[ ! -d .git ]]; then
+            printf "%sError: %s/%s/%s is not a Git repository%s\n" ${red} ${git_root} ${project} ${repo} ${reset}
+            continue
+        fi
+
+        local branch=""
+        local url=""
+        print $url
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        url=$(git config --get remote.origin.url)
+
+        output=$(git pull)
+
+        # Calculate the maximum length of the project and repository names
+        local max_project_length=${#project}
+        local max_repo_length=${#repo}
+
+        # Output the project and repository names with padding
         printf "%s %s %s %s/%s %s" ${cyan} ${icon} ${green} ${project} ${repo} ${reset}
 
         # Calculate the number of spaces needed to pad the project and repo names
@@ -211,23 +209,24 @@ pull() {
         local repo_padding=$((max_repo_length - ${#repo}))
 
         # Output the padding spaces
-        for ((i=0; i<project_padding; i++)); do
-            printf " "
-        done
+        printf "%*s" $((project_padding+2)) ""
+        printf "%*s" $((repo_padding+2)) "" 
 
-        for ((i=0; i<repo_padding; i++)); do
-            printf " "
-        done
+        # Clean the output.
+        if [[ "${output}" == *"NOTICE"* ]]; then
+            output=""
+        elif [[ "${output}" == *"Already up to date."* ]]; then
+            output=" "
+        fi
 
-        printf '%.0s━' {1..5}
-        printf "•%s    %s " ${cyan} ${reset}
+        # Output the separator and Git status icon
+        printf ' %s──────•%s    %s %s \r%s\n' ${cyan} ${green} ${output} ${reset}
 
-        cd "${git_root}"/"${project}"/"${repo}" && git pull && cd "${git_root}"
+        cd "${git_root}"
     done < <(find "${git_root}" -path "*/.git/config" -exec grep url {} \; | sed 's/url\ =\ //')
 
     cd "${git_root}"
 }
-
 
 #--------------------------------------------------------------#
 # A simple calculator for a simple person.

@@ -30,7 +30,9 @@ tooltip label { color: #EBDBB2; text-shadow: none; border: none; }
     border-radius: 5px;
 }
 #idle_inhibitor { color: #FBF1C7; padding-right: 15px}
-#backlight { color: #EBDBB2; }
+/*
+* #backlight { color: #EBDBB2; }
+*/
 #custom-pacman { color: #D5C4A1; }
 #network { color: #BDAE93; }
 #bluetooth { color: #A89984; }
@@ -51,9 +53,11 @@ tooltip label { color: #EBDBB2; text-shadow: none; border: none; }
     background: #427b58;
 }
 #workspaces button.active:hover { background: #689d6a; }
+/*
 #battery { color: #D65D0E; }
 #temperature.critical { color: #CC241D; }
 #temperature { color: #D79921; }
+*/
 #cpu { color: #98971A; }
 #memory { color: #689D6A; }
 #custom-weather { color: #458588; }

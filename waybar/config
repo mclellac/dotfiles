@@ -6,9 +6,25 @@
     "spacing": 7,
     "margin": "5 5 0 5",
     "height": 33,
-    "modules-left": [ "idle_inhibitor", "backlight", "custom/pacman", "network", "bluetooth", "pulseaudio", "custom/microphone" , "mpd" ],
-    "modules-center": [ "wlr/workspaces" ],
-    "modules-right": [ "battery", "battery#bat2", "temperature", "cpu", "memory", "custom/weather", "clock" ],
+    "modules-left": [
+        "idle_inhibitor",
+        "custom/pacman",
+        "network",
+        "pulseaudio",
+        "custom/microphone"
+    ],
+    "modules-center": [
+        "wlr/workspaces"
+    ],
+    "modules-right": [
+        "battery",
+        "battery#bat2",
+        //"temperature",
+        "cpu",
+        "memory",
+        "custom/weather",
+        "clock"
+    ],
     "wlr/workspaces": {
         "format": "{icon}",
         "on-click": "activate",
@@ -27,10 +43,16 @@
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
         "on-click": "kitty -e bluetoothctl"
-    }, 
+    },
     "network": {
         "format-wifi": "{icon} ",
-        "format-icons": [ "󰤯", "󰤟", "󰤢", "󰤢" , "󰤨" ],
+        "format-icons": [
+            "󰤯",
+            "󰤟",
+            "󰤢",
+            "󰤢",
+            "󰤨"
+        ],
         "format-ethernet": "{ipaddr}/{cidr}",
         "format-disconnected": "󰤮 ",
         "tooltip-format-wifi": "{essid} via {ifname}, Strength: {signalStrength}%",
@@ -42,22 +64,42 @@
         "bat": "BAT0",
         "interval": 3,
         "format": "{capacity}% {icon} ",
-        "format-icons": ["", "", "", "", ""],
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
         "format-charging": "󱐋 {capacity}% {icon} ",
         "tooltip-format": "{power} W, {time}"
     },
     "battery#bat2": {
-     "bat": "BAT1",
+        "bat": "BAT1",
         "interval": 3,
         "format": "{capacity}% {icon} ",
-        "format-icons": ["", "", "", "", ""],
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
         "format-charging": "󱐋 {capacity}% {icon} ",
         "tooltip-format": "{power} W, {time}"
     },
     "backlight": {
         "device": "intel_backlight",
         "format": "{icon} {percent}%",
-        "format-icons": [ "󰃚", "󰃛", "󰃜", "󰃝", "󰃞", "󰃟", "󰃠" ]
+        "format-icons": [
+            "󰃚",
+            "󰃛",
+            "󰃜",
+            "󰃝",
+            "󰃞",
+            "󰃟",
+            "󰃠"
+        ]
     },
     "mpd": {
         "format": "{stateIcon} {title} - {artist}",
@@ -85,7 +127,11 @@
     "pulseaudio": {
         "scroll-step": 5,
         "format": "{icon} {volume}%",
-        "format-icons": ["󰕿", "󰖀", "󰕾"],
+        "format-icons": [
+            "󰕿",
+            "󰖀",
+            "󰕾"
+        ],
         "format-muted": "󰝟 ",
         "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
         "on-click-right": "pavucontrol"
@@ -100,7 +146,7 @@
         "format": "{}% ",
         "on-click": "kitty -e btop -p 2"
     },
-    "temperature": { 
+    "temperature": {
         "interval": 5,
         "thermal-zone": 2,
         "format": "{temperatureC}°C ",
@@ -115,8 +161,8 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-        "activated": "",
-        "deactivated": "鈴"
+            "activated": "",
+            "deactivated": "鈴"
         }
     },
     "custom/pacman": {
