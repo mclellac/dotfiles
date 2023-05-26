@@ -17,7 +17,7 @@ return {
     config = function()
       local monokai = require("monokai-pro")
       monokai.setup({
-        transparent_background = false,
+        transparent_background = true,
         devicons = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         italics = false,
