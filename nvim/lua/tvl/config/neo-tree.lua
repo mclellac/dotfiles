@@ -19,10 +19,10 @@ neotree.setup({
     content_layout = "center",
     tabs_layout = "equal",
     tab_labels = {
-      filesystem = "  ",
-      buffers = "  ",
-      git_status = "  ",
-      diagnostics = " 裂",
+      filesystem = " 󰋊 ",
+      buffers = "  ",
+      git_status = "  ",
+      diagnostics = " ",
     },
   },
   default_component_configs = {
@@ -51,7 +51,7 @@ neotree.setup({
       expander_highlight = "NeoTreeExpander",
     },
     icon = {
-      folder_closed = "",
+      folder_closed = "",
       folder_open = "",
       folder_empty = "",
       -- folder_closed = "",
@@ -75,7 +75,7 @@ neotree.setup({
         added = icons.git.added, -- or "✚", but this is redundant info if you use git_status_colors on the name
         modified = icons.git.modified, -- or "", but this is redundant info if you use git_status_colors on the name
         deleted = icons.git.removed, -- this can only be used in the git_status source
-        renamed = "", -- this can only be used in the git_status source
+        renamed = "󰑕", -- this can only be used in the git_status source
         -- Status type
         untracked = "",
         ignored = "",

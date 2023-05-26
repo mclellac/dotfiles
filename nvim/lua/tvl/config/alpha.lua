@@ -59,11 +59,11 @@ local logo = {
 
 dashboard.section.header.val = vim.split(logo.western_dragon, "\n")
 dashboard.section.buttons.val = {
-  dashboard.button("r", "  Recently files", ":Telescope oldfiles <CR>"),
+  dashboard.button("r", "  Recent files", ":Telescope oldfiles <CR>"),
   dashboard.button("s", "  Find Session", ":SearchSession<CR>"),
   dashboard.button("p", "  Find project", ":Telescope projects <CR>"),
   dashboard.button("i", "  Configuration", ":edit $MYVIMRC<CR>"),
-  dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
+  dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),
 }
 -- dashboard.section.buttons.type = "button"
 

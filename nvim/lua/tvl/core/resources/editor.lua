@@ -192,8 +192,8 @@ return {
       signs = {
         add = { text = "┃" },
         change = { text = "┋" },
-        delete = { text = "契" },
-        topdelhfe = { text = "契" },
+        delete = { text = "󰚃 " },
+        topdelhfe = { text = "󰠙 " },
         changedelete = { text = "┃" },
         untracked = { text = "┃" },
       },
@@ -275,7 +275,7 @@ return {
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
-        local suffix = ("  ...  %d "):format(endLnum - lnum)
+        local suffix = ("  ... 󰉋 %d "):format(endLnum - lnum)
         local sufWidth = vim.fn.strdisplaywidth(suffix)
         local targetWidth = width - sufWidth
         local curWidth = 0

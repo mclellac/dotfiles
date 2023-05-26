@@ -17,10 +17,10 @@ return {
     config = function()
       local monokai = require("monokai-pro")
       monokai.setup({
-        italics = false,
         transparent_background = false,
         devicons = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+        italics = false,
         day_night = {
           enable = false,
           day_filter = "classic",
