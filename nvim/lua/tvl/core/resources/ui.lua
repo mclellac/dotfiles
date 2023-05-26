@@ -88,52 +88,34 @@ return {
     end,
   },
 
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      char = "▏",
-      context_char = "▏",
-      show_end_of_line = false,
-      space_char_blankline = " ",
-      show_current_context = true,
-      show_current_context_start = true,
-      filetype_exclude = {
-        "help",
-        "startify",
-        "dashboard",
-        "packer",
-        "neogitstatus",
-        "NvimTree",
-        "Trouble",
-        "alpha",
-        "neo-tree",
-      },
-      buftype_exclude = {
-        "terminal",
-        "nofile",
-      },
-      -- char_highlight_list = {
-      --   "IndentBlanklineIndent1",
-      --   "IndentBlanklineIndent2",
-      --   "IndentBlanklineIndent3",
-      --   "IndentBlanklineIndent4",
-      --   "IndentBlanklineIndent5",
-      --   "IndentBlanklineIndent6",
-      -- },
-    },
+  { 
+    "echasnovski/mini.animate",
+      lazy = true,
+      enabled = true,
+      version = '*',
   },
 
+--  { 
+--    "echasnovski/mini.indentscope",
+--      lazy = true,
+--      enabled = true, 
+--      version = '*',
+--      opts = {
+--        symbol = "│",
+--        delay = 100,
+--      },
+--  },
+
   {
-    "echasnovski/mini.indentscope",
+  "echasnovski/mini.indentscope",
     lazy = true,
     enabled = true,
-    -- lazy = true,
     version = false, -- wait till new 0.7.0 release to put it back on semver
     -- event = "BufReadPre",
     opts = {
-      symbol = "▏",
-      -- symbol = "│",
+      --symbol = "▏",
+      symbol = "│",
+      delay = 100,
       options = { try_as_border = false },
     },
     config = function(_, opts)
