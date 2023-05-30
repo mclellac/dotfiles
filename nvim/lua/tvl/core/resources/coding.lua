@@ -1,6 +1,25 @@
 return {
+  --{
+  --  "github/copilot.vim",
+  --}
+
+  -- copilot lua
   {
-    "github/copilot.vim",
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+        keymap = {
+          accept = "<C-j>",
+          accept_line = "<C-l>",
+          accept_word = "<C-k>",
+          next = "<C-]>",
+          prev = "<C-[>",
+          dismiss = "<C-c>",
+        },
+      },
+    },
   },
   {
     "varnishcache-friends/vim-varnish",
@@ -204,13 +223,13 @@ return {
     end
   },
 
-  {
-    "jackMort/ChatGPT.nvim",
-    lazy = require("tvl.util").apikey == nil,
-    config = function()
-      require("chatgpt").setup({
-        api_key_cmd = require("tvl.util").apikey
-      })
-    end,
-  },
+  --{
+  --  "jackMort/ChatGPT.nvim",
+  --  lazy = require("tvl.util").apikey == nil,
+  --  config = function()
+  --    require("chatgpt").setup({
+  --      api_key_cmd = require("tvl.util").apikey
+  --    })
+  --  end,
+  --},
 }

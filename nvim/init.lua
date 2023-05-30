@@ -1,7 +1,7 @@
 require("tvl.core.lazy")
 
 require("mini.animate").setup()
-require("mini.indentscope").setup(opts)
+require("mini.indentscope").setup()
 
 require("notify").setup({
   background_colour = "#000000",

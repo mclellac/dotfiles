@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   callback = function()
     local get_project_dir = function()
       local cwd = vim.fn.getcwd()
-      local project_dir = vim.split(cwd, "/")
+      local project_dir = vim.split(cwd, "~/Projects/src/stash.nm.cbc.ca")
       local project_name = project_dir[#project_dir]
       return project_name
     end

@@ -88,7 +88,7 @@ return {
     end,
   },
 
-  { 
+  {
     "echasnovski/mini.animate",
       lazy = true,
       enabled = true,
