@@ -95,17 +95,6 @@ return {
       version = '*',
   },
 
---  { 
---    "echasnovski/mini.indentscope",
---      lazy = true,
---      enabled = true, 
---      version = '*',
---      opts = {
---        symbol = "│",
---        delay = 100,
---      },
---  },
-
   {
   "echasnovski/mini.indentscope",
     lazy = true,

@@ -1,11 +1,11 @@
 local dashboard = require("dashboard")
 
 math.randomseed(os.time())
-local logo_names = { "night_fury", "western_dragon" }
+local logo_names = { "mario", "night_fury", "western_dragon" }
 local random_logo_name = logo_names[math.random(1, #logo_names)]
 
 local logo = {
-    hack = [[
+    mario = [[
       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⡶⠶⠿⠿⠟⠻⠿⠿⠶⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣶⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢷⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
       ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠿⠋⠀⠀⠀⠀⠀⠀⣀⣀⣤⠤⢤⣀⡀⠀⠀⠀⠀⠀⠀⠈⠻⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -180,7 +180,7 @@ vim.api.nvim_create_autocmd("User", {
       },
       config = {
         -- header = vim.split(logo[random_logo_name], "\n"), --your header
-        header = vim.split("\n" .. logo["hack"], "\n"), --your header
+        header = vim.split("\n" .. logo["western_dragon"], "\n"), --your header
         -- header = vim.split(
         --   "\n\n\n" .. days_of_week[current_day] .. "\n\n" .. os.date("%Y-%m-%d %H:%M:%S" .. "\n"),
         --   "\n"
