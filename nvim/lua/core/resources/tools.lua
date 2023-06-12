@@ -25,7 +25,7 @@ return {
   },
 
   {
-    "loc42/compile-nvim",
+    "loctvl842/compile-nvim",
     lazy = true,
     config = function()
       require("config.compile")

@@ -10,7 +10,7 @@ return {
   },
 
   {
-    "loc42/monokai-pro.nvim",
+    "loctvl842/monokai-pro.nvim",
     lazy = false,
     priority = 1000,
     keys = { { "<leader>c", "<cmd>MonokaiProSelect<cr>", desc = "Select Moonokai pro filter" } },

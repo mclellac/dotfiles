@@ -1,6 +1,6 @@
 return {
   {
-    "loc42/neo-tree.nvim",
+    "loctvl842/neo-tree.nvim",
     cmd = "Neotree",
     keys = {
       {
