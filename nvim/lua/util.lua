@@ -110,7 +110,7 @@ end
 M.load = function(name)
   local Util = require("lazy.core.util")
   -- always load lazyvim, then user file
-  local mod = "tvl.core." .. name
+  local mod = "core." .. name
   Util.try(function()
     require(mod)
   end, {

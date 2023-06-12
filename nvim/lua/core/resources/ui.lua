@@ -25,7 +25,7 @@ return {
       end,
     },
     init = function()
-      local util = require("tvl.util")
+      local util = require("util")
       if not util.has("noice.nvim") then
         util.on_very_lazy(function()
           vim.notify = require("notify")
@@ -77,7 +77,7 @@ return {
     event = "VeryLazy",
     opts = {},
     config = function()
-      local lualine_config = require("tvl.config.lualine")
+      local lualine_config = require("config.lualine")
       lualine_config.setup({
         float = false,
         separator = "bubble", -- bubble | triangle
@@ -204,7 +204,7 @@ return {
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
     keys = { { "<leader>0", "<cmd>Dashboard<CR>", desc = "Dashboard" } },
     config = function()
-      require("tvl.config.dashboard")
+      require("config.dashboard")
     end,
   },
 
@@ -213,7 +213,7 @@ return {
   --   event = "VimEnter",
   --   keys = { { "<leader>a", "<cmd>Alpha<cr>", "Alpha" } },
   --   config = function()
-  --     require("tvl.config.alpha")
+  --     require("config.alpha")
   --   end,
   -- },
 
@@ -297,7 +297,7 @@ return {
         border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
         win_options = { winblend = 0 },
       },
-      select = { telescope = require("tvl.util").telescope_theme() },
+      select = { telescope = require("util").telescope_theme() },
     },
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field

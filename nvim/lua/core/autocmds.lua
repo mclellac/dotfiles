@@ -1,5 +1,5 @@
 local function augroup(name)
-  return vim.api.nvim_create_augroup("tvl_" .. name, { clear = true })
+  return vim.api.nvim_create_augroup("" .. name, { clear = true })
 end
 
 -- Highlight on yank

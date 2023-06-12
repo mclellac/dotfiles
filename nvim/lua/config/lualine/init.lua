@@ -1,10 +1,10 @@
-local config = require("tvl.config.lualine.config")
+local config = require("config.lualine.config")
 
 local M = {}
 
 local function setup()
-  local cpn = require("tvl.config.lualine.components")
-  local theme = require("tvl.config.lualine.highlights").custom(config.options)
+  local cpn = require("config.lualine.components")
+  local theme = require("config.lualine.highlights").custom(config.options)
 
   require("lualine").setup({
     options = {

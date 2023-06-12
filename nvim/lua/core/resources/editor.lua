@@ -1,12 +1,12 @@
 return {
   {
-    "loctvl842/neo-tree.nvim",
+    "loc42/neo-tree.nvim",
     cmd = "Neotree",
     keys = {
       {
         "<leader>e",
         function()
-          require("neo-tree.command").execute({ toggle = true, position = "left", dir = require("tvl.util").get_root() })
+          require("neo-tree.command").execute({ toggle = true, position = "left", dir = require("util").get_root() })
         end,
         desc = "Explorer (root dir)",
         remap = true,
@@ -17,7 +17,7 @@ return {
           require("neo-tree.command").execute({
             toggle = true,
             position = "float",
-            dir = require("tvl.util").get_root(),
+            dir = require("util").get_root(),
           })
         end,
         desc = "Explorer Float (root dir)",
@@ -33,7 +33,7 @@ return {
       end
     end,
     config = function()
-      require("tvl.config.neo-tree")
+      require("config.neo-tree")
     end,
   },
 
@@ -139,11 +139,11 @@ return {
       { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
       -- Find
       -- { "<leader>f",  "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "Find files" },
-      { "<leader>f", require("tvl.util").telescope("find_files"), desc = "Find files" },
+      { "<leader>f", require("util").telescope("find_files"), desc = "Find files" },
       -- { "<leader>F",  "<cmd>Telescope live_grep<cr>",                           desc = "Find Text" },
-      { "<leader>F", require("tvl.util").telescope("live_grep"), desc = "Find Text" },
+      { "<leader>F", require("util").telescope("live_grep"), desc = "Find Text" },
     },
-    -- config = function() require("tvl.config.telescope") end,
+    -- config = function() require("config.telescope") end,
   },
 
   {

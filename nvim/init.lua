@@ -1,4 +1,4 @@
-require("tvl.core.lazy")
+require("core.lazy")
 
 --require("mini.animate").setup()
 --require("mini.indentscope").setup()

@@ -1,5 +1,5 @@
-local config = require("tvl.config.lualine.config").options
-local icons = require("tvl.core.icons")
+local config = require("config.lualine.config").options
+local icons = require("core.icons")
 
 local M = {}
 

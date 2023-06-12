@@ -25,10 +25,10 @@ return {
   },
 
   {
-    "loctvl842/compile-nvim",
+    "loc42/compile-nvim",
     lazy = true,
     config = function()
-      require("tvl.config.compile")
+      require("config.compile")
     end,
   },
 
