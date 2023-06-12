@@ -99,11 +99,12 @@ return {
   "echasnovski/mini.indentscope",
     lazy = true,
     enabled = true,
-    version = false, -- wait till new 0.7.0 release to put it back on semver
+    version = '*', -- wait till new 0.7.0 release to put it back on semver
     -- event = "BufReadPre",
     opts = {
-      --symbol = "▏",
-      symbol = "│",
+      symbol = '╎ ',
+      --symbol = "│",
+      border = "both",
       delay = 100,
       options = { try_as_border = false },
     },
