@@ -45,8 +45,8 @@ return {
         separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
           -- icon = " ",
-          -- style = 'icon',
-          style = "underline",
+          style = 'icon',
+          -- style = "underline",
         },
         close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
         diagnostics_indicator = function(count, _, _, _)
@@ -88,13 +88,19 @@ return {
     end,
   },
 
-  {
-    "echasnovski/mini.animate",
-      lazy = true,
-      enabled = true,
-      version = '*',
-  },
+  --{ 'echasnovski/mini.nvim', version = '*' },
 
+  --{
+  --  "echasnovski/mini.animate",
+  --  lazy = true,
+  --  enabled = true,
+  --  version = '*', -- wait till new 0.7.0 release to put it back on semver
+  --  -- event = "BufReadPre",
+  --  config = function()
+  --    require("mini.animate").setup()
+  --  end,
+  --},
+    
   {
   "echasnovski/mini.indentscope",
     lazy = true,
@@ -102,8 +108,8 @@ return {
     version = '*', -- wait till new 0.7.0 release to put it back on semver
     -- event = "BufReadPre",
     opts = {
-      symbol = '╎ ',
-      --symbol = "│",
+      --symbol = '╎ ',
+      symbol = "│",
       border = "both",
       delay = 100,
       options = { try_as_border = false },

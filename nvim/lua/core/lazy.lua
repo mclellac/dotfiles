@@ -20,7 +20,7 @@ require("lazy").setup({
     version = "*", -- try installing the latest stable version for plugins that support semver
   },
   install = { colorscheme = { "monokai-pro", "habamax" } },
-  checker = { enabled = false, notify = false },
+  checker = { enabled = false, notify =  false },
   performance = {
     rtp = {
       -- disable some rtp plugins

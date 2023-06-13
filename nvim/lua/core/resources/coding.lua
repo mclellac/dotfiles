@@ -21,9 +21,11 @@ return {
       },
     },
   },
+
   {
     "varnishcache-friends/vim-varnish",
   },
+
   {
     "L3MON4D3/LuaSnip",
     dependencies = {
@@ -190,6 +192,7 @@ return {
 
   -- comments
   { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+
   {
     "echasnovski/mini.comment",
     event = "VeryLazy",
