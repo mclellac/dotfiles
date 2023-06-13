@@ -45,8 +45,8 @@ return {
         separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
           -- icon = " ",
-          style = 'icon',
-          -- style = "underline",
+          -- style = 'icon',
+          style = "underline",
         },
         close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
         diagnostics_indicator = function(count, _, _, _)
