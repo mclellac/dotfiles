@@ -88,30 +88,45 @@ return {
     end,
   },
 
-  --{ 'echasnovski/mini.nvim', version = '*' },
-
-  --{
-  --  "echasnovski/mini.animate",
-  --  lazy = true,
-  --  enabled = true,
-  --  version = '*', -- wait till new 0.7.0 release to put it back on semver
-  --  -- event = "BufReadPre",
-  --  config = function()
-  --    require("mini.animate").setup()
-  --  end,
-  --},
-    
+  -- indent guides for Neovim
   {
-  "echasnovski/mini.indentscope",
+    "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      -- char = "▏",
+      char = "│",
+      filetype_exclude = {
+        "help",
+        "alpha",
+        "dashboard",
+        "neo-tree",
+        "Trouble",
+        "lazy",
+        "mason",
+        "notify",
+        "toggleterm",
+        "lazyterm",
+      },
+      show_trailing_blankline_indent = false,
+      show_current_context = false,
+    },
+  },
+
+  {
+    "echasnovski/mini.indentscope",
     lazy = true,
     enabled = true,
-    version = '*', -- wait till new 0.7.0 release to put it back on semver
+    version = false, -- wait till new 0.7.0 release to put it back on semver
+    event = { "BufReadPre", "BufNewFile" },
     -- event = "BufReadPre",
     opts = {
-      --symbol = '╎ ',
-      symbol = "│",
-      border = "both",
+      --symbol = "▌",
+      symbol = "▎",
+      --symbol = "│",
       delay = 100,
+      indent_at_cursor = false,
+      -- symbol = "▏",
+      border = 'both',
       options = { try_as_border = false },
     },
     config = function(_, opts)
