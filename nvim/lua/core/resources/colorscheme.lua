@@ -3,7 +3,10 @@ return {
     "folke/tokyonight.nvim",
     lazy = true,
   },
-
+  {
+    "marko-cerovac/material.nvim",
+    lazy = true,
+  },
   {
     "catppuccin/nvim",
     lazy = true,
@@ -19,7 +22,7 @@ return {
       monokai.setup({
         transparent_background = true,
         devicons = true,
-        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum 
         italics = false,
         day_night = {
           enable = false,
