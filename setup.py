@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-'''
+"""
 ██████╗  ██████╗ ████████╗███████╗
 ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
 ██║  ██║██║   ██║   ██║   ███████╗
 ██║  ██║██║   ██║   ██║   ╚════██║
 ██████╔╝╚██████╔╝   ██║   ███████║
 ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
-'''
-print(__doc__)  
+"""
+print(__doc__)
 
 import argparse
 import os
@@ -22,12 +22,11 @@ from signal import signal, SIGPIPE, SIG_DFL
 from sys import stderr
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-f', '--force', action="store_true", default=False,
-                    help='If set, it will override existing symbolic links')
-parser.add_argument('--skip-vimplug', action='store_true',
-                    help='If set, do not update vim plugins.')
-parser.add_argument('--skip-zgen', '--skip-zplug', action='store_true',
-                    help='If set, skip zgen updates.')
+parser.add_argument(
+    "-f", "--force", action="store_true", default=False, help="If set, it will override existing symbolic links"
+)
+parser.add_argument("--skip-vimplug", action="store_true", help="If set, do not update vim plugins.")
+parser.add_argument("--skip-zgen", "--skip-zplug", action="store_true", help="If set, skip zgen updates.")
 
 args = parser.parse_args()
 
@@ -40,42 +39,35 @@ current_os = platform.system().lower()
 # (path of target symlink) : (location of source file in the repository)
 tasks = {
     # shells
-    '~/.zshrc' : 'zsh/zshrc',
-    '~/.zsh'   : 'zsh', 
-    
+    "~/.zshrc": "zsh/zshrc",
+    "~/.zsh": "zsh",
     # tmux
-    '~/.tmux'      : 'tmux',
-    '~/.tmux.conf' : 'tmux/tmux.conf',
-
+    "~/.tmux": "tmux",
+    "~/.tmux.conf": "tmux/tmux.conf",
     # Vim
-    '~/.vimrc' : 'vim/vimrc',
-    '~/.vim' : 'vim',
-    '~/.vim/autoload/plug.vim' : 'vim/bundle/vim-plug/plug.vim',
-
+    "~/.vimrc": "vim/vimrc",
+    "~/.vim": "vim",
+    "~/.vim/autoload/plug.vim": "vim/bundle/vim-plug/plug.vim",
     # Neovim
-    '~/.config/nvim' : 'nvim',
-
+    "~/.config/nvim": "nvim",
     # Git
-    '~/.gitconfig' : 'git/gitconfig',
-    '~/.gitignore' : 'git/gitignore_global',
-
+    "~/.gitconfig": "git/gitconfig",
+    "~/.gitignore": "git/gitignore_global",
     # X
-    '~/.Xresources' : 'Xresources',
-    '~/.xinitrc' : 'xinitrc',
-
+    "~/.Xresources": "Xresources",
+    "~/.xinitrc": "xinitrc",
     # Hypr
-    '~/.config/hypr' : 'hypr',
-
+    "~/.config/hypr": "hypr",
     # Kitty
-    '~/.config/kitty/kitty.conf': 'kitty/kitty.conf',
-    '~/.config/kitty/gruvbox_dark.conf': 'kitty/gruvbox_dark.conf',
+    "~/.config/kitty/kitty.conf": "kitty/kitty.conf",
+    "~/.config/kitty/gruvbox_dark.conf": "kitty/gruvbox_dark.conf",
 }
 
 # OS-specific tasks
-if current_os == 'linux':
-    tasks['~/.zgen'] = 'zsh/zgen'
-elif current_os == 'darwin':
-    tasks['~/.zplug'] = 'zsh/zplug'
+if current_os == "linux":
+    tasks["~/.zgen"] = "zsh/zgen"
+elif current_os == "darwin":
+    tasks["~/.zplug"] = "zsh/zplug"
 
 
 try:
@@ -83,13 +75,14 @@ try:
 except ImportError:
     # In some environments, distutils might not be available.
     import sys
+
     sys.stderr.write("WARNING: distutils not available\n")
-    find_executable = lambda _: False   # type: ignore
+    find_executable = lambda _: False  # type: ignore
 
 
 post_actions = []
 post_actions += [
-    '''#!/bin/bash
+    """#!/bin/bash
     # Check whether ~/.vim and ~/.zsh are well-configured
     for f in ~/.vim ~/.zsh ~/.vimrc ~/.zshrc; do
         if ! readlink $f >/dev/null; then
@@ -102,10 +95,11 @@ Please remove your local folder/file $f and try again.\033[0m"
             echo "$f --> $(readlink $f)"
         fi
     done
-''']
+"""
+]
 
 post_actions += [
-    '''#!/bin/bash
+    """#!/bin/bash
     # Download command line scripts
     mkdir -p "$HOME/.local/bin/"
     _download() {
@@ -115,10 +109,11 @@ post_actions += [
     set -v
     _download "$HOME/bin/video2gif" "https://raw.githubusercontent.com/wookayin/video2gif/master/video2gif" || ret=1
     exit $ret;
-''']
+"""
+]
 
 post_actions += [
-    '''#!/bin/bash
+    """#!/bin/bash
     # Update zgen modules and cache (the init file)
     zsh -c "
         # source zplug and list plugins
@@ -133,27 +128,30 @@ ERROR: zgen not found. Double check the submodule exists, and you have a valid ~
         zgen reset
         zgen update
     "
-    ''' if not args.skip_zgen else \
-        '# zgen update (Skipped)'
+    """
+    if not args.skip_zgen
+    else "# zgen update (Skipped)"
 ]
 
 post_actions += [
-    '''#!/bin/bash
+    """#!/bin/bash
     # validate neovim package installation on python2/3 and automatically install if missing
     bash "install-neovim-py.sh"
-''']
+"""
+]
 
-vim = 'nvim' if find_executable('nvim') else 'vim'
+vim = "nvim" if find_executable("nvim") else "vim"
 post_actions += [
     # Run vim-plug installation
-    {'install' : '{vim} +PlugInstall +qall'.format(vim=vim),
-     'update'  : '{vim} +PlugUpdate  +qall'.format(vim=vim),
-     'none'    : '# {vim} +PlugUpdate (Skipped)'.format(vim=vim)
-     }['update' if not args.skip_vimplug else 'none']
+    {
+        "install": "{vim} +PlugInstall +qall".format(vim=vim),
+        "update": "{vim} +PlugUpdate  +qall".format(vim=vim),
+        "none": "# {vim} +PlugUpdate (Skipped)".format(vim=vim),
+    }["update" if not args.skip_vimplug else "none"]
 ]
 
 post_actions += [
-    r'''#!/bin/bash
+    r"""#!/bin/bash
     # Check tmux version >= 2.3 (or use `dotfiles install tmux`)
     _version_check() {    # target_ver current_ver
         [ "$1" = "$(echo -e "$1\n$2" | sort -s -t- -k 2,2n | sort -t. -s -k 1,1n -k 2,2n | head -n1)" ]
@@ -166,10 +164,11 @@ post_actions += [
     else
         echo "$(which tmux): $(tmux -V)"
     fi
-''']
+"""
+]
 
 post_actions += [
-    r'''#!/bin/bash
+    r"""#!/bin/bash
     # Change default shell to zsh
     /bin/zsh --version >/dev/null || (\
         echo -e "\033[0;31mError: /bin/zsh not found. Please install zsh.\033[0m"; exit 1)
@@ -179,10 +178,11 @@ post_actions += [
     else
         echo -e "\033[0;32m\$SHELL is already zsh.\033[0m $(zsh --version)"
     fi
-''']
+"""
+]
 
 post_actions += [
-    r'''#!/bin/bash
+    r"""#!/bin/bash
     # Create ~/.gitconfig.secret file and check user configuration
     if [ ! -f ~/.gitconfig.secret ]; then
         cat > ~/.gitconfig.secret <<EOL
@@ -211,80 +211,87 @@ EOL
     echo -en 'user.name  : '; git config --file ~/.gitconfig.secret user.name
     echo -en 'user.email : '; git config --file ~/.gitconfig.secret user.email
     echo -en '\033[0m';
-''']
+"""
+]
 
 
 def _wrap_colors(ansicode):
-    return (lambda msg: ansicode + str(msg) + '\033[0m')
-GRAY   = _wrap_colors("\033[0;37m")
-WHITE  = _wrap_colors("\033[1;37m")
-RED    = _wrap_colors("\033[0;31m")
-GREEN  = _wrap_colors("\033[0;32m")
+    return lambda msg: ansicode + str(msg) + "\033[0m"
+
+
+GRAY = _wrap_colors("\033[0;37m")
+WHITE = _wrap_colors("\033[1;37m")
+RED = _wrap_colors("\033[0;31m")
+GREEN = _wrap_colors("\033[0;32m")
 YELLOW = _wrap_colors("\033[0;33m")
-CYAN   = _wrap_colors("\033[0;36m")
-BLUE   = _wrap_colors("\033[0;34m")
-
-
+CYAN = _wrap_colors("\033[0;36m")
+BLUE = _wrap_colors("\033[0;34m")
 
 
 if sys.version_info[0] >= 3:  # python3
     unicode = lambda s, _: str(s)
     from builtins import input
 else:  # python2
-    input = sys.modules['__builtin__'].raw_input
+    input = sys.modules["__builtin__"].raw_input
 
 
 def log(msg, cr=True):
     stderr.write(msg)
     if cr:
-        stderr.write('\n')
+        stderr.write("\n")
+
 
 def log_boxed(msg, color_fn=WHITE, use_bold=False, len_adjust=0):
-    pad_msg = (" " + msg + "  ")
-    l = sum(not unicodedata.combining(ch) for ch in unicode(pad_msg, 'utf-8')) + len_adjust
+    pad_msg = " " + msg + "  "
+    l = sum(not unicodedata.combining(ch) for ch in unicode(pad_msg, "utf-8")) + len_adjust
     if use_bold:
-        log(color_fn("┏" + ("━" * l) + "┓\n" +
-                     "┃" + pad_msg   + "┃\n" +
-                     "┗" + ("━" * l) + "┛\n"), cr=False)
+        log(color_fn("┏" + ("━" * l) + "┓\n" + "┃" + pad_msg + "┃\n" + "┗" + ("━" * l) + "┛\n"), cr=False)
     else:
-        log(color_fn("┌" + ("─" * l) + "┐\n" +
-                     "│" + pad_msg   + "│\n" +
-                     "└" + ("─" * l) + "┘\n"), cr=False)
+        log(color_fn("┌" + ("─" * l) + "┐\n" + "│" + pad_msg + "│\n" + "└" + ("─" * l) + "┘\n"), cr=False)
+
 
 def makedirs(target, mode=511, exist_ok=False):
     try:
         os.makedirs(target, mode=mode)
     except OSError as ex:  # py2 has no exist_ok=True
         import errno
-        if ex.errno == errno.EEXIST and exist_ok: pass
-        else: raise
+
+        if ex.errno == errno.EEXIST and exist_ok:
+            pass
+        else:
+            raise
+
 
 # get current directory (absolute path)
 current_dir = os.path.abspath(os.path.dirname(__file__))
 os.chdir(current_dir)
 
 # check if git submodules are loaded properly
-stat = subprocess.check_output("git submodule status --recursive",
-                               shell=True, universal_newlines=True)
-submodule_issues = [(l.split()[1], l[0]) for l in stat.split('\n') if len(l) and l[0] != ' ']
+stat = subprocess.check_output("git submodule status --recursive", shell=True, universal_newlines=True)
+submodule_issues = [(l.split()[1], l[0]) for l in stat.split("\n") if len(l) and l[0] != " "]
 
 if submodule_issues:
-    stat_messages = {'+': 'needs update', '-': 'not initialized', 'U': 'conflict!'}
-    for (submodule_name, submodule_stat) in submodule_issues:
-        log(RED("git submodule {name} : {status}".format(
-            name=submodule_name,
-            status=stat_messages.get(submodule_stat, '(Unknown)'))))
+    stat_messages = {"+": "needs update", "-": "not initialized", "U": "conflict!"}
+    for submodule_name, submodule_stat in submodule_issues:
+        log(
+            RED(
+                "git submodule {name} : {status}".format(
+                    name=submodule_name, status=stat_messages.get(submodule_stat, "(Unknown)")
+                )
+            )
+        )
     log(RED(" you may run: $ git submodule update --init --recursive"))
 
     log("")
     log(YELLOW("Do you want to update submodules? (y/n) "), cr=False)
-    shall_we = (input().lower() == 'y')
+    shall_we = input().lower() == "y"
     if shall_we:
-        git_submodule_update_cmd = 'git submodule update --init --recursive'
+        git_submodule_update_cmd = "git submodule update --init --recursive"
         # git 2.8+ supports parallel submodule fetching
         try:
             git_version = str(subprocess.check_output("""git --version | awk '{print $3}'""", shell=True))
-            if git_version >= '2.8': git_submodule_update_cmd += ' --jobs 8'
+            if git_version >= "2.8":
+                git_submodule_update_cmd += " --jobs 8"
         except Exception as ex:
             pass
         log("Running: %s" % BLUE(git_submodule_update_cmd))
@@ -313,55 +320,53 @@ for target, source in sorted(tasks.items()):
             if os.path.islink(target):
                 os.unlink(target)
             else:
-                log("{:50s} : {}".format(
-                    BLUE(target),
-                    YELLOW("already exists but not a symbolic link; --force option ignored")
-                ))
+                log(
+                    "{:50s} : {}".format(
+                        BLUE(target), YELLOW("already exists but not a symbolic link; --force option ignored")
+                    )
+                )
         else:
-            log("{:50s} : {}".format(
-                BLUE(target),
-                GRAY("already exists, skipped") if os.path.islink(target) \
-                    else YELLOW("exists, but not a symbolic link. Check by yourself!!")
-            ))
+            log(
+                "{:50s} : {}".format(
+                    BLUE(target),
+                    GRAY("already exists, skipped")
+                    if os.path.islink(target)
+                    else YELLOW("exists, but not a symbolic link. Check by yourself!!"),
+                )
+            )
 
     # make a symbolic link if available
     if not os.path.lexists(target):
         mkdir_target = os.path.split(target)[0]
         makedirs(mkdir_target, exist_ok=True)
-        log(GREEN('Created directory : %s' % mkdir_target))
+        log(GREEN("Created directory : %s" % mkdir_target))
         os.symlink(source, target)
-        log("{:50s} : {}".format(
-            BLUE(target),
-            GREEN("symlink created from '%s'" % source)
-        ))
+        log("{:50s} : {}".format(BLUE(target), GREEN("symlink created from '%s'" % source)))
 
 errors = []
 for action in post_actions:
     if not action:
         continue
 
-    action_title = action.strip().split('\n')[0].strip()
-    if action_title == '#!/bin/bash':
-        action_title = action.strip().split('\n')[1].strip()
+    action_title = action.strip().split("\n")[0].strip()
+    if action_title == "#!/bin/bash":
+        action_title = action.strip().split("\n")[1].strip()
 
     log("\n", cr=False)
     log_boxed("Executing: " + action_title, color_fn=CYAN)
-    ret = subprocess.call(['bash', '-c', action],
-                          preexec_fn=lambda: signal(SIGPIPE, SIG_DFL))
+    ret = subprocess.call(["bash", "-c", action], preexec_fn=lambda: signal(SIGPIPE, SIG_DFL))
 
     if ret:
         errors.append(action_title)
 
 log("\n")
 if errors:
-    log_boxed("You have %3d warnings or errors -- check the logs!" % len(errors),
-              color_fn=YELLOW, use_bold=True)
+    log_boxed("You have %3d warnings or errors -- check the logs!" % len(errors), color_fn=YELLOW, use_bold=True)
     for e in errors:
         log("   " + YELLOW(e))
     log("\n")
 else:
-    log_boxed("✔  You are all set! ",
-              color_fn=GREEN, use_bold=True)
+    log_boxed("✔  You are all set! ", color_fn=GREEN, use_bold=True)
 
 log("- Please restart shell (e.g. " + CYAN("`exec zsh`") + ") if necessary.")
 log("\n\n", cr=False)
