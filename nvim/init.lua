@@ -9,7 +9,7 @@ require("notify").setup({
 require('material').setup({
     contrast = {
         terminal = false, -- Enable contrast for the built-in terminal
-        sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+        sidebars = true, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
         floating_windows = false, -- Enable contrast for floating windows
         cursor_line = false, -- Enable darker background for the cursor line
         non_current_windows = false, -- Enable contrasted background for non-current windows
@@ -30,7 +30,7 @@ require('material').setup({
         -- Available plugins:
         -- "dap",
         "dashboard",
-        -- "gitsigns",
+        "gitsigns",
         -- "hop",
         "indent-blankline",
         -- "lspsaga",
@@ -39,7 +39,7 @@ require('material').setup({
         -- "neorg",
         "nvim-cmp",
         -- "nvim-navic",
-        -- "nvim-tree",
+        "nvim-tree",
         "nvim-web-devicons",
         -- "sneak",
         "telescope",
@@ -49,9 +49,9 @@ require('material').setup({
 
     disable = {
         colored_cursor = false, -- Disable the colored cursor
-        borders = false, -- Disable borders between verticaly split windows
+        borders = true, -- Disable borders between verticaly split windows
         background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
-        term_colors = false, -- Prevent the theme from setting terminal colors
+        term_colors = true, -- Prevent the theme from setting terminal colors
         eob_lines = false -- Hide the end-of-buffer lines
     },
 
@@ -69,6 +69,24 @@ require('material').setup({
     custom_highlights = {}, -- Overwrite highlights with your own
 })
 
+require("noice").setup({
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = true, -- use a classic bottom cmdline for search
+    command_palette = true, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false, -- add a border to hover docs and signature help
+  },
+})
 
 vim.cmd 'colorscheme material'
 
