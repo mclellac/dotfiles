@@ -156,7 +156,7 @@
     "clock": {
         "interval": 60,
         "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
-        "timezone": "Europe/Rome"
+        "timezone": "America/New_York"
     },
     "idle_inhibitor": {
         "format": "{icon}",
