@@ -61,16 +61,16 @@ def log_error_and_continue(message, action_title=None, errors=None):
         errors.append((action_title, message))
 
 
-def log_boxed(msg, color_fn=WHITE, use_bold=False, len_adjust=0):
+def log_boxed(msg, color=WHITE, use_bold=False, len_adjust=0):
     pad_msg = " " + msg + "  "
     l = sum(not unicodedata.combining(ch) for ch in pad_msg) + len_adjust
     if use_bold:
         log_with_color(
-            "┏" + ("━" * l) + "┓\n" + "┃" + pad_msg + "┃\n" + "┗" + ("━" * l) + "┛\n", color=color_fn, cr=False
+            "┏" + ("━" * l) + "┓\n" + "┃" + pad_msg + "┃\n" + "┗" + ("━" * l) + "┛\n", color=color, cr=False
         )
     else:
         log_with_color(
-            "┌" + ("─" * l) + "┐\n" + "│" + pad_msg + "│\n" + "└" + ("─" * l) + "┘\n", color=color_fn, cr=False
+            "┌" + ("─" * l) + "┐\n" + "│" + pad_msg + "│\n" + "└" + ("─" * l) + "┘\n", color=color, cr=False
         )
 
 
@@ -96,6 +96,7 @@ def load_config(filename):
     try:
         with open(filename, "r") as file:
             config = yaml.safe_load(file)
+            log_boxed("YAML config opened.", color=CYAN)
         return config
     except Exception as e:
         log_error(f"Error loading config file: {e}")
@@ -103,7 +104,7 @@ def load_config(filename):
 
 
 def action_zgen_update(args, errors):
-    log_boxed("Action: zgen update", color_fn=CYAN)
+    log_boxed("Action: zgen update", color=CYAN)
 
     # Source zplug and list plugins
     zsh_command = """
@@ -135,24 +136,23 @@ def action_vim_update(vim_executable, args, errors):
             is_neovim = True
 
         if is_neovim:
-            log_boxed("Action: neovim update", color_fn=CYAN)
-            log_with_color('nvim "+Lazy! sync" +qa', color=WHITE)
-            vim_command = [vim_executable, '"+Lazy\! sync"', "+qa"]
+            log_boxed('Action: Neovim update', color=CYAN)
+            log_with_color('nvim --headless "+Lazy! sync" +qa && echo "nvim sync\'d" || echo "nvim sync failed"', color=WHITE)
+            vim_command = f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
         else:
-            log_boxed("Action: Vim update", color_fn=CYAN)
-            log_with_color("vim +PlugUpdate +qall", color=CYAN)
-            vim_command = [vim_executable, "+PlugUpdate", "+qall"]
+            log_boxed("Action: Vim update", color=CYAN)
+            log_with_color("vim +PlugUpdate +qall", color=WHITE)
+            vim_command = f'{vim_executable} +PlugUpdate +qall'
 
         if not args.skip_vimplug:
-            subprocess.run(vim_command)
+            subprocess.run(vim_command, shell=True)
         else:
-            log_with_color("{vim_command} (Skipped)".format(vim_command=" ".join(vim_command)), color=CYAN)
+            log_with_color(f'{vim_command} (Skipped)', colorfn=CYAN)
     except Exception as e:
         log_error_and_continue(str(e), "action_vim_update", errors)
 
-
 def action_install_neovim_py(args, errors):
-    log_boxed("Action: neovim", color_fn=CYAN)
+    log_boxed("Action: neovim", color=CYAN)
 
     try:
         subprocess.run(["bash", "install-neovim-py.sh"])
@@ -161,7 +161,7 @@ def action_install_neovim_py(args, errors):
 
 
 def action_shell_to_zsh(args, errors):
-    log_boxed("Action: Change shell to zsh", color_fn=CYAN)
+    log_boxed("Action: Change shell to zsh", color=CYAN)
 
     if not shutil.which("/bin/zsh"):
         log_error("Error: /bin/zsh not found. Please install zsh.", "action_shell_to_zsh", errors)
@@ -176,7 +176,7 @@ def action_shell_to_zsh(args, errors):
 
 
 def action_gitconfig_secret(errors):
-    log_boxed("~/gitconfig.secret", color_fn=CYAN)
+    log_boxed("~/gitconfig.secret", color=CYAN)
 
     gitconfig_secret_path = os.path.expanduser("~/.gitconfig.secret")
 
@@ -211,7 +211,7 @@ def action_gitconfig_secret(errors):
                 subprocess.run(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
                 subprocess.run(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
             else:
-                log_with_color("Missing name or email, exiting.", color=RED)
+                log_error("Missing name or email, exiting.", color=RED)
                 sys.exit(1)
         else:
             log_with_color("Git user name and email are already set with the values:", color=WHITE)
@@ -242,7 +242,7 @@ def main():
     current_dir = os.path.abspath(os.path.dirname(__file__))
     os.chdir(current_dir)
 
-    log_boxed("Creating symbolic links", color_fn=CYAN)
+    log_boxed("Setting symbolic links from config.yaml", color=CYAN)
     for task in tasks:
         os_condition = task.get("os")
         if os_condition and os_condition != current_os:
@@ -296,7 +296,7 @@ def main():
     for executable in vim_executables:
         action_vim_update(executable, args, errors)
 
-    log_boxed("                    [ Post Actions ]                    ", color_fn=YELLOW, use_bold=True)
+    log_boxed("                    [ Post Actions ]                    ", color=YELLOW, use_bold=True)
     post_actions = [
         (lambda: action_install_neovim_py(args, errors)),
         (lambda: action_shell_to_zsh(args, errors)),
@@ -326,12 +326,12 @@ def main():
 
     if errors:
         print("Inside the errors block")
-        log_boxed("You have %3d warnings or errors -- check the logs!" % len(errors), color_fn=YELLOW, use_bold=True)
+        log_boxed("You have %3d warnings or errors -- check the logs!" % len(errors), color=YELLOW, use_bold=True)
         for action_title, error_message in errors:
             log_with_color(f"   [{action_title}] {error_message}", color=RED)
         log("\n")
     else:
-        log_boxed("✔  You are all set! ", color_fn=GREEN, use_bold=True)
+        log_boxed("✔  You are all set! ", color=GREEN, use_bold=True)
 
     log("- Please restart the shell (e.g. " + CYAN("`exec zsh`") + ") if necessary.")
     log("\n\n", cr=False)
