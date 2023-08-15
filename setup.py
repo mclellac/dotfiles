@@ -242,40 +242,6 @@ def main():
     current_dir = os.path.abspath(os.path.dirname(__file__))
     os.chdir(current_dir)
 
-    # check if git submodules are loaded properly
-    stat = subprocess.check_output("git submodule status --recursive", shell=True, universal_newlines=True)
-    submodule_issues = [(l.split()[1], l[0]) for l in stat.split("\n") if len(l) and l[0] != " "]
-
-    if submodule_issues:
-        stat_messages = {"+": "needs update", "-": "not initialized", "U": "conflict!"}
-        for submodule_name, submodule_stat in submodule_issues:
-            log(
-                RED(
-                    "git submodule {name} : {status}".format(
-                        name=submodule_name, status=stat_messages.get(submodule_stat, "(Unknown)")
-                    )
-                )
-            )
-        log(RED(" you may run: $ git submodule update --init --recursive"))
-
-        log("")
-        log(YELLOW("Do you want to update submodules? (y/n) "), cr=False)
-        shall_we = input().lower() == "y"
-        if shall_we:
-            git_submodule_update_cmd = "git submodule update --init --recursive"
-            # git 2.8+ supports parallel submodule fetching
-            try:
-                git_version = str(subprocess.check_output("""git --version | awk '{print $3}""", shell=True))
-                if git_version >= "2.8":
-                    git_submodule_update_cmd += " --jobs 8"
-            except Exception as ex:
-                pass
-            log("Running: %s" % BLUE(git_submodule_update_cmd))
-            subprocess.call(git_submodule_update_cmd, shell=True)
-        else:
-            log(RED("Aborted."))
-            sys.exit(1)
-
     log_boxed("Creating symbolic links", color_fn=CYAN)
     for task in tasks:
         os_condition = task.get("os")
