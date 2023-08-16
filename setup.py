@@ -76,7 +76,7 @@ def log(msg, color=None, cr=True, action_title=None, errors=None):
         logging.info("")
 
 
-def message_box(msg, color=WHITE, use_bold=False, len_adjust=0):
+def message_box(msg, color=WHITE, use_bold=False):
     # Adjust the width to 80 characters
     box_width = 80
 
@@ -231,7 +231,7 @@ def action_vim_update(vim_executable, args, errors):
         if not args.skip_vimplug:
             subprocess.run(vim_command, shell=True)
         else:
-            log(f"{vim_command} (Skipped)", colorfn=CYAN)
+            log(f"{vim_command} (Skipped)", color=CYAN)
     except Exception as e:
         log(str(e), "action_vim_update", errors)
 
@@ -316,7 +316,7 @@ def main():
     )
     parser.add_argument("--config", default="config.yaml", help="Path to the YAML config file")
     parser.add_argument("--skip-vimplug", action="store_true", help="If set, do not update vim plugins.")
-    parser.add_argument("--skip-zgen", "--skip-zplug", action="store_true", help="If set, skip zgen updates.")
+    parser.add_argument("--skip-zgen", action="store_true", help="If set, skip zgen updates.")
     args = parser.parse_args()
 
     config = load_config(args.config)
