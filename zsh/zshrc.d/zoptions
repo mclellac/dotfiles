@@ -46,7 +46,7 @@ export COLORFGBG="default;default"
 #------------------------------------------------------------------------------#
 #                          Zsh Tab Completions
 #------------------------------------------------------------------------------#
-#fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=(/usr/local/share/zsh-completions $fpath)
 
 # OpenShift tab completion
 if [ $commands[oc] ]; then
