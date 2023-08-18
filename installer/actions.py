@@ -52,6 +52,7 @@ def action_zgen_update(args, errors):
     try:
         subprocess.run(["zsh", "-c", zsh_command], shell=True)
     except Exception as e:
+        log(args)
         log(str(e), color=RED, action_title="action_zgen_update", errors=errors)
 
 
@@ -60,7 +61,7 @@ def action_vim_update(vim_executable, args, errors):
         is_neovim = False
         result = subprocess.run([vim_executable, "--version"], capture_output=True, text=True)
         version_output = result.stdout.lower()
-        if "neovim" in version_output:
+        if "NVIM" in version_output:
             is_neovim = True
 
         if is_neovim:
