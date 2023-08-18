@@ -1,6 +1,7 @@
 import logging
 import sys
 
+
 def setup_logging():
     logging.basicConfig(format="%(message)s", stream=sys.stdout, level=logging.INFO)
 

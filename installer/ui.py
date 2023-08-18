@@ -1,6 +1,7 @@
 from installer.colors import WHITE
 from installer.setup_logs import log
 
+
 def message_box(msg, color=WHITE, use_bold=False):
     # Adjust the width to 80 characters
     box_width = 80

@@ -4,6 +4,7 @@ from .ui import message_box
 from .setup_logs import log
 from .colors import YELLOW
 
+
 def load_config(filename):
     try:
         with open(filename, "r") as file:

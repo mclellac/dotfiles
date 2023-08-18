@@ -3,10 +3,10 @@ import os
 import shutil
 import sys
 
-
 from .setup_logs import log
-from .colors import RED, CYAN, WHITE, GREEN
+from .colors import RED, CYAN, WHITE, GREEN, YELLOW
 from .ui import message_box
+
 
 def execute_action(action, errors):
     try:
@@ -53,6 +53,7 @@ def action_zgen_update(args, errors):
         subprocess.run(["zsh", "-c", zsh_command], shell=True)
     except Exception as e:
         log(str(e), color=RED, action_title="action_zgen_update", errors=errors)
+
 
 def action_vim_update(vim_executable, args, errors):
     try:

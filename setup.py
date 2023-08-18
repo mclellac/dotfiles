@@ -70,7 +70,7 @@ def main():
         action_install_neovim_py,
         action_shell_to_zsh,
         lambda _, errors: action_gitconfig_secret(errors),  # Pass errors to action_gitconfig_secret
-        action_zgen_update,
+        lambda args, errors: action_zgen_update(args, errors),
         ["bash", "install-tmux.sh"],
     ]
 
@@ -97,4 +97,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
