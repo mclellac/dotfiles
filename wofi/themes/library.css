@@ -1,11 +1,11 @@
 *{
     font-family: JetBrainsMono;
-    font-size: 11px;
+    font-size: 14px;
 }
 
 window {
-    background-color: #262a32;
-    border-radius: 15px;
+    background-color: #0b5c49;
+    border-radius: 5px;
 }
 
 #input {
