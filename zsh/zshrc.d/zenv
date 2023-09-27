@@ -26,9 +26,11 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     if [ -f "/opt/google-cloud-sdk/completion.zsh.inc" ]; then
         source /opt/google-cloud-sdk/completion.zsh.inc
     fi
+    
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
     alias ls="ls -G"
     source ${HOME}/.zsh.bsd
+
 elif [[ $OSTYPE = "darwin"* ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/local/opt/go/libexec"

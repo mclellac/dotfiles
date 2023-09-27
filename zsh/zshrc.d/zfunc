@@ -164,6 +164,17 @@ pull() {
                 project=$(echo "${project}" | sed 's/~//')
             fi
 
+        elif [[  ${url} =~ "bitbucket.org" ]]; then
+            icon=" "
+
+            if [[ "${url}" == *"https"* ]]; then
+                project=$(echo "${url}" | awk -F/ '{print $4}')
+                repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
+            elif [[ "${url}" == *"git@"* ]]; then
+                project=$(echo "${url}" | awk -F: '{print $2}' | awk -F/ '{print $1}')
+                repo=$(echo "${url}" | awk -F: '{print $2}' | awk -F/ '{print $2}' | sed 's/.git//')
+            fi
+
         elif [[  ${url} =~ "gitlab.nm.cbc.ca" ]]; then
             icon=" "
 
