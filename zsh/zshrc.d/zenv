@@ -34,7 +34,7 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 elif [[ $OSTYPE = "darwin"* ]]; then
     GOPATH="${HOME}/Projects"
     GOROOT="/usr/local/opt/go/libexec"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:/usr/local/opt/curl/bin:${HOME}/Library/Python/3.10/bin:/usr/local/opt/curl/bin"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/Library/Python/3.10/bin:/usr/local/opt/curl/bin"
     export GOPATH GOROOT PATH
 
     if type "fzf" > /dev/null; then
