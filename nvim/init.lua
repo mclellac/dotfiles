@@ -5,7 +5,6 @@ require("notify").setup({
   border_colour = "#60bfa6",
 })
 
-
 require('material').setup({
     contrast = {
         terminal = false, -- Enable contrast for the built-in terminal
@@ -34,7 +33,8 @@ require('material').setup({
         -- "hop",
         "indent-blankline",
         -- "lspsaga",
-        "mini",
+        --"mini",
+        "mini.indentscope",
         "neogit",
         -- "neorg",
         "nvim-cmp",
