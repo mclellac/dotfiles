@@ -13,11 +13,12 @@ print(__doc__)
 
 import argparse
 import platform
+import subprocess
 import os
 
 from installer.colors import RED, GREEN, YELLOW, CYAN, BLUE
 from installer.setup_logs import setup_logging, log
-from installer.files import create_symbolic_link
+from installer.files import copy_files_or_directories
 from installer.ui import message_box
 from installer.actions import (
     execute_post_install_actions,
@@ -29,13 +30,26 @@ from installer.actions import (
 )
 from installer.setup_config import load_config
 
+def check_and_unset_alias():
+    message_box("Checking if vim is aliased to nvim", color=CYAN)
+
+    try:
+        # Check if 'nvim' is aliased to 'vim'
+        alias_check = subprocess.check_output("/bin/zsh -i -c 'alias' | grep 'alias nvim'", shell=True).decode('utf-8')
+        if 'vim' in alias_check:
+            print("vim is aliased to nvim. Unsetting the alias now.")
+            os.system("/bin/zsh -i -c 'unalias nvim'")
+    except subprocess.CalledProcessError:
+        # If 'nvim' is not aliased, do nothing
+        pass
 
 def main():
     setup_logging()
+    check_and_unset_alias()
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-f", "--force", action="store_true", default=False, help="If set, it will override existing symbolic links"
+        "-f", "--force", action="store_true", default=False, help="If set, it will override existing files"
     )
     parser.add_argument("--config", default="config.yaml", help="Path to the YAML config file")
     parser.add_argument("--skip-vimplug", action="store_true", help="If set, do not update vim plugins.")
@@ -51,7 +65,7 @@ def main():
     current_dir = os.path.abspath(os.path.dirname(__file__))
     os.chdir(current_dir)
 
-    message_box("Setting symbolic links from config.yaml", color=CYAN)
+    message_box("Copying dirs & files outlined in config.yaml", color=CYAN)
     for task in tasks:
         os_condition = task.get("os")
         if os_condition and os_condition != current_os:
@@ -60,7 +74,7 @@ def main():
         target = os.path.expanduser(task.get("target", ""))
         source = os.path.join(current_dir, os.path.expanduser(task.get("source", "")))
 
-        create_symbolic_link(target, source, args)
+        copy_files_or_directories(target, source, args)
 
     errors = []  # Initialize an empty list to collect errors
 

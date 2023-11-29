@@ -58,11 +58,7 @@ def action_zgen_update(args, errors):
 
 def action_vim_update(vim_executable, args, errors):
     try:
-        is_neovim = False
-        result = subprocess.run([vim_executable, "--version"], capture_output=True, text=True)
-        version_output = result.stdout.lower()
-        if "NVIM" in version_output:
-            is_neovim = True
+        is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:
             message_box("Action: Neovim update", color=CYAN)
@@ -72,8 +68,8 @@ def action_vim_update(vim_executable, args, errors):
             )
         else:
             message_box("Action: Vim update", color=CYAN)
-            log("vim +PlugUpdate +qall", color=WHITE)
-            vim_command = f"{vim_executable} +PlugUpdate +qall"
+            log("nohup vim +PlugUpdate +qall > /dev/null 2>&1 &", color=WHITE)
+            vim_command = f"nohup {vim_executable} +PlugUpdate +qall > /dev/null 2>&1 &"
 
         if not args.skip_vimplug:
             subprocess.run(vim_command, shell=True)

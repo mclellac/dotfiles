@@ -14,7 +14,7 @@ _version_check() {
     curver="${1/v/}"; targetver="$2";
     [ "$targetver" = "$(echo -e "$curver\n$targetver" | sort -V | head -n1)" ]
 }
-NVIM_MINIMUM_VERSION="0.7.0"
+NVIM_MINIMUM_VERSION="0.9.0"
 neovim_current_verson=$(nvim --version 2>/dev/null | head -n1 | cut -d' ' -f2)
 
 if which nvim >/dev/null && _version_check "$neovim_current_verson" "$NVIM_MINIMUM_VERSION"; then
@@ -22,7 +22,7 @@ if which nvim >/dev/null && _version_check "$neovim_current_verson" "$NVIM_MINIM
 
 else
     # neovim not found. install one!
-    if [ `uname` == "Darwin" ]; then
+    if [ "$(uname)" == "Darwin" ]; then
         NEOVIM_INSTALL_CMD="brew install neovim"
     else
         NEOVIM_INSTALL_CMD="dotfiles install neovim"
@@ -35,7 +35,7 @@ else
     echo -e "Please install using '${NEOVIM_INSTALL_CMD}'.${RESET}"
 
     # Automatically install dotfiles upon confirmation (Linux only)
-    if [[ -n "$BASH_VERSION" ]] && [ `uname` == "Linux" ]; then
+    if [[ -n "$BASH_VERSION" ]] && [ "$(uname)" == "Linux" ]; then
         while true; do
             echo -en "${YELLOW}Do you want to install neovim locally [y/N] ${RESET}"
             [ -t 1 ] && read -t 5 -p "(wait 5 secs for auto-yes) ? " user_prompt || user_prompt="y";
