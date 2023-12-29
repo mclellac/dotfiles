@@ -165,4 +165,7 @@ if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
     export MOZ_ENABLE_WAYLAND=1
 fi
 
-export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR=/usr/local/share/zsh-syntax-highlighting/highlighters
+# Install deno with curl -fsSL https://deno.land/x/install/install.sh | sh
+export DENO_INSTALL="${HOME}/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
