@@ -18,7 +18,9 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
     source ${HOME}/.zsh.gnu
 
     # Check if zsh syntax highlighting is available.
-    echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+    if [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+      source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    fi
 
     # Google Cloud CLI zsh tab completion
     if [ -f "/opt/google-cloud-sdk/completion.zsh.inc" ]; then
@@ -53,7 +55,9 @@ elif [[ $OSTYPE = "darwin"* ]]; then
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 
     # zsh-syntax-highlighting (brew package)
-    echo "source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+    if [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zshrc" ]; then
+      source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zshrc
+    fi
 
     # iterm shell integration
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
