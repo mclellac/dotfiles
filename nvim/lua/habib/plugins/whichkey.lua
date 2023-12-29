@@ -108,7 +108,7 @@ return {
 
 			-- Code Formatting
 			F = {
-				name = "Code Formoat",
+				name = "Code Format",
 				M = { ":lua vim.lsp.buf.format()<cr>", "Format code" },
 			},
 		}
