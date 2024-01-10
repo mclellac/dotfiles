@@ -54,4 +54,5 @@
     lineNumber = yellow
 [commit]
     template = ~/.gitmessage
-
+[credential]
+	helper = store
