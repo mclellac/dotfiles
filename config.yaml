@@ -1,10 +1,10 @@
 # List of tasks for creating symbolic links
 tasks:
-  - target: "~/.zshrc"  
-    source: "zsh/zshrc" 
+  - target: "~/.zshrc"
+    source: "zsh/zshrc"
 
-  - target: "~/.zsh" 
-    source: "zsh" 
+  - target: "~/.zsh"
+    source: "zsh"
 
   #- target: "~/.zgen"
   #  source: "zsh/zgen"
@@ -40,11 +40,11 @@ tasks:
   - target: "~/.config/hypr"
     source: "hypr"
     os: linux
- 
-  - target: "~/.config/wofi/"
+
+  - target: "~/.config/wofi"
     source: "wofi"
     os: linux
-  
+
   - target: "~/.Xresources"
     source: "Xresources"
     os: linux
@@ -52,7 +52,7 @@ tasks:
   - target: "~/.xinitrc"
     source: "xinitrc"
     os: linux
-  
+
   # Darwin only
   - target: "~/.doom.d"
     source: "doom.d"
