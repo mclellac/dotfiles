@@ -36,16 +36,15 @@ tasks:
   - target: "~/.config/kitty/gruvbox_dark.conf"
     source: "kitty/gruvbox_dark.conf"
 
-  # Linux only symlinks
+  # Linux only
   - target: "~/.config/hypr"
     source: "hypr"
     os: linux
-
-  # Linux only symlinks
-  - target: "~/.config/i3wm"
-    source: "i3"
+ 
+  - target: "~/.config/wofi/"
+    source: "wofi"
     os: linux
-
+  
   - target: "~/.Xresources"
     source: "Xresources"
     os: linux
@@ -54,7 +53,7 @@ tasks:
     source: "xinitrc"
     os: linux
   
-  # Darwin only symlinks
+  # Darwin only
   - target: "~/.doom.d"
     source: "doom.d"
     os: darwin
