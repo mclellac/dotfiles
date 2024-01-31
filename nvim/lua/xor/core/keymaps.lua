@@ -19,9 +19,9 @@ map("v", "<C-c>", '"+y', { noremap = true, silent = false })
 map("n", "<C-s>", '"+P', { noremap = true, silent = false })
 
 -- Remapping Escape key
-map("i", "kj", "<Esc>", { noremap = true, silent = false })
-map("n", "kj", "<Esc>", { noremap = true, silent = false })
-map("v", "kj", "<Esc>", { noremap = true, silent = false })
+--map("i", "kj", "<Esc>", { noremap = true, silent = false })
+--map("n", "kj", "<Esc>", { noremap = true, silent = false })
+--map("v", "kj", "<Esc>", { noremap = true, silent = false })
 
 -- Unhighlight searched elements
 map("n", "<C-m>", ":nohlsearch<cr>", { noremap = true, silent = true })

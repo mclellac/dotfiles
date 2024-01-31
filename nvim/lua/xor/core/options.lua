@@ -1,3 +1,6 @@
+-- Modifiable
+vim.o.modifiable = true
+
 -- Appearance
 vim.opt.termguicolors = true
 vim.o.pumheight = 10 -- Max items to show in pop up menu

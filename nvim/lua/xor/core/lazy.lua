@@ -19,8 +19,8 @@ end
 lazy.setup({
 	-- importing directories
 	spec = {
-		{ import = "habib.plugins" },
-		{ import = "habib.plugins.lsp" },
+		{ import = "xor.plugins" },
+		{ import = "xor.plugins.lsp" },
 	},
 
 	-- ui config
