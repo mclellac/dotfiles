@@ -6,6 +6,7 @@
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.python",
     "lazyvim.plugins.extras.lang.terraform",
+    "lazyvim.plugins.extras.ui.alpha",
     "lazyvim.plugins.extras.ui.edgy"
   ],
   "news": {
