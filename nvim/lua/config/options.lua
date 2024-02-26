@@ -5,10 +5,10 @@ vim.opt.cursorline = true
 vim.opt.guicursor = ""
 --vim.opt.mouse = ''
 --vim.opt.mousescroll = 'ver:0,hor:0'
-vim.opt.showmode = true
-vim.o.conceallevel = 2
+--vim.opt.showmode = true
+--vim.o.conceallevel = 2
 
-vim.opt.nu = true
+--vim.opt.nu = true
 vim.opt.relativenumber = true
 
 vim.opt.tabstop = 4
