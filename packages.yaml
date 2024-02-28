@@ -1,0 +1,23 @@
+fedora:
+  python3-dns: {}
+  evolution: {}
+  evolution-data-server: {}
+  evolution-spamassassin: {}
+  syncevolution: {}
+  gcc: {}
+  gcc-c++: {}
+  golang: {}
+  pyright: {}
+  podman-compose: {}
+  docker-compose: {}
+  golang-x-tools-gopls: {}
+  nodejs: {}
+  fd-find: {}
+
+pip-packages:
+  prompt_toolkit: {}
+  rich: {}
+
+copr-repo:
+  name: "atim/lazygit"
+
