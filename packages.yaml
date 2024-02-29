@@ -94,7 +94,6 @@ darwin:
     - libadwaita
     - neovim
     - gcc
-    - gcc-c++
     - go
     - colima
     - fd
