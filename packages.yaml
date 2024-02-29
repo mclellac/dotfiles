@@ -20,6 +20,10 @@ fedora:
     - nodejs
     - fd-find
     - ripgrep
+    - nmap
+    - curl
+    - httpie
+
   pip-packages:
     - prompt_toolkit
     - pyright

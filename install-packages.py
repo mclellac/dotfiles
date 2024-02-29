@@ -2,8 +2,8 @@
 
 import subprocess
 import yaml
-import distro
 from rich.console import Console
+from rich.progress import Progress, BarColumn
 
 console = Console()
 
@@ -96,9 +96,20 @@ def main() -> None:
         return
 
     # Get current OS information
-    current_os = distro.id().lower()
+    current_os = None
 
-    # Check if the current OS is listed in the YAML file
+    try:
+        result = subprocess.run(["brew", "--version"], capture_output=True, text=True, check=True)
+        current_os = "darwin"
+    except FileNotFoundError:
+        # If brew command is not found, fallback to using distro for Linux
+        try:
+            import distro
+            current_os = distro.id().lower()
+        except ImportError:
+            console.print("[bold red]Error:[/bold red] Unable to determine the operating system.")
+            return
+
     if current_os in config:
         os_config = config[current_os]
         dnf_packages = os_config.get("dnf", [])
@@ -112,12 +123,32 @@ def main() -> None:
         if current_os == "fedora":
             if copr_repo:
                 enable_copr_repo(copr_repo)
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(dnf_packages))
+                for pkg in dnf_packages:
+                    is_installed = is_package_installed(pkg, "dnf")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(dnf_packages, "dnf")
         elif current_os == "arch":
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(pacman_packages))
+                for pkg in pacman_packages:
+                    is_installed = is_package_installed(pkg, "pacman")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(pacman_packages, "pacman")
         elif current_os in ["debian", "ubuntu"]:
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(apt_packages))
+                for pkg in apt_packages:
+                    is_installed = is_package_installed(pkg, "apt")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(apt_packages, "apt")
         elif current_os == "darwin":
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(brew_packages))
+                for pkg in brew_packages:
+                    is_installed = is_package_installed(pkg, "homebrew")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(brew_packages, "homebrew")
 
     # Install Python packages using pip
