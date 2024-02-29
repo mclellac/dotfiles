@@ -14,6 +14,7 @@ from installer.setup_logs import setup_logging, log
 from installer.files import copy_files_or_directories
 from installer.ui import message_box
 from installer.actions import (
+    run_command,
     execute_post_install_actions,
     action_zgen_update,
     action_vim_update,
@@ -34,20 +35,15 @@ def print_banner() -> None:
     """
     print(banner)
 
-def run_command(command: list[str], check: bool = True) -> subprocess.CompletedProcess:
-    try:
-        return subprocess.run(command, capture_output=True, text=True, check=check)
-    except subprocess.CalledProcessError as e:
-        print(f"Command '{' '.join(command)}' failed with error: {str(e)}")
-        sys.exit(1)
 
+    
 def check_and_unset_alias() -> None:
     message_box("Checking if vim is aliased to nvim", color=CYAN)
 
-    alias_check = run_command(["/bin/zsh", "-i", "-c", "alias"], check=False)
+    alias_check = run_command(["/bin/zsh", "-c", "alias"], check=False)
     if 'vim' in alias_check.stdout:
         print("vim is aliased to nvim. Unsetting the alias now.")
-        run_command(["/bin/zsh", "-i", "-c", "unalias vim"])
+        run_command(["/bin/zsh", "-c", "unalias vim"])
 
 
 def parse_args() -> argparse.Namespace:
@@ -90,7 +86,6 @@ def main() -> None:
         action_shell_to_zsh,
         lambda _, errors: action_gitconfig_secret(errors),
         lambda args, errors: action_zgen_update(args, errors),
-        ["bash", "install-tmux.sh"],
     ]
 
     vim_executables = ["nvim", "vim"]

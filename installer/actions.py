@@ -8,9 +8,19 @@ from .colors import RED, CYAN, WHITE, GREEN, YELLOW
 from .ui import message_box
 
 
+
+def run_command(command: list[str], check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
+    try:
+        return subprocess.run(command, capture_output=True, text=True, check=check, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        raise RuntimeError(f"Command '{' '.join(command)}' timed out after {timeout} seconds")
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"Command '{' '.join(command)}' failed with error: {str(e)}")
+
+
 def execute_action(action, errors):
     try:
-        subprocess.run(action, shell=True)
+        run_command(["zsh", "-c", " ".join(action)])
     except Exception as e:
         log(str(e), "execute_action", errors)
 
@@ -50,7 +60,11 @@ def action_zgen_update(args, errors):
     )
 
     try:
-        subprocess.run(["zsh", "-c", zsh_command], shell=True)
+        run_command(["zsh", "-c", zsh_command])
+    except subprocess.TimeoutExpired as e:
+        raise RuntimeError(f"Command '{' '.join(command)}' timed out after {timeout} seconds")
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"Command '{' '.join(command)}' failed with error: {str(e)}")
     except Exception as e:
         log(args)
         log(str(e), color=RED, action_title="action_zgen_update", errors=errors)
@@ -72,7 +86,7 @@ def action_vim_update(vim_executable, args, errors):
             vim_command = f"nohup {vim_executable} +PlugUpdate +qall > /dev/null 2>&1 &"
 
         if not args.skip_vimplug:
-            subprocess.run(vim_command, shell=True)
+            subprocess.Popen(vim_command, shell=True)
         else:
             log(f"{vim_command} (Skipped)", color=CYAN)
     except Exception as e:
@@ -83,7 +97,7 @@ def action_install_neovim_py(args, errors):
     message_box("Action: neovim", color=CYAN)
 
     try:
-        subprocess.run(["bash", "install-neovim-py.sh"])
+        run_command(["bash", "install-neovim-py.sh"])
     except Exception as e:
         log(str(e), "action_install_neovim_py", errors)
 
@@ -98,7 +112,7 @@ def action_shell_to_zsh(args, errors):
     current_shell = os.path.basename(os.environ["SHELL"])
     if current_shell.lower() != "zsh":
         log("Please type your password if you wish to change the default shell to ZSH", color=YELLOW)
-        subprocess.run(["chsh", "-s", "/bin/zsh"])
+        run_command(["chsh", "-s", "/bin/zsh"])
     else:
         log("Users shell is already zsh.", color=WHITE)
 
@@ -113,13 +127,13 @@ def action_gitconfig_secret(errors):
             with open(gitconfig_secret_path, "w") as f:
                 f.write("# vim: set ft=gitconfig:\n")
 
-        config_result = subprocess.run(
-            ["git", "config", "--file", gitconfig_secret_path, "user.name"], capture_output=True, text=True
+        config_result = run_command(
+            ["git", "config", "--file", gitconfig_secret_path, "user.name"], check=False
         )
         user_name = config_result.stdout.strip() if config_result.returncode == 0 else None
 
-        config_result = subprocess.run(
-            ["git", "config", "--file", gitconfig_secret_path, "user.email"], capture_output=True, text=True
+        config_result = run_command(
+            ["git", "config", "--file", gitconfig_secret_path, "user.email"], check=False
         )
         user_email = config_result.stdout.strip() if config_result.returncode == 0 else None
 
@@ -136,8 +150,8 @@ def action_gitconfig_secret(errors):
                 git_useremail = user_email
 
             if git_username and git_useremail:
-                subprocess.run(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
-                subprocess.run(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
+                run_command(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
+                run_command(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
             else:
                 log("Missing name or email, exiting.", color=RED)
                 sys.exit(1)
