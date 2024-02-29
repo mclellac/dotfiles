@@ -1,5 +1,9 @@
 fedora:
   dnf:
+    - ansible
+    - ansible-core
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
     - zsh
     - vim-enhanced
     - tmux
@@ -23,7 +27,6 @@ fedora:
     - nmap
     - curl
     - httpie
-
   pip-packages:
     - pyright
     - pyright
