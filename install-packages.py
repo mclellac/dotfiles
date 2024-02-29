@@ -36,14 +36,13 @@ def is_package_installed(package: str, package_manager: str) -> bool:
 
 def install_packages(packages: list, package_manager: str) -> None:
     """Install packages using the appropriate package manager."""
+    
     try:
         not_installed = [pkg for pkg in packages if not is_package_installed(pkg, package_manager)]
         if not_installed:
-            console.print("[bold green]Packages to be installed:[/bold green]")
+            console.print(f"[bold green]{package_manager} packages to be installed:[/bold green]")
             for pkg in not_installed:
                 console.print(f"  - [green3]{pkg}[/green3]")
-        else:
-            console.print("[bold green]All packages are already installed.[/bold green]")
 
         if not_installed:
             if package_manager == "dnf":
@@ -59,7 +58,7 @@ def install_packages(packages: list, package_manager: str) -> None:
             else:
                 console.print(f"[bold red]Error:[/bold red] Unsupported package manager: {package_manager}")
         else:
-            console.print("[bold green]All packages are already installed.[/bold green]")
+            console.print(f"[bold green]All {package_manager} packages have already been installed.[/bold green]")
     except subprocess.CalledProcessError as e:
         console.print(f"[bold red]Error:[/bold red] Failed to install packages with {package_manager}: {e}")
 
