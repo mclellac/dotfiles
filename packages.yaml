@@ -76,20 +76,39 @@ debian:
     - pyright
     - pynvim
 
-macos:
+darwin:
   brew:
-    - python3-dns
-    - evolution
-    - evolution-data-server
-    - evolution-spamassassin
-    - syncevolution
+    - akamai
+    - awscli
+    - google-cloud-sdk
+    - ansible-language-server
+    - ansible
+    - ansible-lint
+    - python
+    - terraform
+    - httpie
+    - zsh-syntax-highlighting
+    - zsh-completions
+    - lazygit
+    - gtk4
+    - libadwaita
+    - neovim
     - gcc
     - gcc-c++
-    - golang
-    - podman-compose
-    - docker-compose
-    - golang-x-tools-gopls
-    - nodejs
+    - go
+    - colima
+    - fd
+    - brotli
+    - awk
+    - autoconf
+    - automake
+    - meson
+    - meson-python
+    - ninja
+    - node
+    - mtr
+    - nghttp2
+    - wireshark
     - fd-find
     - ripgrep
   pip-packages:
