@@ -3,7 +3,7 @@
 import subprocess
 import yaml
 from rich.console import Console
-from rich.progress import Progress, BarColumn
+from rich.progress import Progress
 
 console = Console()
 
@@ -144,6 +144,8 @@ def main() -> None:
                     progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(apt_packages, "apt")
         elif current_os == "darwin":
+            # Define pip_packages as an empty list for macOS
+            pip_packages = []
             with Progress() as progress:
                 task = progress.add_task("[cyan]Checking package installation...", total=len(brew_packages))
                 for pkg in brew_packages:
