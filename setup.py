@@ -1,16 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-"""
-                        ██████╗  ██████╗ ████████╗███████╗
-                        ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
-                        ██║  ██║██║   ██║   ██║   ███████╗
-                        ██║  ██║██║   ██║   ██║   ╚════██║
-                        ██████╔╝╚██████╔╝   ██║   ███████║
-                        ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
-"""
-print(__doc__)
-
 import argparse
 import platform
 import subprocess
@@ -29,6 +18,17 @@ from installer.actions import (
     action_gitconfig_secret,
 )
 from installer.setup_config import load_config
+"""
+                        ██████╗  ██████╗ ████████╗███████╗
+                        ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
+                        ██║  ██║██║   ██║   ██║   ███████╗
+                        ██║  ██║██║   ██║   ██║   ╚════██║
+                        ██████╔╝╚██████╔╝   ██║   ███████║
+                        ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
+"""
+print(__doc__)
+
+
 
 def check_and_unset_alias():
     message_box("Checking if vim is aliased to nvim", color=CYAN)

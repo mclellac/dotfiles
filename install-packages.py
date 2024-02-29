@@ -8,8 +8,8 @@ from rich.progress import Progress
 console = Console()
 
 def is_package_installed(package: str, package_manager: str) -> bool:
+    """Check if a package is installed using the appropriate package manager."""
     try:
-        # Check if the package is installed using the appropriate package manager
         if package_manager == "dnf":
             result = subprocess.run(["dnf", "list", "installed", package], capture_output=True, text=True)
             return package in result.stdout
@@ -29,19 +29,22 @@ def is_package_installed(package: str, package_manager: str) -> bool:
             console.print(f"[bold red]Error:[/bold red] Unsupported package manager: {package_manager}")
             return False
     except subprocess.CalledProcessError:
-        # If an error occurs, simply return False indicating that the package is not installed
         return False
     except FileNotFoundError:
-        # Print an error message if the package manager is not found
         console.print("[bold red]Error:[/bold red] {} not found. Please make sure it is installed.".format(package_manager))
         return False
 
 def install_packages(packages: list, package_manager: str) -> None:
+    """Install packages using the appropriate package manager."""
     try:
-        # Check which packages are not installed
         not_installed = [pkg for pkg in packages if not is_package_installed(pkg, package_manager)]
-        
-        # If there are packages to install, run the appropriate package manager
+        if not_installed:
+            console.print("[bold green]Packages to be installed:[/bold green]")
+            for pkg in not_installed:
+                console.print(f"  - [green3]{pkg}[/green3]")
+        else:
+            console.print("[bold green]All packages are already installed.[/bold green]")
+
         if not_installed:
             if package_manager == "dnf":
                 subprocess.run(["sudo", "dnf", "install", "-y"] + not_installed, check=True)
@@ -58,10 +61,10 @@ def install_packages(packages: list, package_manager: str) -> None:
         else:
             console.print("[bold green]All packages are already installed.[/bold green]")
     except subprocess.CalledProcessError as e:
-        # Print an error message if the package installation fails
         console.print(f"[bold red]Error:[/bold red] Failed to install packages with {package_manager}: {e}")
 
 def is_copr_repo_enabled(repo_name: str) -> bool:
+    """Check if a COPR repository is enabled."""
     try:
         result = subprocess.run(["sudo", "dnf", "repolist"], capture_output=True, text=True, check=True)
         repo_list = result.stdout.splitlines()
@@ -77,6 +80,7 @@ def is_copr_repo_enabled(repo_name: str) -> bool:
         return False
 
 def enable_copr_repo(repo_name: str) -> None:
+    """Enable a COPR repository."""
     if not is_copr_repo_enabled(repo_name):
         try:
             subprocess.run(["sudo", "dnf", "copr", "enable", repo_name, "-y"], check=True)
@@ -88,21 +92,18 @@ def enable_copr_repo(repo_name: str) -> None:
 
 def main() -> None:
     try:
-        # Read package information from YAML file
-        with open("packages.yaml", "r") as f:
+        with open("packages.yaml", "r", encoding="utf-8") as f:
             config = yaml.safe_load(f)
     except FileNotFoundError:
         console.print("[bold red]Error:[/bold red] packages.yaml not found. Please make sure the file exists.")
         return
 
-    # Get current OS information
     current_os = None
 
     try:
-        result = subprocess.run(["brew", "--version"], capture_output=True, text=True, check=True)
+        subprocess.run(["brew", "--version"], capture_output=True, text=True, check=True)
         current_os = "darwin"
     except FileNotFoundError:
-        # If brew command is not found, fallback to using distro for Linux
         try:
             import distro
             current_os = distro.id().lower()
@@ -119,43 +120,39 @@ def main() -> None:
         pip_packages = os_config.get("pip-packages", [])
         copr_repo = os_config.get("copr-repo", {}).get("name")
 
-        # Install packages based on the current OS
         if current_os == "fedora":
             if copr_repo:
                 enable_copr_repo(copr_repo)
             with Progress() as progress:
                 task = progress.add_task("[cyan]Checking package installation...", total=len(dnf_packages))
                 for pkg in dnf_packages:
-                    is_installed = is_package_installed(pkg, "dnf")
+                    is_package_installed(pkg, "dnf")
                     progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(dnf_packages, "dnf")
         elif current_os == "arch":
             with Progress() as progress:
                 task = progress.add_task("[cyan]Checking package installation...", total=len(pacman_packages))
                 for pkg in pacman_packages:
-                    is_installed = is_package_installed(pkg, "pacman")
+                    is_package_installed(pkg, "pacman")
                     progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(pacman_packages, "pacman")
-        elif current_os in ["debian", "ubuntu"]:
+        elif current_os in ["debian", "kali", "ubuntu"]:
             with Progress() as progress:
                 task = progress.add_task("[cyan]Checking package installation...", total=len(apt_packages))
                 for pkg in apt_packages:
-                    is_installed = is_package_installed(pkg, "apt")
+                    is_package_installed(pkg, "apt")
                     progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(apt_packages, "apt")
         elif current_os == "darwin":
-            # Define pip_packages as an empty list for macOS
             pip_packages = []
             with Progress() as progress:
                 task = progress.add_task("[cyan]Checking package installation...", total=len(brew_packages))
                 for pkg in brew_packages:
-                    is_installed = is_package_installed(pkg, "homebrew")
+                    is_package_installed(pkg, "homebrew")
                     progress.update(task, advance=1, description=f"Checking {pkg}")
             install_packages(brew_packages, "homebrew")
 
-    # Install Python packages using pip
     install_packages(pip_packages, "pip")
-
 
 if __name__ == "__main__":
     main()
