@@ -1,23 +1,95 @@
 fedora:
-  python3-dns: {}
-  evolution: {}
-  evolution-data-server: {}
-  evolution-spamassassin: {}
-  syncevolution: {}
-  gcc: {}
-  gcc-c++: {}
-  golang: {}
-  pyright: {}
-  podman-compose: {}
-  docker-compose: {}
-  golang-x-tools-gopls: {}
-  nodejs: {}
-  fd-find: {}
+  dnf:
+    - zsh
+    - vim-enhanced
+    - tmux
+    - git
+    - gh
+    - lazygit
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - pyright
+    - rich
+    - pynvim
+  copr-repo:
+    name: "atim/lazygit"
 
-pip-packages:
-  prompt_toolkit: {}
-  rich: {}
+arch:
+  pacman:
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - rich
+    - pyright
+    - pynvim
 
-copr-repo:
-  name: "atim/lazygit"
+debian:
+  apt:
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - rich
+    - pyright
+    - pynvim
 
+macos:
+  brew:
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - rich
+    - pyright
+    - pynvim
