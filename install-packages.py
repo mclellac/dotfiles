@@ -7,6 +7,7 @@ from rich.progress import Progress
 
 console = Console()
 
+
 def is_package_installed(package: str, package_manager: str) -> bool:
     """Check if a package is installed using the appropriate package manager."""
     try:
@@ -31,12 +32,15 @@ def is_package_installed(package: str, package_manager: str) -> bool:
     except subprocess.CalledProcessError:
         return False
     except FileNotFoundError:
-        console.print("[bold red]Error:[/bold red] {} not found. Please make sure it is installed.".format(package_manager))
+        console.print(
+            "[bold red]Error:[/bold red] {} not found. Please make sure it is installed.".format(package_manager)
+        )
         return False
+
 
 def install_packages(packages: list, package_manager: str) -> None:
     """Install packages using the appropriate package manager."""
-    
+
     try:
         not_installed = [pkg for pkg in packages if not is_package_installed(pkg, package_manager)]
         if not_installed:
@@ -62,6 +66,7 @@ def install_packages(packages: list, package_manager: str) -> None:
     except subprocess.CalledProcessError as e:
         console.print(f"[bold red]Error:[/bold red] Failed to install packages with {package_manager}: {e}")
 
+
 def is_copr_repo_enabled(repo_name: str) -> bool:
     """Check if a COPR repository is enabled."""
     try:
@@ -78,6 +83,7 @@ def is_copr_repo_enabled(repo_name: str) -> bool:
         console.print("[bold red]Error:[/bold red] dnf not found. Please make sure it is installed.")
         return False
 
+
 def enable_copr_repo(repo_name: str) -> None:
     """Enable a COPR repository."""
     if not is_copr_repo_enabled(repo_name):
@@ -88,6 +94,7 @@ def enable_copr_repo(repo_name: str) -> None:
             console.print(f"[bold red]Error:[/bold red] Failed to enable COPR repository: {e}")
     else:
         console.print(f"[green]COPR repository {repo_name} is already enabled[/green]")
+
 
 def main() -> None:
     try:
@@ -105,6 +112,7 @@ def main() -> None:
     except FileNotFoundError:
         try:
             import distro
+
             current_os = distro.id().lower()
         except ImportError:
             console.print("[bold red]Error:[/bold red] Unable to determine the operating system.")
@@ -152,6 +160,7 @@ def main() -> None:
             install_packages(brew_packages, "homebrew")
 
     install_packages(pip_packages, "pip")
+
 
 if __name__ == "__main__":
     main()

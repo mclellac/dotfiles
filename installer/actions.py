@@ -75,13 +75,13 @@ def action_vim_update(vim_executable, args, errors):
         is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:
-            message_box("Action: Neovim update", color=CYAN)
+            message_box("Action: VIM/Neovim update", color=CYAN)
             log('nvim --headless "+Lazy! sync" +qa && echo "nvim sync\'d" || echo "nvim sync failed"', color=WHITE)
             vim_command = (
                 f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
             )
         else:
-            message_box("Action: Vim update", color=CYAN)
+            #message_box("Action: Vim update", color=CYAN)
             log("nohup vim +PlugUpdate +qall > /dev/null 2>&1 &", color=WHITE)
             vim_command = f"nohup {vim_executable} +PlugUpdate +qall > /dev/null 2>&1 &"
 
@@ -94,10 +94,10 @@ def action_vim_update(vim_executable, args, errors):
 
 
 def action_install_neovim_py(args, errors):
-    message_box("Action: neovim", color=CYAN)
+    message_box("Action: Run install-neovim-py.sh", color=CYAN)
 
     try:
-        run_command(["bash", "install-neovim-py.sh"])
+        run_command(["zsh", "install-neovim-py.sh"])
     except Exception as e:
         log(str(e), "action_install_neovim_py", errors)
 

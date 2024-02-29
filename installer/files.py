@@ -24,7 +24,9 @@ def copy_files_or_directories(target, source, args):
                     BLUE(target),
                     GRAY("already exists, skipped")
                     if os.path.isfile(target)
-                    else YELLOW("exists, but not a file or directory. Check by yourself!!"),
+                    else YELLOW(
+                        "exists, but not a file or directory. Check for yourself!!"
+                    ),
                 ),
                 cr=False,
             )
@@ -37,4 +39,7 @@ def copy_files_or_directories(target, source, args):
             shutil.copy2(source, target)
         else:
             shutil.copytree(source, target)
-        log("{:20s} {} {}".format(BLUE(source), CYAN("━━"), GREEN("'%s'" % target)), cr=False)
+        log(
+            "{:20s} {} {}".format(BLUE(source), CYAN("━━"), GREEN("'%s'" % target)),
+            cr=False,
+        )

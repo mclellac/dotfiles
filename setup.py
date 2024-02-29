@@ -24,44 +24,78 @@ from installer.actions import (
 )
 from installer.setup_config import load_config
 
+
 def print_banner() -> None:
-    banner="""
-                            ██████╗  ██████╗ ████████╗███████╗
-                            ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
-                            ██║  ██║██║   ██║   ██║   ███████╗
-                            ██║  ██║██║   ██║   ██║   ╚════██║
-                            ██████╔╝╚██████╔╝   ██║   ███████║
-                            ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
+    banner = """
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                                                                                ┃
+┃            ██╗  ██╗ ██████╗ ██████╗  ██████╗███████╗███╗   ███╗                ┃
+┃            ╚██╗██╔╝██╔═══██╗██╔══██╗██╔════╝██╔════╝████╗ ████║                ┃
+┃             ╚███╔╝ ██║   ██║██████╔╝██║     ███████╗██╔████╔██║                ┃
+┃             ██╔██╗ ██║   ██║██╔══██╗██║     ╚════██║██║╚██╔╝██║                ┃
+┃            ██╔╝ ██╗╚██████╔╝██║  ██║╚██████╗███████║██║ ╚═╝ ██║                ┃
+┃            ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝     ╚═╝                ┃   
+┃                                                                                ┃
+┃        ███████╗███████╗███████╗███████╗███████╗███████╗███████╗███████╗        ┃
+┃        ╚══════╝╚══════╝╚══════╝╚══════╝╚══════╝╚══════╝╚══════╝╚══════╝        ┃
+┃                                                                                ┃
+┃        ██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗           ┃
+┃        ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝           ┃
+┃        ██║  ██║██║   ██║   ██║   █████╗  ██║██║     █████╗  ███████╗           ┃
+┃        ██║  ██║██║   ██║   ██║   ██╔══╝  ██║██║     ██╔══╝  ╚════██║           ┃
+┃        ██████╔╝╚██████╔╝   ██║   ██║     ██║███████╗███████╗███████║           ┃
+┃        ╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝           ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     """
     print(banner)
 
 
-    
 def check_and_unset_alias() -> None:
-    message_box("Checking if vim is aliased to nvim", color=CYAN)
+    #message_box("Checking if vim is aliased to nvim", color=CYAN)
 
     alias_check = run_command(["/bin/zsh", "-c", "alias"], check=False)
-    if 'vim' in alias_check.stdout:
+    if "vim" in alias_check.stdout:
         print("vim is aliased to nvim. Unsetting the alias now.")
         run_command(["/bin/zsh", "-c", "unalias vim"])
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-f", "--force", action="store_true", help="If set, it will override existing files")
-    parser.add_argument("--config", default="config.yaml", help="Path to the YAML config file")
-    parser.add_argument("--skip-vimplug", action="store_true", help="If set, do not update vim plugins.")
-    parser.add_argument("--skip-zgen", action="store_true", help="If set, skip zgen updates.")
-    parser.add_argument("--skip-shell-to-zsh", action="store_true", help="If set, skip changing shell to zsh.")
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="If set, it will override existing files",
+    )
+    parser.add_argument(
+        "--config", default="config.yaml", help="Path to the YAML config file"
+    )
+    parser.add_argument(
+        "--skip-vimplug", action="store_true", help="If set, do not update vim plugins."
+    )
+    parser.add_argument(
+        "--skip-zgen", action="store_true", help="If set, skip zgen updates."
+    )
+    parser.add_argument(
+        "--skip-shell-to-zsh",
+        action="store_true",
+        help="If set, skip changing shell to zsh.",
+    )
     return parser.parse_args()
 
-def execute_tasks(tasks: list[dict[str, any]], current_dir: Path, args: argparse.Namespace) -> None:
+
+def execute_tasks(
+    tasks: list[dict[str, any]], current_dir: Path, args: argparse.Namespace
+) -> None:
     message_box("Copying dirs & files outlined in config.yaml", color=CYAN)
     for task in tasks:
         target = Path(task.get("target", "")).expanduser()
         source = current_dir / Path(task.get("source", "")).expanduser()
 
         copy_files_or_directories(str(target), str(source), args)
+
 
 def main() -> None:
     args = parse_args()
@@ -70,7 +104,11 @@ def main() -> None:
     check_and_unset_alias()
 
     config = load_config(args.config)
-    tasks = [task for task in config.get("tasks", {}) if not task.get("os") or task.get("os") == platform.system().lower()]
+    tasks = [
+        task
+        for task in config.get("tasks", {})
+        if not task.get("os") or task.get("os") == platform.system().lower()
+    ]
 
     current_dir = Path(__file__).resolve().parent
     os.chdir(current_dir)
@@ -96,7 +134,11 @@ def main() -> None:
     execute_post_install_actions(post_install_actions, args, errors)
 
     if errors:
-        message_box(f"You have {len(errors):3d} warnings or errors -- check the logs!", color=YELLOW, use_bold=True)
+        message_box(
+            f"You have {len(errors):3d} warnings or errors -- check the logs!",
+            color=YELLOW,
+            use_bold=True,
+        )
         for action_title, error_message in errors:
             log(f"   [{action_title}] {error_message}", color=RED)
         log("\n")
@@ -105,6 +147,7 @@ def main() -> None:
 
     log(f"- Please restart the shell (e.g. {CYAN('`exec zsh`')}) if necessary.")
     log("\n\n", cr=False)
+
 
 if __name__ == "__main__":
     main()
