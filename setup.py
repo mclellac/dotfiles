@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import argparse
 import platform
-import subprocess
 import os
+import sys
+import subprocess
+from pathlib import Path
 
-from installer.colors import RED, GREEN, YELLOW, CYAN, BLUE
+
+from installer.colors import RED, GREEN, YELLOW, CYAN
 from installer.setup_logs import setup_logging, log
 from installer.files import copy_files_or_directories
 from installer.ui import message_box
@@ -18,78 +22,78 @@ from installer.actions import (
     action_gitconfig_secret,
 )
 from installer.setup_config import load_config
-"""
-                        ██████╗  ██████╗ ████████╗███████╗
-                        ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
-                        ██║  ██║██║   ██║   ██║   ███████╗
-                        ██║  ██║██║   ██║   ██║   ╚════██║
-                        ██████╔╝╚██████╔╝   ██║   ███████║
-                        ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
-"""
-print(__doc__)
 
+def print_banner() -> None:
+    banner="""
+                            ██████╗  ██████╗ ████████╗███████╗
+                            ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝
+                            ██║  ██║██║   ██║   ██║   ███████╗
+                            ██║  ██║██║   ██║   ██║   ╚════██║
+                            ██████╔╝╚██████╔╝   ██║   ███████║
+                            ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝
+    """
+    print(banner)
 
+def run_command(command: list[str], check: bool = True) -> subprocess.CompletedProcess:
+    try:
+        return subprocess.run(command, capture_output=True, text=True, check=check)
+    except subprocess.CalledProcessError as e:
+        print(f"Command '{' '.join(command)}' failed with error: {str(e)}")
+        sys.exit(1)
 
-def check_and_unset_alias():
+def check_and_unset_alias() -> None:
     message_box("Checking if vim is aliased to nvim", color=CYAN)
 
-    try:
-        # Check if 'nvim' is aliased to 'vim'
-        alias_check = subprocess.check_output("/bin/zsh -i -c 'alias' | grep 'alias nvim'", shell=True).decode('utf-8')
-        if 'vim' in alias_check:
-            print("vim is aliased to nvim. Unsetting the alias now.")
-            os.system("/bin/zsh -i -c 'unalias nvim'")
-    except subprocess.CalledProcessError:
-        # If 'nvim' is not aliased, do nothing
-        pass
+    alias_check = run_command(["/bin/zsh", "-i", "-c", "alias"], check=False)
+    if 'vim' in alias_check.stdout:
+        print("vim is aliased to nvim. Unsetting the alias now.")
+        run_command(["/bin/zsh", "-i", "-c", "unalias vim"])
 
-def main():
-    setup_logging()
-    check_and_unset_alias()
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-f", "--force", action="store_true", default=False, help="If set, it will override existing files"
-    )
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-f", "--force", action="store_true", help="If set, it will override existing files")
     parser.add_argument("--config", default="config.yaml", help="Path to the YAML config file")
     parser.add_argument("--skip-vimplug", action="store_true", help="If set, do not update vim plugins.")
     parser.add_argument("--skip-zgen", action="store_true", help="If set, skip zgen updates.")
     parser.add_argument("--skip-shell-to-zsh", action="store_true", help="If set, skip changing shell to zsh.")
-    args = parser.parse_args()
+    return parser.parse_args()
 
-    config = load_config(args.config)
-    tasks = config.get("tasks", {})
-    current_os = platform.system().lower()
-
-    # get current directory (absolute path)
-    current_dir = os.path.abspath(os.path.dirname(__file__))
-    os.chdir(current_dir)
-
+def execute_tasks(tasks: list[dict[str, any]], current_dir: Path, args: argparse.Namespace) -> None:
     message_box("Copying dirs & files outlined in config.yaml", color=CYAN)
     for task in tasks:
-        os_condition = task.get("os")
-        if os_condition and os_condition != current_os:
-            continue
+        target = Path(task.get("target", "")).expanduser()
+        source = current_dir / Path(task.get("source", "")).expanduser()
 
-        target = os.path.expanduser(task.get("target", ""))
-        source = os.path.join(current_dir, os.path.expanduser(task.get("source", "")))
+        copy_files_or_directories(str(target), str(source), args)
 
-        copy_files_or_directories(target, source, args)
+def main() -> None:
+    args = parse_args()
+    print_banner()
+    setup_logging()
+    check_and_unset_alias()
 
-    errors = []  # Initialize an empty list to collect errors
+    config = load_config(args.config)
+    tasks = [task for task in config.get("tasks", {}) if not task.get("os") or task.get("os") == platform.system().lower()]
+
+    current_dir = Path(__file__).resolve().parent
+    os.chdir(current_dir)
+
+    # print(f"Tasks: {tasks} Current Dir: {current_dir} Args: {args}")
+    execute_tasks(tasks, current_dir, args)
+
+    errors = []
 
     message_box("Post Install Actions", color=YELLOW, use_bold=True)
-    # Post install actions
     post_install_actions = [
         action_install_neovim_py,
         action_shell_to_zsh,
-        lambda _, errors: action_gitconfig_secret(errors),  # Pass errors to action_gitconfig_secret
+        lambda _, errors: action_gitconfig_secret(errors),
         lambda args, errors: action_zgen_update(args, errors),
         ["bash", "install-tmux.sh"],
     ]
 
-    # Setup Vim & Neovim
-    vim_executables = ["nvim", "vim"]  # Iterate through the list and execute action_vim_update for each executable
+    vim_executables = ["nvim", "vim"]
 
     for executable in vim_executables:
         action_vim_update(executable, args, errors)
@@ -97,17 +101,15 @@ def main():
     execute_post_install_actions(post_install_actions, args, errors)
 
     if errors:
-        print("Inside the errors block")
-        message_box("You have %3d warnings or errors -- check the logs!" % len(errors), color=YELLOW, use_bold=True)
+        message_box(f"You have {len(errors):3d} warnings or errors -- check the logs!", color=YELLOW, use_bold=True)
         for action_title, error_message in errors:
             log(f"   [{action_title}] {error_message}", color=RED)
         log("\n")
     else:
         message_box("✔  You are all set! ", color=GREEN, use_bold=True)
 
-    log("- Please restart the shell (e.g. " + CYAN("`exec zsh`") + ") if necessary.")
+    log(f"- Please restart the shell (e.g. {CYAN('`exec zsh`')}) if necessary.")
     log("\n\n", cr=False)
-
 
 if __name__ == "__main__":
     main()
