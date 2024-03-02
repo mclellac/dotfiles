@@ -70,16 +70,28 @@ def check_and_unset_alias() -> None:
 
 def parse_args() -> argparse.Namespace:
     """Parses command-line arguments."""
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-f", "--force", action="store_true", help="Override existing files")
-    parser.add_argument("--config", default="config.yaml", help="Path to the YAML config file")
-    parser.add_argument("--skip-vimplug", action="store_true", help="Skip vim plugin updates")
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "-f", "--force", action="store_true", help="Override existing files"
+    )
+    parser.add_argument(
+        "--config", default="config.yaml", help="Path to the YAML config file"
+    )
+    parser.add_argument(
+        "--skip-vimplug", action="store_true", help="Skip vim plugin updates"
+    )
     parser.add_argument("--skip-zgen", action="store_true", help="Skip zgen updates")
-    parser.add_argument("--skip-shell-to-zsh", action="store_true", help="Skip changing shell to zsh")
+    parser.add_argument(
+        "--skip-shell-to-zsh", action="store_true", help="Skip changing shell to zsh"
+    )
     return parser.parse_args()
 
 
-def execute_tasks(tasks: list[dict], current_dir: Path, args: argparse.Namespace) -> None:
+def execute_tasks(
+    tasks: list[dict], current_dir: Path, args: argparse.Namespace
+) -> None:
     """Executes the tasks outlined in the config file."""
     console.print(Panel("Copying dirs & files outlined in config.yaml", style="cyan"))
     for task in tasks:
@@ -89,7 +101,7 @@ def execute_tasks(tasks: list[dict], current_dir: Path, args: argparse.Namespace
 
 
 def main() -> None:
-    """Main function."""
+    """Main entry point."""
     args = parse_args()
     print_banner()
     setup_logging()
@@ -97,7 +109,9 @@ def main() -> None:
 
     config = load_config(args.config)
     tasks = [
-        task for task in config.get("tasks", {}) if not task.get("os") or task.get("os") == platform.system().lower()
+        task
+        for task in config.get("tasks", {})
+        if not task.get("os") or task.get("os") == platform.system().lower()
     ]
 
     current_dir = Path(__file__).resolve().parent
@@ -122,7 +136,11 @@ def main() -> None:
 
     execute_post_install_actions(post_install_actions, errors, console=console)
 
-    log("- Please restart the shell (e.g. `exec zsh`) if necessary.", style="cyan", console=console)
+    log(
+        "- Please restart the shell (e.g. `exec zsh`) if necessary.",
+        style="cyan",
+        console=console,
+    )
 
 
 if __name__ == "__main__":
