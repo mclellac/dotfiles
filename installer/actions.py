@@ -10,7 +10,24 @@ from rich.panel import Panel
 console = Console()
 
 
+import subprocess
+
 def run_command(command: list[str], check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
+    """
+    Run a command and return the completed process.
+
+    Args:
+        command (list[str]): The command to be executed as a list of strings.
+        check (bool, optional): If True, raise a CalledProcessError if the command returns a non-zero exit status. Defaults to True.
+        timeout (int, optional): The maximum time in seconds to wait for the command to complete. Defaults to 60.
+
+    Returns:
+        subprocess.CompletedProcess: The completed process object.
+
+    Raises:
+        subprocess.TimeoutExpired: If the command execution exceeds the specified timeout.
+        subprocess.CalledProcessError: If the command returns a non-zero exit status.
+    """
     try:
         return subprocess.run(command, capture_output=True, text=True, check=check, timeout=timeout)
     except subprocess.TimeoutExpired:
@@ -19,7 +36,20 @@ def run_command(command: list[str], check: bool = True, timeout: int = 60) -> su
         log(f"Command '{' '.join(command)}' failed with error: {str(e)}", console=console)
 
 
-def execute_action(action, errors):
+def execute_action(action, errors) -> None:
+    """
+    Executes the given action by running it as a shell command using zsh.
+
+    Args:
+        action (list): A list of strings representing the command to be executed.
+        errors (list): A list to store any errors that occur during execution.
+
+    Raises:
+        Exception: If an error occurs while executing the command.
+
+    Returns:
+        None
+    """
     try:
         run_command(["zsh", "-c", " ".join(action)])
     except Exception as e:
@@ -27,7 +57,18 @@ def execute_action(action, errors):
         errors.append((action.__name__, str(e)))
 
 
-def execute_post_install_actions(actions, errors, console):
+def execute_post_install_actions(actions, errors, console) -> None:
+    """
+    Executes a list of post-install actions.
+
+    Args:
+        actions (list): A list of tuples representing the actions to be executed. Each tuple contains a function and its arguments.
+        errors (list): A list to store any errors that occur during execution.
+        console: The console object used for logging.
+
+    Returns:
+        None
+    """
     for action in actions:
         func, args = action
         try:
@@ -39,6 +80,17 @@ def execute_post_install_actions(actions, errors, console):
 
 
 def action_zgen_update(args, errors, console):
+    """
+    Update zgen plugins.
+
+    Args:
+        args (list): List of command-line arguments.
+        errors (list): List to store any errors encountered during execution.
+        console (Console): Console object for printing messages.
+
+    Raises:
+        RuntimeError: If the command times out or fails with an error.
+    """
     console.print(Panel("Action: zgen update", style="cyan", width=80))
 
     # Source zplug and list plugins
@@ -61,8 +113,8 @@ def action_zgen_update(args, errors, console):
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Command '{' '.join(command)}' failed with error: {str(e)}")
     except Exception as e:
-        log(args, style="red", action_title="action_zgen_update", errors=errors, console=console)
-        log(str(e), style="red", action_title="action_zgen_update", errors=errors, console=console)
+        log(args, style="red", action_title="action_zgen_update", console=console)
+        log(str(e), style="red", action_title="action_zgen_update", console=console)
 
 
 def action_vim_update(vim_executable, args, errors, console):
