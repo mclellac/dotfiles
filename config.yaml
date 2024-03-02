@@ -171,7 +171,7 @@ darwin:
     - mtr
     - nghttp2
     - wireshark
-    - fd-find
+    - fd
     - ripgrep
   pip-packages:
     - prompt_toolkit
