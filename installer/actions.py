@@ -4,60 +4,55 @@ import shutil
 import sys
 
 from .setup_logs import log
-from .colors import RED, CYAN, WHITE, GREEN, YELLOW
-from .ui import message_box
+from rich.console import Console
+from rich.panel import Panel
 
+console = Console()
 
 
 def run_command(command: list[str], check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
     try:
         return subprocess.run(command, capture_output=True, text=True, check=check, timeout=timeout)
     except subprocess.TimeoutExpired:
-        raise RuntimeError(f"Command '{' '.join(command)}' timed out after {timeout} seconds")
+        log(f"Command '{' '.join(command)}' timed out after {timeout} seconds", console=console)
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"Command '{' '.join(command)}' failed with error: {str(e)}")
+        log(f"Command '{' '.join(command)}' failed with error: {str(e)}", console=console)
 
 
 def execute_action(action, errors):
     try:
         run_command(["zsh", "-c", " ".join(action)])
     except Exception as e:
-        log(str(e), "execute_action", errors)
+        log(str(e), console=console)
+        errors.append((action.__name__, str(e)))
 
 
-def execute_post_install_actions(actions, args, errors):
+def execute_post_install_actions(actions, errors, console):
     for action in actions:
+        func, args = action
         try:
-            if callable(action):
-                if action.__name__ == "action_gitconfig_secret":
-                    action()  # Call the function without any arguments
-                else:
-                    action(args, errors)  # Pass both args and errors to the function
-            elif isinstance(action, list):
-                execute_action(action, errors)  # Execute the bash command
+            func(*args, errors=errors, console=console)
         except Exception as e:
-            log("An error occurred while executing a post install action:", color=RED)
-            log(str(e))
-            errors.append(action)
+            log("An error occurred while executing a post install action:", console=console)
+            log(str(e), console=console)
+            errors.append((str(func), str(e)))
 
 
-def action_zgen_update(args, errors):
-    message_box("Action: zgen update", color=CYAN)
+def action_zgen_update(args, errors, console):
+    console.print(Panel("Action: zgen update", style="cyan"))
 
     # Source zplug and list plugins
-    zsh_command = """
-    DOTFILES_UPDATE=1 __p9k_instant_prompt_disabled=1 source {home}/.zshrc
+    zsh_command = f"""
+    DOTFILES_UPDATE=1 __p9k_instant_prompt_disabled=1 source {os.path.expanduser("~")}/.zshrc
     if ! which zgen > /dev/null; then
-        echo -e '\\033[0;31mERROR: zgen not found. Double check the submodule exists, and you have a valid ~/.zshrc!\\033[0m'
+        echo -e '\033[0;31mERROR: zgen not found. Double check the submodule exists, and you have a valid ~/.zshrc!\033[0m'
         ls -alh ~/.zsh/zgen/
         ls -alh ~/.zshrc
         exit 1;
     fi
     zgen reset
     zgen update
-    """.format(
-        home=os.path.expanduser("~")
-    )
+    """
 
     try:
         run_command(["zsh", "-c", zsh_command])
@@ -66,59 +61,59 @@ def action_zgen_update(args, errors):
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"Command '{' '.join(command)}' failed with error: {str(e)}")
     except Exception as e:
-        log(args)
-        log(str(e), color=RED, action_title="action_zgen_update", errors=errors)
+        log(args, style="red", action_title="action_zgen_update", errors=errors, console=console)
+        log(str(e), style="red", action_title="action_zgen_update", errors=errors, console=console)
 
 
-def action_vim_update(vim_executable, args, errors):
+def action_vim_update(vim_executable, args, errors, console):
     try:
         is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:
-            message_box("Action: VIM/Neovim update", color=CYAN)
-            log('nvim --headless "+Lazy! sync" +qa && echo "nvim sync\'d" || echo "nvim sync failed"', color=WHITE)
+            console.print(Panel("Action: VIM/Neovim update", style="cyan"))
             vim_command = (
                 f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
             )
+            console.print(vim_command)
         else:
-            #message_box("Action: Vim update", color=CYAN)
-            log("nohup vim +PlugUpdate +qall > /dev/null 2>&1 &", color=WHITE)
             vim_command = f"nohup {vim_executable} +PlugUpdate +qall > /dev/null 2>&1 &"
+            console.print(vim_command)
 
         if not args.skip_vimplug:
-            subprocess.Popen(vim_command, shell=True)
+            run_command(vim_command.split())
         else:
-            log(f"{vim_command} (Skipped)", color=CYAN)
+            log(f"{vim_command} (Skipped)", style="cyan", console=console)
     except Exception as e:
-        log(str(e), "action_vim_update", errors)
+        log(str(e), console=console)
+        errors.append(("action_vim_update", str(e)))
 
 
-def action_install_neovim_py(args, errors):
-    message_box("Action: Run install-neovim-py.sh", color=CYAN)
+def action_install_neovim_py(args, errors, console):
+    console.print(Panel("Action: Run install-neovim-py.sh", style="cyan"))
 
     try:
         run_command(["zsh", "install-neovim-py.sh"])
     except Exception as e:
-        log(str(e), "action_install_neovim_py", errors)
+        log(str(e), "action_install_neovim_py", errors, console)
 
 
-def action_shell_to_zsh(args, errors):
-    message_box("Action: Change shell to zsh", color=CYAN)
+def action_shell_to_zsh(args, errors, console):
+    console.print(Panel("Action: Change shell to zsh", style="cyan"))
 
     if not shutil.which("/bin/zsh"):
-        log("Error: /bin/zsh not found. Please install zsh.", "action_shell_to_zsh", errors)
+        log("Error: /bin/zsh not found. Please install zsh.", "action_shell_to_zsh", errors, console)
         sys.exit(1)
 
     current_shell = os.path.basename(os.environ["SHELL"])
     if current_shell.lower() != "zsh":
-        log("Please type your password if you wish to change the default shell to ZSH", color=YELLOW)
+        log("Please type your password if you wish to change the default shell to ZSH", style="yellow", console=console)
         run_command(["chsh", "-s", "/bin/zsh"])
     else:
-        log("Users shell is already zsh.", color=WHITE)
+        log("Users shell is already zsh.", style="white", console=console)
 
 
-def action_gitconfig_secret(errors):
-    message_box("Action: gitconfig.secret", color=CYAN)
+def action_gitconfig_secret(args, errors, console):
+    console.print(Panel("Action: gitconfig.secret", style="cyan"))
 
     gitconfig_secret_path = os.path.expanduser("~/.gitconfig.secret")
 
@@ -127,18 +122,14 @@ def action_gitconfig_secret(errors):
             with open(gitconfig_secret_path, "w") as f:
                 f.write("# vim: set ft=gitconfig:\n")
 
-        config_result = run_command(
-            ["git", "config", "--file", gitconfig_secret_path, "user.name"], check=False
-        )
+        config_result = run_command(["git", "config", "--file", gitconfig_secret_path, "user.name"], check=False)
         user_name = config_result.stdout.strip() if config_result.returncode == 0 else None
 
-        config_result = run_command(
-            ["git", "config", "--file", gitconfig_secret_path, "user.email"], check=False
-        )
+        config_result = run_command(["git", "config", "--file", gitconfig_secret_path, "user.email"], check=False)
         user_email = config_result.stdout.strip() if config_result.returncode == 0 else None
 
         if not user_name or not user_email:
-            log("[!!!] Please configure git user name and email:", color=YELLOW)
+            log("[!!!] Please configure git user name and email:", style="yellow", console=console)
             if not user_name:
                 git_username = input("(git config user.name) Please input your name  : ")
             else:
@@ -153,12 +144,12 @@ def action_gitconfig_secret(errors):
                 run_command(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
                 run_command(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
             else:
-                log("Missing name or email, exiting.", color=RED)
+                log("Missing name or email, exiting.", style="red", console=console)
                 sys.exit(1)
         else:
-            log("Git user name and email are already set with the values:", color=WHITE)
-            log("user.name  : " + user_name, color=GREEN, cr=False)
-            log("user.email : " + user_email, color=GREEN, cr=True)
+            log("Git user name and email are already set with the values:", style="green", console=console)
+            log("user.name  : " + user_name, style="green3", console=console)
+            log("user.email : " + user_email, style="green3", console=console)
 
     except Exception as e:
-        log(str(e), color=RED, action_title="action_gitconfig_secret", errors=errors)
+        log(str(e), style="red", action_title="action_gitconfig_secret", errors=errors, console=console)

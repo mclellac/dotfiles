@@ -1,15 +1,15 @@
 import sys
 import yaml
-from .ui import message_box
 from .setup_logs import log
-from .colors import YELLOW
+from rich.console import Console
+
+console = Console()
 
 
 def load_config(filename):
     try:
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             config = yaml.safe_load(file)
-            message_box("YAML config opened.", color=YELLOW)
             return config
     except FileNotFoundError:
         log(f"Config file '{filename}' not found.")
