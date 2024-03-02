@@ -197,7 +197,7 @@ def main() -> None:
         (action_install_neovim_py, [args]),
         (action_shell_to_zsh, [args]),
         (action_gitconfig_secret, [args]),
-        (action_zgen_update, [args, errors]),
+        (action_zgen_update, [args]),
     ]
 
     execute_post_install_actions(post_install_actions, errors, console=console)

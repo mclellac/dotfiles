@@ -10,8 +10,6 @@ from rich.panel import Panel
 console = Console()
 
 
-import subprocess
-
 def run_command(command: list[str], check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
     """
     Run a command and return the completed process.
@@ -30,10 +28,12 @@ def run_command(command: list[str], check: bool = True, timeout: int = 60) -> su
     """
     try:
         return subprocess.run(command, capture_output=True, text=True, check=check, timeout=timeout)
-    except subprocess.TimeoutExpired:
+    except subprocess.TimeoutExpired as e:
         log(f"Command '{' '.join(command)}' timed out after {timeout} seconds", console=console)
+        return e
     except subprocess.CalledProcessError as e:
         log(f"Command '{' '.join(command)}' failed with error: {str(e)}", console=console)
+        return e
 
 
 def execute_action(action, errors) -> None:
@@ -51,10 +51,12 @@ def execute_action(action, errors) -> None:
         None
     """
     try:
-        run_command(["zsh", "-c", " ".join(action)])
+        result = run_command(["zsh", "-c", " ".join(action)])
+        if isinstance(result, Exception):
+            errors.append((action.__name__, str(result)))
     except Exception as e:
-        log(str(e), console=console)
         errors.append((action.__name__, str(e)))
+        log(str(e), console=console)
 
 
 def execute_post_install_actions(actions, errors, console) -> None:
@@ -85,7 +87,6 @@ def action_zgen_update(args, errors, console):
 
     Args:
         args (list): List of command-line arguments.
-        errors (list): List to store any errors encountered during execution.
         console (Console): Console object for printing messages.
 
     Raises:
@@ -106,18 +107,24 @@ def action_zgen_update(args, errors, console):
     zgen update
     """
 
-    try:
-        run_command(["zsh", "-c", zsh_command])
-    except subprocess.TimeoutExpired as e:
-        raise RuntimeError(f"Command '{' '.join(command)}' timed out after {timeout} seconds")
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"Command '{' '.join(command)}' failed with error: {str(e)}")
-    except Exception as e:
-        log(args, style="red", action_title="action_zgen_update", console=console)
-        log(str(e), style="red", action_title="action_zgen_update", console=console)
+    result = run_command(["zsh", "-c", zsh_command])
+    if isinstance(result, Exception):
+        raise RuntimeError(str(result))
 
 
 def action_vim_update(vim_executable, args, errors, console):
+    """
+    Update VIM or Neovim.
+
+    Args:
+        vim_executable (str): The path to the VIM or Neovim executable.
+        args (Namespace): Command-line arguments.
+        errors (list): A list to store any errors encountered during the update process.
+        console (Console): The console object used for printing messages.
+
+    Raises:
+        Exception: If an error occurs during the update process.
+    """
     try:
         is_neovim = vim_executable.lower() == "nvim"
 
@@ -132,39 +139,77 @@ def action_vim_update(vim_executable, args, errors, console):
             console.print(vim_command)
 
         if not args.skip_vimplug:
-            run_command(vim_command.split())
+            result = run_command(vim_command.split())
+            if isinstance(result, Exception):
+                errors.append(("action_vim_update", str(result)))
         else:
             log(f"{vim_command} (Skipped)", style="cyan", console=console)
     except Exception as e:
-        log(str(e), console=console)
         errors.append(("action_vim_update", str(e)))
+        log(str(e), console=console)
 
 
-def action_install_neovim_py(args, errors, console):
+def action_install_neovim_py(args, errors, console) -> None:
+    """
+    Run the install-neovim-py.sh script.
+
+    Args:
+        args: The arguments passed to the function.
+        errors: The list to store any errors encountered during execution.
+        console: The console object used for printing messages.
+
+    Returns:
+        None
+    """
     console.print(Panel("Action: Run install-neovim-py.sh", style="cyan", width=80))
 
-    try:
-        run_command(["zsh", "install-neovim-py.sh"])
-    except Exception as e:
-        log(str(e), "action_install_neovim_py", errors, console)
+    result = run_command(["zsh", "install-neovim-py.sh"])
+    if isinstance(result, Exception):
+        errors.append(("action_install_neovim_py", str(result)))
+    else:
+        log(result.stdout, style="green", console=console)
 
 
-def action_shell_to_zsh(args, errors, console):
+def action_shell_to_zsh(args, errors, console) -> None:
+    """
+    Change the default shell to zsh.
+
+    Args:
+        args: Command line arguments.
+        errors: List to store any errors encountered.
+        console: Console object for printing messages.
+
+    Returns:
+        None
+    """
     console.print(Panel("Action: Change shell to zsh", style="cyan", width=80))
 
     if not shutil.which("/bin/zsh"):
-        log("Error: /bin/zsh not found. Please install zsh.", "action_shell_to_zsh", errors, console)
+        errors.append(("action_shell_to_zsh", "/bin/zsh not found. Please install zsh."))
         sys.exit(1)
 
     current_shell = os.path.basename(os.environ["SHELL"])
     if current_shell.lower() != "zsh":
         log("Please type your password if you wish to change the default shell to ZSH", style="yellow", console=console)
-        run_command(["chsh", "-s", "/bin/zsh"])
+        result = run_command(["chsh", "-s", "/bin/zsh"])
+        if isinstance(result, Exception):
+            errors.append(("action_shell_to_zsh", str(result)))
     else:
-        log("Users shell is already zsh.", style="white", console=console)
+        log("User's shell is already zsh.", style="white", console=console)
 
 
-def action_gitconfig_secret(args, errors, console):
+def action_gitconfig_secret(args, errors, console) -> None:
+    """
+    Configure git user name and email by creating or updating the ~/.gitconfig.secret file.
+
+    Args:
+        args (list): Command-line arguments passed to the function.
+        errors (list): List to store any errors encountered during execution.
+        console (Console): Console object for printing messages.
+
+    Returns:
+        None
+    """
     console.print(Panel("Action: gitconfig.secret", style="cyan", width=80))
 
     gitconfig_secret_path = os.path.expanduser("~/.gitconfig.secret")
@@ -193,8 +238,10 @@ def action_gitconfig_secret(args, errors, console):
                 git_useremail = user_email
 
             if git_username and git_useremail:
-                run_command(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
-                run_command(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
+                result_name = run_command(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
+                result_email = run_command(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
+                if isinstance(result_name, Exception) or isinstance(result_email, Exception):
+                    errors.append(("action_gitconfig_secret", "Failed to configure git user name or email."))
             else:
                 log("Missing name or email, exiting.", style="red", console=console)
                 sys.exit(1)
@@ -204,4 +251,5 @@ def action_gitconfig_secret(args, errors, console):
             log("user.email : " + user_email, style="green3", console=console)
 
     except Exception as e:
-        log(str(e), style="red", action_title="action_gitconfig_secret", errors=errors, console=console)
+        errors.append(("action_gitconfig_secret", str(e)))
+        log(str(e), style="red", action_title="action_gitconfig_secret", console=console)
