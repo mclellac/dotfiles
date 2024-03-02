@@ -57,3 +57,124 @@ tasks:
   - target: "~/.doom.d"
     source: "doom.d"
     os: darwin
+
+fedora:
+  dnf:
+    - ansible
+    - ansible-core
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+    - zsh
+    - vim-enhanced
+    - tmux
+    - git
+    - gh
+    - lazygit
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+    - nmap
+    - curl
+    - httpie
+  pip-packages:
+    - pyright
+    - pyright
+    - rich
+    - pynvim
+  copr-repo:
+    name: "atim/lazygit"
+
+arch:
+  pacman:
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - rich
+    - pyright
+    - pynvim
+
+debian:
+  apt:
+    - python3-dns
+    - evolution
+    - evolution-data-server
+    - evolution-spamassassin
+    - syncevolution
+    - gcc
+    - gcc-c++
+    - golang
+    - podman-compose
+    - docker-compose
+    - golang-x-tools-gopls
+    - nodejs
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - rich
+    - pyright
+    - pynvim
+
+darwin:
+  brew:
+    - akamai
+    - awscli
+    - google-cloud-sdk
+    - ansible-language-server
+    - ansible
+    - ansible-lint
+    - python
+    - terraform
+    - httpie
+    - zsh-syntax-highlighting
+    - zsh-completions
+    - lazygit
+    - gtk4
+    - libadwaita
+    - neovim
+    - gcc
+    - go
+    - colima
+    - fd
+    - brotli
+    - awk
+    - autoconf
+    - automake
+    - meson
+    - meson-python
+    - ninja
+    - node
+    - mtr
+    - nghttp2
+    - wireshark
+    - fd-find
+    - ripgrep
+  pip-packages:
+    - prompt_toolkit
+    - rich
+    - pyright
+    - pynvim

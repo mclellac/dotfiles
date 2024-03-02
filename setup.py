@@ -5,13 +5,18 @@ import argparse
 import platform
 import os
 from pathlib import Path
-from rich import print
 from rich.console import Console
 from rich.panel import Panel
+from rich.progress import Progress
 from rich.theme import Theme
 
 from installer.setup_logs import setup_logging, log
 from installer.files import copy_files_or_directories
+from installer.packages import (
+    is_package_installed,
+    install_packages,
+    enable_copr_repo,
+)
 from installer.actions import (
     run_command,
     execute_post_install_actions,
@@ -40,23 +45,23 @@ console = Console(theme=custom_theme)
 def print_banner() -> None:
     """Prints the banner."""
     banner = """
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃                                                                           ┃
-    ┃           ██╗  ██╗ ██████╗ ██████╗  ██████╗███████╗███╗   ███╗            ┃
-    ┃           ╚██╗██╔╝██╔═══██╗██╔══██╗██╔════╝██╔════╝████╗ ████║            ┃
-    ┃            ╚███╔╝ ██║   ██║██████╔╝██║     ███████╗██╔████╔██║            ┃
-    ┃            ██╔██╗ ██║   ██║██╔══██╗██║     ╚════██║██║╚██╔╝██║            ┃
-    ┃           ██╔╝ ██╗╚██████╔╝██║  ██║╚██████╗███████║██║ ╚═╝ ██║            ┃
-    ┃           ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝     ╚═╝            ┃   
-    ┃                                                                           ┃
-    ┃       ██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗       ┃
-    ┃       ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝       ┃
-    ┃       ██║  ██║██║   ██║   ██║   █████╗  ██║██║     █████╗  ███████╗       ┃
-    ┃       ██║  ██║██║   ██║   ██║   ██╔══╝  ██║██║     ██╔══╝  ╚════██║       ┃
-    ┃       ██████╔╝╚██████╔╝   ██║   ██║     ██║███████╗███████╗███████║       ┃
-    ┃       ╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝       ┃
-    ┃                                                                           ┃    
-    ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+  ┃                                                                           ┃
+  ┃           ██╗  ██╗ ██████╗ ██████╗  ██████╗███████╗███╗   ███╗            ┃
+  ┃           ╚██╗██╔╝██╔═══██╗██╔══██╗██╔════╝██╔════╝████╗ ████║            ┃
+  ┃            ╚███╔╝ ██║   ██║██████╔╝██║     ███████╗██╔████╔██║            ┃
+  ┃            ██╔██╗ ██║   ██║██╔══██╗██║     ╚════██║██║╚██╔╝██║            ┃
+  ┃           ██╔╝ ██╗╚██████╔╝██║  ██║╚██████╗███████║██║ ╚═╝ ██║            ┃
+  ┃           ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝     ╚═╝            ┃   
+  ┃                                                                           ┃
+  ┃       ██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗       ┃
+  ┃       ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝       ┃
+  ┃       ██║  ██║██║   ██║   ██║   █████╗  ██║██║     █████╗  ███████╗       ┃
+  ┃       ██║  ██║██║   ██║   ██║   ██╔══╝  ██║██║     ██╔══╝  ╚════██║       ┃
+  ┃       ██████╔╝╚██████╔╝   ██║   ██║     ██║███████╗███████╗███████║       ┃
+  ┃       ╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝       ┃
+  ┃                                                                           ┃    
+  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
     """
     print(banner)
 
@@ -93,7 +98,7 @@ def execute_tasks(
     tasks: list[dict], current_dir: Path, args: argparse.Namespace
 ) -> None:
     """Executes the tasks outlined in the config file."""
-    console.print(Panel("Copying dirs & files outlined in config.yaml", style="cyan"))
+    console.print(Panel("Copying dirs & files outlined in config.yaml", style="cyan", width=80))
     for task in tasks:
         target = Path(task.get("target", "")).expanduser()
         source = current_dir / Path(task.get("source", "")).expanduser()
@@ -108,6 +113,66 @@ def main() -> None:
     check_and_unset_alias()
 
     config = load_config(args.config)
+   
+    # package installer
+    console.print(Panel("Installing packages with package manager & pip", style="cyan", width=80))
+
+    current_os = None
+
+    try:
+        run_command("brew", "--version")
+        current_os = "darwin"
+    except FileNotFoundError:
+        try:
+            import distro
+            current_os = distro.id().lower()
+        except ImportError:
+            console.print("[bold red]Error:[/bold red] Unable to determine the operating system.")
+            return
+
+    if current_os in config:
+        os_config = config[current_os]
+        dnf_packages = os_config.get("dnf", [])
+        pacman_packages = os_config.get("pacman", [])
+        apt_packages = os_config.get("apt", [])
+        brew_packages = os_config.get("brew", [])
+        pip_packages = os_config.get("pip-packages", [])
+        copr_repo = os_config.get("copr-repo", {}).get("name")
+
+        if current_os == "fedora":
+            if copr_repo:
+                enable_copr_repo(copr_repo)
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(dnf_packages))
+                for pkg in dnf_packages:
+                    is_package_installed(pkg, "dnf")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
+            install_packages(dnf_packages, "dnf")
+        elif current_os == "arch":
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(pacman_packages))
+                for pkg in pacman_packages:
+                    is_package_installed(pkg, "pacman")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
+            install_packages(pacman_packages, "pacman")
+        elif current_os in ["debian", "kali", "ubuntu"]:
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(apt_packages))
+                for pkg in apt_packages:
+                    is_package_installed(pkg, "apt")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
+            install_packages(apt_packages, "apt")
+        elif current_os == "darwin":
+            pip_packages = []
+            with Progress() as progress:
+                task = progress.add_task("[cyan]Checking package installation...", total=len(brew_packages))
+                for pkg in brew_packages:
+                    is_package_installed(pkg, "homebrew")
+                    progress.update(task, advance=1, description=f"Checking {pkg}")
+            install_packages(brew_packages, "homebrew")
+
+    install_packages(pip_packages, "pip")
+      
     tasks = [
         task
         for task in config.get("tasks", {})
@@ -125,7 +190,7 @@ def main() -> None:
     for executable in vim_executables:
         action_vim_update(executable, args, errors, console=console)
 
-    console.print(Panel("Post Install Actions", style="cyan"))
+    console.print(Panel("Post Install Actions", style="cyan", width=80))
 
     post_install_actions = [
         (action_install_neovim_py, [args]),

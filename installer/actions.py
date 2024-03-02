@@ -39,7 +39,7 @@ def execute_post_install_actions(actions, errors, console):
 
 
 def action_zgen_update(args, errors, console):
-    console.print(Panel("Action: zgen update", style="cyan"))
+    console.print(Panel("Action: zgen update", style="cyan", width=80))
 
     # Source zplug and list plugins
     zsh_command = f"""
@@ -70,7 +70,7 @@ def action_vim_update(vim_executable, args, errors, console):
         is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:
-            console.print(Panel("Action: VIM/Neovim update", style="cyan"))
+            console.print(Panel("Action: VIM/Neovim update", style="cyan", width=80))
             vim_command = (
                 f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
             )
@@ -89,7 +89,7 @@ def action_vim_update(vim_executable, args, errors, console):
 
 
 def action_install_neovim_py(args, errors, console):
-    console.print(Panel("Action: Run install-neovim-py.sh", style="cyan"))
+    console.print(Panel("Action: Run install-neovim-py.sh", style="cyan", width=80))
 
     try:
         run_command(["zsh", "install-neovim-py.sh"])
@@ -98,7 +98,7 @@ def action_install_neovim_py(args, errors, console):
 
 
 def action_shell_to_zsh(args, errors, console):
-    console.print(Panel("Action: Change shell to zsh", style="cyan"))
+    console.print(Panel("Action: Change shell to zsh", style="cyan", width=80))
 
     if not shutil.which("/bin/zsh"):
         log("Error: /bin/zsh not found. Please install zsh.", "action_shell_to_zsh", errors, console)
@@ -113,7 +113,7 @@ def action_shell_to_zsh(args, errors, console):
 
 
 def action_gitconfig_secret(args, errors, console):
-    console.print(Panel("Action: gitconfig.secret", style="cyan"))
+    console.print(Panel("Action: gitconfig.secret", style="cyan", width=80))
 
     gitconfig_secret_path = os.path.expanduser("~/.gitconfig.secret")
 
