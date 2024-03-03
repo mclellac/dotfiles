@@ -22,6 +22,20 @@ if [[ $OSTYPE = 'linux-gnu' ]]; then
       source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     fi
 
+    if type "fzf" > /dev/null; then
+        if [ -f "/usr/local/opt/fzf/shell/key-bindings.zsh" ]; then
+            source /usr/local/opt/fzf/shell/key-bindings.zsh
+        elif [ -f "/usr/share/fzf/shell/key-bindings.zsh" ]; then
+            source /usr/share/fzf/shell/key-bindings.zsh
+        fi
+        
+        if [ -f "/usr/local/opt/fzf/shell/completion.zsh" ]; then
+            source /usr/local/opt/fzf/shell/completion.zsh
+        elif [ -f "/usr/share/fzf/shell/completion.zsh" ]; then
+            source /usr/share/fzf/shell/completion.zsh
+        fi
+    fi
+
     # Google Cloud CLI zsh tab completion
     if [ -f "/opt/google-cloud-sdk/completion.zsh.inc" ]; then
         source /opt/google-cloud-sdk/completion.zsh.inc

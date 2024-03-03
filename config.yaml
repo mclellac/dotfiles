@@ -3,12 +3,6 @@ tasks:
   - target: "~/.zshrc"
     source: "zsh/zshrc"
 
-  - target: "~/.zsh"
-    source: "zsh"
-
-  #- target: "~/.zgen"
-  #  source: "zsh/zgen"
-
   - target: "~/.tmux"
     source: "tmux"
 
