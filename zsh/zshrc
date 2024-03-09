@@ -169,7 +169,8 @@ fi
 export DENO_INSTALL="${HOME}/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
-if [ /usr/local/bin/oc ]; then
+if command -v oc &> /dev/null; then
   source <(oc completion zsh)
   compdef _oc oc
 fi
+
