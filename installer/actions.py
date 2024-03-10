@@ -94,7 +94,7 @@ def action_zgen_update(args, errors, console):
     Raises:
         RuntimeError: If the command times out or fails with an error.
     """
-    console.print(Panel("Action: zgen update", style="cyan", width=80))
+    console.print(Panel("Post Action: zgen update", style="cyan", width=80))
 
     # Source zplug and list plugins
     zsh_command = f"""
@@ -131,7 +131,7 @@ def action_vim_update(vim_executable, args, errors, console):
         is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:
-            console.print(Panel("Action: VIM/Neovim update", style="cyan", width=80))
+            console.print(Panel("Post Action: VIM/Neovim update", style="cyan", width=80))
             vim_command = (
                 f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
             )
@@ -163,7 +163,7 @@ def action_install_neovim_py(args, errors, console) -> None:
     Returns:
         None
     """
-    console.print(Panel("Action: Run install-neovim-py.sh", style="cyan", width=80))
+    console.print(Panel("Post Action: Run install-neovim-py.sh", style="cyan", width=80))
 
     result = run_command(["zsh", "install-neovim-py.sh"])
     if isinstance(result, Exception):
@@ -184,7 +184,7 @@ def action_shell_to_zsh(args, errors, console) -> None:
     Returns:
         None
     """
-    console.print(Panel("Action: Change shell to zsh", style="cyan", width=80))
+    console.print(Panel("Post Action: Change shell to zsh", style="cyan", width=80))
 
     if not shutil.which("/bin/zsh"):
         errors.append(("action_shell_to_zsh", "/bin/zsh not found. Please install zsh."))
@@ -221,7 +221,7 @@ def action_gitconfig_secret(args, errors, console) -> None:
     Returns:
         None
     """
-    console.print(Panel("Action: gitconfig.secret", style="cyan", width=80))
+    console.print(Panel("Post Action: gitconfig.secret", style="cyan", width=80))
 
     gitconfig_secret_path = os.path.expanduser("~/.gitconfig.secret")
 

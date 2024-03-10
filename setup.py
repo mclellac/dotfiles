@@ -47,13 +47,6 @@ def print_banner() -> None:
     banner = """
   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
   ┃                                                                           ┃
-  ┃           ██╗  ██╗ ██████╗ ██████╗  ██████╗███████╗███╗   ███╗            ┃
-  ┃           ╚██╗██╔╝██╔═══██╗██╔══██╗██╔════╝██╔════╝████╗ ████║            ┃
-  ┃            ╚███╔╝ ██║   ██║██████╔╝██║     ███████╗██╔████╔██║            ┃
-  ┃            ██╔██╗ ██║   ██║██╔══██╗██║     ╚════██║██║╚██╔╝██║            ┃
-  ┃           ██╔╝ ██╗╚██████╔╝██║  ██║╚██████╗███████║██║ ╚═╝ ██║            ┃
-  ┃           ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝     ╚═╝            ┃   
-  ┃                                                                           ┃
   ┃       ██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗       ┃
   ┃       ██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝       ┃
   ┃       ██║  ██║██║   ██║   ██║   █████╗  ██║██║     █████╗  ███████╗       ┃
@@ -206,6 +199,7 @@ def main() -> None:
 
         install_packages(pip_packages, "pip")
 
+
     current_dir = Path(__file__).resolve().parent
     os.chdir(current_dir)
 
@@ -213,11 +207,13 @@ def main() -> None:
 
     errors = []
 
+    console.print(Panel("Post Install Actions",
+                        style="magenta",
+                        width=80))
+
     vim_executables = ["nvim", "vim"]
     for executable in vim_executables:
         action_vim_update(executable, args, errors, console=console)
-
-    console.print(Panel("Post Install Actions", style="cyan", width=80))
 
     post_install_actions = [
         (action_install_neovim_py, [args]),
