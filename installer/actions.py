@@ -11,7 +11,9 @@ from rich.panel import Panel
 console = Console()
 
 
-def run_command(command: list[str], input_data: str = None, check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
+def run_command(
+    command: list[str], input_data: str = None, check: bool = True, timeout: int = 60
+):
     """
     Run a command and return the completed process.
 
@@ -29,12 +31,25 @@ def run_command(command: list[str], input_data: str = None, check: bool = True, 
         subprocess.CalledProcessError: If the command returns a non-zero exit status.
     """
     try:
-        return subprocess.run(command, input=input_data, capture_output=True, text=True, check=check, timeout=timeout)
+        return subprocess.run(
+            command,
+            input=input_data,
+            capture_output=True,
+            text=True,
+            check=check,
+            timeout=timeout,
+        )
     except subprocess.TimeoutExpired as e:
-        log(f"Command '{' '.join(command)}' timed out after {timeout} seconds", console=console)
+        log(
+            f"Command '{' '.join(command)}' timed out after {timeout} seconds",
+            console=console,
+        )
         return e
     except subprocess.CalledProcessError as e:
-        log(f"Command '{' '.join(command)}' failed with error: {str(e)}", console=console)
+        log(
+            f"Command '{' '.join(command)}' failed with error: {str(e)}",
+            console=console,
+        )
         return e
 
 
@@ -78,7 +93,10 @@ def execute_post_install_actions(actions, errors, console) -> None:
         try:
             func(*args, errors=errors, console=console)
         except Exception as e:
-            log("An error occurred while executing a post install action:", console=console)
+            log(
+                "An error occurred while executing a post install action:",
+                console=console,
+            )
             log(str(e), console=console)
             errors.append((str(func), str(e)))
 
@@ -130,10 +148,10 @@ def action_vim_update(vim_executable, args, errors, console):
         is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:
-            console.print(Panel("Post Action: VIM/Neovim update", style="cyan", width=80))
-            vim_command = (
-                f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
+            console.print(
+                Panel("Post Action: VIM/Neovim update", style="cyan", width=80)
             )
+            vim_command = f'{vim_executable} --headless "+Lazy! sync" +qa && echo "Sync complete." || echo "Neovim sync failed."'
             console.print(vim_command)
         else:
             vim_command = f"nohup {vim_executable} +PlugUpdate +qall > /dev/null 2>&1 &"
@@ -162,7 +180,9 @@ def action_install_neovim_py(args, errors, console) -> None:
     Returns:
         None
     """
-    console.print(Panel("Post Action: Run install-neovim-py.sh", style="cyan", width=80))
+    console.print(
+        Panel("Post Action: Run install-neovim-py.sh", style="cyan", width=80)
+    )
 
     result = run_command(["zsh", "install-neovim-py.sh"])
     if isinstance(result, Exception):
@@ -186,13 +206,19 @@ def action_shell_to_zsh(args, errors, console) -> None:
     console.print(Panel("Post Action: Change shell to zsh", style="cyan", width=80))
 
     if not shutil.which("/bin/zsh"):
-        errors.append(("action_shell_to_zsh", "/bin/zsh not found. Please install zsh."))
+        errors.append(
+            ("action_shell_to_zsh", "/bin/zsh not found. Please install zsh.")
+        )
         sys.exit(1)
 
     current_shell = os.path.basename(os.environ["SHELL"])
     if current_shell.lower() != "zsh":
-        log("Please type your password if you wish to change the default shell to ZSH", style="yellow", console=console)
-        
+        log(
+            "Please type your password if you wish to change the default shell to ZSH",
+            style="yellow",
+            console=console,
+        )
+
         # Get user's password securely with asterisks
         password = getpass.getpass(prompt="Password: ")
 
@@ -229,37 +255,85 @@ def action_gitconfig_secret(args, errors, console) -> None:
             with open(gitconfig_secret_path, "w") as f:
                 f.write("# vim: set ft=gitconfig:\n")
 
-        config_result = run_command(["git", "config", "--file", gitconfig_secret_path, "user.name"], check=False)
-        user_name = config_result.stdout.strip() if config_result.returncode == 0 else None
+        config_result = run_command(
+            ["git", "config", "--file", gitconfig_secret_path, "user.name"], check=False
+        )
+        user_name = (
+            config_result.stdout.strip() if config_result.returncode == 0 else None
+        )
 
-        config_result = run_command(["git", "config", "--file", gitconfig_secret_path, "user.email"], check=False)
-        user_email = config_result.stdout.strip() if config_result.returncode == 0 else None
+        config_result = run_command(
+            ["git", "config", "--file", gitconfig_secret_path, "user.email"],
+            check=False,
+        )
+        user_email = (
+            config_result.stdout.strip() if config_result.returncode == 0 else None
+        )
 
         if not user_name or not user_email:
-            log("[!!!] Please configure git user name and email:", style="yellow", console=console)
+            log(
+                "[!!!] Please configure git user name and email:",
+                style="yellow",
+                console=console,
+            )
             if not user_name:
-                git_username = input("(git config user.name) Please input your name  : ")
+                git_username = input(
+                    "(git config user.name) Please input your name  : "
+                )
             else:
                 git_username = user_name
 
             if not user_email:
-                git_useremail = input("(git config user.email) Please input your email : ")
+                git_useremail = input(
+                    "(git config user.email) Please input your email : "
+                )
             else:
                 git_useremail = user_email
 
             if git_username and git_useremail:
-                result_name = run_command(["git", "config", "--file", gitconfig_secret_path, "user.name", git_username])
-                result_email = run_command(["git", "config", "--file", gitconfig_secret_path, "user.email", git_useremail])
-                if isinstance(result_name, Exception) or isinstance(result_email, Exception):
-                    errors.append(("action_gitconfig_secret", "Failed to configure git user name or email."))
+                result_name = run_command(
+                    [
+                        "git",
+                        "config",
+                        "--file",
+                        gitconfig_secret_path,
+                        "user.name",
+                        git_username,
+                    ]
+                )
+                result_email = run_command(
+                    [
+                        "git",
+                        "config",
+                        "--file",
+                        gitconfig_secret_path,
+                        "user.email",
+                        git_useremail,
+                    ]
+                )
+                if isinstance(result_name, Exception) or isinstance(
+                    result_email, Exception
+                ):
+                    errors.append(
+                        (
+                            "action_gitconfig_secret",
+                            "Failed to configure git user name or email.",
+                        )
+                    )
             else:
                 log("Missing name or email, exiting.", style="red", console=console)
                 sys.exit(1)
         else:
-            log("Git user name and email are already set with the values:", style="green", console=console)
+            log(
+                "Git user name and email are already set with the values:",
+                style="green",
+                console=console,
+            )
             log("user.name  : " + user_name, style="green3", console=console)
             log("user.email : " + user_email, style="green3", console=console)
 
     except Exception as e:
         errors.append(("action_gitconfig_secret", str(e)))
-        log(str(e), style="red", action_title="action_gitconfig_secret", console=console)
+        log(
+            str(e), style="red", action_title="action_gitconfig_secret", console=console
+        )
