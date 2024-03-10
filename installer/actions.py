@@ -96,9 +96,8 @@ def action_zgen_update(args, errors, console):
     """
     console.print(Panel("Post Action: zgen update", style="cyan", width=80))
 
-    # Source zplug and list plugins
-    zsh_command = f"""
-    DOTFILES_UPDATE=1 __p9k_instant_prompt_disabled=1 source {os.path.expanduser("~")}/.zshrc
+    zsh_command = """
+    DOTFILES_UPDATE=1 __p9k_instant_prompt_disabled=1 source ~/.zshrc
     if ! which zgen > /dev/null; then
         echo -e '\033[0;31mERROR: zgen not found. Double check the submodule exists, and you have a valid ~/.zshrc!\033[0m'
         ls -alh ~/.zsh/zgen/
