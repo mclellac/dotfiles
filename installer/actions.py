@@ -1,7 +1,8 @@
-import subprocess
 import os
-import shutil
 import sys
+import shutil
+import getpass
+import subprocess
 
 from .setup_logs import log
 from rich.console import Console
@@ -10,12 +11,13 @@ from rich.panel import Panel
 console = Console()
 
 
-def run_command(command: list[str], check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
+def run_command(command: list[str], input_data: str = None, check: bool = True, timeout: int = 60) -> subprocess.CompletedProcess:
     """
     Run a command and return the completed process.
 
     Args:
         command (list[str]): The command to be executed as a list of strings.
+        input_data (str, optional): Data to be passed as input to the command. Defaults to None.
         check (bool, optional): If True, raise a CalledProcessError if the command returns a non-zero exit status. Defaults to True.
         timeout (int, optional): The maximum time in seconds to wait for the command to complete. Defaults to 60.
 
@@ -27,7 +29,7 @@ def run_command(command: list[str], check: bool = True, timeout: int = 60) -> su
         subprocess.CalledProcessError: If the command returns a non-zero exit status.
     """
     try:
-        return subprocess.run(command, capture_output=True, text=True, check=check, timeout=timeout)
+        return subprocess.run(command, input=input_data, capture_output=True, text=True, check=check, timeout=timeout)
     except subprocess.TimeoutExpired as e:
         log(f"Command '{' '.join(command)}' timed out after {timeout} seconds", console=console)
         return e
@@ -191,9 +193,18 @@ def action_shell_to_zsh(args, errors, console) -> None:
     current_shell = os.path.basename(os.environ["SHELL"])
     if current_shell.lower() != "zsh":
         log("Please type your password if you wish to change the default shell to ZSH", style="yellow", console=console)
-        result = run_command(["chsh", "-s", "/bin/zsh"])
-        if isinstance(result, Exception):
-            errors.append(("action_shell_to_zsh", str(result)))
+        
+        # Get user's password securely with asterisks
+        password = getpass.getpass(prompt="Password: ")
+
+        # Run chsh command with user's password
+        chsh_cmd = ["chsh", "-s", "/bin/zsh"]
+        try:
+            # Convert password to string before passing it to subprocess
+            result = subprocess.run(chsh_cmd, input=password, text=True, check=True)
+            console.print(result.stdout)
+        except subprocess.CalledProcessError as e:
+            errors.append(("action_shell_to_zsh", f"Error changing shell to zsh: {e}"))
     else:
         log("User's shell is already zsh.", style="white", console=console)
 

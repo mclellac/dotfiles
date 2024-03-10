@@ -81,7 +81,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip-vimplug", action="store_true", help="Skip vim plugin updates")
     parser.add_argument("--skip-zgen", action="store_true", help="Skip zgen updates")
     parser.add_argument("--skip-shell-to-zsh", action="store_true", help="Skip changing shell to zsh")
+    parser.add_argument("--skip-packages", action="store_true", help="Skip package installation")
     return parser.parse_args()
+
 
 
 def execute_tasks(tasks: list[dict], current_dir: Path, args: argparse.Namespace) -> None:
@@ -94,6 +96,21 @@ def execute_tasks(tasks: list[dict], current_dir: Path, args: argparse.Namespace
         source = current_dir / Path(task.get("source", "")).expanduser()
         copy_files_or_directories(str(target), str(source), args)
 
+def create_empty_file(filename):
+    """Create an empty file with the given filename in the user's home directory."""
+    home_dir = os.path.expanduser("~")
+    file_path = os.path.join(home_dir, filename)
+   
+    if os.path.exists(file_path):
+        console.print(f"File already exists at {home_dir}/{filename}. Skipping...")
+    else:
+        try:
+            with open(file_path, 'w'):
+                pass  # Create the empty file
+            console.print(f"Empty file created successfully at {home_dir}/{filename}.")
+        except Exception as e:
+            console.print(f"Error occurred while creating empty file '{filename}': {e}")
+
 
 def main() -> None:
     """Main entry point."""
@@ -104,81 +121,90 @@ def main() -> None:
 
     config = load_config(args.config)
 
-    # package installer
-    console.print(
-        Panel("Installing packages with package manager & pip", style="cyan", width=80)
-    )
-
-    current_os = None
-
-    try:
-        run_command(["brew", "--version"], check=True, timeout=30)
-        current_os = "darwin"
-    except FileNotFoundError:
-        try:
-            import distro
-
-            current_os = distro.id().lower()
-        except ImportError:
-            console.print(
-                "[bold red]Error:[/bold red] Unable to determine the operating system."
-            )
-            return
-
-    if current_os in config:
-        os_config = config[current_os]
-        dnf_packages = os_config.get("dnf", [])
-        pacman_packages = os_config.get("pacman", [])
-        apt_packages = os_config.get("apt", [])
-        brew_packages = os_config.get("brew", [])
-        pip_packages = os_config.get("pip-packages", [])
-        copr_repo = os_config.get("copr-repo", {}).get("name")
-
-        if current_os == "fedora":
-            if copr_repo:
-                enable_copr_repo(copr_repo)
-            with Progress() as progress:
-                task = progress.add_task(
-                    "[cyan]Checking package installation...", total=len(dnf_packages)
-                )
-                for pkg in dnf_packages:
-                    is_package_installed(pkg, "dnf")
-                    progress.update(task, advance=1, description=f"Checking {pkg}")
-            install_packages(dnf_packages, "dnf")
-        elif current_os == "arch":
-            with Progress() as progress:
-                task = progress.add_task(
-                    "[cyan]Checking package installation...", total=len(pacman_packages)
-                )
-                for pkg in pacman_packages:
-                    is_package_installed(pkg, "pacman")
-                    progress.update(task, advance=1, description=f"Checking {pkg}")
-            install_packages(pacman_packages, "pacman")
-        elif current_os in ["debian", "kali", "ubuntu"]:
-            with Progress() as progress:
-                task = progress.add_task(
-                    "[cyan]Checking package installation...", total=len(apt_packages)
-                )
-                for pkg in apt_packages:
-                    is_package_installed(pkg, "apt")
-                    progress.update(task, advance=1, description=f"Checking {pkg}")
-            install_packages(apt_packages, "apt")
-        elif current_os == "darwin":
-            pip_packages = []
-            with Progress() as progress:
-                task = progress.add_task(
-                    "[cyan]Checking package installation...", total=len(brew_packages)
-                )
-                for pkg in brew_packages:
-                    is_package_installed(pkg, "homebrew")
-                    progress.update(task, advance=1, description=f"Checking {pkg}")
-            install_packages(brew_packages, "homebrew")
-
-    install_packages(pip_packages, "pip")
-
     tasks = [
         task for task in config.get("tasks", {}) if not task.get("os") or task.get("os") == platform.system().lower()
     ]
+
+    if not args.skip_packages:
+        # package installer
+        console.print(
+            Panel("Installing packages with package manager & pip", style="cyan", width=80)
+        )
+
+        current_os = None
+
+        try:
+            run_command(["brew", "--version"], check=True, timeout=30)
+            current_os = "darwin"
+        except FileNotFoundError:
+            try:
+                import distro
+
+                current_os = distro.id().lower()
+            except ImportError:
+                console.print(
+                    "[bold red]Error:[/bold red] Unable to determine the operating system."
+                )
+                return
+
+        if current_os in config:
+            os_config = config[current_os]
+            dnf_packages = os_config.get("dnf", [])
+            pacman_packages = os_config.get("pacman", [])
+            apt_packages = os_config.get("apt", [])
+            brew_packages = os_config.get("brew", [])
+            pip_packages = os_config.get("pip-packages", [])
+            copr_repo = os_config.get("copr-repo", {}).get("name")
+
+            if current_os == "fedora":
+                create_empty_file(".zsh.gnu")
+                create_empty_file(".zprivate")
+                if copr_repo:
+                    enable_copr_repo(copr_repo)
+                with Progress() as progress:
+                    task = progress.add_task(
+                        "[cyan]Checking package installation...", total=len(dnf_packages)
+                    )
+                    for pkg in dnf_packages:
+                        is_package_installed(pkg, "dnf")
+                        progress.update(task, advance=1, description=f"Checking {pkg}")
+                install_packages(dnf_packages, "dnf")
+            elif current_os == "arch":
+                create_empty_file(".zsh.gnu")
+                create_empty_file(".zprivate")
+                with Progress() as progress:
+                    task = progress.add_task(
+                        "[cyan]Checking package installation...", total=len(pacman_packages)
+                    )
+                    for pkg in pacman_packages:
+                        is_package_installed(pkg, "pacman")
+                        progress.update(task, advance=1, description=f"Checking {pkg}")
+                install_packages(pacman_packages, "pacman")
+            elif current_os in ["debian", "kali", "ubuntu"]:
+                create_empty_file(".zsh.gnu")
+                create_empty_file(".zprivate")
+                with Progress() as progress:
+                    task = progress.add_task(
+                        "[cyan]Checking package installation...", total=len(apt_packages)
+                    )
+                    for pkg in apt_packages:
+                        is_package_installed(pkg, "apt")
+                        progress.update(task, advance=1, description=f"Checking {pkg}")
+                install_packages(apt_packages, "apt")
+            elif current_os == "darwin":
+                create_empty_file(".zsh.osx")
+                create_empty_file(".zprivate")
+                pip_packages = []
+                with Progress() as progress:
+                    task = progress.add_task(
+                        "[cyan]Checking package installation...", total=len(brew_packages)
+                    )
+                    for pkg in brew_packages:
+                        is_package_installed(pkg, "homebrew")
+                        progress.update(task, advance=1, description=f"Checking {pkg}")
+                install_packages(brew_packages, "homebrew")
+
+        install_packages(pip_packages, "pip")
 
     current_dir = Path(__file__).resolve().parent
     os.chdir(current_dir)

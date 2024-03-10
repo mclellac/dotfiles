@@ -59,6 +59,7 @@ fedora:
     - zsh-autosuggestions
     - zsh-syntax-highlighting
     - zsh
+    - fzf
     - vim-enhanced
     - tmux
     - git
@@ -76,6 +77,7 @@ fedora:
     - docker-compose
     - golang-x-tools-gopls
     - nodejs
+    - neovim
     - fd-find
     - ripgrep
     - nmap
