@@ -2,27 +2,24 @@
 
 My collection of dotfiles.
 
-![shell](img/shell.png)
-
-## Installation
+## Installation & Requirements
 
 This is very much tailored for my own use-case, but feel free to use as you desire.
 
 This Python script is designed to automate the setup process for various configurations and installations on Unix-like systems. It provides a streamlined way to install packages, copy directories and files, and perform post-installation actions. Below, you'll find an overview of its functionalities and usage instructions.
 
-### Install:
-```bash
-$ git clone https://github.com/mclellac/dotfiles.git ~/.config/
-$ cd ~/.config/dotfiles
-$ ./setup.py
-```
 
 ### Requirements
 
   * Python 3.6 or higher
   * Unix-like operating system (Linux, macOS, etc.)
 
-
+### Installation
+```bash
+$ git clone https://github.com/mclellac/dotfiles.git ~/.config/
+$ cd ~/.config/dotfiles
+$ ./setup.py
+```
 
 ## Usage
 
