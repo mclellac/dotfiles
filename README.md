@@ -18,6 +18,7 @@ This Python script is designed to automate the setup process for various configu
 ```bash
 $ git clone https://github.com/mclellac/dotfiles.git ~/.config/
 $ cd ~/.config/dotfiles
+$ pip install -r requirements.txt
 $ ./setup.py
 ```
 
