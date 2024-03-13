@@ -70,6 +70,8 @@ fedora:
     - evolution-data-server
     - evolution-spamassassin
     - syncevolution
+    - rust
+    - cargo
     - gcc
     - gcc-c++
     - golang
