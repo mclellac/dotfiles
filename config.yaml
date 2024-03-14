@@ -82,10 +82,17 @@ fedora:
     - neovim
     - fd-find
     - ripgrep
-    - nmap
     - curl
     - httpie
-    - "Security Lab"
+    - nmap
+    - etherape
+    - ettercap
+    - wireshark
+    - sqlninja
+    - yersinia
+    - skipfish
+    - nikto
+    - scap-workbench
   pip-packages:
     - pyright
     - pyright
