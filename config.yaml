@@ -171,6 +171,7 @@ darwin:
     - wireshark
     - fd
     - ripgrep
+      "Security Lab"
   pip-packages:
     - prompt_toolkit
     - rich
