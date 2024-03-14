@@ -90,7 +90,6 @@ fedora:
     - wireshark
     - sqlninja
     - yersinia
-    - skipfish
     - nikto
     - scap-workbench
   pip-packages:
