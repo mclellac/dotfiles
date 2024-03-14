@@ -85,6 +85,7 @@ fedora:
     - nmap
     - curl
     - httpie
+    - "Security Lab"
   pip-packages:
     - pyright
     - pyright
@@ -171,7 +172,6 @@ darwin:
     - wireshark
     - fd
     - ripgrep
-      "Security Lab"
   pip-packages:
     - prompt_toolkit
     - rich
