@@ -11,29 +11,30 @@
         "custom/pacman",
         "network",
         "pulseaudio",
-        "custom/microphone"
     ],
     "modules-center": [
-        "wlr/workspaces"
+        "hyperland/workspaces"
     ],
     "modules-right": [
         "battery",
         "battery#bat2",
-        //"temperature",
         "cpu",
         "memory",
-        "custom/weather",
         "clock"
     ],
-    "wlr/workspaces": {
-        "format": "{icon}",
-        "on-click": "activate",
-        "sort-by-number": true,
-    },
-    "custom/microphone": {
-        "exec": "waybar-microphone-indicator.sh",
-        "format": "{}",
-        "interval": 2
+    "hyprland/workspaces": {
+        "format": "{name}",
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "persistent": ""
+        },
+        "on-scroll-up": "hyprctl dispatch workspace r-1",
+        "on-scroll-down": "hyprctl dispatch workspace r+1",
+        "all-outputs": false,
+        "persistent_workspaces": {
+            "*": 5
+        }
     },
     "bluetooth": {
         "format": "󰂲",
@@ -146,13 +147,6 @@
         "format": "{}% ",
         "on-click": "kitty -e btop -p 2"
     },
-    "temperature": {
-        "interval": 5,
-        "thermal-zone": 2,
-        "format": "{temperatureC}°C ",
-        "on-click": "kitty -e btop -p 3",
-        "tooltip": false
-    },
     "clock": {
         "interval": 60,
         "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
@@ -170,15 +164,7 @@
         "format": " {}",
         "exec": "checkupdates | wc -l",
         "exex-if": "checkupdates",
-        "on-click": "kitty -e paru -Syu && pkill -SIGRTMIN+8 waybar",
+        "on-click": "kitty -e sudo dnf upgrade --refresh -y && pkill -SIGRTMIN+8 waybar",
         "signal": 8
     },
-    "custom/weather": {
-        "interval": 600,
-        "exec": "waybar-weather-indicator.sh",
-        "exec-if": "ping wttr.in -c 1",
-        "format": "{}",
-        "on-click": "$BROWSER 'https://www.3bmeteo.com/meteo/luzzi'",
-        "tooltip": false
-    }
 }
