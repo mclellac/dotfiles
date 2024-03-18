@@ -35,6 +35,14 @@ tasks:
     source: "hypr"
     os: linux
 
+  - target: "~/.config/dunst"
+    source: "dunst"
+    os: linux
+
+  - target: "~/.config/waybar"
+    source: "waybar"
+    os: linux
+
   - target: "~/.config/wofi"
     source: "wofi"
     os: linux
