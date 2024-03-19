@@ -1,170 +1,131 @@
-// vim:ft=json
 {
-    "id": "bar-0",
     "layer": "top",
     "position": "top",
-    "spacing": 7,
-    "margin": "5 5 0 5",
-    "height": 33,
-    "modules-left": [
-        "idle_inhibitor",
-        "custom/pacman",
-        "network",
-        "pulseaudio",
-    ],
-    "modules-center": [
-        "hyperland/workspaces"
-    ],
-    "modules-right": [
-        "battery",
-        "battery#bat2",
-        "cpu",
-        "memory",
-        "clock"
-    ],
-    "hyprland/workspaces": {
-        "format": "{name}",
-        "format-icons": {
-            "active": "",
-            "default": "",
-            "persistent": ""
-        },
-        "on-scroll-up": "hyprctl dispatch workspace r-1",
-        "on-scroll-down": "hyprctl dispatch workspace r+1",
-        "all-outputs": false,
-        "persistent_workspaces": {
-            "*": 5
-        }
-    },
-    "bluetooth": {
-        "format": "󰂲",
-        "format-connected": "",
-        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
-        "on-click": "kitty -e bluetoothctl"
-    },
-    "network": {
-        "format-wifi": "{icon} ",
-        "format-icons": [
-            "󰤯",
-            "󰤟",
-            "󰤢",
-            "󰤢",
-            "󰤨"
-        ],
-        "format-ethernet": "{ipaddr}/{cidr}",
-        "format-disconnected": "󰤮 ",
-        "tooltip-format-wifi": "{essid} via {ifname}, Strength: {signalStrength}%",
-        "tooltip-format-ethernet": "",
-        "max-length": 50,
-        "on-click": "kitty"
-    },
-    "battery": {
-        "bat": "BAT0",
-        "interval": 3,
-        "format": "{capacity}% {icon} ",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        "format-charging": "󱐋 {capacity}% {icon} ",
-        "tooltip-format": "{power} W, {time}"
-    },
-    "battery#bat2": {
-        "bat": "BAT1",
-        "interval": 3,
-        "format": "{capacity}% {icon} ",
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        "format-charging": "󱐋 {capacity}% {icon} ",
-        "tooltip-format": "{power} W, {time}"
-    },
-    "backlight": {
-        "device": "intel_backlight",
-        "format": "{icon} {percent}%",
-        "format-icons": [
-            "󰃚",
-            "󰃛",
-            "󰃜",
-            "󰃝",
-            "󰃞",
-            "󰃟",
-            "󰃠"
-        ]
-    },
-    "mpd": {
-        "format": "{stateIcon} {title} - {artist}",
-        "format-disconnected": "󰎊 ",
-        "format-stopped": " 栗",
-        "max-length": 60,
-        "tooltip-format": "{elapsedTime:%M:%S}/{totalTime:%M:%S}, Vol: {volume} %, Queue: {songPosition}/{queueLength}, Opts: {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}",
-        "state-icons": {
-            "paused": "契",
-            "playing": ""
-        },
-        "consume-icons": {
-            "on": ""
-        },
-        "random-icons": {
-            "on": "  "
-        },
-        "repeat-icons": {
-            "on": " "
-        },
-        "single-icons": {
-            "on": "1 "
-        }
-    },
-    "pulseaudio": {
-        "scroll-step": 5,
-        "format": "{icon} {volume}%",
-        "format-icons": [
-            "󰕿",
-            "󰖀",
-            "󰕾"
-        ],
-        "format-muted": "󰝟 ",
-        "on-click": "wpctl set-mute @DEFAULT_SINK@ toggle",
-        "on-click-right": "pavucontrol"
-    },
-    "cpu": {
-        "interval": 5,
-        "format": "{usage}% ",
-        "on-click": "kitty -e btop -p 1"
+    "margin-top": 5,
+    "margin-left": 5,
+    "margin-right": 5,
+    "height": 58,
+    "spacing": 0,
+    "modules-left": ["custom/launcher","hyprland/workspaces","cpu","memory"],
+    "modules-center": ["custom/song_name","custom/pre","custom/spotify","custom/next"],
+    "modules-right": ["tray","network", "pulseaudio","clock","custom/powermenu"],
+
+"hyprland/workspaces": {
+	"on-click": "activate",
+	"format": "{icon}",
+	"format-icons": {
+		"default": "",
+		"1": "",
+		"2": "",
+		"3": "",
+		"4": "",
+		"active": "󱓻",
+		"urgent": "󱓻",
+	},
+	"persistent-workspaces": {
+		"*": 4,
+	}
     },
     "memory": {
-        "interval": 5,
-        "format": "{}% ",
-        "on-click": "kitty -e btop -p 2"
+    "interval": 3,
+    "format": "   {}% ",
+    "max-length": 10
+    },
+    "cpu": {
+    "interval": 1,
+    "format": "   {}% ",
+    "max-length": 10
+    },
+    "tray": {
+        "icon-size": 21,
+        "spacing": 10
     },
     "clock": {
-        "interval": 60,
-        "tooltip-format": "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>",
-        "timezone": "America/New_York"
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "format-alt": "  {:%a, %d %b %Y} ",
+        "format": "   {:%H:%M} ",
+        "calendar": {
+                    "weeks-pos"     : "none",
+                    "on-scroll"     : 1,
+                    "format": {
+                              "months":     "<span color='#8fbcbb'><b>{}</b></span>",
+                              "days":       "<span color='#8a909e'>{}</span>",
+                              "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                              "weekdays":   "<span color='#81a1c1'><b>{}</b></span>",
+                              "today":      "<span color='#88c0d0'><b>{}</b></span>"
+                              }
+                    },
+        "actions":  {
+                    "on-click-right": "none",
+                    "on-click-forward": "tz_up",
+                    "on-click-backward": "tz_down",
+                    "on-scroll-up": "shift_up",
+                    "on-scroll-down": "shift_down"
+                    }
     },
-    "idle_inhibitor": {
+    "network": {
+        "format-wifi": "{icon}",
+        "format-disconnected": "󰤭 ",
+        "format-icons": ["󰤯 ","󰤟 ","󰤢 ","󰤥 ","󰤨 "],
+	"tooltip-format-wifi": "{essid}",
+        "tooltip-format-disconnected": "Disconnected",
+	"nospacing": 1,
+    },
+    "pulseaudio": {
         "format": "{icon}",
+	"nospacing": 1,
+	"tooltip-format": "Volume : {volume}%",
+        "format-muted": "󰝟 ",
         "format-icons": {
-            "activated": "",
-            "deactivated": "鈴"
-        }
+            "headphone": " ",
+            "default": ["󰕿 ", "󰖀 ", "󰕾 "]
+        },
+        "on-click": "pamixer -t",
+	"on-click-right": "pavucontrol",
+	"scroll-step": 5,
     },
-    "custom/pacman": {
-        "interval": 350,
-        "format": " {}",
-        "exec": "checkupdates | wc -l",
-        "exex-if": "checkupdates",
-        "on-click": "kitty -e sudo dnf upgrade --refresh -y && pkill -SIGRTMIN+8 waybar",
-        "signal": 8
+    "custom/launcher": {
+	"format": "  ",
+	"tooltip": false,
+	"on-click": "~/.config/waybar/launchers/misc/launcher.sh &"
+    },
+    "custom/next": {
+        "exec": "python3 ~/.config/waybar/scripts/next.py --player spotify",
+	"format": "{}",
+	"tooltip": false,
+	"on-click": "playerctl next",
+        "return-type": "json",
+    },
+    "custom/pre": {
+        "exec": "python3 ~/.config/waybar/scripts/pre.py --player spotify",
+	"format": "{}",
+	"tooltip": false,
+	"on-click": "playerctl previous",
+        "return-type": "json",
+    },
+    "custom/powermenu": {
+	"format": "⏻ ",
+	"tooltip": false,
+	"on-click": "~/.config/waybar/powermenu/type-2/powermenu.sh &"
+    },
+    "custom/ibus": {
+	"format": "{}",
+	"exec": "~/.config/waybar/scripts/input.sh &",
+	"interval": 1,
+	"tooltip": false,
+	"tooltip-format": "{}",
+	"on-click": "~/.config/waybar/scripts/ibus.sh &",
+    },
+   "custom/spotify": {
+        "exec": "python3 ~/.config/waybar/scripts/mediaplayer.py --player spotify",
+        "format": "{}",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+    },
+   "custom/song_name": {
+        "exec": "python3 ~/.config/waybar/scripts/spotify.py --player spotify",
+        "format": "{}",
+        "return-type": "json",
     },
 }
+
