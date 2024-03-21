@@ -1,7 +1,22 @@
 #!/bin/bash
+
 sleep 4
-killall xdg-desktop-portal-wlr
-killall xdg-desktop-portal
-/usr/lib/xdg-desktop-portal-wlr &
+
+# Check if files exist in /usr/lib or /usr/libexec
+if [ -f "/usr/lib/xdg-desktop-portal-wlr" ]; then
+	killall xdg-desktop-portal-wlr
+	/usr/lib/xdg-desktop-portal-wlr &
+elif [ -f "/usr/libexec/xdg-desktop-portal-wlr" ]; then
+	killall xdg-desktop-portal-wlr
+	/usr/libexec/xdg-desktop-portal-wlr &
+fi
+
+if [ -f "/usr/lib/xdg-desktop-portal" ]; then
+	killall xdg-desktop-portal
+	/usr/lib/xdg-desktop-portal &
+elif [ -f "/usr/libexec/xdg-desktop-portal" ]; then
+	killall xdg-desktop-portal
+	/usr/libexec/xdg-desktop-portal &
+fi
+
 sleep 4
-/usr/lib/xdg-desktop-portal &

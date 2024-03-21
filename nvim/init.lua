@@ -1,12 +1,40 @@
--- set leader key to space
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+-- ################################################################################
+-- #                                                                              #
+-- #                                   INIT ROOT                                  #
+-- #                                                                              #
+-- #                                                                              #
+-- ################################################################################
 
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+-- LazyVim setup
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>")
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
-vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
--- minimize terminal split
-vim.keymap.set("n", "<C-g>", "3<C-w>_")
+-- Set space bar as Leader Key and termguicolors as true
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+vim.opt.termguicolors = true
+
+-- Neovide font fix
+vim.opt.guifont = { "FiraCode Nerd Font:h7" }
+
+-- Lazy plugins
+require('lazy').setup('plugins')
+
+-- Themes settings
+require('theme')
+
+-- Options
+require('options.options')
+
+-- Keybindings
+require('keymaps.keymaps')
+
+-- Autocmds
+require('autocmds.autocmds')

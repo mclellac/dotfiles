@@ -1,62 +1,83 @@
+-- ################################################################################
+-- #                                                                              #
+-- #                                  COLORSCHEME                                 #
+-- #                 NOTE: Just for adding colorschem plugins                     #
+-- #                                                                              #
+-- ################################################################################
+
 return {
+  {
+    "Alexis12119/nightly.nvim",
+    lazy = true,
+  },
+  {
+    "arturgoms/moonbow.nvim"
+  },
+  {
+    "rose-pine/neovim",
+  },
+
+  {
+    "marko-cerovac/material.nvim",
+    lazy = true,
+    config = function()
+      vim.g.material_style = "deep ocean"
+    end,
+  },
+
   {
     "folke/tokyonight.nvim",
     lazy = true,
   },
+
   {
-    "marko-cerovac/material.nvim",
-    lazy = true,
-  },
-  {
-    "catppuccin/nvim",
+    "ellisonleao/gruvbox.nvim",
     lazy = true,
   },
 
   {
-    "loctvl842/monokai-pro.nvim",
-    lazy = false,
-    priority = 1000,
-    keys = { { "<leader>c", "<cmd>MonokaiProSelect<cr>", desc = "Select Moonokai pro filter" } },
-    config = function()
-      local monokai = require("monokai-pro")
-      monokai.setup({
-        transparent_background = true,
-        devicons = true,
-        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
-        italics = false,
-        day_night = {
-          enable = false,
-          day_filter = "classic",
-          night_filter = "octagon",
-        },
-        inc_search = "background", -- underline | background
-        background_clear = {},
-        plugins = {
-          bufferline = {
-            underline_selected = true,
-            underline_visible = false,
-            bold = false,
-          },
-          indent_blankline = {
-            context_highlight = "pro", -- default | pro
-            context_start_underline = true,
-          },
-        },
-        override = function(c)
-          return {
-            ColorColumn = { bg = c.base.dimmed3 },
-            -- Mine
-            DashboardRecent = { fg = c.base.magenta },
-            DashboardProject = { fg = c.base.blue },
-            DashboardConfiguration = { fg = c.base.white },
-            DashboardSession = { fg = c.base.green },
-            DashboardLazy = { fg = c.base.cyan },
-            DashboardServer = { fg = c.base.yellow },
-            DashboardQuit = { fg = c.base.red },
-          }
-        end,
-      })
-      monokai.load()
-    end,
+    "catppuccin/nvim",
+    lazy = true,
+    name = "catppuccin",
+  },
+
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = true,
+  },
+
+  {
+    "rmehri01/onenord.nvim",
+    lazy = true,
+  },
+
+  {
+    "Mofiqul/vscode.nvim",
+    lazy = true,
+  },
+
+  {
+    "navarasu/onedark.nvim",
+    lazy = true,
+  },
+
+  {
+    "tanvirtin/monokai.nvim",
+    lazy = true,
+  },
+
+  {
+    "Mofiqul/dracula.nvim",
+    lazy = true,
+  },
+
+  {
+    "JoosepAlviste/palenightfall.nvim",
+    lazy = true,
+  },
+
+  {
+    "bluz71/vim-nightfly-colors",
+    lazy = true,
   },
 }
