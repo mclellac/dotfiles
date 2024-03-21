@@ -1,25 +1,37 @@
 #!/bin/bash
 
+# Check if notify-send is available
 if ! command -v notify-send &>/dev/null; then
-	echo "notify-send is not available. Install libnotify-bin package." >&2
-	exit 1
+    echo "Error: notify-send is not available. Install libnotify-bin package." >&2
+    exit 1
 fi
 
+# Refresh package repositories
 if ! sudo dnf makecache &>/dev/null; then
-	echo "Failed to refresh package repositories." >&2
-	exit 1
+    echo "Error: Failed to refresh package repositories." >&2
+    exit 1
 fi
 
-if ! update_output=$(sudo dnf check-update); then
-	echo "Failed to check for updates." >&2
-	exit 1
+# Check for available updates
+update_output=$(sudo dnf check-update)
+if [ -z "$update_output" ]; then
+    echo "No updates available."
+    exit 0
 fi
 
-update_count=$(echo "$update_output" | grep -c 'updates')
-if [ "$update_count" -gt 0 ]; then
-	update_list=$(echo "$update_output" | awk '{print $1}' | tail -n +2)
-	update_list_formatted=$(echo "$update_list" | paste -sd "," -)
+# Extract package names
+update_list=$(echo "$update_output" | awk '$1 && $1 !~ /^Last$/ {split($1, a, "."); print a[1]}')
 
-	# Notify user about available updates
-	notify-send "${update_count} updates available: ${update_list_formatted}"
-fi
+# Count the number of updates
+update_count=$(echo "$update_list" | wc -l)
+
+# Format update list with bullet points
+update_list_formatted=$(echo "$update_list" | sed 's/^/* /')
+
+# Format notification message
+formatted_output="${update_count} updates available:
+${update_list_formatted}"
+
+# Display notification
+notify-send "$formatted_output"
+
