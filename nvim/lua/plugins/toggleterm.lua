@@ -1,22 +1,28 @@
--- ################################################################################
--- #                                                                              #
--- #                             TOGGLE TERMINAL                                  #
--- #   NOTE: A neovim lua plugin to help easily manage multiple terminal windows  #
--- #                                                                              #
--- ################################################################################
-
 return {
-  "akinsho/toggleterm.nvim",
-  config = function()
-    require"toggleterm".setup {
-      size = 13,
-      open_mapping = [[<c-\>]], -- ctrl + / = New terminal
-      shade_filetypes = {},
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    opts = {
+      size = 20,
+      open_mapping = [[<c-\>]],
+      hide_numbers = true,
       shade_terminals = true,
-      shading_factor = '1',
+      shading_factor = 2,
       start_in_insert = true,
+      insert_mappings = true,
       persist_size = true,
-      direction = 'horizontal' -- Terminal will be dislay at the bottom
-    }
-  end
+      direction = "float",
+      close_on_exit = true,
+      shell = vim.o.shell,
+      float_opts = {
+        border = "curved",
+      },
+    },
+    keys = {
+      {
+        "<c-\\>",
+        desc = "Toggle term",
+      },
+    },
+  },
 }

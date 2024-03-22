@@ -1,114 +1,57 @@
--- ################################################################################
--- #                                                                              #
--- #                              TREE SITTER                                     #
--- #                      NOTE: Btter text hightlighting                          #
--- #                                                                              #
--- ################################################################################
-
 return {
-  -- Highlight, edit, and navigate code
-  'nvim-treesitter/nvim-treesitter',
-  build = function()
-    pcall(require('nvim-treesitter.install').update { with_sync = true })
-  end,
-  config = function()
-    -- [[ Configure Treesitter ]]
-    -- See `:help nvim-treesitter`
-    require('nvim-treesitter.configs').setup {
-      -- Add languages to be installed here that you want installed for treesitter
+  {
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = { "windwp/nvim-ts-autotag" },
+    opts = {
       ensure_installed = {
-        'json',
-        'query',
-        'tsx',
-        'yaml',
-        'c',
-        'html',
-        'javascript',
-        'lua',
-        'cpp',
-        'go',
-        'lua',
-        'python',
-        'rust',
-        'typescript',
-        -- 'help',
-        'vim',
-        'regex',
-        'bash',
-        'markdown',
-        'markdown_inline',
-        'css',
-        'scss',
+        "bash",
+        "regex",
+        "vim",
+        "lua",
+        "html",
+        "markdown",
+        "markdown_inline",
+        "css",
+        "typescript",
+        "tsx",
+        "javascript",
+        "hurl",
+        "json",
+        "json5",
+        "jsonc",
+        "graphql",
+        "prisma",
+        "rust",
+        "go",
+        "toml",
+        "c",
+        "proto",
+        "svelte",
+        "astro",
+      },
+      auto_install = true,
+      -- ensure_installed = "all", -- one of "all" or a list of languages
+      ignore_install = { "" }, -- List of parsers to ignore installing
+      sync_install = false, -- install languages synchronously (only applied to `ensure_installed`)
+
+      highlight = {
+        enable = true, -- false will disable the whole extension
+        disable = { "css" }, -- list of language that will be disabled
+      },
+      autopairs = {
+        enable = true,
+      },
+      indent = { enable = true, disable = { "python", "css" } },
+
+      context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
       },
 
-      highlight = { enable = true },
-
-      autotag = { enable = true },
-      rainbow = {
+      -- auto tag
+      autotag = {
         enable = true,
-        extended_mode = false, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-        max_file_lines = nil -- Do not enable for files with more than n lines, int
-        -- colors = {}, -- table of hex strings
-        -- termcolors = {} -- table of colour name strings
       },
-      indent = { enable = true, disable = { 'python' } },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<c-space>',
-          node_incremental = '<c-space>',
-          scope_incremental = '<c-s>',
-          node_decremental = '<c-backspace>'
-        }
-      },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-          keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
-            ['aa'] = '@parameter.outer',
-            ['ia'] = '@parameter.inner',
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner'
-          }
-        },
-        move = {
-          enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
-          goto_next_start = { [']m'] = '@function.outer',[']]'] = '@class.outer' },
-          goto_next_end = { [']M'] = '@function.outer',[']['] = '@class.outer' },
-          goto_previous_start = { ['[m'] = '@function.outer',['[['] = '@class.outer' },
-          goto_previous_end = { ['[M'] = '@function.outer',['[]'] = '@class.outer' }
-        },
-        swap = {
-          enable = true,
-          -- swap_next = { ['<leader>a'] = '@parameter.inner' },
-          -- swap_previous = { ['<leader>A'] = '@parameter.inner' }
-        }
-      }
-    }
-
-    vim.lsp.handlers['textDocument/publishDiagnostics'] =
-        vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-          underline = true,
-          virtual_text = { spacing = 5 },
-          update_in_insert = true
-        })
-    require 'nvim-treesitter.configs'.setup {
-      ensure_installed = { "html", "javascript", "lua" },
-      highlight = { enable = true, additional_vim_regex_highlighting = false },
-      autotag = { enable = true },
-      rainbow = {
-        enable = true,
-        extended_mode = false, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-        max_file_lines = nil -- Do not enable for files with more than n lines, int
-        -- colors = {}, -- table of hex strings
-        -- termcolors = {} -- table of colour name strings
-      },
-      autopairs = { enable = true }
-    }
-  end
+    },
+  },
 }

@@ -1,12 +1,12 @@
 * {
   font-family: 'Material Design Icons', 'JetBrainsMono Nerd Font', 'Iosevka Nerd Font';
-  font-size: 12px;
+  font-size: 10px;
 }
 
 #waybar {
   background-color: #1d2027;
   color: #ffffff;
-  border-radius: 8px;
+  border-radius: 75px;
   border: 3px solid #3a404e;
 }
 
@@ -187,6 +187,7 @@
 
 #custom-powermenu {
   color: #ff9597;
+  font-size: 17px;
   margin-right: 12px;
   border-radius: 8px;
   padding: 0px 6px;
@@ -195,6 +196,7 @@
 
 tooltip {
   border-radius: 8px;
+  font-size: 30px;
   padding: 15px;
   background-color: #242933;
 }

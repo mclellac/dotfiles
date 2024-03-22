@@ -1,7 +1,0 @@
-{
-    "diagnostics.globals": [
-    ],
-    "diagnostics.disable": [
-        "unused-local"
-    ]
-}

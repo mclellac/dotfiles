@@ -1,96 +1,113 @@
-<!-- BADGE START -->
-<div class="badges-container" align="center">
+# My 💤 LazyVim IDE config for Neovim
+## TOC
 
-  <!-- Open Source Badges -->
-  <div class="open-source-badges">
-    <!-- Open Source Love -->
-    <a href="#"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103&style=for-the-badge" alt="Open Source Love" height="30px"></a>
-    <!-- MIT License -->
-    <a href="#"><img src="https://badges.frapsoft.com/os/mit/mit.svg?v=103&style=for-the-badge" alt="MIT License" height="30px"></a>
-    <!-- Awesome -->
-    <a href="#"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome" height="30px"></a>
-  </div>
+<!--toc:start-->
+- [Install Neovim](#install-neovim)
+- [Install the config](#install-the-config)
+- [Get healthy](#get-healthy)
+- [Fonts](#fonts)
+- [Try with Docker](#try-with-docker)
+- [Uninstall](#uninstall)
+- [Screenshots](#screenshots)
+- [Tips](#tips)
+- [Resources](#resources)
+<!--toc:end-->
 
-  <!-- Activities -->
-  [![Made with Lua](https://img.shields.io/badge/Made%20with%20Lua-blueviolet.svg?v=103&logo=lua&style=for-the-badge)](#)
-  [![Linux](https://img.shields.io/badge/Linux-%23.svg?v=103&logo=linux&color=FCC624&logoColor=black&style=for-the-badge)](#)
-  [![macOS](https://img.shields.io/badge/macOS-%23.svg?v=103&logo=apple&color=000000&logoColor=white&style=for-the-badge)](#)
-  [![Windows](https://img.shields.io/badge/Windows-%23.svg?v=103&logo=windows&color=0078D6&logoColor=white&style=for-the-badge)](#)
-  [![Neovim minimum version](https://img.shields.io/badge/Neovim-0.8+-blueviolet.svg?v=103&color=000F10&logo=Neovim&logoColor=green&labelColor=302D41&style=for-the-badge)](https://github.com/neovim/neovim/releases/tag/stable)
-  [![Top languages](https://img.shields.io/github/languages/top/Oyinbra/nvim-config?svg?v=103&style=for-the-badge)](https://github.com/Oyinbra/nvim-config/search?l=vim-script)
-  [![Commit Activity](https://img.shields.io/github/commit-activity/m/Oyinbra/nvim-config?svg?v=103&style=for-the-badge)](https://github.com/Oyinbra/nvim-config/graphs/commit-activity)
-  [![Last commit](https://img.shields.io/github/last-commit/Oyinbra/nvim-config?svg?v=103&logo=git&color=000F10&logoColor=darkorange&labelColor=302D41&style=for-the-badge)](#)
-  [![Contributors](https://img.shields.io/github/contributors/Oyinbra/nvim-config?svg?v=103&style=for-the-badge)](https://github.com/Oyinbra/nvim-config/graphs/contributors)
-  [![Repository Size](https://img.shields.io/github/repo-size/Oyinbra/nvim-config?svg?v=103&style=for-the-badge)](#)
-  
-</div>
-<!-- BADGE END -->
+## Install Neovim
 
-    
-![Screenshot (1423)](https://github.com/Oyinbra/img/raw/main/nvim-img/img-001.png)
+The easy way is using [MordechaiHadad/bob: A version manager for neovim](https://github.com/MordechaiHadad/bob).
 
-</div>
-
-# ⚡️ Introduction
-
-This repo hosts my Neovim configuration and its using Lazy plugin manager.
-
-My setups are well-documented to ensure the greatest clarity. You can clone the whole repo and use it like that or you can choose whatever plugins and configurations that you want and add it to yours as i made sure all settings are separated and easily managed.
-
-# ✨ Features
-
-- Plugin management via [lazy.nvim](https://github.com/folke/lazy.nvim).
-- Better usabilty via whichkey plugins so you don't have to forget your keys [which-key.nvim](https://github.com/folke/which-key.nvim).
-- Auto-completionCode via [nvim-cmp](https://github.com/hrsh7th/nvim-cmp).
-- Language server protocol (LSP) support via [mason](https://github.com/williamboman/mason.nvim).
-- Git integration via [lazy-git].
-
-# 🚀 Installation and setup
-
-- Backup up your current neovim setup
-
-```
-mv ~/.config/nvim ~/.config/nvim.bak
-mv ~/.local/share/nvim ~/.local/share/nvim.bak
+```sh
+bob install stable
+bob use stable
 ```
 
-- Clone the stater park into your .config folder
+## Install the config
 
-```
-git clone https://github.com/Oyinbra/nvim-config.git ~/.config/nvim
-```
+Make sure to remove or move your current `nvim` directory
 
-- Then start Neovim
-
-```
-nvim
+```sh
+git clone https://github.com/jellydn/lazy-nvim-ide.git ~/.config/nvim
 ```
 
-- All plugins will be loaded automatically.
-- Quit neovim and restart it to start using it.
-- Run health check on lazy and if you migrated from parker plugin manager, you might have to remove some left over setup from parker.
+Run `nvim` and wait for the plugins to be installed
 
+## Get healthy
+
+Open `nvim` and enter the following:
+
+```lua
+:checkhealth
 ```
-rm /home/$USER/.local/share/nvim/site/pack/packer
-rm /home/$USER/.config/nvim/plugin/packer_compiled.lua
+
+## Fonts
+
+I recommend using the following repo to get a "Nerd Font" (Font that supports icons)
+
+[getnf](https://github.com/ronniedroid/getnf)
+
+## Try with Docker
+
+```sh
+docker run -w /root -it --rm alpine:latest sh -uelic '
+  apk add git nodejs npm neovim ripgrep build-base make musl-dev go --update
+  go install github.com/jesseduffield/lazygit@latest
+  git clone https://github.com/jellydn/lazy-nvim-ide ~/.config/nvim
+  nvim
+  '
 ```
 
-# 📦 Usability
+## Uninstall
 
-## Which-key with space bar as leader key, then you can choose from the following options to quit, save file, format and save a file plus many other options to choose from
+```sh
+  rm -rf ~/.config/nvim
+  rm -rf ~/.local/share/nvim
+  rm -rf ~/.cache/nvim
+  rm -rf ~/.local/state/nvim
+```
 
-<p align="center">
-<img src="https://github.com/Oyinbra/img/raw/main/nvim-img/img-002.png" width="800">
-</p>
+## Screenshots
 
-## File or Text search using Telescope
+<img width="1792" alt="image" src="https://user-images.githubusercontent.com/870029/228557089-0faaa49f-5dab-4704-a919-04decfc781ac.png">
 
-<p align="center">
-<img src="https://github.com/Oyinbra/img/raw/main/nvim-img/img-005.png" width="800">
-</p>
+## Tips
 
-# 🐞 Find a bug?
+- Improve key repeat on Mac OSX, need to restart
 
-If you found an issue or would like to submit an improvement to this project, please submit an issue using the issue tab above. If you would love to submit a PR with a fix, reference the issue you created.
+```sh
+defaults write NSGlobalDomain KeyRepeat -int 1
+defaults write NSGlobalDomain InitialKeyRepeat -int 14
+```
 
+- VSCode on Mac
 
+To enable key-repeating, execute the following in your Terminal, log out and back in, and then restart VS Code:
+
+```sh
+# For VS Code
+defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+# For VS Code Insider
+defaults write com.microsoft.VSCodeInsiders ApplePressAndHoldEnabled -bool false
+# If necessary, reset global default
+defaults delete -g ApplePressAndHoldEnabled
+# For Cursor
+defaults write com.todesktop.230313mzl4w4u92 ApplePressAndHoldEnabled -bool false
+```
+
+Also increasing Key Repeat and Delay Until Repeat settings in System Preferences -> Keyboard.
+
+[![Key repeat rate](https://i.gyazo.com/e58be996275fe50bee31412ea5930017.png)](https://gyazo.com/e58be996275fe50bee31412ea5930017)
+
+## Resources
+
+[![IT Man - Talk #33 NeoVim as IDE [Vietnamese]](https://i.ytimg.com/vi/dFi8CzvqkNE/hqdefault.jpg)](https://www.youtube.com/watch?v=dFi8CzvqkNE)
+
+[![IT Man - Talk #35 #Neovim IDE for Web Developer](https://i.ytimg.com/vi/3EbgMJ-RcWY/hqdefault.jpg)](https://www.youtube.com/watch?v=3EbgMJ-RcWY)
+
+[![IT Man - Step-by-Step Guide: Integrating Copilot Chat with Neovim [Vietnamese]](https://i.ytimg.com/vi/By_CCai62JE/hqdefault.jpg)](https://www.youtube.com/watch?v=By_CCai62JE)
+
+[![IT Man - Power up your Neovim with Gen.nvim](https://i.ytimg.com/vi/2nt_qcchW_8/hqdefault.jpg)](https://www.youtube.com/watch?v=2nt_qcchW_8)
+
+[![IT Man - Boost Your Neovim Productivity with GitHub Copilot Chat](https://i.ytimg.com/vi/6oOPGaKCd_Q/hqdefault.jpg)](https://www.youtube.com/watch?v=6oOPGaKCd_Q)
+
+[![IT Man - Get to know GitHub Copilot Chat in #Neovim and be productive IMMEDIATELY](https://i.ytimg.com/vi/sSih4khcstc/hqdefault.jpg)](https://www.youtube.com/watch?v=sSih4khcstc)
