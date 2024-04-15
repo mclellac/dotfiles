@@ -2,9 +2,13 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
 -- Enable spell check by default unless in vscode
-if not vim.g.vscode then
-  vim.o.spell = true
-end
+-- if not vim.g.vscode then
+--  vim.o.spell = true
+-- end
+
+-- Disable spell check by default
+vim.o.spell = false
+
 -- Set conceal level to 0
 vim.o.conceallevel = 0
 

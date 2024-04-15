@@ -1,1 +1,16 @@
 local/!
+enable_copr_repo
+enable_copr_repo
+enable_copr_repo
+action_zgen_update
+action_install_neovim_py
+copr_
+enable_copr_repo
+copr
+copr
+zgen
+neovim
+zgen
+zgen
+zgen
+zgen

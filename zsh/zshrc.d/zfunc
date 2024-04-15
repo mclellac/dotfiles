@@ -148,23 +148,7 @@ pull() {
         local icon=""
 
         # Determine the project and repository names based on the Git URL
-        if [[ ${url} =~ "stash.nm.cbc.ca" ]]; then
-            icon=" "
-
-            if [[ "${url}" == *"https"* ]]; then
-                project=$(echo "${url}" | awk -F/ '{print $5}')
-                repo=$(echo "${url}" | awk -F/ '{print $6}' | sed 's/.git//')
-            elif [[ "${url}" == *"ssh"* ]]; then
-                project=$(echo "${url}" | awk -F/ '{print $4}')
-                repo=$(echo "${url}" | awk -F/ '{print $5}' | sed 's/.git//')
-            fi
-
-            # Remove the tilde from the project name if the URL contains it
-            if [[ "${url}" == *"~"* ]]; then
-                project=$(echo "${project}" | sed 's/~//')
-            fi
-
-        elif [[  ${url} =~ "bitbucket.org" ]]; then
+        if [[  ${url} =~ "bitbucket.org" ]]; then
             icon=" "
 
             if [[ "${url}" == *"https"* ]]; then
@@ -177,6 +161,7 @@ pull() {
 
         elif [[  ${url} =~ "gitlab.nm.cbc.ca" ]]; then
             icon=" "
+            git_root="${HOME}/Projects/src/gitlab.nm.cbc.ca"
 
             if [[ "${url}" == *"https"* ]]; then
                 project=$(echo "${url}" | awk -F/ '{print $4}')
