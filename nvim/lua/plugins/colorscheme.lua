@@ -21,13 +21,13 @@ local function is_warp_terminal()
 end
 
 -- Default colorscheme
-local default_color_scheme = "kanagawa"
+local default_color_scheme = "material"
 
 -- Select colorscheme based on the time, and load it with LazyVim
 local function selectColorSchemeByTime()
   -- skip if running in vscode
   if vim.g.vscode then
-    return "kanagawa"
+    return "material"
   end
 
   if vim.g.neovide then
@@ -43,6 +43,7 @@ local function selectColorSchemeByTime()
   else
     local night_themes = {
       "tokyonight",
+      "material",
       "nightfox",
       "rose-pine",
       "catppuccin-frappe",
@@ -87,6 +88,7 @@ return {
     },
     lazy = true,
   },
+  { "marko-cerovac/material.nvim" },
   {
     "rose-pine/neovim",
     name = "rose-pine",
@@ -109,16 +111,6 @@ return {
     opts = {
       transparent_background = is_transparent,
     },
-  },
-  {
-    "lalitmee/cobalt2.nvim",
-    lazy = true,
-    dependencies = { { commit = "cdb5b0654d3cafe61d2a845e15b2b4b0e78e752a", "tjdevries/colorbuddy.nvim" } },
-    config = function()
-      require("colorbuddy").colorscheme("cobalt2")
-      -- Disable spell checking as it is not readable
-      vim.o.spell = false
-    end,
   },
   {
     "sainnhe/everforest",
