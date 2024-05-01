@@ -14,6 +14,9 @@
     "cspell-tool"
   ],
   "ignorePaths": [
+    "bin",
+    "Projects",
+    ".config",
     "node_modules",
     "dist",
     "build",
