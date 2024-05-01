@@ -92,7 +92,7 @@ return {
 
         -- spell check
         b.diagnostics.codespell,
-        b.diagnostics.misspell,
+        -- b.diagnostics.misspell,
         -- cspell
         cspell.diagnostics.with({
           -- Set the severity to HINT for unknown words

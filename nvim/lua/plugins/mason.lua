@@ -12,7 +12,7 @@ return {
         "biome",
         -- code spell
         "codespell",
-        "misspell",
+        --"misspell",
         "cspell",
         -- markdown
         "markdownlint",
