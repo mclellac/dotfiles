@@ -1,8 +1,0 @@
-edgekey
-NXDOMAIN
-edgesuite
-resolv
-geteuid
-nameserver
-sIXGET
-ESSL
