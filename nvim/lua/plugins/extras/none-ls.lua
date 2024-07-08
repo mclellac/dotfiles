@@ -79,13 +79,8 @@ return {
     keys = {
       { "<leader>cn", "<cmd>NullLsInfo<cr>", desc = "NullLs Info" },
     },
-    dependencies = {
-      "mason.nvim",
-      { "davidmh/cspell.nvim" },
-    },
     event = { "BufReadPre", "BufNewFile" },
     opts = function()
-      local cspell = require("cspell")
       local none_ls = require("null-ls")
       local b = none_ls.builtins
       local sources = {
@@ -93,17 +88,6 @@ return {
         -- spell check
         b.diagnostics.codespell,
         -- b.diagnostics.misspell,
-        -- cspell
-        cspell.diagnostics.with({
-          -- Set the severity to HINT for unknown words
-          diagnostics_postprocess = function(diagnostic)
-            diagnostic.severity = vim.diagnostic.severity["HINT"]
-          end,
-          read_config_synchronously = false,
-        }),
-        cspell.code_actions.with({
-          read_config_synchronously = false,
-        }),
 
         -- tailwind
         b.formatting.rustywind.with({

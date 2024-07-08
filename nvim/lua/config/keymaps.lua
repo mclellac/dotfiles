@@ -185,9 +185,9 @@ keymap("n", "<leader>fI", "<cmd>LazyFormatInfo<CR>", {
   desc = "Lazy Format Info",
 })
 
-keymap(
-  "n",
-  "<leader>cs",
-  "<cmd>lua require('utils.cspell').add_word_to_c_spell_dictionary()<CR>",
-  { noremap = true, silent = true, desc = "Add unknown to cspell dictionary" }
-)
+--keymap(
+--  "n",
+--  "<leader>cs",
+--  "<cmd>lua require('utils.cspell').add_word_to_c_spell_dictionary()<CR>",
+--  { noremap = true, silent = true, desc = "Add unknown to cspell dictionary" }
+--)

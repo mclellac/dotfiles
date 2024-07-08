@@ -7,7 +7,7 @@ end
 return {
   {
     "lvimuser/lsp-inlayhints.nvim",
-    ft = { "javascript", "javascriptreact", "json", "jsonc", "typescript", "typescriptreact", "svelte", "go" },
+    ft = { "go", "python", "rust", "c", "sh", "bash" },
     enabled = is_stable_version,
     opts = {
       debug_mode = true,

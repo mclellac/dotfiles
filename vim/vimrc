@@ -86,7 +86,6 @@ Plug 'liuchengxu/vim-which-key'
 " Language Plugins
 "------------------------------------------------------------------------------"
 Plug 'lervag/vimtex'
-"Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'fgsch/vim-varnish'
 Plug 'hashivim/vim-terraform'
@@ -106,7 +105,7 @@ Plug 'Chiel92/vim-autoformat'
 "------------------------------------------------------------------------------"
 " Colorschemes & Icons
 "------------------------------------------------------------------------------"
-"Plug 'wuelnerdotexe/vim-enfocado'
+Plug 'rose-pine/vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'https://github.com/sainnhe/everforest.git'
 Plug 'jacoborus/tender'
@@ -338,33 +337,44 @@ let g:rainbow_conf = {
 \	}
 \}
 
-"------------------------------------------------------------------------------"
-" Theme: everforest
-"------------------------------------------------------------------------------"
-if has('termguicolors')
-    set termguicolors
-endif
 
+"------------------------------------------------------------------------------"
+" Theme: rose pine
+"------------------------------------------------------------------------------"
 set background=dark
-
-" This configuration option should be placed before `colorscheme everforest`.
-" Available values: 'hard', 'medium'(default), 'soft'
-let g:everforest_background = 'hard'
-" For better performance
-let g:everforest_better_performance = 1
-let g:everforest_enable_italic = 1
-
 try
-    colorscheme everforest
+    colorscheme rosepine
 catch
     colorscheme default
 endtry
 
 "------------------------------------------------------------------------------"
+" Theme: everforest
+"------------------------------------------------------------------------------"
+"if has('termguicolors')
+"    set termguicolors
+"endif
+
+"set background=dark
+
+" This configuration option should be placed before `colorscheme everforest`.
+" Available values: 'hard', 'medium'(default), 'soft'
+"let g:everforest_background = 'hard'
+" For better performance
+"let g:everforest_better_performance = 1
+"let g:everforest_enable_italic = 1
+
+"try
+"    colorscheme everforest
+"catch
+"    colorscheme default
+"endtry
+
+"------------------------------------------------------------------------------"
 " Theme: Airline settings
 "------------------------------------------------------------------------------"
 let g:airline_powerline_fonts = 0
-let g:airline_theme = "hybrid"
+let g:airline_theme = "rosepine"
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 
@@ -1027,41 +1037,41 @@ function! BetterBackSpace() abort
     " Remove trailing whitespace with F5
     nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
-
 """""""""""""""""""""""""""""""""
-"Dictionary Setting For WhichKey"
+" Dictionary Setting For WhichKey
 """""""""""""""""""""""""""""""""
 let g:which_key_map = {
-      \ 'f'     : ['Goyo'                , 'Goyo']                   ,
-      \ 'v'     : ['Vifm'                , 'Vifm']                   ,
-      \ 'r'     : ['Ranger'              , 'Ranger']                 ,
-      \ 't'     : ['tabnew'              , 'Open New Tab']           ,
-      \ 'd'     : ['Duplicate Cleaner'   , 'Delete Duplicate Lines'] ,
-      \ 'm'     : ['MRU'                 , 'View File History']      ,
-      \ 'h'     : ['This Menu'           , 'This Menu']              ,
-      \ 'cc'    : ['Comment Out'         , 'Comment Out']            ,
-      \ 'cu'    : ['Uncomment'           , 'Uncomment']              ,
-      \ '1-9'   : ['Go To Tab By Number'               , 'Go To Tab By Number 0 Is Tab 10'] ,
-      \ 'F8'    : ['Open MD Server'                    , 'MD Server']                       ,
-      \ 'F2'    : ['Web Server'                        , 'Web Server']                      ,
-      \ 'F3'    : ['Web Server'                        , 'Web Server Reload']               ,
-      \ 'F4'    : ['Web Server'                        , 'Web Server Stop']                 ,
-      \ 'F6'    : ['Spellcheck'                        , 'Spellcheck']                      ,
-      \ 'C-vimkeys/arrows' : ['Move Between Splits'    , 'Move Between Splits']             ,
-      \ 'S-Plus/S-Minus'   : ['Resize Splits'          , 'Resize Splits']                   ,
-      \ 'Alt-arrows'       : ['Tab Right Or Left'      , 'Tab Right OR Left']               ,
-      \ 'c'     : ['Colors'                            , 'Colors']                          ,
-      \ 'b'     : ['Buffers'                           , 'Buffers']                         ,
-      \ 's'     : ['Files'                             , 'Files']                           ,
-      \ 'W'     : ['Windows'                           , 'Windows']                         ,
-      \ 'H'     : ['History'                           , 'History']                         ,
-      \ 'Hc'    : ['CMD History'                       , 'CMD History']                     ,
-      \ 'M'     : ['Maps'                              , 'Maps']                            ,
-      \ 'C-f'   : ['Beautify'                          , 'Brautify']                        ,
-      \ 'w'     : ['Quick Save'                        , 'Quick Save']                      ,
-      \ 'tm'    : ['TabMove'                           , 'TaBMove']                         ,
+      \ 'f'     : ['Goyo',               'Goyo'],
+      \ 'v'     : ['Vifm',               'Vifm'],
+      \ 'r'     : ['Ranger',             'Ranger'],
+      \ 't'     : ['tabnew',             'Open New Tab'],
+      \ 'd'     : ['Duplicate Cleaner',  'Delete Duplicate Lines'],
+      \ 'm'     : ['MRU',                'View File History'],
+      \ 'h'     : ['This Menu',          'This Menu'],
+      \ 'cc'    : ['Comment Out',        'Comment Out'],
+      \ 'cu'    : ['Uncomment',          'Uncomment'],
+      \ '1-9'   : ['Go To Tab By Number','Go To Tab By Number 0 Is Tab 10'],
+      \ 'F8'    : ['Open MD Server',     'MD Server'],
+      \ 'F2'    : ['Web Server',         'Web Server'],
+      \ 'F3'    : ['Web Server Reload',  'Web Server Reload'],
+      \ 'F4'    : ['Web Server Stop',    'Web Server Stop'],
+      \ 'F6'    : ['Spellcheck',         'Spellcheck'],
+      \ 'C-vimkeys/arrows' : ['Move Between Splits', 'Move Between Splits'],
+      \ 'S-Plus/S-Minus'   : ['Resize Splits',       'Resize Splits'],
+      \ 'Alt-arrows'       : ['Tab Right Or Left',   'Tab Right OR Left'],
+      \ 'c'     : ['Colors',             'Colors'],
+      \ 'b'     : ['Buffers',            'Buffers'],
+      \ 's'     : ['Files',              'Files'],
+      \ 'W'     : ['Windows',            'Windows'],
+      \ 'H'     : ['History',            'History'],
+      \ 'Hc'    : ['CMD History',        'CMD History'],
+      \ 'M'     : ['Maps',               'Maps'],
+      \ 'C-f'   : ['Beautify',           'Beautify'],
+      \ 'w'     : ['Quick Save',         'Quick Save'],
+      \ 'tm'    : ['TabMove',            'TabMove']
       \ }
 
+" Ignore keys 1-9 and 0
 let g:which_key_map.1 = 'which_key_ignore'
 let g:which_key_map.2 = 'which_key_ignore'
 let g:which_key_map.3 = 'which_key_ignore'
@@ -1074,35 +1084,40 @@ let g:which_key_map.9 = 'which_key_ignore'
 let g:which_key_map.0 = 'which_key_ignore'
 
 call which_key#register('<Space>', "g:which_key_map")
-"""""""""""""""""""""""""""""""
-"Options For The Startify Menu"
-"""""""""""""""""""""""""""""""
- let g:startify_custom_header =
-       \ startify#pad(split(system('figlet -w 100 Vim'), '\n'))
-"Incase you are insane and want to open a new tab with Goyo enabled
- autocmd BufEnter *
-       \ if !exists('t:startify_new_tab') && empty(expand('%')) && !exists('t:goyo_master') |
-       \   let t:startify_new_tab = 1 |
-       \   Startify |
-       \ endif
-"Bookmarks.
-let g:startify_bookmarks = [ 
-            \ {'A': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/apache'},
-            \ {'B': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/varnish'},
-            \ {'C': '~/Projects/src/stash.nm.cbc.ca/cloud/varnish'},
-            \ {'D': '~/Projects/src/gitlab.nm.cbc.ca/'},
-            \ {'E': '~/.zshrc'},
-            \ {'F': '~/.vimrc'}
-            \ ]
-    let g:startify_lists = [
-          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
-          \ { 'type': 'files',     'header': ['   Recent']         },
-          \ { 'type': 'sessions',  'header': ['   Sessions']       },
-          \ { 'type': 'commands',  'header': ['   Commands']       },
-          \ ]
-"cant tell wtf it does so its commented
-" \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
 
+"""""""""""""""""""""""""""""""
+" Options For The Startify Menu
+"""""""""""""""""""""""""""""""
+let g:startify_custom_header = startify#pad(split(system('figlet -w 100 Vim'), '\n'))
+
+" Open a new tab with Goyo enabled when Startify is empty
+autocmd BufEnter *
+      \ if !exists('t:startify_new_tab') && empty(expand('%')) && !exists('t:goyo_master') |
+      \   let t:startify_new_tab = 1 |
+      \   Startify |
+      \ endif
+
+" Bookmarks
+let g:startify_bookmarks = [
+      \ {'A': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/apache'},
+      \ {'B': '~/Projects/src/stash.nm.cbc.ca/syssrvcfg/varnish'},
+      \ {'C': '~/Projects/src/stash.nm.cbc.ca/cloud/varnish'},
+      \ {'D': '~/Projects/src/gitlab.nm.cbc.ca/'},
+      \ {'E': '~/.zshrc'},
+      \ {'F': '~/.vimrc'}
+      \ ]
+
+let g:startify_lists = [
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks'] },
+      \ { 'type': 'files',     'header': ['   Recent'] },
+      \ { 'type': 'sessions',  'header': ['   Sessions'] },
+      \ { 'type': 'commands',  'header': ['   Commands'] }
+      \ ]
+
+" Uncomment the following line if you need the MRU (Most Recently Used) list for the current directory
+" let g:startify_lists += [{ 'type': 'dir', 'header': ['   MRU '. getcwd()] }]
+
+" Highlight settings for Startify
 hi StartifyBracket ctermfg=240
 hi StartifyFile    ctermfg=147
 hi StartifyFooter  ctermfg=240

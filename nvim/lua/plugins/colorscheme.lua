@@ -21,7 +21,7 @@ local function is_warp_terminal()
 end
 
 -- Default colorscheme
-local default_color_scheme = "material"
+local default_color_scheme = "rose-pine"
 
 -- Select colorscheme based on the time, and load it with LazyVim
 local function selectColorSchemeByTime()
@@ -93,12 +93,12 @@ return {
     "rose-pine/neovim",
     name = "rose-pine",
     opts = {
-      variant = "moon",
+      variant = "main",
       disable_background = is_transparent,
       disable_float_background = is_transparent,
       styles = {
         bold = true,
-        italic = true,
+        italic = false,
         transparency = is_transparent,
       },
     },

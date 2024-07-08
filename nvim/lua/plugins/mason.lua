@@ -13,7 +13,7 @@ return {
         -- code spell
         "codespell",
         --"misspell",
-        "cspell",
+        -- "cspell",
         -- markdown
         "markdownlint",
         -- rustywind for tailwindcss
