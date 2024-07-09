@@ -1,40 +1,37 @@
 # mclellac dotfiles
 
-My collection of dotfiles.
+A collection of my personal dotfiles.
 
 ## Installation & Requirements
 
-This is very much tailored for my own use-case, but feel free to use as you desire.
-
-This Python script is designed to automate the setup process for various configurations and installations on Unix-like systems. It provides a streamlined way to install packages, copy directories and files, and perform post-installation actions. Below, you'll find an overview of its functionalities and usage instructions.
-
+This repository is tailored for my specific use-case, but you are welcome to use it as you like. The provided Python script automates the setup process for various configurations and installations on Unix-like systems. It simplifies the installation of packages, copying directories and files, and performing post-installation actions. Below is an overview of its functionalities and usage instructions.
 
 ### Requirements
 
-  * Python 3.6 or higher
-  * Unix-like operating system (Linux, macOS, etc.)
+- Python 3.6 or higher
+- Unix-like operating system (Linux, macOS, etc.)
 
 ### Installation
+
 ```bash
-$ git clone https://github.com/mclellac/dotfiles.git ~/.config/
-$ cd ~/.config/dotfiles
-$ pip install -r requirements.txt
-$ ./setup.py
+git clone https://github.com/mclellac/dotfiles.git ~/.config/
+cd ~/.config/dotfiles
+pip install -r requirements.txt
+./setup.py
 ```
 
 ## Usage
 
-### Command-line options
+### Command-line Options
 
-| Option               | Description                                                             |
-|----------------------|-------------------------------------------------------------------------|
-| -f, --force          | Override existing files if necessary.                                   |
-| --config             | Specify the path to the YAML configuration file. Default is config.yaml.|
-| --skip-vimplug       | Skip updating Vim plugins.                                              |
-| --skip-zgen          | Skip updating Zgen.                                                     |
-| --skip-shell-to-zsh  | Skip changing the shell to Zsh.                                         |
-| --skip-packages      | Skip package installation.                                              |
-
+| Option                 | Description                                                               |
+|------------------------|---------------------------------------------------------------------------|
+| `-f, --force`          | Override existing files if necessary.                                     |
+| `--config`             | Specify the path to the YAML configuration file. Default is `config.yaml`.|
+| `--skip-vimplug`       | Skip updating Vim plugins.                                                |
+| `--skip-zgen`          | Skip updating Zgen.                                                       |
+| `--skip-shell-to-zsh`  | Skip changing the shell to Zsh.                                           |
+| `--skip-packages`      | Skip package installation.                                                |
 
 ### Configuration File
 
@@ -49,9 +46,10 @@ The script detects the operating system and installs packages using appropriate 
 ### File and Directory Copying
 
 It copies directories and files specified in the configuration file to desired locations.
-Post-Installation Actions
 
-After the main installation tasks, the script performs various post-installation actions, such as updating `Vim`/`Neovim`, changing the shell to `Zsh`, and updating `Zgen`.
+### Post-Installation Actions
+
+After the main installation tasks, the script performs various post-installation actions, such as updating Vim/Neovim, changing the shell to Zsh, and updating Zgen.
 
 ### Logging and Error Handling
 
