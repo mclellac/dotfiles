@@ -1,5 +1,20 @@
 -- Read the docs: https://www.lunarvim.org/docs/configuration
 -- install plugins
+lvim.builtin.alpha.startify.section.header.val["1"] = "██╗  ██╗ ██████╗ ██████╗  "
+lvim.builtin.alpha.startify.section.header.val["2"] = "╚██╗██╔╝██╔═══██╗██╔══██╗"
+lvim.builtin.alpha.startify.section.header.val["3"] = " ╚███╔╝ ██║   ██║██████╔╝"
+lvim.builtin.alpha.startify.section.header.val["4"] = " ██╔██╗ ██║   ██║██╔══██╗"
+lvim.builtin.alpha.startify.section.header.val["5"] = "██╔╝ ██╗╚██████╔╝██║  ██║"
+lvim.builtin.alpha.startify.section.header.val["6"] = "╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝"
+
+vim.opt.cmdheight = 2 -- more space in the neovim command line for displaying messages
+vim.opt.guifont = "monospace:h17" -- the font used in graphical neovim applications
+vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
+vim.opt.tabstop = 4 -- insert 4 spaces for a tab
+vim.opt.relativenumber = true -- relative line numbers
+vim.opt.wrap = false -- wrap lines
+vim.opt.foldenable = false 
+
 lvim.plugins = {
 	"rose-pine/neovim", as = "rose-pine",
 	"nvim-neotest/nvim-nio",
