@@ -152,9 +152,13 @@ _akamai_cli_bash_autocomplete() {
 
 complete -F _akamai_cli_bash_autocomplete akamai
 
-if command -v nvim >/dev/null 2>&1; then
-  alias vim=nvim
+if command -v lvim >/dev/null 2>&1; then
+    alias vim=lvim
+elif command -v nvim >/dev/null 2>&1; then
+    alias vim=nvim
 fi
+
+
 
 #zprof
 
