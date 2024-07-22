@@ -1,87 +1,38 @@
--- Read the docs: https://www.lunarvim.org/docs/configuration
--- Example configs: https://github.com/LunarVim/starter.lvim
--- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
--- Forum: https://www.reddit.com/r/lunarvim/
--- Discord: https://discord.com/invite/Xb9B4Ny
-lvim.plugins = {
-	"rose-pine/neovim", as = "rose-pine",
-  "varnishcache-friends/vim-varnish",
-}
-
--- set default colorscheme - change with <Leader>sc
-lvim.colorscheme = 'rose-pine'
-
-require("rose-pine").setup({
-    variant = "auto", -- auto, main, moon, or dawn
-    dark_variant = "main", -- main, moon, or dawn
-    dim_inactive_windows = false,
-    extend_background_behind_borders = true,
-
-    enable = {
-        terminal = true,
-        legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
-        migrations = true, -- Handle deprecated options automatically
-    },
-
-    styles = {
-        bold = true,
-        italic = false,
-        transparency = false,
-    },
-
-    groups = {
-        border = "muted",
-        link = "iris",
-        panel = "surface",
-
-        error = "love",
-        hint = "iris",
-        info = "foam",
-        note = "pine",
-        todo = "rose",
-        warn = "gold",
-
-        git_add = "foam",
-        git_change = "rose",
-        git_delete = "love",
-        git_dirty = "rose",
-        git_ignore = "muted",
-        git_merge = "iris",
-        git_rename = "pine",
-        git_stage = "iris",
-        git_text = "rose",
-        git_untracked = "subtle",
-
-        h1 = "iris",
-        h2 = "foam",
-        h3 = "rose",
-        h4 = "gold",
-        h5 = "pine",
-        h6 = "foam",
-    },
-
-    highlight_groups = {
-        -- Comment = { fg = "foam" },
-        -- VertSplit = { fg = "muted", bg = "muted" },
-    },
-
-    before_highlight = function(group, highlight, palette)
-        -- Disable all undercurls
-        -- if highlight.undercurl then
-        --     highlight.undercurl = false
-        -- end
-        --
-        -- Change palette colour
-        -- if highlight.fg == palette.pine then
-        --     highlight.fg = palette.foam
-        -- end
-    end,
-})
-
-vim.cmd("colorscheme rose-pine")
--- vim.cmd("colorscheme rose-pine-main")
--- vim.cmd("colorscheme rose-pine-moon")
--- vim.cmd("colorscheme rose-pine-dawn")
-
--- lvim.builtin.which_key.mappings["e"] = { "<cmd>NvimTreeFocus<CR>", "Explorer" }
-lvim.builtin.nvimtree.setup.actions.open_file.quit_on_open = true
+reload "user.plugins"
+reload "user.options"
+reload "user.keymaps"
+reload "user.lsp"
+reload "user.smoothie"
+reload "user.harpoon"
+reload "user.autocommands"
+reload "user.webdev-icons"
+reload "user.cybu"
+reload "user.neotest"
+reload "user.surround"
+reload "user.bookmark"
+reload "user.todo-comments"
+reload "user.jaq"
+reload "user.fidget"
+reload "user.lab"
+reload "user.git"
+reload "user.zen-mode"
+reload "user.inlay-hints"
+reload "user.telescope"
+reload "user.bqf"
+reload "user.dial"
+reload "user.numb"
+reload "user.treesitter"
+reload "user.neogit"
+reload "user.colorizer"
+reload "user.lualine"
+reload "user.tabnine"
+reload "user.copilot"
+-- reload "user.chatgpt"
+reload "user.whichkey"
+reload "user.neoai"
+reload "user.cmp"
+reload "user.nvimtree"
+reload "nostr"
+reload "user.astro-tools"
+reload "user.matchup"
+reload "user.modicator"
