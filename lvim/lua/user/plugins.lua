@@ -1,13 +1,29 @@
 -- Additional Plugins
 lvim.plugins = {
+  { "folke/trouble.nvim" },
+  { "theprimeagen/harpoon" },
+  { "CRAG666/code_runner.nvim" },
+  { "mg979/vim-visual-multi", branch = "master" },
+  { "mfussenegger/nvim-dap" },
+  { "mfussenegger/nvim-dap-python" },
+  { "AckslD/swenv.nvim" },
+  { "rose-pine/neovim" },
+  { "nordtheme/vim" },
+  { "folke/todo-comments.nvim" },
+  {
+    "s1n7ax/nvim-window-picker",
+    version = "v1.*",
+    config = function()
+      require("window-picker").setup()
+    end,
+  },
   "nvim-neotest/nvim-nio",
-  "rose-pine/neovim", as = "rose-pine",
   "varnishcache-friends/vim-varnish",
   {
     "mawkler/modicator.nvim",
     event = "ColorScheme",
   },
-  "HiPhish/nvim-ts-rainbow2",
+  "HiPhish/rainbow-delimiters.nvim",
   "andymass/vim-matchup",
   "lunarvim/synthwave84.nvim",
   {
@@ -18,7 +34,6 @@ lvim.plugins = {
   },
   "kkharji/sqlite.lua",
   "stevearc/dressing.nvim",
-  "AckslD/swenv.nvim",
   "roobert/tailwindcss-colorizer-cmp.nvim",
   -- "nvim-treesitter/playground",
   "nvim-treesitter/nvim-treesitter-textobjects",
@@ -30,11 +45,8 @@ lvim.plugins = {
   },
   "windwp/nvim-ts-autotag",
   "kylechui/nvim-surround",
-  "christianchiarulli/harpoon",
-  -- "MattesGroeger/vim-bookmarks",
   "NvChad/nvim-colorizer.lua",
   "moll/vim-bbye",
-  "folke/todo-comments.nvim",
   "windwp/nvim-spectre",
   "f-person/git-blame.nvim",
   "ruifm/gitlinker.nvim",
@@ -107,7 +119,6 @@ lvim.plugins = {
 
   "MunifTanjim/nui.nvim",
   "Bryley/neoai.nvim",
-  "mfussenegger/nvim-dap-python",
   "nvim-neotest/neotest",
   "nvim-neotest/neotest-python",
   {
