@@ -1,0 +1,82 @@
+# ruff.toml
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr", ".direnv", ".eggs", ".git", ".git-rewrite", ".hg",
+    ".ipynb_checkpoints", ".mypy_cache", ".nox", ".pants.d",
+    ".pyenv", ".pytest_cache", ".pytype", ".ruff_cache", ".svn",
+    ".tox", ".venv", ".vscode", "__pypackages__", "_build", "buck-out",
+    "build", "dist", "node_modules", "site-packages", "build",
+    ".flatpak-builder", "venv",
+]
+
+# General configuration options
+line-length = 100
+indent-width = 4
+
+# Target Python version
+target-version = "py38"
+
+# Enable Pyflakes (`F`) and a subset of pycodestyle (`E`) codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = [
+    # Ignore warnings and errors that are not worth fixing or are too difficult to fix
+    "RUF001",  # String contains ambiguous `！` (FULLWIDTH EXCLAMATION MARK)
+    "B028",    # No explicit `stacklevel` keyword argument found
+    "E402",    # Module level import not at top of file (useful in GTK)
+    
+    # Ignore warnings and errors that should be fixed in the future
+    "RUF012",  # Mutable class attributes should be annotated with `typing.ClassVar`
+    "PERF401", # Use a list comprehension to create a transformed list
+    "RUF100",  # Unused `noqa` directive (non-enabled: `C901`)
+    "RUF013",  # PEP 484 prohibits implicit `Optional`
+    "PERF203", # `try`-`except` within a loop incurs performance overhead
+    "RUF015",  # Prefer `next(...)` over single element slice
+    "PERF102", # When using only the values of a dict use the `values()` method
+    "B011",    # Do not `assert False` (`python -O` removes these calls), raise `AssertionError()`
+    "RUF005",  # Consider iterable unpacking instead of concatenation
+    "A003",    # Class attribute `id` is shadowing a Python builtin
+    "B024",    # Abstract base class has no abstract methods
+    "B905",    # `zip()` without an explicit `strict=` parameter
+    "ARG002",  # Unused method argument: `mock_path_exists`
+    "E722",    # Do not use bare `except`
+    "B904",    # Use `raise ... from err` in `except` clause
+    "B008",    # Do not perform function call in argument defaults
+    "ARG005",  # Unused lambda argument: `e`
+    "ARG001",  # Unused function argument: `args`
+    "PERF402", # Use `list` or `list.copy` to create a copy of a list
+    "B009",    # Do not call `getattr` with a constant attribute value
+    "A002",    # Argument `type` is shadowing a Python builtin
+    "ARG004",  # Unused static method argument: `x`
+    "B020",    # Loop control variable overrides iterable it iterates
+    "B018",    # Found useless expression. Assign it to a variable or remove it
+]
+
+# Allow fixes for all enabled rules
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Formatting options
+[format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Automatically detect the appropriate line ending.
+line-ending = "auto"
+
+# Enable auto-formatting of code examples in docstrings.
+docstring-code-format = false
+
+# Set the line length limit used when formatting code snippets in docstrings.
+docstring-code-line-length = "dynamic"
+
