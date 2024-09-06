@@ -5,6 +5,7 @@ import argparse
 import platform
 import os
 from pathlib import Path
+from typing import List, Dict, Optional
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress
@@ -78,8 +79,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-
-def execute_tasks(tasks: list[dict], current_dir: Path, args: argparse.Namespace) -> None:
+def execute_tasks(tasks: List[Dict[str, Optional[str]]], current_dir: Path, args: argparse.Namespace) -> None:
     """Executes the tasks outlined in the config file."""
     console.print(
         Panel("Copying dirs & files outlined in config.yaml", style="cyan", width=80)
@@ -89,11 +89,12 @@ def execute_tasks(tasks: list[dict], current_dir: Path, args: argparse.Namespace
         source = current_dir / Path(task.get("source", "")).expanduser()
         copy_files_or_directories(str(target), str(source), args)
 
-def create_empty_file(filename):
+
+def create_empty_file(filename: str) -> None:
     """Create an empty file with the given filename in the user's home directory."""
     home_dir = os.path.expanduser("~")
     file_path = os.path.join(home_dir, filename)
-   
+
     if os.path.exists(file_path):
         console.print(f"File already exists at {home_dir}/{filename}. Skipping...")
     else:
@@ -114,12 +115,14 @@ def main() -> None:
 
     config = load_config(args.config)
 
+    # Ensure tasks are a list of dictionaries
     tasks = [
-        task for task in config.get("tasks", {}) if not task.get("os") or task.get("os") == platform.system().lower()
+        task for task in config.get("tasks", [])  # Ensure it defaults to a list
+        if not task.get("os") or task.get("os") == platform.system().lower()
     ]
 
     if not args.skip_packages:
-        # package installer
+        # Package installer
         console.print(
             Panel("Installing packages with package manager & pip", style="cyan", width=80)
         )
@@ -187,7 +190,6 @@ def main() -> None:
             elif current_os == "darwin":
                 create_empty_file(".zsh.osx")
                 create_empty_file(".zprivate")
-                pip_packages = []
                 with Progress() as progress:
                     task = progress.add_task(
                         "[cyan]Checking package installation...", total=len(brew_packages)
@@ -198,7 +200,6 @@ def main() -> None:
                 install_packages(brew_packages, "homebrew")
 
         install_packages(pip_packages, "pip")
-
 
     current_dir = Path(__file__).resolve().parent
     os.chdir(current_dir)
