@@ -5,7 +5,7 @@
 lvim.colorscheme = "rose-pine"
 
 require("rose-pine").setup({
-    variant = "auto", -- auto, main, moon, or dawn
+    variant = "dawn", -- auto, main, moon, or dawn
     dark_variant = "main", -- main, moon, or dawn
     dim_inactive_windows = false,
     extend_background_behind_borders = true,
@@ -54,20 +54,20 @@ require("rose-pine").setup({
     },
 
     highlight_groups = {
-        -- Comment = { fg = "foam" },
-        -- VertSplit = { fg = "muted", bg = "muted" },
+        Comment = { fg = "foam" },
+        VertSplit = { fg = "muted", bg = "muted" },
     },
 
     before_highlight = function(group, highlight, palette)
         -- Disable all undercurls
-        -- if highlight.undercurl then
-        --     highlight.undercurl = false
-        -- end
+        --if highlight.undercurl then
+        --    highlight.undercurl = false
+        --end
         --
         -- Change palette colour
-        -- if highlight.fg == palette.pine then
-        --     highlight.fg = palette.foam
-        -- end
+        --if highlight.fg == palette.pine then
+        --    highlight.fg = palette.foam
+        --end
     end,
 })
 
@@ -133,6 +133,6 @@ local options = {
   title = true,
   titleold = vim.split(os.getenv("SHELL") or "", "/")[3] ,
   -- colorcolumn = "80",
-  -- colorcolumn = "120",
+  colorcolumn = "120",
 }
 

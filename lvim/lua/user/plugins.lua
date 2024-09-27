@@ -8,7 +8,6 @@ lvim.plugins = {
   { "folke/todo-comments.nvim" },
   { "varnishcache-friends/vim-varnish" },
   { "HiPhish/rainbow-delimiters.nvim" },
-  --{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   { "nvim-lua/plenary.nvim" },
   { "kylechui/nvim-surround" },
   { "christianchiarulli/harpoon" },
