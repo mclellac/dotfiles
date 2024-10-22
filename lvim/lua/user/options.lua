@@ -1,4 +1,4 @@
--- options.lua
+-- ~/.config/lvim/lua/user/options.lua
 -- lvim.colorscheme = "onedark"
 -- lvim.colorscheme = "darkplus"
 -- lvim.colorscheme = "nord"

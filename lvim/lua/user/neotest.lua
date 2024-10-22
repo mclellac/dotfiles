@@ -1,3 +1,4 @@
+-- ~/.config/lvim/lua/user/neotest.lua
 lvim.builtin.which_key.mappings["dm"] = { "<cmd>lua require('neotest').run.run()<cr>", "Test Method" }
 lvim.builtin.which_key.mappings["dM"] =
   { "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>", "Test Method DAP" }

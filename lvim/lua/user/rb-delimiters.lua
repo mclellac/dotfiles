@@ -1,4 +1,4 @@
--- Setup rainbow-delimiters configuration
+-- ~/.config/lvim/lua/user/rb-delimiters.lua
 local rainbow_delimiters = require('rainbow-delimiters')
 
 require('rainbow-delimiters.setup')({

@@ -2,32 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import argparse
-import platform
 import os
+import platform
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.progress import Progress
 from rich.theme import Theme
 
-from installer.setup_logs import setup_logging, log
+from installer.actions import (action_gitconfig_secret,
+                               action_install_neovim_py, action_shell_to_zsh,
+                               action_vim_update, action_zgen_update,
+                               execute_post_install_actions, run_command)
 from installer.files import copy_files_or_directories
-from installer.packages import (
-    is_package_installed,
-    install_packages,
-    enable_copr_repo,
-)
-from installer.actions import (
-    run_command,
-    execute_post_install_actions,
-    action_zgen_update,
-    action_vim_update,
-    action_install_neovim_py,
-    action_shell_to_zsh,
-    action_gitconfig_secret,
-)
+from installer.packages import (enable_copr_repo, install_packages,
+                                is_package_installed)
 from installer.setup_config import load_config
+from installer.setup_logs import log, setup_logging
 
 # Define the custom theme
 custom_theme = Theme(

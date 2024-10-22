@@ -1,5 +1,4 @@
 -- ~/.config/lvim/lua/user/luasnip.lua
-
 local luasnip = require('luasnip')
 
 -- Load friendly-snippets

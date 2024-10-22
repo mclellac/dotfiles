@@ -1,3 +1,4 @@
+-- ~/.config/lvim/lua/user/harpoon.lua
 local status_ok, telescope = pcall(require, "telescope")
 if not status_ok then
   return
