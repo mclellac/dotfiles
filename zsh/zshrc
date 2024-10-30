@@ -125,10 +125,25 @@ export PATH="/usr/local/opt/llvm/bin:${HOME}/.emacs.d/bin:${HOME}/.local/bin:/us
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Solarized colors
-export FZF_DEFAULT_OPTS='
-  --color=bg+:#1a473a,bg:#383838,spinner:#2CFFE0,hl:#35ad81
-  --color=fg:#839496,header:#20d9d3,info:#35ad81,pointer:#00f1f1
-  --color=marker:#1f454b,fg+:#41d99f,prompt:#2f9a73,hl+:#00ffd9'
+#export FZF_DEFAULT_OPTS='
+#  --color=bg+:#1a473a,bg:#383838,spinner:#2CFFE0,hl:#35ad81
+#  --color=fg:#839496,header:#20d9d3,info:#35ad81,pointer:#00f1f1
+#  --color=marker:#1f454b,fg+:#41d99f,prompt:#2f9a73,hl+:#00ffd9'
+
+export FZF_DEFAULT_OPTS="
+	--color=fg:#797593,bg:#faf4ed,hl:#d7827e
+	--color=fg+:#575279,bg+:#f2e9e1,hl+:#d7827e
+	--color=border:#dfdad9,header:#286983,gutter:#faf4ed
+	--color=spinner:#ea9d34,info:#56949f
+	--color=pointer:#907aa9,marker:#b4637a,prompt:#797593"
+
+# Rose Pine
+#export FZF_DEFAULT_OPTS="
+#	--color=fg:#908caa,bg:#191724,hl:#ebbcba
+#	--color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba
+#	--color=border:#403d52,header:#31748f,gutter:#191724
+#	--color=spinner:#f6c177,info:#9ccfd8
+#	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"
 
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zoptions
 source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zbindings
