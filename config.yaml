@@ -15,11 +15,8 @@ tasks:
   - target: "~/.config/openssl.conf"
     source: "openssl/openssl.conf"
 
-  #- target: "~/.config/nvim"
-  #  source: "nvim"
-
-  - target: "~/.config/lvim"
-    source: "lvim"
+  - target: "~/.config/nvim"
+    source: "nvim"
 
   - target: "~/.config/ruff"
     source: "ruff"

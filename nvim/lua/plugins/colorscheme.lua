@@ -21,7 +21,7 @@ local function is_warp_terminal()
 end
 
 -- Default colorscheme
-local default_color_scheme = "rose-pine"
+local default_color_scheme = "rose-pine-dawn"
 
 -- Select colorscheme based on the time, and load it with LazyVim
 local function selectColorSchemeByTime()
