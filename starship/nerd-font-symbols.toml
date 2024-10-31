@@ -1,93 +1,241 @@
-[aws]
-symbol = "  "
+# Set the custom color palette for the prompt
+palette = "rose-pine-dawn"
 
-[buf]
-symbol = " "
+# Define the "rose-pine-dawn" color palette
+[palettes.rose-pine-dawn]
+overlay = '#faf4ed'
+love = '#b4637a'
+gold = '#ea9d34'
+rose = '#d7827e'
+pine = '#286983'
+foam = '#56949f'
+iris = '#907aa9'
 
-[c]
-symbol = " "
+# Prompt configuration
+format = """
+    $username \
+    $directory \
+    $git_branch \
+    $git_status \
+    $docker_context \
+    $kubernetes \
+    $aws \
+    $env_var \
+    $gcloud \
+    $azure \
+    $helm \
+    $fill \
+    $c \
+    $golang \
+    $java \
+    $julia \
+    $nodejs \
+    $nim \
+    $rust \
+    $scala \
+    $python \
+    [󱞪](fg:iris)
+"""
 
-[conda]
-symbol = " "
-
-[crystal]
-symbol = " "
-
-[dart]
-symbol = " "
-
+# Directory Configuration
 [directory]
+format = "[ $path ]($style)"
+style = "fg:pine"
+truncation_length = 3
+truncation_symbol = "…/"
 read_only = " 󰌾"
 
-[docker_context]
-symbol = " "
+[directory.substitutions]
+Documents = "󰈙"
+Downloads = " "
+Music = " "
+Pictures = " "
 
-[elixir]
-symbol = " "
+# Fill Section
+[fill]
+style = "fg:overlay"
+symbol = " "
 
-[elm]
-symbol = " "
-
-[fennel]
-symbol = " "
-
-[fossil_branch]
-symbol = " "
-
+# Git Branch
 [git_branch]
-symbol = " "
+format = "[ $symbol $branch ]($style)"
+style = "fg:foam"
+symbol = ""
 
-[git_commit]
-tag_symbol = '  '
+# Git Status
+[git_status]
+style = "fg:love"
+format = "[$all_status$ahead_behind]($style)"
+disabled = true
+
+# Username
+[username]
+disabled = false
+format = "[ 󰧱 $user ]($style)"
+show_always = false
+style_root = "fg:iris"
+style_user = "fg:iris"
+
+# Docker Context
+[docker_context]
+format = "[$symbol $context]($style)"
+symbol = ""
+style = "fg:foam"
+
+# Kubernetes Context
+[kubernetes]
+disabled = false
+style = "fg:love"
+format = "[ $symbol$user@$context/$namespace]($style)"
+symbol = "☸"
+
+[[kubernetes.contexts]]
+context_pattern = ".*/api-(?P<cluster>\\w+).*"
+context_alias = "$cluster"
+user_pattern = "(?P<username>\\w+)/.*"
+user_alias = "$username"
+
+# AWS
+[aws]
+format = "[$symbol $profile]($style)"
+symbol = " "
+style = "fg:gold"
+disabled = false
+
+# Display the environment variable used to vary the active gcloud configuration.
+[env_var]
+variable = "CLOUDSDK_ACTIVE_CONFIG_NAME"
+format = "$symbol  [$env_value]($style)"
+symbol = "󱇶 Google Cloud"
+
+# Google Cloud (gcloud)
+[gcloud]
+format = "[$symbol $account(@$project)]($style)"
+symbol = "󰞲 "
+style = "fg:rose"
+disabled = false
+
+# Azure
+[azure]
+format = "[$symbol $subscription]($style)"
+symbol = " "
+style = "fg:foam"
+disabled = false
+
+# Custom Azure display
+[custom.azure]
+command = "az account show -o json | jq -r .name"
+when = "true"
+format = "$symbol [$output]($style)"
+symbol = "⛈️"
+
+# Helm
+[helm]
+format = "[$symbol $release]($style)"
+symbol = "⎈ "
+style = "fg:love"
+disabled = false
+
+# Language Modules
+
+[c]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
 
 [golang]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
 symbol = " "
 
-[guix_shell]
-symbol = " "
-
-[haskell]
-symbol = " "
-
-[haxe]
-symbol = " "
-
-[hg_branch]
-symbol = " "
-
-[hostname]
-ssh_symbol = " "
-
 [java]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
 symbol = " "
 
 [julia]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
 symbol = " "
 
-[kotlin]
-symbol = " "
-
-[lua]
-symbol = " "
-
-[memory_usage]
-symbol = "󰍛 "
-
-[meson]
-symbol = "󰔷 "
-
-[nim]
-symbol = "󰆥 "
-
-[nix_shell]
-symbol = " "
-
 [nodejs]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
 symbol = " "
 
-[ocaml]
-symbol = " "
+[nim]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = "󰆥 "
 
+[rust]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = "󱘗 "
+
+[scala]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+[python]
+style = "fg:pine"
+format = "[$symbol$version]($style) "
+symbol = " "
+
+# Additional Modules
+
+[buf]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[conda]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[crystal]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[dart]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[fennel]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[gradle]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[rlang]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = "󰟔 "
+
+[ruby]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[swift]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+[zig]
+style = "fg:pine"
+format = "[$symbol$version]($style)"
+symbol = " "
+
+# Operating Systems
 [os.symbols]
 Alpaquita = " "
 Alpine = " "
@@ -132,39 +280,3 @@ Ubuntu = " "
 Unknown = " "
 Void = " "
 Windows = "󰍲 "
-
-[package]
-symbol = "󰏗 "
-
-[perl]
-symbol = " "
-
-[php]
-symbol = " "
-
-[pijul_channel]
-symbol = " "
-
-[python]
-symbol = " "
-
-[rlang]
-symbol = "󰟔 "
-
-[ruby]
-symbol = " "
-
-[rust]
-symbol = "󱘗 "
-
-[scala]
-symbol = " "
-
-[swift]
-symbol = " "
-
-[zig]
-symbol = " "
-
-[gradle]
-symbol = " "
