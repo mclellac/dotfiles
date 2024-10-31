@@ -15,6 +15,9 @@ tasks:
   - target: "~/.config/openssl.conf"
     source: "openssl/openssl.conf"
 
+  - target: "~/.config/starship"
+    source: "starship"
+
   - target: "~/.config/nvim"
     source: "nvim"
 

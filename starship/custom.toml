@@ -46,7 +46,7 @@ truncation_symbol = "…/"
 read_only = " 󰌾"
 
 [directory.substitutions]
-Documents = "󰈙"
+Documents = "󰈙 "
 Downloads = " "
 Music = " "
 Pictures = " "
@@ -60,7 +60,7 @@ symbol = " "
 [git_branch]
 format = "[ $symbol $branch ]($style)"
 style = "fg:foam"
-symbol = ""
+symbol = " "
 
 # Git Status
 [git_status]
@@ -79,7 +79,7 @@ style_user = "fg:iris"
 # Docker Context
 [docker_context]
 format = "[$symbol $context]($style)"
-symbol = ""
+symbol = " "
 style = "fg:foam"
 
 # Kubernetes Context
@@ -87,7 +87,7 @@ style = "fg:foam"
 disabled = false
 style = "fg:love"
 format = "[ $symbol$user@$context/$namespace]($style)"
-symbol = "☸"
+symbol = "☸ "
 
 [[kubernetes.contexts]]
 context_pattern = ".*/api-(?P<cluster>\\w+).*"
