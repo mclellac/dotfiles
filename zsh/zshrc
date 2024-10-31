@@ -28,7 +28,7 @@ compinit -C
 source ${HOME}/.zprivate
 
 # powerlevel10k prompt settings
-source ${HOME}/.config/dotfiles/zsh/powerlevel10k.conf
+#source ${HOME}/.config/dotfiles/zsh/powerlevel10k.conf
 
 if [[ ! -d "${HOME}/.zgen" ]]; then
     echo "Zgen not found. Installing."
@@ -46,7 +46,6 @@ if ! zgen saved; then
     zgen loadall <<EOPLUGINS
         zsh-users/zsh-syntax-highlighting
         zsh-users/zsh-autosuggestions
-        bhilburn/powerlevel9k powerlevel9k
         zsh-users/zsh-history-substring-search
 EOPLUGINS
     # ^ Can't indent EOPLUGINS.
@@ -193,3 +192,4 @@ if command -v oc &> /dev/null; then
   compdef _oc oc
 fi
 
+eval "$(starship init zsh)"
