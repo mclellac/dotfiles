@@ -1,5 +1,5 @@
 "$schema" = "https://starship.rs/config-schema.json"
-#format = "$all"
+
 right_format = ""
 continuation_prompt = "[∙](bright-black) "
 scan_timeout = 30
@@ -47,7 +47,6 @@ format = """
     [$character](fg:iris)
 """
 
-
 [character]
 format = "$symbol "
 success_symbol = "[❯](bold green)"
@@ -58,16 +57,18 @@ vimcmd_replace_symbol = "[❮](bold purple)"
 vimcmd_replace_one_symbol = "[❮](bold purple)"
 disabled = false
 
-
+[os]
+format = "[ $os. ]($style)"
+style = "fg:iris"
+disabled = false
 
 [package]
 format = "is [$symbol$version]($style) "
 symbol = "󰏗 "
-style = "208 bold"
+style = "fg:gold bold"
 display_private = false
 disabled = false
 version_format = "v${raw}"
-
 
 # Directory Configuration
 [directory]
@@ -150,19 +151,18 @@ force_display = false
 
 [aws.profile_aliases]
 
-
 # Display the environment variable used to vary the active gcloud configuration.
-[env_var]
-variable = "CLOUDSDK_ACTIVE_CONFIG_NAME"
-format = "$symbol  [$env_value]($style)"
-symbol = "󱇶 Google Cloud"
+#[env_var]
+#variable = "CLOUDSDK_ACTIVE_CONFIG_NAME"
+#format = "$symbol  [$env_value]($style)"
+#symbol = "󱇶 Google Cloud"
 
 [gcloud]
 format = 'on [$symbol$account(@$domain)(\($region\))]($style) '
-symbol = "󰞲  "
+symbol = "󱇶 Google Cloud"
 style = "fg:rose"
 disabled = false
-detect_env_vars = []
+detect_env_vars = ["CLOUDSDK_ACTIVE_CONFIG_NAME"]
 
 [gcloud.region_aliases]
 
