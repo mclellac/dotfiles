@@ -1,3 +1,12 @@
+"$schema" = "https://starship.rs/config-schema.json"
+#format = "$all"
+right_format = ""
+continuation_prompt = "[∙](bright-black) "
+scan_timeout = 30
+command_timeout = 500
+add_newline = true
+follow_symlinks = true
+
 # Set the custom color palette for the prompt
 palette = "rose-pine-dawn"
 
@@ -17,16 +26,10 @@ format = """
     $directory \
     $git_branch \
     $git_status \
-    $docker_context \
-    $kubernetes \
-    $aws \
-    $env_var \
-    $gcloud \
-    $azure \
-    $helm \
     $fill \
     $c \
     $golang \
+    $lua \
     $java \
     $julia \
     $nodejs \
@@ -34,33 +37,71 @@ format = """
     $rust \
     $scala \
     $python \
-    [󱞪](fg:iris)
+    $docker_context \
+    $kubernetes \
+    $aws \
+    $env_var \
+    $gcloud \
+    $azure \
+    $helm \
+    [$character](fg:iris)
 """
+
+
+[character]
+format = "$symbol "
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"
+vimcmd_visual_symbol = "[❮](bold yellow)"
+vimcmd_replace_symbol = "[❮](bold purple)"
+vimcmd_replace_one_symbol = "[❮](bold purple)"
+disabled = false
+
+
+
+[package]
+format = "is [$symbol$version]($style) "
+symbol = "󰏗 "
+style = "208 bold"
+display_private = false
+disabled = false
+version_format = "v${raw}"
+
 
 # Directory Configuration
 [directory]
 format = "[ $path ]($style)"
 style = "fg:pine"
-truncation_length = 3
+truncation_length = 12
 truncation_symbol = "…/"
 read_only = " 󰌾"
 
 [directory.substitutions]
 Documents = "󰈙 "
 Downloads = " "
-Music = " "
+Music = "󰝚 "
 Pictures = " "
+"~/Projects/src/github.com" = ""
+"~/Projects/src/gitlab.nm.cbc.ca" = ""
+"~/Projects/src/bitbucket.org" = ""
 
 # Fill Section
 [fill]
 style = "fg:overlay"
 symbol = " "
 
-# Git Branch
+# Git
 [git_branch]
-format = "[ $symbol $branch ]($style)"
+format = "on [$symbol$branch(:$remote_branch)]($style) "
+symbol = " "
 style = "fg:foam"
-symbol = " "
+truncation_length = 9223372036854775807
+truncation_symbol = "…"
+only_attached = false
+always_show_remote = false
+ignore_branches = []
+disabled = false
 
 # Git Status
 [git_status]
@@ -82,25 +123,33 @@ format = "[$symbol $context]($style)"
 symbol = " "
 style = "fg:foam"
 
-# Kubernetes Context
 [kubernetes]
-disabled = false
-style = "fg:love"
-format = "[ $symbol$user@$context/$namespace]($style)"
 symbol = "☸ "
+format = '[$symbol$context( \($namespace\))]($style) in '
+style = "fg:love"
+disabled = true
+detect_extensions = []
+detect_files = []
+detect_folders = []
+detect_env_vars = []
+contexts = []
 
-[[kubernetes.contexts]]
-context_pattern = ".*/api-(?P<cluster>\\w+).*"
-context_alias = "$cluster"
-user_pattern = "(?P<username>\\w+)/.*"
-user_alias = "$username"
+[kubernetes.context_aliases]
 
-# AWS
+[kubernetes.user_aliases]
+
 [aws]
-format = "[$symbol $profile]($style)"
-symbol = " "
+format = 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
+symbol = "  "
 style = "fg:gold"
 disabled = false
+expiration_symbol = "X"
+force_display = false
+
+[aws.region_aliases]
+
+[aws.profile_aliases]
+
 
 # Display the environment variable used to vary the active gcloud configuration.
 [env_var]
@@ -108,26 +157,30 @@ variable = "CLOUDSDK_ACTIVE_CONFIG_NAME"
 format = "$symbol  [$env_value]($style)"
 symbol = "󱇶 Google Cloud"
 
-# Google Cloud (gcloud)
 [gcloud]
-format = "[$symbol $account(@$project)]($style)"
-symbol = "󰞲 "
+format = 'on [$symbol$account(@$domain)(\($region\))]($style) '
+symbol = "󰞲  "
 style = "fg:rose"
 disabled = false
+detect_env_vars = []
+
+[gcloud.region_aliases]
+
+[gcloud.project_aliases]
 
 # Azure
 [azure]
-format = "[$symbol $subscription]($style)"
+format = "on [$symbol($subscription)]($style) "
 symbol = " "
 style = "fg:foam"
 disabled = false
 
 # Custom Azure display
-[custom.azure]
-command = "az account show -o json | jq -r .name"
-when = "true"
-format = "$symbol [$output]($style)"
-symbol = "⛈️"
+#[custom.azure]
+#command = "az account show -o json | jq -r .name"
+#when = "true"
+#format = "on $symbol [$output]($style)"
+#symbol = ""
 
 # Helm
 [helm]
@@ -142,6 +195,17 @@ disabled = false
 style = "fg:pine"
 format = "[$symbol$version]($style) "
 symbol = " "
+
+[lua]
+format = "via [$symbol($version )]($style)"
+version_format = "v${raw}"
+symbol = " "
+style = "bold blue"
+lua_binary = "lua"
+disabled = false
+detect_extensions = ["lua"]
+detect_files = [".lua-version"]
+detect_folders = ["lua"]
 
 [golang]
 style = "fg:pine"
