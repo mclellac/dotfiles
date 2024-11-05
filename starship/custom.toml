@@ -57,10 +57,10 @@ vimcmd_replace_symbol = "[❮](bold purple)"
 vimcmd_replace_one_symbol = "[❮](bold purple)"
 disabled = false
 
-[os]
-format = "[ $os. ]($style)"
-style = "fg:iris"
-disabled = false
+#[os]
+#format = "[ $name ]($style)"
+#style = "fg:iris"
+#disabled = false
 
 [package]
 format = "is [$symbol$version]($style) "
