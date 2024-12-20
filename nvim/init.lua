@@ -9,10 +9,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.textwidth = 100
   end,
 })
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "python",
-  callback = function()
-    vim.opt_local.colorcolumn = "100"
-  end,
-})
