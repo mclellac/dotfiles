@@ -4,7 +4,6 @@ right_format = ""
 continuation_prompt = "[∙](bright-black) "
 scan_timeout = 30
 command_timeout = 500
-add_newline = true
 follow_symlinks = true
 
 # Set the custom color palette for the prompt
@@ -57,6 +56,8 @@ vimcmd_replace_symbol = "[❮](bold purple)"
 vimcmd_replace_one_symbol = "[❮](bold purple)"
 disabled = false
 
+[cmd_duration]
+disabled = true
 #[os]
 #format = "[ $name ]($style)"
 #style = "fg:iris"
@@ -83,7 +84,7 @@ Documents = "󰈙 "
 Downloads = " "
 Music = "󰝚 "
 Pictures = " "
-"~/Projects/src/github.com" = ""
+"~/Projects/src/github.com" = " "
 "~/Projects/src/gitlab.nm.cbc.ca" = ""
 "~/Projects/src/bitbucket.org" = ""
 
