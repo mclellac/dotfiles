@@ -40,15 +40,21 @@ end
 
 -- Neovide specific settings
 if vim.g.neovide then
-  print("neovide settings from ginit.lua is being loaded")
+  print("neovide settings from init.lua loaded")
   vim.o.guifont = font_name .. ":h" .. font_size -- Use vim.o for options
   vim.g.neovide_remember_window_size = true -- Updated option name
   vim.g.neovide_remember_window_position = true -- Updated option name
-  vim.g.neovide_scale_factor = 1.0
+  vim.g.neovide_scale_factor = 1.2
   vim.g.neovide_padding_top = 10
   vim.g.neovide_padding_bottom = 10
   vim.g.neovide_padding_right = 10
   vim.g.neovide_padding_left = 10
+  vim.g.neovide_cursor_antialiasing = true
+  vim.g.neovide_cursor_smooth_blink = true
+  vim.g.neovide_cursor_vfx_mode = "torpedo"
+  vim.g.neovide_cursor_animate_in_insert_mode = true
+  vim.g.neovide_cursor_animate_command_line = true
+  vim.g.neovide_hide_mouse_when_typing = true
 
   local function toggle_transparency()
     vim.g.neovide_transparency = vim.g.neovide_transparency == 1.0 and 0.8 or 1.0
