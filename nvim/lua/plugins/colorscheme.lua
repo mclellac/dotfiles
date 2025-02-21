@@ -1,5 +1,17 @@
 return {
   {
+    "Mofiqul/adwaita.nvim",
+    lazy = false,
+    priority = 1000,
+
+    config = function()
+      vim.g.adwaita_darker = false -- for darker version
+      vim.g.adwaita_disable_cursorline = true -- to disable cursorline
+      vim.g.adwaita_transparent = false -- makes the background transparent
+      --vim.cmd("colorscheme adwaita")
+    end,
+  },
+  {
     "ellisonleao/gruvbox.nvim",
     opts = {
       bold = false,
@@ -31,12 +43,12 @@ return {
     name = "rose-pine",
     opts = {
       variant = "main",
-      disable_background = is_transparent,
-      disable_float_background = is_transparent,
-      styles = {
+      --disable_background = is_transparent,
+      --disable_float_background = is_transparent,
+      setmetatableyles = {
         bold = true,
         italic = false,
-        transparency = is_transparent,
+        --transparency = is_transparent,
       },
     },
     lazy = true,
@@ -45,7 +57,8 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "rose-pine-dawn",
+      colorscheme = "adwaita",
+      --colorscheme = "rose-pine-dawn",
     },
   },
 }
