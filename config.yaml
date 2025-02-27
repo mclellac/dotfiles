@@ -62,8 +62,8 @@ tasks:
     os: linux
 
   # Darwin only
-  - target: "~/.doom.d"
-    source: "doom.d"
+  - target: "~/.config/doom"
+    source: "doom"
     os: darwin
 
 fedora:
