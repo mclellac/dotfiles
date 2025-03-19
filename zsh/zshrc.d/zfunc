@@ -60,6 +60,30 @@ check_compression() {
     curl -s -I -H 'Accept-Encoding: br,gzip,deflate' $1 |grep -i "Content-Encoding"
 }
 
+# convert CSV files into markdown tables
+csvtomd() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: csvtomd <filename.csv>"
+    return 1
+  fi
+
+  if [[ ! -f "$1" ]]; then
+    echo "Error: File '$1' not found."
+    return 1
+  fi
+
+  if [[ "$1" != *.csv ]]; then
+    echo "Error: Input file must have a .csv extension."
+    return 1
+  fi
+
+  if [[ $(wc -l < "$1") -eq 0 ]]; then
+    echo "Error: Input file is empty."
+    return 1
+  fi
+
+  awk -F',' 'NR==1{printf "|"; for(i=1;i<=NF;i++) printf " %s |", $i; print ""; printf "|"; for(i=1;i<=NF;i++) printf " --- |"; print ""} NR>1{printf "|"; for(i=1;i<=NF;i++) printf " %s |", $i; print ""}' "$1"
+}
 
 #--------------------------------------------------------------#
 # list the top 20 commands used in history.
