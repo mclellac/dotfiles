@@ -1,281 +1,93 @@
 * {
-  font-family: 'Material Design Icons', 'JetBrainsMono Nerd Font', 'Iosevka Nerd Font';
-  font-size: 10px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    font-family: "iosevka nerd font";
+    font-weight: 500;
+    font-size: 14px;
+    padding: 0;
 }
 
-#waybar {
-  background-color: #1d2027;
-  color: #ffffff;
-  border-radius: 75px;
-  border: 3px solid #3a404e;
-}
-
-#waybar.hidden {
-  opacity: 0.1;
-}
-
-#window {
-  color: #51565a;
-}
-
-#workspaces,
-#custom-ibus,
-#clock,
-#cpu,
-#memory,
-#custom-media,
-#tray,
-#mode,
-#custom-lock,
-#workspaces,
-#idle_inhibitor,
-#custom-powermenu,
-#custom-launcher,
-#cpu {
-  color: #f1ab9e;
-  border-radius: 8px;
-}
-
-#memory {
-  color: #9fdaa7;
-}
-
-@keyframes button_activate {
-  from { opacity: .3; }
-  to { opacity: 1; }
-}
-
-#workspaces button {
-  border: none;
-  color:  #f2efa9;
-  padding: 3px;
-  background: transparent;
-  box-shadow: none;
-}
-
-#workspaces button.active {
-  color: #aacff3;
-  background: radial-gradient(circle, rgba(20, 48, 187, 0.699) 5%, rgba(36, 39, 54, 0.5) 18%, rgba(132, 129, 156, 0) 23%, rgba(70, 76, 98, 0.201) 24%, rgba(132, 129, 156, 0) 30%);
-  animation: button_activate .2s ease-in-out;
-}
-
-#workspaces button.urgent {
-  color: #ff7c65; 
-  background: radial-gradient(circle, rgba(25, 79, 255, 0.3) 20%, rgba(132, 129, 156, 0) 30%);
-}
-
-#workspaces button.persistent {
-  color: #babfc5;
-}
-
-#workspaces button:hover {
-  border: none;
-  background: radial-gradient(circle, rgba(25, 79, 255, 0.1) 20%, rgba(132, 129, 156, 0) 30%);
-}
-
-#workspaces button.active:hover,
-#workspaces button.urgent:hover {
-  background: inherit;
-}
-
-#custom-launcher {
-  margin: 1px 10px 1px 10px;
-  padding: 0px 5px 0px 0px;
-  font-size: 22px;
-  color: #c1d6ff;
-  border-radius: 8px;
-}
-
-#workspaces,
-#custom-ibus,
-#clock,
-#cpu,
-#memory,
-#backlight,
-#battery,
-#pulseaudio,
-#tray,
-#network {
-  background-color: #343943;
-  padding: 2px 10px;
-  font-size: 20px;
-  margin: 10px;
-  border-radius: 8px;
-}
-
-#workspaces {
-  padding-right: 10px;
-}
-
-#pulseaudio {
-  color: #95bfe9;
-  padding-left: 10px;
-  margin-right: 10px;
-  font-size: 25px;
-}
-
-#pulseaudio.muted {
-  color: #f9b9b3;
-}
-
-#backlight {
-  color: #9c9c9c;
-  padding: 0px 8px;
-  font-size: 21.2px;
-}
-
-#network {
-  color: #98b2d1;
-  padding: 0px 12px;
-  font-size: 20px;
-}
-
-#network.disconnected {
-  color: #fa776b;
-}
-
-#battery {
-  color: #b4f8f6;
-  padding: 0px 2px;
-  font-size: 22px;
-}
-
-#battery.critical,
-#battery.warning,
-#battery.full,
-#battery.plugged {
-  color: #fffec4;
-  padding: 0px 6px;
-  font-size: 22px;
-}
-
-#battery.charging { 
-  color: #8fbcbb;
-  font-size: 18px;
-  padding: 0px 13px;
-}
-
-#battery.full,
-#battery.plugged {
-  color: #8fbcbb;
-  font-size: 22.5px;
-  padding-right: 10px;
-}
-
-#battery.warning {
-  color: #ecd3a0;
-}
-
-#battery.critical:not(.charging) {
-  color: #fb958b;
-}
-
-#custom-lock {
-  color: #ecd3a0;
-  padding: 0px 15px;
-  margin: 7px;
-}
-
-#clock {
-  color: #d4e0fe;
-  font-family: 'Iosevka Nerd Font';
-  font-size: 17px;
-  font-weight: bold;
-  margin: 10px;
-  border-radius: 8px;
-}
-
-#custom-powermenu {
-  color: #ff9597;
-  font-size: 17px;
-  margin-right: 12px;
-  border-radius: 8px;
-  padding: 0px 6px;
-  margin: 7px;
+window#waybar {
+    background: #1d2021;
+    border: 2px solid #3c3836;
 }
 
 tooltip {
-  border-radius: 8px;
-  font-size: 30px;
-  padding: 15px;
-  background-color: #242933;
+    background-color: #1d2021;
+    border: 2px solid #7c6f64;
 }
 
-tooltip label {
-  padding: 5px;
-  background-color: #242933;
+#clock,
+#tray,
+#cpu,
+#memory,
+#battery,
+#network,
+#pulseaudio {
+    margin: 6px 6px 6px 0px;
+    padding: 2px 8px;
 }
 
-label:focus {
-  background-color: #242933;
+#workspaces {
+    background-color: #303536;
+    margin: 6px 0px 6px 6px;
+    border: 2px solid #434a4c;
+}
+
+#workspaces button {
+    all: initial;
+    min-width: 0;
+    box-shadow: inset 0 -3px transparent;
+    padding: 2px 4px;
+    color: #c7ab7a;
+}
+
+#workspaces button.focused {
+    color: #ddc7a1;
+}
+
+#workspaces button.urgent {
+    background-color: #e78a4e;
+}
+
+#clock {
+    background-color: #303536;
+    border: 2px solid #434a4c;
+    color: #d4be98;
 }
 
 #tray {
-  margin: 10px;
-  font-size: 30px;
-  border-radius: 8px;
+    background-color: #d4be98;
+    border: 2px solid #c7ab7a;
 }
 
-#tray > .passive {
-  -gtk-icon-effect: dim;
+#battery {
+    background-color: #a9b665;
+    border: 2px solid #c7ab7a;
+    color: #6c782e;
 }
 
-#tray > .needs-attention {
-  -gtk-icon-effect: highlight;
-  background-color: #eb4d4b;
-}
-
-#idle_inhibitor {
-  background-color: #242933;
-}
-
-#idle_inhibitor.activated {
-  background-color: #ecf0f1;
-  color: #2d3436;
-}
-
+#cpu,
 #memory,
-#cpu {
-  font-size: 16px;
+#network,
+#pulseaudio {
+    background-color: #ddc7a1;
+    border: 2px solid #c7ab7a;
+    color: #1d2021;
 }
 
-#custom-song_name,
-#custom-spotify,
-#custom-next,
-#custom-pre {
-  background-color: #3b4252;
-  font-size: 20px;
-  padding: 10px;
-  margin: 10px;
-  font-weight: bold;
+#cpu.critical,
+#memory.critical {
+    background-color: #ddc7a1;
+    border: 2px solid #c7ab7a;
+    color: #c14a4a;
 }
 
-#custom-pre {
-  border-radius: 8px 0px 0px 8px;
-}
-
-#custom-next {
-  border-radius: 0px 8px 8px 0px;
-}
-
-#custom-spotify {
-  padding: 0px 10px;
-}
-
-#custom-song_name {
-  font-size: 17px;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 10px;
-}
-
-#custom-ibus { 
-  font-size: 16px;
-  color: #d1cfcf;
-  font-family: sourcecodepro;
- 
-
-  font-weight: bold;
-  border-radius: 8px 8px 8px 8px;
-  margin-left: 0px;
+#battery.warning,
+#battery.critical,
+#battery.urgent {
+    background-color: #ddc7a1;
+    border: 2px solid #c7ab7a;
+    color: #c14a4a;
 }
