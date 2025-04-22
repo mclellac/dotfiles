@@ -30,11 +30,8 @@ tasks:
   - target: "~/.gitignore"
     source: "git/gitignore_global"
 
-  - target: "~/.config/kitty/kitty.conf"
-    source: "kitty/kitty.conf"
-
-  - target: "~/.config/kitty/gruvbox_dark.conf"
-    source: "kitty/gruvbox_dark.conf"
+  - target: "~/.config/kitty"
+    source: "kitty"
 
   # Linux only
   - target: "~/.config/hypr"
