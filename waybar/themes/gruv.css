@@ -1,0 +1,238 @@
+/* =============================================================================
+ *
+ * Waybar configuration
+ * Configuration for HiDPI Displays
+ * Gruvbox Dark Theme Inspired
+ *
+ * =========================================================================== */
+
+/* -----------------------------------------------------------------------------
+ * Reset and Global Styles
+ * -------------------------------------------------------------------------- */
+* {
+    border: none;
+    border-radius: 10px; /* Slightly large radius for a softer look */
+    font-family: "Iosevka Nerd Font", "JetBrainsMono Nerd Font", FontAwesome, sans-serif; /* Add fallbacks */
+    font-weight: 600;  /* Slightly bolder for better visibility */
+    font-size: 20px;   /* Good base for HiDPI */
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    color: #ebdbb2; /* Default foreground color (Gruvbox fg) */
+}
+
+/* -----------------------------------------------------------------------------
+ * Waybar Window
+ * -------------------------------------------------------------------------- */
+window#waybar {
+    /* background: rgba(29, 32, 33, 0.95); */ /* Gruvbox bg0_h with slight transparency */
+     background: #1d2021; /* Opaque Gruvbox bg0_h */
+    border-bottom: 2px solid #3c3836; /* Subtle bottom border (Gruvbox bg1) */
+    transition: background-color 0.5s ease; /* Smooth transition if needed */
+}
+
+window#waybar.hidden {
+    opacity: 0.5; /* Make bar semi-transparent when hidden */
+}
+
+/* -----------------------------------------------------------------------------
+ * Tooltips
+ * -------------------------------------------------------------------------- */
+tooltip {
+    background: #3c3836; /* Gruvbox bg1 */
+    border: 1px solid #7c6f64; /* Gruvbox fg4 */
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+tooltip label {
+    color: #ebdbb2; /* Gruvbox fg */
+}
+
+/* -----------------------------------------------------------------------------
+ * Modules Common Styles
+ * -------------------------------------------------------------------------- */
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk, /* Example: Added disk */
+#network,
+#pulseaudio,
+#custom-weather, /* Example: Custom module */
+#tray,
+#backlight,
+#idle_inhibitor {
+    background-color: #3c3836; /* Gruvbox bg1 - subtle contrast */
+    padding: 5px 15px; /* Generous padding */
+    margin: 6px 5px; /* Vertical margin, reduced horizontal margin */
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add hover effect for modules */
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#network:hover,
+#pulseaudio:hover,
+#custom-weather:hover,
+#tray:hover,
+#backlight:hover,
+#idle_inhibitor:hover {
+    background-color: #504945; /* Gruvbox bg2 - slightly lighter on hover */
+}
+
+/* -----------------------------------------------------------------------------
+ * Workspaces
+ * -------------------------------------------------------------------------- */
+#workspaces {
+    background-color: transparent; /* Make container transparent */
+    margin: 6px 6px 6px 12px; /* More margin on the left */
+    padding: 0;
+    border-radius: 8px;
+}
+
+#workspaces button {
+    padding: 4px 8px; /* Adjust padding for button size */
+    margin: 2px 3px; /* Spacing between buttons */
+    border-radius: 6px;
+    color: #a89984; /* Gruvbox fg3 - inactive color */
+    background-color: #3c3836; /* Gruvbox bg1 */
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent; /* Placeholder for focus indicator */
+}
+
+#workspaces button:hover {
+    background-color: #504945; /* Gruvbox bg2 */
+    color: #d5c4a1; /* Gruvbox fg2 */
+    border-bottom-color: #665c54; /* Gruvbox bg3 */
+}
+
+#workspaces button.focused {
+    color: #fbf1c7; /* Gruvbox fg0 */
+    background-color: #665c54; /* Gruvbox bg3 */
+    border-bottom-color: #fabd2f; /* Gruvbox yellow */
+    font-weight: 700; /* Make focused bolder */
+}
+
+#workspaces button.urgent {
+    color: #fbf1c7; /* Gruvbox fg0 */
+    background-color: #cc241d; /* Gruvbox red */
+    border-bottom-color: #fb4934; /* Gruvbox bright red */
+    animation: urgent_blink 1s ease-in-out infinite alternate;
+}
+
+/* Animation for urgent workspace */
+@keyframes urgent_blink {
+    to {
+        background-color: #fb4934; /* Gruvbox bright red */
+        color: #1d2021; /* Gruvbox bg0_h */
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Specific Module Styles & States
+ * -------------------------------------------------------------------------- */
+
+#clock {
+    color: #fabd2f; /* Gruvbox yellow */
+    font-weight: 700;
+}
+
+#battery {
+    color: #98971a; /* Gruvbox green */
+}
+
+#battery.charging, #battery.plugged {
+    color: #b8bb26; /* Gruvbox bright green */
+    background-color: #504945; /* Gruvbox bg2 */
+}
+
+#battery.warning:not(.charging):not(.plugged) {
+    color: #d65d0e; /* Gruvbox orange */
+    background-color: #504945; /* Gruvbox bg2 */
+}
+
+#battery.critical:not(.charging):not(.plugged), #battery.urgent {
+    color: #fb4934; /* Gruvbox bright red */
+    background-color: #cc241d; /* Gruvbox red */
+    animation: critical_blink 1s ease-in-out infinite alternate;
+}
+
+#cpu {
+    color: #458588; /* Gruvbox blue */
+}
+
+#cpu.warning {
+    color: #d65d0e; /* Gruvbox orange */
+}
+
+#cpu.critical {
+    color: #fb4934; /* Gruvbox bright red */
+    background-color: #cc241d; /* Gruvbox red */
+    animation: critical_blink 0.8s ease-in-out infinite alternate;
+}
+
+#memory {
+    color: #b16286; /* Gruvbox purple */
+}
+
+#memory.warning {
+    color: #d65d0e; /* Gruvbox orange */
+}
+
+#memory.critical {
+    color: #fb4934; /* Gruvbox bright red */
+    background-color: #cc241d; /* Gruvbox red */
+    animation: critical_blink 0.9s ease-in-out infinite alternate;
+}
+
+#network {
+    color: #689d6a; /* Gruvbox aqua */
+}
+
+#network.disconnected {
+    color: #a89984; /* Gruvbox fg3 */
+    background-color: #504945; /* Gruvbox bg2 */
+}
+
+#pulseaudio {
+    color: #d79921; /* Gruvbox bright yellow / gold */
+}
+
+#pulseaudio.muted {
+    color: #a89984; /* Gruvbox fg3 */
+    background-color: #504945; /* Gruvbox bg2 */
+}
+
+#tray {
+    background-color: #504945; /* Gruvbox bg2 */
+    margin-right: 12px; /* More margin on the right */
+}
+
+#idle_inhibitor {
+    color: #d3869b; /* Gruvbox bright magenta */
+}
+
+#idle_inhibitor.activated {
+    background-color: #d3869b;
+    color: #282828; /* Dark background for contrast */
+}
+
+
+/* Animation for critical states */
+@keyframes critical_blink {
+    to {
+        background-color: #fb4934; /* Gruvbox bright red */
+        color: #1d2021; /* Gruvbox bg0_h */
+    }
+}
+
+/* Add more specific module styling or states as needed */
+/* Example: Custom Weather Module */
+/* #custom-weather { */
+/* color: #83a598; */ /* Gruvbox bright blue */
+/* } */

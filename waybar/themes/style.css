@@ -1,6 +1,6 @@
 * {
     border: none;
-    border-radius: 0;
+    border-radius: 10;
     min-height: 0;
     font-family: "iosevka nerd font";
     font-weight: 500;
@@ -25,8 +25,8 @@ tooltip {
 #battery,
 #network,
 #pulseaudio {
-    margin: 6px 6px 6px 0px;
-    padding: 2px 8px;
+    margin: 10px 10px 10px 10px;
+    padding: 5px 10px;
 }
 
 #workspaces {
