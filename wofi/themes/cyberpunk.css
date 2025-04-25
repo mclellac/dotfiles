@@ -1,0 +1,94 @@
+@define-color base     #0a0f1a;
+@define-color surface  #161a27;
+@define-color overlay  #232738;
+@define-color text     #c0c5ce;
+@define-color subtext  #8890a1;
+@define-color cyan     #00f0f0;
+@define-color magenta  #f02e6e;
+@define-color green    #33ff00;
+@define-color yellow   #f0f000;
+@define-color blue     #2abdf0;
+
+* {
+  font-family: 'Inconsolata Nerd Font', 'JetBrains Mono Nerd Font', monospace;
+  font-size: 20px;
+  outline: none;
+  border-spacing: 0;
+}
+
+window {
+  background-color: @base;
+  border: 2px solid @cyan;
+  border-radius: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
+#outer-box {
+  background-color: @base;
+  padding: 8px;
+  margin: 0px;
+}
+
+#inner-box {
+  background-color: @base;
+  margin: 0;
+  padding: 5px 0;
+}
+
+#scroll {
+  background-color: @base;
+  margin: 0px;
+  padding: 0px;
+}
+
+#input {
+  background-color: @surface;
+  color: @cyan;
+  font-weight: bold;
+  padding: 10px 12px;
+  margin: 0 0 8px 0;
+  border: none;
+  border-bottom: 2px solid @cyan;
+  border-radius: 0px;
+}
+
+#input image {
+  color: @magenta;
+}
+
+#entry {
+  background-color: @base;
+  padding: 6px 12px;
+  margin: 0px;
+  border-radius: 0px;
+}
+
+#entry #text {
+  color: @text;
+  margin: 0;
+}
+
+#entry arrow {
+  color: @subtext;
+}
+
+#entry:selected {
+  background-color: @base;
+  border: 1px solid @magenta;
+  padding: 5px 11px;
+}
+
+#entry:selected #text {
+  color: @magenta;
+  font-weight: bold;
+}
+
+#entry:hover {
+  background-color: @overlay;
+}
+
+#entry:drop(active) {
+  background-color: @surface;
+  color: @green;
+}
