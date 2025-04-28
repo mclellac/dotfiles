@@ -19,7 +19,7 @@
 window {
   background-color: @base;
   border: 2px solid @cyan;
-  border-radius: 0px;
+  border-radius: 10px;
   margin: 0px;
   padding: 0px;
 }
@@ -48,9 +48,9 @@ window {
   font-weight: bold;
   padding: 10px 12px;
   margin: 0 0 8px 0;
-  border: none;
-  border-bottom: 2px solid @cyan;
-  border-radius: 0px;
+  border: 2px solid @subtext;
+  #border-bottom: 2px solid @cyan;
+  border-radius: 10px;
 }
 
 #input image {
@@ -61,7 +61,7 @@ window {
   background-color: @base;
   padding: 6px 12px;
   margin: 0px;
-  border-radius: 0px;
+  border-radius: 10px;
 }
 
 #entry #text {

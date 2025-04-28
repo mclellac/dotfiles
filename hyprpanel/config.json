@@ -1,0 +1,13 @@
+{
+  "theme.font.name": "Adwaita Sans",
+  "theme.font.label": "Adwaita Sans",
+  "theme.bar.floating": false,
+  "bar.autoHide": "fullscreen",
+  "theme.bar.buttons.enableBorders": false,
+  "theme.bar.border.location": "none",
+  "theme.bar.enableShadow": true,
+  "theme.bar.buttons.battery.enableBorder": false,
+  "menus.power.showLabel": true,
+  "theme.bar.menus.monochrome": false,
+  "menus.dashboard.powermenu.avatar.image": "/home/mclellac/Pictures/prof.webp"
+}
