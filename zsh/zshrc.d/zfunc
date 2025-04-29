@@ -60,30 +60,6 @@ check_compression() {
     curl -s -I -H 'Accept-Encoding: br,gzip,deflate' $1 |grep -i "Content-Encoding"
 }
 
-# convert CSV files into markdown tables
-csvtomd() {
-  if [[ -z "$1" ]]; then
-    echo "Usage: csvtomd <filename.csv>"
-    return 1
-  fi
-
-  if [[ ! -f "$1" ]]; then
-    echo "Error: File '$1' not found."
-    return 1
-  fi
-
-  if [[ "$1" != *.csv ]]; then
-    echo "Error: Input file must have a .csv extension."
-    return 1
-  fi
-
-  if [[ $(wc -l < "$1") -eq 0 ]]; then
-    echo "Error: Input file is empty."
-    return 1
-  fi
-
-  awk -F',' 'NR==1{printf "|"; for(i=1;i<=NF;i++) printf " %s |", $i; print ""; printf "|"; for(i=1;i<=NF;i++) printf " --- |"; print ""} NR>1{printf "|"; for(i=1;i<=NF;i++) printf " %s |", $i; print ""}' "$1"
-}
 
 #--------------------------------------------------------------#
 # list the top 20 commands used in history.
@@ -154,104 +130,183 @@ aklab() {
         curl -I ${AKFLAGS[@]} "$*"
 }
 
-
-# pull() function iterates through each Git repository under the specified root directory and pulls changes.
-#
-# Directory Structure:
-#   The function assumes a specific directory structure where Git repositories are organized under a root directory.
-#   Each Git repository should have a .git directory at its root.
-#
-# Usage:
-#   Call the pull() function without any arguments to pull changes from all Git repositories under the default root directory.
-#   Optionally, specify a root directory as an argument to pull changes from repositories under that directory.
-#
-# Functionality:
-#   - Loops through each directory containing a .git directory under the specified root directory.
-#   - Extracts project and repository names from the directory path.
-#   - Determines the Git service icon (Bitbucket, GitLab, GitHub) based on the directory path.
-#   - Changes directory to the parent directory of the Git repository.
-#   - Checks if the directory is a valid Git repository by verifying the presence of a .git directory.
-#   - Pulls changes from the Git repository.
-#   - Calculates padding for displaying project and repository names neatly.
-#   - Outputs the project and repository names, Git service icon, and pull status.
-#   - Continues to the next repository if any error occurs during the process.
-#
-# Example:
-#   To pull changes from all Git repositories on a specific git server (github for example):
-#       pull github.com
-#
-#   To pull changes from all Git repositories under the default root directory:
-#       pull
-#   
-#   To pull changes from repositories under a specific root directory (github user):
-#       pull github.com/username
-#
-# Note:
-#   Ensure that the root directory contains valid Git repositories with a .git directory at their root.
-#   Make sure to run this function from a shell environment with Git installed and configured.
+# Function to pull changes for Git repositories under a specified directory
+# Usage: pull [directory under ~/Projects/src]
+# Example: pull bitbucket.org
 pull() {
-    # Set the root directory for Git repositories
-    local git_root="${HOME}/Projects/src/$*"
+    # Base directory where repositories are stored (e.g., ~/Projects/src)
+    local base_src_dir="${HOME}/Projects/src"
 
-    # Loop through each Git repository and pull changes
-    while IFS= read -r git_dir; do
-        local parent_dir="$(dirname "$git_dir")"
-        local grandparent_dir="$(dirname "$parent_dir")"
+    # Default directory to search if no argument is provided
+    local search_dir="${base_src_dir}"
 
-        # Extract project and repository names
-        local project=$(basename "$grandparent_dir")
-        local repo=$(basename "$parent_dir")
-        local icon=""
+    # Using tput if available
+    local green red cyan yellow reset
+    if tput setaf 0 &>/dev/null; then
+        green=$(tput setaf 2)
+        red=$(tput setaf 1)
+        cyan=$(tput setaf 6)
+        yellow=$(tput setaf 3)
+        reset=$(tput sgr0)
+    else
+        green='\033[0;32m'
+        red='\033[0;31m'
+        cyan='\033[0;36m'
+        yellow='\033[0;33m'
+        reset='\033[0m'
+    fi
 
-        # Determine the icon based on the URL
-        case $git_dir in
-            */bitbucket.org/*) icon=" ";;
-            */gitlab.nm.cbc.ca/*) icon=" ";;
-            */github.com/*) icon=" ";;
-        esac
+    # Icons
+    local icon_github=""      # GitHub icon
+    local icon_bitbucket=""   # Bitbucket/Stash icon
+    local icon_gitlab=""      # GitLab icon
+    local icon_default="📦"    # Generic package icon
+    local icon_success=""
+    local icon_uptodate=""
+    local icon_error=""
 
-        # Change to the parent directory of the Git repository directory
-        cd "$parent_dir" || continue
-        if [[ ! -d .git ]]; then
-            printf "%sError: %s is not a Git repository%s\n" "${red}" "${parent_dir}" "${reset}"
-            cd "$git_root" || return
-            continue
+    if [[ -n "$1" ]]; then
+        search_dir="${base_src_dir}/$1"
+
+        if [[ ! -d "${search_dir}" ]]; then
+            printf "${red}Error: Directory not found: %s${reset}\n" "${search_dir}" >&2
+            return 1 # Indicate failure
+        fi
+    fi
+
+    # Check if the base source directory exists
+    if [[ ! -d "${base_src_dir}" ]]; then
+        printf "${red}Error: Base source directory not found: %s${reset}\n" "${base_src_dir}" >&2
+        return 1
+    fi
+
+    # Find directories named .git, pruning the search to avoid looking inside them
+    local IFS=$'\n'
+    local git_dirs=()
+    while IFS= read -r -d '' gitdir; do
+        git_dirs+=("$gitdir")
+    done < <(find "${search_dir}" -type d -name .git -print0)
+
+    if [[ ${#git_dirs[@]} -eq 0 ]]; then
+        printf "${yellow}No Git repositories found under %s${reset}\n" "${search_dir}"
+        return 0 
+    fi
+
+    printf "${cyan}Found %d repositories under %s. Pulling...${reset}\n" ${#git_dirs[@]} "${search_dir}"
+
+    local original_dir="$PWD" # Store current directory to return later
+
+    # Use flag to track if any pull failed
+    local overall_status=0
+
+    for gitdir in "${git_dirs[@]}"; do
+        # Get the parent directory of the .git directory, which is the repo root
+        local repo_path
+        repo_path=$(dirname "$gitdir")
+
+        # Ensure repo_path is under base_src_dir
+        if [[ "${repo_path}/" != "${base_src_dir}/"* && "${repo_path}" != "${base_src_dir}" ]]; then
+             printf "${yellow}Warning: Skipping potentially unsafe path: %s${reset}\n" "${repo_path}" >&2
+             overall_status=1
+             continue
         fi
 
-        local branch=""
-        local url=""
-        branch=$(git rev-parse --abbrev-ref HEAD)
-        url=$(git config --get remote.origin.url)
+        # Get the path relative to the base source directory for display
+        local relative_path="${repo_path#${base_src_dir}/}"
 
-        output=$(git pull)
-
-        # Calculate the maximum length of the project and repository names
-        local max_project_length=${#project}
-        local max_repo_length=${#repo}
-
-        # Output the project and repository names with padding
-        printf "%s %s %s %s/%s %s" "${cyan}" "${icon}" "${green}" "${project}" "${repo}" "${reset}"
-
-        # Calculate the number of spaces needed to pad the project and repo names
-        local project_padding=$((max_project_length - ${#project}))
-        local repo_padding=$((max_repo_length - ${#repo}))
-
-        # Output the padding spaces
-        printf "%*s" $((project_padding+2)) ""
-        printf "%*s" $((repo_padding+2)) "" 
-
-        # Clean the output.
-        if [[ "${output}" == *"NOTICE"* ]]; then
-            output=""
-        elif [[ "${output}" == *"Already up to date."* ]]; then
-            output=" "
+        # Navigate into the repository directory
+        # Check if cd was successful
+        if ! cd "${repo_path}"; then
+            printf "${red}Error: Could not change directory to %s${reset}\n" "${repo_path}" >&2
+            overall_status=1 # Mark as failure
+            continue # Skip this repository
         fi
 
-        # Output the separator and Git status icon
-        printf ' %s──────•%s    %s %s \r%s\n' "${cyan}" "${green}" "${output}" "${reset}"
+        # Get the current branch name
+        local branch
+        branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+        if [[ -z "$branch" ]]; then
+            branch="(detached HEAD)"
+        fi
 
-        cd "$git_root" || return
-    done < <(find "${git_root}" -type d -name ".git")
+        # Get the remote origin URL
+        local origin_url
+        origin_url=$(git config --get remote.origin.url 2>/dev/null)
+
+        # Determine icon based on URL
+        local icon="${icon_default}" # Default icon
+        if [[ -n "${origin_url}" ]]; then
+            if [[ "${origin_url}" =~ "github.com" ]]; then
+                icon="${icon_github}"
+            elif [[ "${origin_url}" =~ "bitbucket.org" || "${origin_url}" =~ "stash.nm.cbc.ca" ]]; then
+                 icon="${icon_bitbucket}"
+            elif [[ "${origin_url}" =~ "gitlab.nm.cbc.ca" ]]; then
+                 icon="${icon_gitlab}"
+            fi
+        fi
+
+        # Print repository path and branch before pulling
+        printf "${cyan}%s %s %s (%s)%s ... " "${icon}" "${green}" "${relative_path}" "${branch}" "${reset}"
+
+        # Perform the pull operation
+        # Use --ff-only to avoid creating merge commits on simple pulls
+        local pull_output
+        local pull_status=0
+        pull_output=$(git pull --ff-only 2>&1)
+        pull_status=$?
+
+        # Handle the pull result
+        local status_icon=""
+        local status_message=""
+        local status_color=""
+
+        if [[ $pull_status -eq 0 ]]; then
+            if [[ "${pull_output}" =~ "Already up to date" ]]; then
+                status_icon="${icon_uptodate}"
+                status_message="Already up to date."
+                status_color="${green}"
+            else
+                status_icon="${icon_success}"
+                status_message="Pulled successfully."
+                status_color="${green}"
+            fi
+            printf "\r${cyan}%s %s %s (%s)%s ${status_color}%s %s${reset}\n" \
+                   "${icon}" "${green}" "${relative_path}" "${branch}" "${reset}" \
+                   "${status_icon}" "${status_message}"
+             if [[ "${pull_output}" != *"Already up to date"* ]]; then
+                 echo "${pull_output}" | sed 's/^/  /'
+             fi
+
+        else
+            # Pull failed
+            overall_status=1 # Mark status as failed
+            status_icon="${icon_error}"
+            status_message="Pull failed (Status: $pull_status)."
+            status_color="${red}"
+
+            printf "\r${cyan}%s %s %s (%s)%s ${status_color}%s %s${reset}\n" \
+                   "${icon}" "${green}" "${relative_path}" "${branch}" "${reset}" \
+                   "${status_icon}" "${status_message}"
+
+            echo "${pull_output}" | sed 's/^/  /' >&2 # Indent and send to stderr
+        fi
+
+        # Change back to the search directory for the next iteration
+        if ! cd "${search_dir}"; then
+            printf "${red}Fatal Error: Could not return to search directory %s${reset}\n" "${search_dir}" >&2
+            return 1 # Exit the function immediately on fatal error
+        fi
+
+    done
+
+    # Change back to the directory where the function was called
+    cd "${original_dir}" || {
+         printf "${red}Fatal Error: Could not return to original directory %s${reset}\n" "${original_dir}" >&2
+         return 1 # Exit the function immediately on fatal error
+    }
+
+    # Return overall status (0 if all succeeded, 1 if any failed or skipped)
+    return "${overall_status}"
 }
 
 #--------------------------------------------------------------#
