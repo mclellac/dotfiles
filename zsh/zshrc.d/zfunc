@@ -134,6 +134,10 @@ aklab() {
 # Usage: pull [directory under ~/Projects/src]
 # Example: pull bitbucket.org
 pull() {
+    # Disable xtrace to prevent printing variable assignments
+    local xtrace_restore=$(set +o | grep xtrace)
+    set +x
+
     # Base directory where repositories are stored (e.g., ~/Projects/src)
     local base_src_dir="${HOME}/Projects/src"
 
