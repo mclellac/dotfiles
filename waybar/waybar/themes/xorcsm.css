@@ -1,0 +1,235 @@
+
+/* =============================================================================
+ * Waybar configuration
+ * Configuration matched to the provided Kitty theme
+ * =========================================================================== */
+
+/* -----------------------------------------------------------------------------
+ * Reset and Global Styles
+ * -------------------------------------------------------------------------- */
+* {
+    border: none;
+    border-radius: 10px;
+    font-family: "Adwaita Sans", "Iosevka Nerd Font", "JetBrainsMono Nerd Font", FontAwesome, sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    color: #ebdbb2;
+}
+
+/* -----------------------------------------------------------------------------
+ * Waybar Window
+ * -------------------------------------------------------------------------- */
+window#waybar {
+    background: #282828;
+    border-bottom: 2px solid #3c3836;
+    transition: background-color 0.5s ease;
+}
+
+window#waybar.hidden {
+    opacity: 0.5;
+}
+
+/* -----------------------------------------------------------------------------
+ * Tooltips
+ * -------------------------------------------------------------------------- */
+tooltip {
+    background: #3c3836;
+    border: 1px solid #7c6f64;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+tooltip label {
+    color: #ebdbb2;
+}
+
+#calendar {
+  margin-left: 8px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  padding-right: 10px;
+  transition: none;
+  color: #000000;
+  background: #BAC2DE;
+}
+
+/* -----------------------------------------------------------------------------
+ * Modules Common Styles
+ * -------------------------------------------------------------------------- */
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#network,
+#pulseaudio,
+#custom-weather,
+#tray,
+#backlight,
+#idle_inhibitor {
+    background-color: #3c3836;
+    padding: 5px 15px;
+    margin: 6px 5px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#network:hover,
+#pulseaudio:hover,
+#custom-weather:hover,
+#tray:hover,
+#backlight:hover,
+#idle_inhibitor:hover {
+    background-color: #665c54;
+}
+
+/* -----------------------------------------------------------------------------
+ * Workspaces
+ * -------------------------------------------------------------------------- */
+#workspaces {
+    background-color: transparent;
+    margin: 6px 6px 6px 12px;
+    padding: 0;
+    border-radius: 8px;
+}
+
+#workspaces button {
+    padding: 4px 8px;
+    margin: 2px 3px;
+    border-radius: 6px;
+    color: #a89984;
+    background-color: #3c3836;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+}
+
+#workspaces button:hover {
+    background-color: #665c54;
+    color: #ebdbb2;
+    border-bottom-color: #7c6f64;
+}
+
+#workspaces button.focused {
+    color: #fbf1c7;
+    background-color: #665c54;
+    border-bottom-color: #e3b65b;
+    font-weight: 700;
+}
+
+#workspaces button.urgent {
+    color: #fbf1c7;
+    background-color: #cc241d;
+    border-bottom-color: #fb4934;
+    animation: urgent_blink 1s ease-in-out infinite alternate;
+}
+
+@keyframes urgent_blink {
+    to {
+        background-color: #fb4934;
+        color: #282828;
+    }
+}
+
+/* -----------------------------------------------------------------------------
+ * Specific Module Styles & States
+ * -------------------------------------------------------------------------- */
+
+#clock {
+    color: #e3b65b;
+    font-weight: 700;
+}
+
+#battery {
+    color: #b8bb26;
+}
+
+#battery.charging, #battery.plugged {
+    color: #d1d013;
+    background-color: #665c54;
+}
+
+#battery.warning:not(.charging):not(.plugged) {
+    color: #faad14;
+    background-color: #665c54;
+}
+
+#battery.critical:not(.charging):not(.plugged), #battery.urgent {
+    color: #fb4934;
+    background-color: #cc241d;
+    animation: critical_blink 1s ease-in-out infinite alternate;
+}
+
+#cpu {
+    color: #82c4ab;
+}
+
+#cpu.warning {
+    color: #faad14;
+}
+
+#cpu.critical {
+    color: #fb4934;
+    background-color: #cc241d;
+    animation: critical_blink 0.8s ease-in-out infinite alternate;
+}
+
+#memory {
+    color: #f5a7bc;
+}
+
+#memory.warning {
+    color: #faad14;
+}
+
+#memory.critical {
+    color: #fb4934;
+    background-color: #cc241d;
+    animation: critical_blink 0.9s ease-in-out infinite alternate;
+}
+
+#network {
+    color: #7cc08e;
+}
+
+#network.disconnected {
+    color: #a89984;
+    background-color: #665c54;
+}
+
+#pulseaudio {
+    color: #e3b65b;
+}
+
+#pulseaudio.muted {
+    color: #a89984;
+    background-color: #665c54;
+}
+
+#tray {
+    background-color: #665c54;
+    margin-right: 12px;
+}
+
+#idle_inhibitor {
+    color: #f5a7bc;
+}
+
+#idle_inhibitor.activated {
+    background-color: #f672ad;
+    color: #282828;
+}
+
+@keyframes critical_blink {
+    to {
+        background-color: #fb4934;
+        color: #282828;
+    }
+}
