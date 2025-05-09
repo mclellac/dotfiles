@@ -113,19 +113,17 @@ fedora:
 
 arch:
   pacman:
-    - python3-dns
+    - python-dnspython
     - evolution
     - evolution-data-server
     - evolution-spamassassin
-    - syncevolution
     - gcc
-    - gcc-c++
-    - golang
+    - go
     - podman-compose
     - docker-compose
-    - golang-x-tools-gopls
+    - gopls
     - nodejs
-    - fd-find
+    - fd
     - ripgrep
   pip-packages:
     - prompt_toolkit
