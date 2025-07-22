@@ -1,22 +1,24 @@
+#!/bin/bash
+
 # Utility functions
 grey="$(tput bold ; tput setaf 0)"
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 cyan=$(tput setaf 6)
 white=$(tput setaf 7)
-yellow=$(tput setaf 11)
-blue=$(tput setaf 68)
-brown=$(tput setaf 130)
-orange=$(tput setaf 172)
+yellow=$(tput setaf 3)
+blue=$(tput setaf 4)
+brown=$(tput setaf 1)
+orange=$(tput setaf 9)
 reset=$(tput sgr0)
 
 #------------------------------------------------------------------------------#
-#                       Command wrapper functions
+# Command wrapper functions
 #------------------------------------------------------------------------------#
 digans() { dig "$*" +noall +answer; }
 digsoa() { dig "$*" SOA +noall +answer; }
-digmx()  { dig "$*" MX +noall +answer; }
-digns()  { dig "$*" NS +noall +answer; }
+digmx() { dig "$*" MX +noall +answer; }
+digns() { dig "$*" NS +noall +answer; }
 digany() { dig "$*" ANY +noall +answer; }
 
 #gcluster() {
@@ -36,14 +38,14 @@ digany() { dig "$*" ANY +noall +answer; }
 
 kubepass() { kubectl config view -o jsonpath='{.users[?(@.name == "$*")].user.password}' }
 kubectx () { kubectl config current-context }
-kubeip()   { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' }
+kubeip() { kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}' }
 
 #pathln() { echo $PATH | tr : '\n'; }
 
 #--------------------------------------------------------------#
 # display certs for given host
 # usage:
-#      > showcert example.com:443
+# > showcert example.com:443
 #--------------------------------------------------------------#
 showcert() {
     echo openssl s_client -showcerts -connect $*
@@ -59,7 +61,6 @@ ssldump() {
 check_compression() {
     curl -s -I -H 'Accept-Encoding: br,gzip,deflate' $1 |grep -i "Content-Encoding"
 }
-
 
 #--------------------------------------------------------------#
 # list the top 20 commands used in history.
@@ -82,7 +83,7 @@ connerize-say() {
 
 #--------------------------------------------------------------#
 # Akamai cURL
-#   Usage:  akcurl https://example.com
+# Usage: akcurl https://example.com
 #--------------------------------------------------------------#
 akcurl() {
     local headers="Pragma: akamai-x-get-request-id,akamai-x-get-cache-key,akamai-x-cache-on,akamai-x-cache-remote-on,akamai-x-get-true-cache-key,akamai-x-check-cacheable,akamai-x-get-extracted-values,akamai-x-feo-trace,x-akamai-logging-mode: verbose"
@@ -100,7 +101,7 @@ cache-key-curl() {
 
 #--------------------------------------------------------------#
 # Akamai cURL
-#   Usage:  akcurl https://www.cbc.ca/lite
+# Usage: akcurl https://www.cbc.ca/lite
 #--------------------------------------------------------------#
 akcurl_old() {
     AKFLAGS=(
@@ -137,7 +138,7 @@ calc() {
     # you will need to escape multiplication (ie: "calc 2 \* 20").
     local result=""
     result="$(printf "scale=10;$*\n" | bc --mathlib | tr -d '\\\n')"
-                            # └─ default (when `--mathlib` is used) is 20
+                                # └─ default (when `--mathlib` is used) is 20
         if [[ "$result" == *.* ]]; then
             printf "$result" | sed -e 's/^\./0./' \
                 -e 's/^-\./-0./' \
