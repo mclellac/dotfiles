@@ -46,8 +46,11 @@ if [ -n "$chosen_app" ]; then
     # Remove desktop file arguments like %U, %f, etc.
     cleaned_cmd=$(echo "$exec_cmd_to_run" | sed -e 's/ %[UuFfcCk]//g')
     # Execute the command in the background
-    nohup $cleaned_cmd >/dev/null 2>&1 &
+    $cleaned_cmd &
+    exit 0
   else
     echo "Error: No command found for '$chosen_app'." >&2
+    exit 1
   fi
 fi
+exit 0
