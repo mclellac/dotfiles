@@ -28,6 +28,11 @@ return {
         function(server_name)
           lspconfig[server_name].setup({})
         end,
+        ["clangd"] = function()
+          lspconfig.clangd.setup({
+            filetypes = { "c", "cpp", "objc", "objcpp", "vcl" },
+          })
+        end,
       })
     end,
   },
@@ -38,6 +43,24 @@ return {
       "saecki/crates.nvim",
       "chrisgrieser/nvim-various-textobjs",
     },
+  },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-python",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-python")({
+            dap = { justMyCode = false },
+          }),
+        },
+      })
+    end,
   },
   {
     "mfussenegger/nvim-dap",
@@ -68,6 +91,28 @@ return {
         },
       }
 
+      dap.adapters.codelldb = {
+        type = "server",
+        port = "${port}",
+        executable = {
+          command = "codelldb",
+          args = { "--port", "${port}" },
+        },
+      }
+
+      dap.configurations.rust = {
+        {
+          name = "Launch file",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = false,
+        },
+      }
+
       dapui.setup()
 
       dap.listeners.after.event_initialized["dapui_config"] = function()
@@ -79,6 +124,13 @@ return {
       dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
+    end,
+  },
+  {
+    "saecki/crates.nvim",
+    event = { "BufRead Cargo.toml" },
+    config = function()
+      require("crates").setup()
     end,
   },
   {
@@ -123,5 +175,19 @@ return {
         lsp_fallback = true,
       },
     },
+  },
+  {
+    "ray-x/go.nvim",
+    dependencies = {
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = '<CMD>GoInstallBinaries<CR>',
   },
 }
