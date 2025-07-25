@@ -35,4 +35,70 @@ return {
     "L3MON4D3/LuaSnip",
     dependencies = { "rafamadriz/friendly-snippets" },
   },
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+    },
+    config = function()
+      local dap = require("dap")
+      local dapui = require("dapui")
+
+      dapui.setup()
+
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
+    end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    config = function()
+      local lint = require("lint")
+      lint.linters_by_ft = {
+        python = { "pylint" },
+        rust = { "rustc" },
+        go = { "golangci-lint" },
+        sh = { "shellcheck" },
+        markdown = { "markdownlint" },
+        vcl = { "vclint" },
+        c = { "clang-tidy" },
+        terraform = { "tflint" },
+        helm = { "helmlint" },
+        ansible = { "ansible-lint" },
+      }
+
+      vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        callback = function()
+          lint.try_lint()
+        end,
+      })
+    end,
+  },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        python = { "black" },
+        rust = { "rustfmt" },
+        go = { "gofmt" },
+        sh = { "shfmt" },
+        markdown = { "markdown-it" },
+        c = { "clang-format" },
+        terraform = { "terraform_fmt" },
+        ansible = { "ansible-lint" },
+      },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+    },
+  },
 }
