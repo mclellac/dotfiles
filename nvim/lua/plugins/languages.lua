@@ -35,10 +35,7 @@ return {
     "L3MON4D3/LuaSnip",
     dependencies = {
       "rafamadriz/friendly-snippets",
-      "benfowler/py-snippets",
       "saecki/crates.nvim",
-      "mthadley/go-snippets",
-      "kaligule/bash-snippets",
       "chrisgrieser/nvim-various-textobjs",
     },
   },
