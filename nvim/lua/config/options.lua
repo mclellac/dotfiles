@@ -50,3 +50,5 @@ vim.filetype.add({
     yml = "yaml.ansible",
   },
 })
+
+vim.g.python3_host_prog = vim.fn.exepath("python3")
