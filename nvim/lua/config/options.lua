@@ -51,4 +51,10 @@ vim.filetype.add({
   },
 })
 
-vim.g.python3_host_prog = vim.fn.exepath("python3")
+if vim.fn.has("win32") == 0 then
+  vim.g.python3_host_prog = vim.fn.exepath("python3")
+  vim.g.python_host_prog = vim.fn.exepath("python")
+else
+  vim.g.python3_host_prog = vim.fn.exepath("python.exe")
+  vim.g.python_host_prog = vim.fn.exepath("python.exe")
+end
