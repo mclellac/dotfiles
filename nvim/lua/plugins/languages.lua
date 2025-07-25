@@ -1,5 +1,11 @@
 return {
   {
+    "nmac427/nvim-pyenv",
+    config = function()
+      require("pyenv").setup()
+    end,
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       "williamboman/mason.nvim",
