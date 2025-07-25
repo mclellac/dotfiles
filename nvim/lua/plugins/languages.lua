@@ -9,6 +9,7 @@ return {
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
 
+      vim.cmd("MasonToolsUpdate")
       mason_lspconfig.setup({
         ensure_installed = {
           "pyright",
@@ -43,8 +44,27 @@ return {
       "nvim-neotest/nvim-nio",
     },
     config = function()
+      vim.cmd("DapInstall python")
       local dap = require("dap")
       local dapui = require("dapui")
+
+      dap.adapters.python = {
+        type = "executable",
+        command = "python",
+        args = { "-m", "debugpy.adapter" },
+      }
+
+      dap.configurations.python = {
+        {
+          type = "python",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          pythonPath = function()
+            return vim.fn.exepath("python")
+          end,
+        },
+      }
 
       dapui.setup()
 
