@@ -30,3 +30,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    vim.cmd("MasonToolsUpdate")
+    vim.cmd("DapInstall python")
+  end,
+})
