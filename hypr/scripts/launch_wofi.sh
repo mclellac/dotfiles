@@ -116,7 +116,7 @@ launch_application() {
     local cleaned_cmd
     cleaned_cmd=$(echo "$exec_cmd_to_run" | sed -e 's/ %[UuFfcCk]//g')
     debug "Executing command: $cleaned_cmd"
-    $cleaned_cmd &
+    sh -c "$cleaned_cmd" &
   else
     debug "No command found for '$chosen_app'."
   fi
