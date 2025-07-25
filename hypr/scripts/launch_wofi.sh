@@ -1,2 +1,5 @@
 #!/bin/bash
-wofi --show drun --style ~/.config/wofi/themes/gruvbox.css | xargs hyprctl dispatch exec
+chosen=$(ls /usr/share/applications/*.desktop | sed 's/\.desktop//g' | sed 's/.*\///g' | wofi --show dmenu --style ~/.config/wofi/themes/gruvbox.css)
+if [ -n "$chosen" ]; then
+  gtk-launch "$chosen"
+fi
