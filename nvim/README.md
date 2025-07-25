@@ -19,8 +19,11 @@ Here are some suggestions for improving your Neovim experience:
 * **Custom keymaps**: You can add your own keymaps to `lua/config/keymaps.lua` to speed up your workflow.
 * **Custom snippets**: You can add your own snippets to the `friendly-snippets` plugin to make it easier to write common code.
 
-## Future Improvements
+## Features
 
-* **[DAP](https://github.com/mfussenegger/nvim-dap)**: Add debug adapter protocol support for a better debugging experience.
-* **[Linters](https://github.com/mfussenegger/nvim-lint)**: Add linters for the languages you use to catch errors before you run your code.
-* **[Formatters](https://github.com/stevearc/conform.nvim)**: Add formatters to automatically format your code on save.
+* **LSP:** Language server protocol support for Python, Rust, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
+* **Snippets:** Code snippets for many languages.
+* **Auto-quit:** Automatically quit Neovim when the only remaining buffer is the snacks explorer.
+* **DAP:** Debug adapter protocol support for Python, Rust, and Go.
+* **Linters:** Linters for Python, Rust, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
+* **Formatters:** Formatters for Python, Rust, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
