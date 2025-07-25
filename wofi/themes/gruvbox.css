@@ -1,0 +1,114 @@
+@define-color bg #282828;
+@define-color fg #ebdbb2;
+@define-color base0 #1d2021;
+@define-color base1 #3c3836;
+@define-color base2 #504945;
+@define-color base3 #665c54;
+@define-color base4 #7c6f64;
+
+@define-color red #cc241d;
+@define-color red-light #fb4934;
+
+@define-color green #98971a;
+@define-color green-light #b8bb26;
+
+@define-color yellow #d79921;
+@define-color yellow-light #fabd2f;
+
+@define-color blue #458588;
+@define-color blue-light #83a598;
+
+@define-color purple #b16286;
+@define-color purple-light #d3869b;
+
+@define-color aqua #689d6a;
+@define-color aqua-light #8ec07c;
+
+@define-color gray #a89984;
+@define-color gray-light #928374;
+
+@define-color orange #d65d0e;
+@define-color orange-light #fe8019;
+
+* {
+  font-family: 'Inconsolata Nerd Font', 'JetBrains Mono Nerd Font', monospace;
+  font-size: 20px;
+  outline: none;
+  border-spacing: 0;
+}
+
+window {
+  background-color: @bg;
+  border: 2px solid @base2;
+  border-radius: 15px;
+  margin: 0px;
+  padding: 10px;
+}
+
+#outer-box {
+  background-color: @bg;
+  padding: 15px;
+  margin: 0px;
+}
+
+#inner-box {
+  background-color: @bg;
+  margin: 0;
+  padding: 5px 0;
+}
+
+#scroll {
+  background-color: @bg;
+  margin: 0px;
+  padding: 0px;
+}
+
+#input {
+  background-color: @base1;
+  color: @yellow-light;
+  font-weight: bold;
+  padding: 10px 12px;
+  margin: 0 0 8px 0;
+  border: 2px solid @base3;
+  border-radius: 10px;
+}
+
+#input image {
+  color: @purple;
+}
+
+#entry {
+  background-color: @bg;
+  padding: 6px 12px;
+  margin: 0px;
+  border-radius: 10px;
+}
+
+#entry #text {
+  color: @fg;
+  margin: 0;
+}
+
+#entry arrow {
+  color: @base4;
+}
+
+#entry:selected {
+  background-color: @base2;
+  border: 1px solid @purple;
+  padding: 5px 11px;
+}
+
+#entry:selected #text {
+  color: @purple;
+  font-weight: bold;
+}
+
+#entry:hover {
+  background-color: @base1;
+}
+
+#entry:drop(active) {
+  background-color: @base1;
+  color: @green;
+}
