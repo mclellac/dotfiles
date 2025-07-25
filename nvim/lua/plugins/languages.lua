@@ -1,6 +1,6 @@
 return {
   {
-    "nmac427/nvim-pyenv",
+    "alcaraz/nvim-pyenv",
     config = function()
       require("pyenv").setup()
     end,
