@@ -21,7 +21,6 @@ return {
           "terraformls",
           "helm_ls",
           "ansiblels",
-          "varnishls",
         },
       })
 
@@ -32,11 +31,6 @@ return {
         ["clangd"] = function()
           lspconfig.clangd.setup({
             filetypes = { "c", "cpp", "objc", "objcpp" },
-          })
-        end,
-        ["varnishls"] = function()
-          lspconfig.varnishls.setup({
-            filetypes = { "vcl" },
           })
         end,
       })
