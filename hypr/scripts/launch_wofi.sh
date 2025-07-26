@@ -44,6 +44,17 @@ clean_exec() {
 get_app_list() {
   declare -A app_list
 
+  local config_file
+  config_file="$(dirname "$0")/default/wofi_apps"
+
+  if [ -f "$config_file" ]; then
+    while IFS=':' read -r app_name exec_cmd; do
+      if [[ ! "$app_name" =~ ^#.* ]]; then
+        app_list["$app_name"]="$exec_cmd"
+      fi
+    done < "$config_file"
+  fi
+
   for APP_DIR in "${APP_DIRS[@]}"; do
     if [ ! -d "$APP_DIR" ]; then
       debug "Directory not found: $APP_DIR"
@@ -82,6 +93,17 @@ launch_application() {
   local chosen_app="$1"
   declare -A app_list
 
+  local config_file
+  config_file="$(dirname "$0")/default/wofi_apps"
+
+  if [ -f "$config_file" ]; then
+    while IFS=':' read -r app_name exec_cmd; do
+      if [[ ! "$app_name" =~ ^#.* ]]; then
+        app_list["$app_name"]="$exec_cmd"
+      fi
+    done < "$config_file"
+  fi
+
   for APP_DIR in "${APP_DIRS[@]}"; do
     if [ ! -d "$APP_DIR" ]; then
       debug "Directory not found: $APP_DIR"
@@ -109,53 +131,50 @@ launch_application() {
   local exec_cmd_to_run="${app_list[$chosen_app]}"
   local desktop_file_path
 
+  # Find the desktop file by searching for the Name field
   for APP_DIR in "${APP_DIRS[@]}"; do
-      if [ -f "$APP_DIR/$chosen_app.desktop" ]; then
-          desktop_file_path="$APP_DIR/$chosen_app.desktop"
-          break
+      if [ -d "$APP_DIR" ]; then
+        desktop_file_path=$(grep -l "Name=$chosen_app" "$APP_DIR"/*.desktop | head -n 1)
+        if [ -n "$desktop_file_path" ]; then
+            debug "Found desktop file: $desktop_file_path"
+            break
+        fi
       fi
   done
 
-  if [ -z "$desktop_file_path" ]; then
-      # Fallback for applications where the name doesn't match the file
-      for APP_DIR in "${APP_DIRS[@]}"; do
-          if [ -d "$APP_DIR" ]; then
-            desktop_file_path=$(grep -l "Name=$chosen_app" "$APP_DIR"/*.desktop | head -n 1)
-            if [ -n "$desktop_file_path" ]; then
-                break
-            fi
+  if [ -n "$exec_cmd_to_run" ]; then
+      if [ -n "$desktop_file_path" ]; then
+        local try_exec
+        try_exec=$(grep -E "^TryExec=" "$desktop_file_path" | cut -d'=' -f2- | head -n 1)
+        if [ -n "$try_exec" ] && ! command -v "$try_exec" &> /dev/null; then
+          debug "TryExec command not found: $try_exec"
+          exit 1
+        fi
+
+        if grep -q "DBusActivatable=true" "$desktop_file_path"; then
+          debug "Launching with gtk-launch: $chosen_app"
+          gtk-launch "$chosen_app" &
+        else
+          local path
+          path=$(grep -E "^Path=" "$desktop_file_path" | cut -d'=' -f2- | head -n 1)
+          local cleaned_cmd
+          cleaned_cmd=$(clean_exec "$exec_cmd_to_run")
+          debug "Executing command: $cleaned_cmd"
+          if [ -n "$path" ]; then
+            debug "Setting path to: $path"
+            (cd "$path" && sh -c "$cleaned_cmd" &)
+          else
+            sh -c "$cleaned_cmd" &
           fi
-      done
-  fi
-
-  if [ -n "$desktop_file_path" ]; then
-    local try_exec
-    try_exec=$(grep -E "^TryExec=" "$desktop_file_path" | cut -d'=' -f2- | head -n 1)
-    if [ -n "$try_exec" ] && ! command -v "$try_exec" &> /dev/null; then
-      debug "TryExec command not found: $try_exec"
-      exit 1
-    fi
-
-    if grep -q "DBusActivatable=true" "$desktop_file_path"; then
-      debug "Launching with gtk-launch: $chosen_app"
-      gtk-launch "$chosen_app" &
-    elif [ -n "$exec_cmd_to_run" ]; then
-      local path
-      path=$(grep -E "^Path=" "$desktop_file_path" | cut -d'=' -f2- | head -n 1)
-      local cleaned_cmd
-      cleaned_cmd=$(clean_exec "$exec_cmd_to_run")
-      debug "Executing command: $cleaned_cmd"
-      if [ -n "$path" ]; then
-        debug "Setting path to: $path"
-        (cd "$path" && sh -c "$cleaned_cmd" &)
+        fi
       else
+        local cleaned_cmd
+        cleaned_cmd=$(clean_exec "$exec_cmd_to_run")
+        debug "Executing command: $cleaned_cmd"
         sh -c "$cleaned_cmd" &
       fi
-    else
-      debug "No command found for '$chosen_app'."
-    fi
   else
-      debug "No desktop file found for '$chosen_app'."
+      debug "No command found for '$chosen_app'."
   fi
 }
 
@@ -173,7 +192,9 @@ main() {
   done
   if [ -n "$XDG_DATA_HOME" ]; then
     APP_DIRS+=("$XDG_DATA_HOME/applications")
+    APP_DIRS+=("$XDG_DATA_HOME/flatpak/exports/share/applications")
   fi
+  APP_DIRS+=("/var/lib/flatpak/exports/share/applications")
 
   local chosen_app
   chosen_app=$(show_wofi_menu)
