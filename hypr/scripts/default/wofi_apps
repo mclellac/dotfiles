@@ -1,7 +1,0 @@
-# A list of applications to be displayed in the wofi menu.
-# The format is: AppName:ExecCommand
-Firefox:firefox
-Nautilus:nautilus
-Htop:kitty htop
-Neovim:kitty nvim
-Neomutt:kitty neomutt
