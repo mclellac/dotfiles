@@ -5,6 +5,7 @@ readonly XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 readonly XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
 readonly LOCK_FILE="/tmp/launch_wofi.lock"
 readonly DEBUG=false
+APP_DIRS=()
 
 # --- Functions ---
 
@@ -41,10 +42,9 @@ clean_exec() {
 
 # Get a list of all available applications
 get_app_list() {
-  local -n app_dirs_ref=$1
   declare -A app_list
 
-  for APP_DIR in "${app_dirs_ref[@]}"; do
+  for APP_DIR in "${APP_DIRS[@]}"; do
     if [ ! -d "$APP_DIR" ]; then
       debug "Directory not found: $APP_DIR"
       continue
@@ -72,19 +72,17 @@ get_app_list() {
 
 # Show the wofi menu and get the chosen application
 show_wofi_menu() {
-  local -n app_dirs_ref=$1
   local wofi_menu_input
-  wofi_menu_input=$(get_app_list app_dirs_ref | tr ' ' '\n')
+  wofi_menu_input=$(get_app_list | tr ' ' '\n')
   echo -e "$wofi_menu_input" | wofi --show dmenu --style ~/.config/wofi/themes/gruvbox.css
 }
 
 # Launch the chosen application
 launch_application() {
   local chosen_app="$1"
-  local -n app_dirs_ref=$2
   declare -A app_list
 
-  for APP_DIR in "${app_dirs_ref[@]}"; do
+  for APP_DIR in "${APP_DIRS[@]}"; do
     if [ ! -d "$APP_DIR" ]; then
       debug "Directory not found: $APP_DIR"
       continue
@@ -111,7 +109,7 @@ launch_application() {
   local exec_cmd_to_run="${app_list[$chosen_app]}"
   local desktop_file_path
 
-  for APP_DIR in "${app_dirs_ref[@]}"; do
+  for APP_DIR in "${APP_DIRS[@]}"; do
       if [ -f "$APP_DIR/$chosen_app.desktop" ]; then
           desktop_file_path="$APP_DIR/$chosen_app.desktop"
           break
@@ -120,7 +118,7 @@ launch_application() {
 
   if [ -z "$desktop_file_path" ]; then
       # Fallback for applications where the name doesn't match the file
-      for APP_DIR in "${app_dirs_ref[@]}"; do
+      for APP_DIR in "${APP_DIRS[@]}"; do
           if [ -d "$APP_DIR" ]; then
             desktop_file_path=$(grep -l "Name=$chosen_app" "$APP_DIR"/*.desktop | head -n 1)
             if [ -n "$desktop_file_path" ]; then
@@ -167,7 +165,6 @@ main() {
   trap cleanup EXIT
   create_lock
 
-  local APP_DIRS=()
   IFS=':' read -ra DIRS <<< "$XDG_DATA_DIRS"
   for dir in "${DIRS[@]}"; do
     if [ -n "$dir" ]; then
@@ -179,10 +176,10 @@ main() {
   fi
 
   local chosen_app
-  chosen_app=$(show_wofi_menu APP_DIRS)
+  chosen_app=$(show_wofi_menu)
 
   if [ -n "$chosen_app" ]; then
-    launch_application "$chosen_app" APP_DIRS
+    launch_application "$chosen_app"
   fi
 }
 
