@@ -1,12 +1,13 @@
 width=40%
 lines=11
 
-hide_scroll = true
-allow_images = false
-image_size = 25
+hide_scroll=true
+allow_images=true
+image_size=32
 prompt=Search...
-normal_window = true
+normal_window=true
 
 matching=fuzzy
 insensitive=true
 columns=1
+style=~/.config/wofi/themes/xorcsm.css
