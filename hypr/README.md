@@ -31,7 +31,35 @@ sudo dnf install hyprland wofi waybar kitty uwsm
 git clone <repository-url> ~/.config
 ```
 
-### 3. UWSM Setup
+### 3. D-Bus Broker Setup
+
+It is highly recommended to use `dbus-broker` as the D-Bus daemon implementation.
+
+**Arch Linux:**
+
+```bash
+sudo pacman -S dbus-broker
+```
+
+**Fedora:**
+
+```bash
+sudo dnf install dbus-broker
+```
+
+**Enable the `dbus-broker` service:**
+
+```bash
+systemctl --user enable dbus-broker.service
+```
+
+**Start the `dbus-broker` service:**
+
+```bash
+systemctl --user start dbus-broker.service
+```
+
+### 4. UWSM Setup
 
 This configuration uses `uwsm` to manage the Hyprland session.
 
