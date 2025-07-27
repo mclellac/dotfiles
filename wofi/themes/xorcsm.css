@@ -1,82 +1,44 @@
-
-/* Define color variables within the main window scope */
 window {
-  --clr-win-bg: #0b5c49;         /* Background of the main window */
-  --clr-main-bg: #262a32;        /* Default background for boxes, scroll, even entries */
-  --clr-main-fg: white;          /* Default text color */
-  --clr-input-bg: #d8dee8;       /* Background color of the input field */
-  --clr-input-fg: #262a32;       /* Text color inside the input field */
-  --clr-input-border: #262a32;   /* Border color for the input field */
-  --clr-selected-bg: #d8dee8;    /* Background color of the selected entry */
-  --clr-selected-fg: #2f343f;    /* Text color of the selected entry */
-
-  background-color: var(--clr-win-bg);
-  border-radius: 5px;
+    margin: 0px;
+    border: 2px solid #bd93f9;
+    background-color: #282a36;
+    border-radius: 10px;
 }
 
-/* Global font settings */
-* {
-  font-family: JetBrainsMono;
-  font-size: 12px;
-}
-
-/* Input field styling */
 #input {
-  margin: 10px 0; /* Adjusted margin syntax */
-  padding: 5px;
-  border-radius: 0px;
-  border: none;
-  border-bottom: 6px solid var(--clr-input-border);
-  background-color: var(--clr-input-bg);
-  color: var(--clr-input-fg);
+    margin: 5px;
+    border: none;
+    color: #f8f8f2;
+    background-color: #44475a;
+    border-radius: 10px;
 }
 
-/* Inner box containing entries */
 #inner-box {
-  background-color: var(--clr-main-bg);
-  /* Removed padding from original if outer-box handles spacing */
+    margin: 5px;
+    border: none;
+    background-color: #282a36;
+    border-radius: 10px;
 }
 
-/* Outer box providing margins */
 #outer-box {
-  margin: 20px;
-  padding: 0px; /* Explicitly set padding to 0 if needed */
-  background-color: var(--clr-main-bg);
+    margin: 5px;
+    border: none;
+    background-color: #282a36;
+    border-radius: 10px;
 }
 
-/* Scrollable area styling */
 #scroll {
-  background-color: var(--clr-main-bg);
+    margin: 0px;
+    border: none;
 }
 
-/* Default text styling within entries */
 #text {
-  padding: 5px;
-  color: var(--clr-main-fg);
+    margin: 5px;
+    border: none;
+    color: #f8f8f2;
 }
 
-/* Styling for even-numbered entries (for alternating rows if desired) */
-#entry:nth-child(even) {
-  background-color: var(--clr-main-bg); /* Same as main bg in this case */
-}
-
-/* Styling for the currently selected entry row */
 #entry:selected {
-  background-color: var(--clr-selected-bg);
-  /* Removed non-standard 'font-color' property */
-}
-
-/* Styling for the text within the selected entry */
-#text:selected {
-  color: var(--clr-selected-fg);
-}
-
-/* Placeholder for image styling if needed */
-#img {
-  /* Add styles for images if used */
-}
-
-/* Placeholder for unselected image styling if needed */
-#img #unselected {
-  /* Add styles for unselected images if used */
+    background-color: #44475a;
+    border-radius: 10px;
 }

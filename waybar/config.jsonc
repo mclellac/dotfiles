@@ -19,21 +19,25 @@
         "memory",
         "battery",
         "network",
-        "pulseaudio"
+        "pulseaudio",
+        "bluetooth"
     ],
     "hyprland/workspaces": {
-        "format": "{name} {icon}",
-        "format-icons": {
-            "SHELL": "",
-            "WEB": "",
-            "CODE": "",
-            "COMMS": "",
-            "MISC": "",
-            "active": "",
-            "default": ""
-        },
-        "persistent-workspaces": {
-            "*": 5, // 5 workspaces by default on every monitor
+        "disable-scroll": true,
+        "all-outputs": true,
+        "on-click": "activate",
+        "format": "{name}",
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": [],
+            "10": []
         }
     },
     "tray": {
