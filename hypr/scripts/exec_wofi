@@ -1,28 +1,34 @@
-#!/bin/sh
+#!/bin/bash
 
-function app_launcher(){
-    wofi --show drun
-}
+# Define the default Wofi theme
+WOFI_THEME="$HOME/.config/wofi/themes/gruvbox.css"
 
-
-function wifi_menu(){
-    wifi4wofi &
-}
-
+# Function to display help
 doc() {
     echo "Usage:
-    set_env [Options]
+    exec_wofi [Options]
 
     Options:
-        application_launcher    Runs wofi application launcher
-        wifi                    Runs wofi wifi menu"
+        app_launcher    Runs wofi application launcher
+        ssh             Runs wofi ssh menu
+        power           Runs wofi power menu"
 }
 
-
+# Kill any existing wofi instance
 killall wofi
 
-case $1 in 
-  application_launcher) app_launcher   ;;
-  wifi)                 wifi_menu                   ;;
-  *) doc                            ;;
+# Main script logic
+case $1 in
+  app_launcher)
+    wofi --show drun --style "$WOFI_THEME"
+    ;;
+  ssh)
+    ~/.config/hypr/scripts/wofi-ssh.sh
+    ;;
+  power)
+    ~/.config/hypr/scripts/wofi-power.sh
+    ;;
+  *)
+    doc
+    ;;
 esac
