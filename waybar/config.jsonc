@@ -10,6 +10,7 @@
         "clock"
     ],
     "modules-right": [
+        "custom/power",
         "tray",
         "cpu_text",
         "cpu",
@@ -19,6 +20,11 @@
         "pulseaudio",
         "bluetooth"
     ],
+    "custom/power": {
+        "format": "",
+        "on-click": "~/.config/hypr/scripts/exec_wofi power",
+        "tooltip": false
+    },
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
