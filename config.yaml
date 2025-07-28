@@ -18,6 +18,9 @@ tasks:
   - target: "~/.config/starship"
     source: "starship"
 
+  - target: "~/.config/fish"
+    source: "fish"
+
   - target: "~/.config/nvim"
     source: "nvim"
 
