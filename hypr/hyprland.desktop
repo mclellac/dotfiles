@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Hyprland (UWSM)
-Comment=An intelligent dynamic tiling Wayland compositor
-Exec=/home/jules/.config/hypr/scripts/start-hyprland.sh
-Type=Application
