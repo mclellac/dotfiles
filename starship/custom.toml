@@ -129,14 +129,20 @@ style = "fg:foam"
 symbol = "☸ "
 format = '[$symbol$context( \($namespace\))]($style) in '
 style = "fg:love"
-disabled = true
+disabled = false
 detect_extensions = []
 detect_files = []
 detect_folders = []
 detect_env_vars = []
-contexts = []
 
+[[kubernetes.contexts]]
+context_pattern = "gke_.*_us-central1-b_primary"
+style = "fg:#33a"
 [kubernetes.context_aliases]
+"gke_.*_us-central1-b_primary" = "GKE Primary"
+"gke_.*_aws-ocp-failover" = "GKE AWS Failover"
+"arn:aws:eks:.*:cluster/ocpconsole" = "AWS Prod"
+"arn:aws:eks:.*:cluster/ose-dev" = "DEV"
 
 [kubernetes.user_aliases]
 
