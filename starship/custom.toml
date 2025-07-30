@@ -46,6 +46,30 @@ format = """
     [$character](fg:iris)
 """
 
+[[kubernetes.contexts]]
+# "bold red" style + default symbol when Kubernetes current context name equals "production" *and* the current user
+# equals "admin_user"
+context_pattern = "production"
+user_pattern = "admin_user"
+style = "bold red"
+context_alias = "prod"
+user_alias = "admin"
+
+[[kubernetes.contexts]]
+# "green" style + a different symbol when Kubernetes current context name contains openshift
+context_pattern = ".*openshift.*"
+style = "green"
+symbol = "💔 "
+context_alias = "openshift"
+
+[[kubernetes.contexts]]
+# Using capture groups
+# Contexts from GKE, AWS and other cloud providers usually carry additional information, like the region/zone.
+# The following entry matches on the GKE format (`gke_projectname_zone_cluster-name`)
+# and renames every matching kube context into a more readable format (`gke-cluster-name`):
+context_pattern = "gke_.*_(?P<cluster>[\\w-]+)"
+context_alias = "gke-$cluster"
+
 [character]
 format = "$symbol "
 success_symbol = "[❯](bold green)"
@@ -130,21 +154,53 @@ symbol = "☸ "
 format = '[$symbol$context( \($namespace\))]($style) in '
 style = "fg:love"
 disabled = false
-detect_extensions = []
-detect_files = []
-detect_folders = []
-detect_env_vars = []
 
+[kubernetes.context_aliases]
+"gke_.*_(?P<cluster>[\\w-]+)" = "gke-$cluster"
+"arn:aws:eks:.*:cluster/ocpconsole" = "AWS EKS Prod"
+"arn:aws:eks:.*:cluster/ose-dev" = "AWS EKS Dev"
+
+# Context-specific styling rules are defined below as an array of tables.
+# Starship checks them in order and applies the first one that matches.
+
+# Rule for OpenShift Production clusters
+# This pattern now correctly looks for the production cluster name within the full context string.
+[[kubernetes.contexts]]
+context_pattern = ".*/api-ocp-nm-.*"
+context_alias = "OpenShift Prod"
+style = "fg:love"
+symbol = "󰣞 "
+
+# Rule for OpenShift Internal/Development clusters
+# This pattern now correctly looks for the internal cluster name within the full context string.
+[[kubernetes.contexts]]
+context_pattern = ".*/api-ocp-int-nm-.*"
+context_alias = "OpenShift Internal"
+style = "fg:foam"
+symbol = "󰣞 "
+
+# A general rule for any remaining OpenShift clusters
+[[kubernetes.contexts]]
+context_pattern = ".*openshift.*"
+style = "fg:love" # Default OpenShift color from your theme
+symbol = "󰣞 "
+
+# A general rule for any GKE cluster
+[[kubernetes.contexts]]
+context_pattern = "gke_.*"
+style = "fg:pine" # Google Cloud color
+symbol = "󱇶 "    # Google Cloud Icon
+
+# Rule for a specific GKE primary cluster
 [[kubernetes.contexts]]
 context_pattern = "gke_.*_us-central1-b_primary"
-style = "fg:#33a"
-[kubernetes.context_aliases]
-"gke_.*_us-central1-b_primary" = "GKE Primary"
-"gke_.*_aws-ocp-failover" = "GKE AWS Failover"
-"arn:aws:eks:.*:cluster/ocpconsole" = "AWS Prod"
-"arn:aws:eks:.*:cluster/ose-dev" = "DEV"
+style = "fg:iris bold" # Special style for the primary GKE cluster
 
-[kubernetes.user_aliases]
+# Rule for local development cluster
+[[kubernetes.contexts]]
+context_pattern = "dev.local.cluster.k8s"
+style = "fg:gold"
+symbol = " " # Desktop/local icon
 
 [aws]
 format = 'on [$symbol($profile )(\($region\) )(\[$duration\] )]($style)'
