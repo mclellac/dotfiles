@@ -1,8 +1,11 @@
 {
     "layer": "top",
-    "position": "top",
-    "height": 35,
-    "spacing": 4,
+    "spacing": 0,
+    "height": 0,
+    "margin-top": 8,
+    "margin-right": 8,
+    "margin-bottom": 0,
+    "margin-left": 8,
     "modules-left": [
         "hyprland/workspaces"
     ],
@@ -10,37 +13,27 @@
         "clock"
     ],
     "modules-right": [
-        "custom/power",
         "tray",
         "cpu_text",
         "cpu",
         "memory",
         "battery",
         "network",
-        "pulseaudio",
-        "bluetooth"
+        "pulseaudio"
     ],
-    "custom/power": {
-        "format": "",
-        "on-click": "~/.config/hypr/scripts/exec_wofi power",
-        "tooltip": false
-    },
     "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "on-click": "activate",
-        "format": "{name}",
-        "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": [],
-            "7": [],
-            "8": [],
-            "9": [],
-            "10": []
+        "format": "{name} {icon}",
+        "format-icons": {
+            "SHELL": "",
+            "WEB": "",
+            "CODE": "",
+            "COMMS": "",
+            "MISC": "",
+            "active": "",
+            "default": ""
+        },
+        "persistent-workspaces": {
+            "*": 5, // 5 workspaces by default on every monitor
         }
     },
     "tray": {
