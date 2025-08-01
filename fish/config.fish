@@ -27,3 +27,8 @@ alias q 'qs -c ii'
 #   set_color cyan; echo (pwd)
 #   set_color green; echo '> '
 # end
+
+# Load colors from pywal
+if test -f ~/.cache/wal/sequences
+    cat ~/.cache/wal/sequences | source
+end
