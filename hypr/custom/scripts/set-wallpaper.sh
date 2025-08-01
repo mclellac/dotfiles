@@ -25,3 +25,6 @@ hyprpaper &
 
 # Generate and apply color scheme with pywal
 wal -i "$wallpaper"
+
+# Reload all themed applications
+wal -R

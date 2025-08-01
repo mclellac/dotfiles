@@ -193,3 +193,6 @@ if command -v oc &> /dev/null; then
 fi
 
 eval "$(starship init zsh)"
+
+# Load colors from pywal
+(cat ~/.cache/wal/sequences &)
