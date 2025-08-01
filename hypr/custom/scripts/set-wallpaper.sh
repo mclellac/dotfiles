@@ -6,9 +6,6 @@ if ! command -v zenity &> /dev/null; then
     exit 1
 fi
 
-# Get the first monitor name
-monitor=$(hyprctl monitors | awk '/Monitor/ {print $2}')
-
 # Open file picker to select a wallpaper
 wallpaper=$(zenity --file-selection --title="Select a wallpaper" --filename="$HOME/Pictures/wallpapers/")
 
@@ -17,9 +14,14 @@ if [ -z "$wallpaper" ]; then
     exit 0
 fi
 
-# Set the wallpaper with hyprpaper
-hyprctl hyprpaper unload all
-hyprctl hyprpaper wallpaper "$monitor,$wallpaper"
+# Update hyprpaper.conf
+hyprpaper_conf="$HOME/.config/hypr/hyprpaper.conf"
+sed -i "s|^\s*wallpaper\s*=\s*.*|wallpaper = ,$wallpaper|" "$hyprpaper_conf"
+sed -i "s|^\s*preload\s*=\s*.*|preload = $wallpaper|" "$hyprpaper_conf"
+
+# Reload hyprpaper
+pkill hyprpaper
+hyprpaper &
 
 # Generate and apply color scheme with pywal
 wal -i "$wallpaper"
