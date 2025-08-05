@@ -49,10 +49,6 @@ tasks:
   #    source: "waybar"
   #    os: linux
 
-  - target: "~/.config/quickshell"
-    source: "quickshell"
-    os: linux
-
   - target: "~/.config/wofi"
     source: "wofi"
     os: linux
