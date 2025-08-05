@@ -7,7 +7,7 @@ if ! command -v zenity &> /dev/null; then
 fi
 
 # Open file picker to select a wallpaper
-wallpaper=$(zenity --file-selection --title="Select a wallpaper" --filename="$HOME/Pictures/wallpapers/")
+wallpaper=$(zenity --file-selection --title="Select a wallpaper" --filename="$HOME/wallpapers/")
 
 # Exit if no wallpaper is selected
 if [ -z "$wallpaper" ]; then
@@ -15,7 +15,7 @@ if [ -z "$wallpaper" ]; then
 fi
 
 # Update hyprpaper.conf
-hyprpaper_conf="$HOME/.config/hypr/hyprpaper.conf"
+hyprpaper_conf="$HOME/hypr/hyprpaper.conf"
 sed -i "s|^\s*wallpaper\s*=\s*.*|wallpaper = ,$wallpaper|" "$hyprpaper_conf"
 sed -i "s|^\s*preload\s*=\s*.*|preload = $wallpaper|" "$hyprpaper_conf"
 
