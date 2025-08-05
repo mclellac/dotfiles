@@ -18,9 +18,6 @@ tasks:
   - target: "~/.config/starship"
     source: "starship"
 
-  - target: "~/.config/fish"
-    source: "fish"
-
   - target: "~/.config/nvim"
     source: "nvim"
 
@@ -41,13 +38,13 @@ tasks:
     source: "hypr"
     os: linux
 
-  #  - target: "~/.config/dunst"
-  #    source: "dunst"
-  #    os: linux
+  - target: "~/.config/dunst"
+    source: "dunst"
+    os: linux
 
-  #  - target: "~/.config/waybar"
-  #    source: "waybar"
-  #    os: linux
+  - target: "~/.config/waybar"
+    source: "waybar"
+    os: linux
 
   - target: "~/.config/wofi"
     source: "wofi"
