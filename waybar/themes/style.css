@@ -1,25 +1,18 @@
 * {
     border: none;
-    border-radius: 10;
-    min-height: 0;
-    font-family: "iosevka nerd font";
+    border-radius: 10px;
+    font-family: "iosevka nerd font", "Font Awesome 6 Free";
     font-weight: 500;
-    font-size: 20px;
-    padding: 0;
+    font-size: 16px;
+    min-height: 0;
 }
 
 window#waybar {
     background: rgba(29, 16, 17, 0.8);
-    border: 2px solid #A58A8D;
     color: #F7DCDE;
 }
 
-tooltip {
-    background-color: #1D1011;
-    border: 2px solid #F7DCDE;
-    color: #F7DCDE;
-}
-
+#workspaces,
 #clock,
 #tray,
 #cpu,
@@ -27,70 +20,54 @@ tooltip {
 #battery,
 #network,
 #pulseaudio {
-    margin: 10px 10px 10px 10px;
-    padding: 5px 10px;
+    padding: 2px 10px;
+    margin: 8px 4px;
 }
 
 #workspaces {
-    background-color: #A58A8D;
-    margin: 6px 0px 6px 6px;
-    border: 2px solid #F7DCDE;
+    background-color: transparent;
 }
 
 #workspaces button {
-    all: initial;
-    min-width: 0;
-    box-shadow: inset 0 -3px transparent;
-    padding: 2px 4px;
-    color: #1D1011;
+    padding: 2px 5px;
+    color: #A58A8D;
+    background-color: transparent;
 }
 
 #workspaces button.focused {
-    color: #FFB2BC;
+    color: #F7DCDE;
+    background-color: #A58A8D;
+    border-radius: 10px;
 }
 
 #workspaces button.urgent {
-    background-color: #FFB2BC;
     color: #1D1011;
+    background-color: #FFB2BC;
+    border-radius: 10px;
 }
 
 #clock {
-    background-color: #A58A8D;
-    border: 2px solid #F7DCDE;
-    color: #1D1011;
+    color: #F7DCDE;
 }
 
 #tray {
-    background-color: #F7DCDE;
-    border: 2px solid #A58A8D;
+    background-color: transparent;
 }
 
-#battery {
-    background-color: #FFB2BC;
-    border: 2px solid #F7DCDE;
-    color: #1D1011;
-}
-
+#battery,
 #cpu,
 #memory,
 #network,
 #pulseaudio {
-    background-color: #F7DCDE;
-    border: 2px solid #A58A8D;
-    color: #1D1011;
+    color: #F7DCDE;
 }
 
-#cpu.critical,
-#memory.critical {
-    background-color: #F7DCDE;
-    border: 2px solid #A58A8D;
-    color: #FF0000;
+#battery.charging,
+#battery.plugged {
+    color: #89b4fa; /* A different color to indicate charging */
 }
 
-#battery.warning,
-#battery.critical,
-#battery.urgent {
-    background-color: #F7DCDE;
-    border: 2px solid #A58A8D;
-    color: #FF0000;
+#battery.critical:not(.charging) {
+    background-color: #f38ba8;
+    color: #1e1e2e;
 }
