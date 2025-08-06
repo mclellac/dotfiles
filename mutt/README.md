@@ -24,25 +24,7 @@ The configuration is split into several files:
 
 ### Accounts
 
-To configure your email accounts, you need to create a file in the `acct/` directory for each account. You can use the `acct/personal` and `acct/work` files as templates.
-
-#### Password Management
-
-This configuration uses `pass` (the standard unix password manager) to handle passwords securely. Instead of storing your passwords in plain text, you can use `pass` to store them in an encrypted format.
-
-To set this up, you need to have `pass` installed and initialized. Then, you can store your email passwords in `pass`. For example, for the `personal` account, you would store the password like this:
-
-```bash
-pass insert mutt/personal
-```
-
-And for the `work` account:
-
-```bash
-pass insert mutt/work
-```
-
-The configuration files in `acct/` are already set up to use these passwords.
+To configure your email accounts, you need to create a file in the `acct/` directory for each account. You can use the `acct/personal` and `acct/work` files as templates. You should enter your app passwords for each account in the corresponding file.
 
 ### Colors
 
