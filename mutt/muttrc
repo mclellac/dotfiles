@@ -31,7 +31,7 @@ set delete
 set confirmappend=no    # Confirm when appending messages to an existing mailbox?
 unset record            # prevent dups in Sent
 unset move              # gmail does that
-unset mark_old          # read/new is good enough
+# unset mark_old          # read/new is good enough
 unset markers           # no ugly plus signs
 set smtp_authenticators = 'gssapi:login'
 
@@ -85,7 +85,7 @@ set beep=no # no beep sound
 
 # Sidebar settings
 # ------------------------------------------------------------------------------
-set sidebar_visible = no  # don't show unless asked for
+set sidebar_visible = yes # show the sidebar by default
 set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 

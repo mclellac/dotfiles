@@ -19,17 +19,22 @@ text/html; lynx -dump -force_html %s; copiousoutput;
 # Images
 # ------------------------------------------------------------------------------
 
-# Use img2sixel to display images directly in a compatible terminal.
-image/jpeg; img2sixel '%s'
-image/png; img2sixel '%s'
-image/gif; img2sixel '%s'
-image/bmp; img2sixel '%s'
-image/tiff; img2sixel '%s'
-image/webp; img2sixel '%s'
+# Attempt to display images inline using img2sixel.
+# This requires a terminal that supports sixel graphics.
+# If your terminal doesn't support sixel, it will gracefully fail,
+# and you can use the 'o' keybinding to open the image in an external viewer.
+image/jpeg; img2sixel '%s'; copiousoutput
+image/png; img2sixel '%s'; copiousoutput
+image/gif; img2sixel '%s'; copiousoutput
+image/bmp; img2sixel '%s'; copiousoutput
+image/tiff; img2sixel '%s'; copiousoutput
+image/webp; img2sixel '%s'; copiousoutput
+image/svg+xml; img2sixel '%s'; copiousoutput
+image/x-xpixmap; img2sixel '%s'; copiousoutput
 
-# Fallback for other image types or incompatible terminals.
-# This will open the image in your default image viewer.
-image/*; xdg-open '%s'
+# Fallback for other image types or for opening in an external viewer.
+# The 'o' keybinding in the attachment view will use this.
+image/*; xdg-open '%s'; copiousoutput
 
 # ------------------------------------------------------------------------------
 # Documents

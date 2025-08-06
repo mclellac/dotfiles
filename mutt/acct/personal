@@ -19,6 +19,10 @@ set header_cache        =~/.mutt/cache/personal/headers
 set message_cachedir 	=~/.mutt/cache/personal/bodies
 set certificate_file 	=~/.mutt/personal/certificates
 
-# You can use any gmail imap mailboxes
+# Neomutt needs to be told which mailboxes to check for new mail.
+# It will not automatically discover all of your folders.
+# You can add more mailboxes by appending them to the `mailboxes` variable.
+# For example:
+# mailboxes =INBOX =[Gmail]/Starred =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash =[another-folder]
 # ---------------------------------------------------------------------------------------------------
 mailboxes =INBOX =[Gmail]/Starred =[Gmail]/Sent\ Mail =[Gmail]/Drafts =[Gmail]/Spam =[Gmail]/Trash
