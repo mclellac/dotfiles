@@ -10,6 +10,7 @@
 # Switch between accounts
 macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/acct/personal<enter><change-folder>!<enter>' "Switch to Personal account"
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/acct/work<enter><change-folder>!<enter>' "Switch to Work account"
+macro generic ,r ":source ~/.mutt/muttrc\n" "Reload muttrc"
 
 # ------------------------------------------------------------------------------
 # Generic Bindings (apply in multiple views)
@@ -19,7 +20,10 @@ bind generic,index,pager q exit
 bind generic,index,pager Q quit
 bind generic,index,pager / search
 bind generic,index,pager : enter-command
-bind generic,index,pager,editor ,r ":source ~/.mutt/muttrc\n" "Reload muttrc"
+
+# Unbind keys to prevent aliasing warnings
+bind index,pager g noop
+bind index,pager d noop
 
 # Navigation
 bind generic,index,pager <PageUp>       previous-page
