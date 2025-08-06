@@ -31,6 +31,8 @@ bind generic,index,pager <PageUp>       previous-page
 bind generic,index,pager <PageDown>     next-page
 bind generic,index,pager,attach j       next-entry
 bind generic,index,pager,attach k       previous-entry
+bind index J                            next-entry
+bind index K                            previous-entry
 bind generic,index,pager,attach gg      first-entry
 bind generic,index,pager,attach G       last-entry
 
@@ -112,6 +114,7 @@ bind pager zA         toggle-quoted
 
 bind attach <Return>  view-mailcap
 bind attach l         view-mailcap
+bind attach o         view-mailcap
 bind attach <Left>    exit
 bind attach h         exit
 bind attach s         save-entry
@@ -120,7 +123,9 @@ bind attach s         save-entry
 # Sidebar
 # ------------------------------------------------------------------------------
 
-bind index,pager \CP sidebar-prev
-bind index,pager \CN sidebar-next
-bind index,pager \CO sidebar-open
-bind index,pager \CB sidebar-toggle-visible
+bind index,pager <C-k> sidebar-prev
+bind index,pager <C-j> sidebar-next
+bind index,pager <C-o> sidebar-open
+bind index,pager <C-h> sidebar-prev-new
+bind index,pager <C-l> sidebar-next-new
+bind index,pager B     sidebar-toggle-visible
