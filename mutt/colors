@@ -11,7 +11,7 @@ color attachment   color244      color235
 color error        color204      color235
 color indicator    color223      color166
 color markers      color223      color235
-color search_highlight color184      color22
+color search       color184      color22
 color status       color250      color237
 color tilde        color244      color235
 color tree         color244      color235
