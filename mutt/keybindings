@@ -126,6 +126,4 @@ bind attach s         save-entry
 bind index,pager <C-k> sidebar-prev
 bind index,pager <C-j> sidebar-next
 bind index,pager <C-o> sidebar-open
-bind index,pager <C-h> sidebar-prev-new
-bind index,pager <C-l> sidebar-next-new
-bind index,pager B     sidebar-toggle-visible
+bind index,pager \CB sidebar-toggle-visible

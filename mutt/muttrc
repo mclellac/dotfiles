@@ -85,7 +85,7 @@ set beep=no # no beep sound
 
 # Sidebar settings
 # ------------------------------------------------------------------------------
-set sidebar_visible = yes # show the sidebar by default
+set sidebar_visible = no  # don't show unless asked for
 set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 

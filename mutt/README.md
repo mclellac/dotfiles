@@ -45,13 +45,15 @@ The keybindings are defined in the `keybindings` file. They are heavily inspired
 | `:`             | Enter a command                  |
 | `<F2>`          | Switch to the personal account   |
 | `<F3>`          | Switch to the work account       |
-| `Ctrl-b`        | Toggle the sidebar               |
+| `\CB`           | Toggle the sidebar               |
+| `Ctrl-j` / `Ctrl-k` | Navigate the sidebar             |
+| `Ctrl-o`        | Open a mailbox from the sidebar  |
 
 #### Index View (Mailbox)
 
 | Key             | Description                      |
 | --------------- | -------------------------------- |
-| `j` / `k`       | Move down / up                   |
+| `j` / `k` / `J` / `K` | Move down / up                   |
 | `l` / `<Enter>` | Open the selected email          |
 | `h` / `<Left>`  | Go back to the folder list       |
 | `gg` / `G`      | Go to the first / last email     |
@@ -87,7 +89,7 @@ The keybindings are defined in the `keybindings` file. They are heavily inspired
 | `dd`            | Delete the email                 |
 | `dt`            | Delete the entire thread         |
 | `s`             | Save the email                   |
-| `v`             | View attachments                 |
+| `v` / `o`       | View attachments                 |
 | `|`             | Pipe the email to a command      |
 | `za` / `zA`     | Toggle quoted text               |
 
