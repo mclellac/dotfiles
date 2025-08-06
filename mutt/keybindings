@@ -22,6 +22,7 @@ bind generic,index,pager / search
 bind generic,index,pager : enter-command
 
 # Unbind keys to prevent aliasing warnings
+bind attach g noop
 bind index,pager g noop
 bind index,pager d noop
 
