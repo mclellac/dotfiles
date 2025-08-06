@@ -1,60 +1,93 @@
 # vim: filetype=muttrc
-#
-# Gruvbox color scheme for Mutt
-# https://github.com/morhetz/gruvbox
+
+# Catppuccin color scheme for Mutt (Mocha flavor)
 
 # Default
-color normal       brightwhite   color235
+color normal    #CDD6F4      default
 
 # Basic Colors
-color attachment   color244      color235
-color error        color204      color235
-color indicator    color223      color166
-color markers      color223      color235
-color search       color184      color22
-color status       color250      color237
-color tilde        color244      color235
-color tree         color244      color235
+color tree	    #89B4FA        default
+color error	    #F38BA8	default
+color message	#89B4FA    	default
+color status	#CDD6F4     #1E1E2E
+color indicator	#1E1E2E      #F9E2AF
 
-# Pager
-color hdrdefault   color142      color235
-color header       color184      color235      "^From: "
-color header       color175      color235      "^To: "
-color header       color175      color235      "^Cc: "
-color header       color175      color235      "^Bcc: "
-color header       color184      color235      "^Subject: "
-color header       color142      color235      "^Date: "
-color header       color142      color235      "^Reply-To: "
-color header       color142      color235      "^(User-Agent|X-Mailer): "
-color quoted       color142      color235
-color quoted1      color175      color235
-color quoted2      color184      color235
-color quoted3      color214      color235
-color quoted4      color204      color235
-color signature    color108      color235
-color body         color184      color235      "((http|https|ftp)://|www\\.)\\S+"
-color body         color184      color235      "mailto:\\S+"
-color body         color175      color235      "gpg: Good signature"
-color body         color204      color235      "gpg: BAD signature"
-color body         color204      color235      "gpg: Can't check signature"
+# Uncolor certain messages
+uncolor index "~E"
+uncolor index "~P"
+uncolor index "~C @.ca"
+uncolor index "~N ~u"
+uncolor index "~N !~u"
+uncolor index "~T"
+uncolor index "~D"
 
-# Index
-color index        color175      color235      "~D" # Deleted
-color index        color184      color235      "~F" # Flagged
-color index        color214      color235      "~N" # New
-color index        color204      color235      "~O" # Old
-color index        color142      color235      "~R" # Read
-color index        color223      color235      "~T" # Tagged
-color index        color108      color235      "~U" # Unread
+# Recolor them appropriately
+color index #F38BA8       default     "~E" # Expired
+color index #F5C2E7    default     "~P" # From me
+color index #A6E3A1           default     "~C @.ca"
+color index #A6E3A1          default     "~N ~u"  # new ML mail
+color index #A6E3A1         default     "~N !~u" # new non-ML mail
+color index #FAB387   default     "~T" # Tagged
+color index #F38BA8           default         "~D" # Deleted
+color index #CDD6F4         default     "~N !~T !~F !~p !~P"
+color index #CDD6F4		    default		"~A"        # all messages
+color index #BAC2DE		default		"~O"        # old messages
+color index #CBA6F7		    default		"~Q"        # messages that have been replied to
+color index #BAC2DE	    	default		"~R"        # read messages
+color index #CDD6F4           default		"~U"        # unread messages
+color index #CDD6F4           default		"~U~$"      # unread, unreferenced messages
+color index #9399B2		default		"~v"        # messages part of a collapsed thread
+color index #9399B2		default		"~P"        # messages from me
+color index #CDD6F4	        default		"~p!~F"     # messages to me
+color index #89B4FA		    default		"~N~p!~F"   # new messages to me
+color index #89B4FA		    default		"~U~p!~F"   # unread messages to me
+color index #BAC2DE	    	default		"~R~p!~F"   # messages to me
+color index #FAB387		    default		"~F"        # flagged messages
+color index #A6E3A1		    default		"~F~p"      # flagged messages to me
+color index #89B4FA		default		"~N~F"      # new flagged messages
+color index #A6E3A1		default		"~N~F~p"    # new flagged messages to me
+color index #A6E3A1 	default		"~U~F~p"    # new flagged messages to me
+color index #F38BA8		default         "~D"        # deleted messages
+color index #9399B2		default		"~v~(!~N)"  # collapsed thread with no unread
+color index #CBA6F7		default		"~v~(~N)"   # collapsed thread with some unread
+color index #A6E3A1         default		"~N~v~(~N)" # collapsed thread with unread parent
 
-# Special Index higlights
-color index        color223      color166      "~p" # To me
-color index        color223      color166      "~Q" # Replied
-color index        color223      color166      "~P" # From me
+# Header
+color header #F5C2E7  default     "^from:"
+color header #A6E3A1          default     "^to:"
+color header #F9E2AF         default     "^cc:"
+color header #89B4FA     default    "^subject:"
 
-# Sidebar
-color sidebar_new      color214    color237
-color sidebar_flagged  color184    color237
-color sidebar_ordinary color250    color237
-color sidebar_highlight color166   color235
-color sidebar_divider  color244    color244
+# Message bodies
+color attachment #9399B2  default
+color search     #F38BA8          default
+color signature  #9399B2         default
+color tilde      #9399B2  default
+color hdrdefault #F9E2AF       default
+color bold       #F5C2E7 default
+
+# URLs
+color body #89B4FA default "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
+color body #89B4FA default "(^|<| )(http|https|ftp|file|telnet|news|finger)://[^ ]+( |>|$)"
+color body #89B4FA default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+color body #89B4FA  default  "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+
+# *bold*, _underline_, and /italic/
+color body #F5C2E7 default "(^| )\\*[^ ]+\\*( |$)"
+color body #A6E3A1 default "(^| )_[^ ]+_( |$)"
+color body #CBA6F7 default "(^| )/[^ ]+/( |$)"
+
+# Quoted text
+color quoted  #CBA6F7 default
+color quoted1 #89B4FA          default
+color quoted2 #A6E3A1         default
+color quoted3 #F9E2AF        default
+color quoted4 #F5C2E7       default
+color quoted5 #A6E3A1   default
+color quoted6 #F9E2AF  default
+color quoted7 #89B4FA    default
+
+# PGP messages
+color body #A6E3A1     default     "^gpg signature OK.*"
+color body #F9E2AF          default     "^gpg "
+color body #F38BA8       default     "^gpg signature NOT OK. *"
