@@ -54,5 +54,5 @@ application/octet-stream; xdg-open '%s'
 # Plain text
 # ------------------------------------------------------------------------------
 
-# Open plain text files in vim.
-text/plain; vim %s
+# Open plain text files in neovim.
+text/plain; nvim %s

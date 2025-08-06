@@ -7,8 +7,8 @@ folder-hook 'Personal' 'source ~/.mutt/acct/personal'
 folder-hook 'Work' 'source ~/.mutt/acct/work'
 
 source $HOME/.mutt/colors
-source $HOME/.mutt/acct/work
-#source $HOME/.mutt/acct/personal
+#source $HOME/.mutt/acct/work
+source $HOME/.mutt/acct/personal
 
 # headers to show
 ignore *                                      # ignore all headers
