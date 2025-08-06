@@ -91,3 +91,12 @@ color quoted7 color111    default
 color body color150     default     "^gpg signature OK.*"
 color body color222          default     "^gpg "
 color body color211       default     "^gpg signature NOT OK. *"
+
+# Domain-specific colors
+color index color111 default "~f gmail.com"
+color index color150 default "~f work.com"
+color index color222 default "~f newsletter.com"
+color index color197 default "~f rogers.com"
+color index color161 default "~f cibc.com"
+color index color117 default "~f steam.com"
+color index color114 default "~f wealthsimple.com"
