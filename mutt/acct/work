@@ -2,10 +2,10 @@
 # ------------------------------------------------------------------------------
 set imap_check_subscribed
 set imap_user 	= "user@domain"
-set imap_pass 	= ""
+set imap_pass 	= "`pass mutt/work`"
 set folder 	    = "imaps://imap.gmail.com:993"
 set smtp_url	= "smtps://user@domain@smtp.gmail.com/465"
-set smtp_pass 	= "" 
+set smtp_pass 	= "`pass mutt/work`"
 set from 	    = "user@domain"
 set realname 	= "real name"
 

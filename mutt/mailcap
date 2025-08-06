@@ -1,24 +1,58 @@
-text/html;          w3m -dump %s; nametemplate=%s.html; copiousoutput
-#text/plain;         w3m -dump %s; nametemplate=%s.html; copiousoutput
+# Mutt mailcap file
+#
+# This file defines how Mutt should handle different MIME types.
 
+# ------------------------------------------------------------------------------
+# HTML Mail
+# ------------------------------------------------------------------------------
 
-# auto view using w3m
-#text/html; w3m -I %{charset} -T text/html; copiousoutput;
+# Use lynx to render HTML emails in the terminal.
+# The `copiousoutput` option tells Mutt to expect a lot of output.
+text/html; lynx -dump -force_html %s; copiousoutput;
 
-image/*; img2sixel '%s'
+# To open HTML emails in your default browser, you can use a keybinding like this in your muttrc:
+# macro pager B "<pipe-message>urlview<Enter>" "Browse URLs"
+# Or, to open the whole email in a browser:
+# macro index,pager <F9> "<pipe-message>cat > /tmp/mutt-mail.html && xdg-open /tmp/mutt-mail.html<Enter>" "Open email in browser"
 
-#image/jpg;    w3m %s
-#image/jpeg;   w3m %s
-#image/pjpeg;  w3m %s
-#image/png;    w3m %s
-#image/gif;    w3m %s
+# ------------------------------------------------------------------------------
+# Images
+# ------------------------------------------------------------------------------
 
+# Use img2sixel to display images directly in a compatible terminal.
+image/jpeg; img2sixel '%s'
+image/png; img2sixel '%s'
+image/gif; img2sixel '%s'
+image/bmp; img2sixel '%s'
+image/tiff; img2sixel '%s'
+image/webp; img2sixel '%s'
 
-# PDFs
-application/pdf; ~/.mutt/bin/view_attachment %s pdf
+# Fallback for other image types or incompatible terminals.
+# This will open the image in your default image viewer.
+image/*; xdg-open '%s'
 
-# Unidentified files
-application/octet-stream; ~/.mutt/bin/view_attachment %s "-"
+# ------------------------------------------------------------------------------
+# Documents
+# ------------------------------------------------------------------------------
 
+# View PDFs in your default PDF viewer.
+application/pdf; xdg-open '%s'
+
+# View other documents in your default application.
+application/msword; xdg-open '%s'
+application/vnd.openxmlformats-officedocument.wordprocessingml.document; xdg-open '%s'
+application/vnd.oasis.opendocument.text; xdg-open '%s'
+
+# ------------------------------------------------------------------------------
+# Fallback for unknown types
+# ------------------------------------------------------------------------------
+
+# For any other file type, try to open it with xdg-open.
+application/octet-stream; xdg-open '%s'
+
+# ------------------------------------------------------------------------------
 # Plain text
+# ------------------------------------------------------------------------------
+
+# Open plain text files in vim.
 text/plain; vim %s
