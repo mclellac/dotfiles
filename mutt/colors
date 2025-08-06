@@ -10,7 +10,7 @@ color tree	    #89B4FA        default
 color error	    #F38BA8	default
 color message	#89B4FA    	default
 color status	#CDD6F4     #1E1E2E
-color indicator	#1E1E2E      #F9E2AF
+color indicator	#F9E2AF      #585b70
 
 # Uncolor certain messages
 uncolor index "~E"
