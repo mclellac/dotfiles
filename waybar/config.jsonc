@@ -3,7 +3,10 @@
   "spacing": 0,
   "height": 0,
   "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["clock"],
+  "modules-center": ["clock", "hyprland/window"],
+  "hyprland/window": {
+    "format": "{}"
+  },
   "modules-right": [
     "tray",
     "cpu_text",
@@ -12,7 +15,20 @@
     "battery",
     "network",
     "pulseaudio",
+    "custom/weather",
+    "custom/power",
   ],
+  "custom/power": {
+    "format": "",
+    "exec": "~/.config/waybar/scripts/power.sh",
+    "interval": "once",
+    "tooltip": false
+  },
+  "custom/weather": {
+    "exec": "~/.config/waybar/scripts/weather.sh",
+    "interval": 1800,
+    "tooltip": true
+  },
   "hyprland/workspaces": {
     "format": "{icon}",
     "format-icons": {
