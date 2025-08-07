@@ -1,20 +1,20 @@
 #!/bin/sh
 
-entries=" Shutdown\n Reboot\n Logout\n Lock"
+entries="  Shutdown\n  Reboot\n  Logout\n" #   Lock"
 
-selected=$(echo -e $entries|fuzzel --dmenu --prompt "Power Menu")
+selected=$(echo -e $entries | fuzzel --dmenu --prompt "Power Menu")
 
 case "$selected" in
-  *Shutdown)
+*Shutdown)
     systemctl poweroff
     ;;
-  *Reboot)
+*Reboot)
     systemctl reboot
     ;;
-  *Logout)
+*Logout)
     hyprctl dispatch exit
     ;;
-  *Lock)
-    hyprlock
-    ;;
+#  *Lock)
+#    hyprlock
+#    ;;
 esac
