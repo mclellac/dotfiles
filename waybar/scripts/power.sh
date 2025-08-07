@@ -2,7 +2,7 @@
 
 entries=" Shutdown\n Reboot\n Logout\n Lock"
 
-selected=$(echo -e $entries|wofi --dmenu --prompt "Power Menu" --style ~/.config/wofi/themes/power.css)
+selected=$(echo -e $entries|fuzzel --dmenu --prompt "Power Menu")
 
 case "$selected" in
   *Shutdown)
