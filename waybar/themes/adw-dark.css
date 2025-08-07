@@ -27,7 +27,7 @@
   min-height: 0;
   font-family: "Adwaita Mono", "Cantarell", "Noto Sans", sans-serif; /* Adwaita is preferred */
   font-weight: 500;
-  font-size: 18px;
+  font-size: 20px;
   padding: 0;
   margin: 0;
   color: @adw-fg;
@@ -69,12 +69,15 @@ tooltip label {
 #custom-weather,
 #custom-something-else,
 #idle_inhibitor,
+#custom-weather,
+#custom-power,
+#window,
 #backlight,
 #disk {
   background-color: transparent;
   padding: 5px 12px;
-  margin: 0;
-  border-radius: 0px;
+  margin: 4px 3px;
+  border-radius: 6px;
   opacity: 1;
   /* Removed 'transform' property as it's unsupported in Waybar/GTK CSS */
   /* Define transitions for supported properties */
@@ -109,7 +112,7 @@ window#waybar.empty #disk {
 #idle_inhibitor:hover,
 #backlight:hover,
 #disk:hover {
-  color: @adw-accent;
+  background-color: @adw-hover-bg;
 }
 
 #workspaces {
