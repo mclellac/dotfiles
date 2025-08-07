@@ -20,8 +20,7 @@
   ],
   "custom/power": {
     "format": "",
-    "exec": "~/.config/waybar/scripts/power.sh",
-    "interval": "once",
+    "on-click": "~/.config/waybar/scripts/power.sh",
     "tooltip": false
   },
   "custom/weather": {
