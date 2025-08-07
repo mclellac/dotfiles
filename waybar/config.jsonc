@@ -26,8 +26,7 @@
   "custom/weather": {
     "exec": "~/.config/waybar/scripts/weather.sh",
     "interval": 1800,
-    "tooltip": true,
-    "format": "{}"
+    "tooltip": true
   },
   "hyprland/workspaces": {
     "format": "{icon}",
