@@ -217,6 +217,7 @@ calendar {
     padding: 10px;
     border: 1px solid @tooltip-border;
     background-color: @tooltip-bg;
+    font-size: 22px;
 }
 
 calendar.header {

@@ -14,13 +14,13 @@
     "pulseaudio",
   ],
   "hyprland/workspaces": {
-    "format": "{name} {icon}",
+    "format": "{icon}",
     "format-icons": {
-      "1": "",
-      "2": "",
-      "3": "",
-      "4": "",
-      "5": "",
+      "SHELL": "",
+      "WEB": "",
+      "CODE": "",
+      "COMMS": "",
+      "MISC": "",
       "active": "",
       "default": ""
     },
@@ -33,11 +33,11 @@
     "tooltip": false
   },
   "clock": {
-    "format": "{:%H:%M}  ",
+    "format": "{:%H:%M} 󰥔 ",
     "format-alt": "{:%A, %B %d, %Y (%R)}  ",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
-      "mode": "year",
+      "mode": "month",
       "mode-mon-col": 3,
       "weeks-pos": "right",
       "on-scroll": 1,
@@ -98,7 +98,7 @@
       "phone": "󰏲",
       "portable": "󰏲",
       "car": "󰄋",
-      "default": ["", "", ""]
+      "default": ["󰕿", "󰖀", "󰕾"]
     }
   },
   "pulseaudio#microphone": {
