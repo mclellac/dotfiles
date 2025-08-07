@@ -3,10 +3,7 @@
   "spacing": 0,
   "height": 0,
   "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["clock", "hyprland/window"],
-  "hyprland/window": {
-    "format": "{}"
-  },
+  "modules-center": ["clock"],
   "modules-right": [
     "tray",
     "cpu_text",
@@ -21,7 +18,7 @@
   "custom/power": {
     "format": "",
     "on-click": "~/.config/waybar/scripts/power.sh",
-    "tooltip": false
+    "tooltip": false,
   },
   "custom/weather": {
     "exec": "~/.config/waybar/scripts/weather.sh",
@@ -38,15 +35,15 @@
       "COMMS": "",
       "MISC": "",
       "active": "",
-      "default": ""
+      "default": "",
     },
     "persistent-workspaces": {
-      "*": 5 // 5 workspaces by default on every monitor
-    }
+      "*": 5, // 5 workspaces by default on every monitor
+    },
   },
   "tray": {
     "spacing": 10,
-    "tooltip": false
+    "tooltip": false,
   },
   "clock": {
     "format": "{:%I:%M %p} 󰥔 ",
@@ -58,38 +55,38 @@
       "weeks-pos": "right",
       "on-scroll": 1,
       "format": {
-        "today": "<span color='#ff0000'>{}</span>"
+        "today": "<span color='#ff0000'>{}</span>",
       },
       "on-click": "gnome-calendar",
-      "marked-dates-script": "~/.config/waybar/scripts/calendar.sh"
+      "marked-dates-script": "~/.config/waybar/scripts/calendar.sh",
     },
     "actions": {
       "on-click-right": "mode",
       "on-scroll-up": "tz_up",
       "on-scroll-down": "tz_down",
       "on-scroll-up": "shift_up",
-      "on-scroll-down": "shift_down"
-    }
+      "on-scroll-down": "shift_down",
+    },
   },
   "cpu": {
     "format": "CPU {usage}%",
     "interval": 2,
     "states": {
-      "critical": 90
-    }
+      "critical": 90,
+    },
   },
   "memory": {
     "format": "Mem {percentage}%",
     "interval": 2,
     "states": {
-      "critical": 80
-    }
+      "critical": 80,
+    },
   },
   "battery": {
     "states": {
       // "good": 95,
       "warning": 30,
-      "critical": 15
+      "critical": 15,
     },
     "format": "{capacity}% {icon}",
     "format-charging": "{capacity}% 󰂄",
@@ -97,7 +94,7 @@
     "format-alt": "{time} {icon}",
     // "format-good": "", // An empty format will hide the module
     // "format-full": "",
-    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
   "pulseaudio": {
     "format": "{icon} {volume}%",
@@ -114,8 +111,8 @@
       "phone": "󰏲",
       "portable": "󰏲",
       "car": "󰄋",
-      "default": ["󰕿", "󰖀", "󰕾"]
-    }
+      "default": ["󰕿", "󰖀", "󰕾"],
+    },
   },
   "pulseaudio#microphone": {
     "format": "{format_source}",
@@ -124,7 +121,7 @@
     "on-click": "pamixer --default-source -t",
     "on-scroll-up": "pamixer --default-source -i 5",
     "on-scroll-down": "pamixer --default-source -d 5",
-    "scroll-step": 5
+    "scroll-step": 5,
   },
   "network": {
     "format-wifi": "󰤨  {signalStrength}%",
@@ -132,7 +129,7 @@
     "tooltip-format": "{essid} - {ifname} via {gwaddr}",
     "format-linked": "{ifname} (No IP)",
     "format-disconnected": "Disconnected 󰤮",
-    "format-alt": "{ifname}:{essid} {ipaddr}/{cidr}"
+    "format-alt": "{ifname}:{essid} {ipaddr}/{cidr}",
   },
   "bluetooth": {
     "format": "󰂯 {status}",
@@ -140,6 +137,6 @@
     "format-connected": "󰂯 {num_connections}",
     "tooltip-format": "{device_alias}",
     "tooltip-format-connected": "󰂯 {device_enumerate}",
-    "tooltip-format-enumerate-connected": "{device_alias}"
-  }
+    "tooltip-format-enumerate-connected": "{device_alias}",
+  },
 }
