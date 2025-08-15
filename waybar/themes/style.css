@@ -8,8 +8,8 @@
 }
 
 window#waybar {
-    background: rgba(29, 16, 17, 0.8);
-    color: #F7DCDE;
+    background: rgba(13, 27, 42, 0.8);
+    color: #c0c5ce;
 }
 
 #workspaces,
@@ -19,7 +19,9 @@ window#waybar {
 #memory,
 #battery,
 #network,
-#pulseaudio {
+#pulseaudio,
+#custom-weather,
+#custom-power {
     padding: 2px 10px;
     margin: 8px 4px;
 }
@@ -30,44 +32,40 @@ window#waybar {
 
 #workspaces button {
     padding: 2px 5px;
-    color: #A58A8D;
+    color: #415a77;
     background-color: transparent;
 }
 
 #workspaces button.focused {
-    color: #F7DCDE;
-    background-color: #A58A8D;
+    color: #0d1b2a;
+    background-color: #ff8800;
     border-radius: 10px;
 }
 
 #workspaces button.urgent {
-    color: #1D1011;
-    background-color: #FFB2BC;
+    color: #0d1b2a;
+    background-color: #ff5555; /* A red for urgent */
     border-radius: 10px;
 }
 
-#clock {
-    color: #F7DCDE;
-}
-
-#tray {
-    background-color: transparent;
-}
-
+#clock,
+#tray,
 #battery,
 #cpu,
 #memory,
 #network,
-#pulseaudio {
-    color: #F7DCDE;
+#pulseaudio,
+#custom-weather,
+#custom-power {
+    color: #c0c5ce;
 }
 
 #battery.charging,
 #battery.plugged {
-    color: #89b4fa; /* A different color to indicate charging */
+    color: #89b4fa; /* A light blue to indicate charging */
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f38ba8;
-    color: #1e1e2e;
+    background-color: #ff5555;
+    color: #0d1b2a;
 }
