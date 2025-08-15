@@ -1,3 +1,11 @@
+@define-color background #1a1b26;
+@define-color foreground #c0caf5;
+@define-color accent #7aa2f7;
+@define-color urgent #f7768e;
+@define-color inactive #414868;
+@define-color charging #9ece6a;
+@define-color background_transparent rgba(26, 27, 38, 0.8);
+
 * {
     border: none;
     border-radius: 10px;
@@ -8,8 +16,8 @@
 }
 
 window#waybar {
-    background: rgba(13, 27, 42, 0.8);
-    color: #c0c5ce;
+    background: @background_transparent;
+    color: @foreground;
 }
 
 #workspaces,
@@ -32,19 +40,19 @@ window#waybar {
 
 #workspaces button {
     padding: 2px 5px;
-    color: #415a77;
+    color: @inactive;
     background-color: transparent;
 }
 
 #workspaces button.focused {
-    color: #0d1b2a;
-    background-color: #ff8800;
+    color: @background;
+    background-color: @accent;
     border-radius: 10px;
 }
 
 #workspaces button.urgent {
-    color: #0d1b2a;
-    background-color: #ff5555; /* A red for urgent */
+    color: @background;
+    background-color: @urgent;
     border-radius: 10px;
 }
 
@@ -57,15 +65,15 @@ window#waybar {
 #pulseaudio,
 #custom-weather,
 #custom-power {
-    color: #c0c5ce;
+    color: @foreground;
 }
 
 #battery.charging,
 #battery.plugged {
-    color: #89b4fa; /* A light blue to indicate charging */
+    color: @charging;
 }
 
 #battery.critical:not(.charging) {
-    background-color: #ff5555;
-    color: #0d1b2a;
+    background-color: @urgent;
+    color: @background;
 }
