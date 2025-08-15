@@ -65,12 +65,12 @@ This configuration uses a custom theme based on the Tokyo Night color palette.
 
 | Name      | Hex       | RGB             |
 | --------- | --------- | --------------- |
-| Orange    | `#EA9D34` | `234, 157, 52`  |
-| Background| `#1a1b26` | `26, 27, 38`    |
-| Foreground| `#c0caf5` | `192, 202, 245` |
-| Inactive  | `#414868` | `65, 72, 104`   |
-| Blue      | `#7aa2f7` | `122, 162, 247` |
-| Cyan      | `#7dcfff` | `125, 207, 255` |
-| Green     | `#9ece6a` | `158, 206, 106` |
-| Red/Urgent| `#f7768e` | `247, 118, 142` |
-| Magenta   | `#ff79c6` | `255, 121, 198` |
+| Orange    | `#db8004` | `219, 128, 4`   |
+| Background| `#28292e` | `40, 41, 46`    |
+| Foreground| `#8c90a1` | `140, 144, 161` |
+| Inactive  | `#2a3152` | `42, 49, 82`    |
+| Blue      | `#42718a` | `66, 113, 138`  |
+| Cyan      | `#1c9999` | `28, 153, 153`  |
+| Green     | `#228f69` | `34, 143, 105`  |
+| Red/Urgent| `#b51d39` | `181, 29, 57`   |
+| Magenta   | `#a33976` | `163, 57, 118`  |

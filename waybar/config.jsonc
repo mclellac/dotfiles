@@ -69,14 +69,14 @@
     },
   },
   "cpu": {
-    "format": "CPU <span foreground='#EA9D34'>{usage}%</span>",
+    "format": "CPU <span foreground='#db8004'>{usage}%</span>",
     "interval": 2,
     "states": {
       "critical": 90,
     },
   },
   "memory": {
-    "format": "Mem <span foreground='#EA9D34'>{percentage}%</span>",
+    "format": "Mem <span foreground='#db8004'>{percentage}%</span>",
     "interval": 2,
     "states": {
       "critical": 80,
@@ -88,16 +88,16 @@
       "warning": 30,
       "critical": 15,
     },
-    "format": "<span foreground='#EA9D34'>{capacity}%</span> {icon}",
-    "format-charging": "<span foreground='#EA9D34'>{capacity}%</span> 󰂄",
-    "format-plugged": "<span foreground='#EA9D34'>{capacity}%</span> 󰚥",
+    "format": "<span foreground='#db8004'>{capacity}%</span> {icon}",
+    "format-charging": "<span foreground='#db8004'>{capacity}%</span> 󰂄",
+    "format-plugged": "<span foreground='#db8004'>{capacity}%</span> 󰚥",
     "format-alt": "{time} {icon}",
     // "format-good": "", // An empty format will hide the module
     // "format-full": "",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
   "pulseaudio": {
-    "format": "{icon} <span foreground='#EA9D34'>{volume}%</span>",
+    "format": "{icon} <span foreground='#db8004'>{volume}%</span>",
     "tooltip": false,
     "format-muted": " Muted",
     "on-click": "pamixer -t",
@@ -116,7 +116,7 @@
   },
   "pulseaudio#microphone": {
     "format": "{format_source}",
-    "format-source": "󰍬 <span foreground='#EA9D34'>{volume}%</span>",
+    "format-source": "󰍬 <span foreground='#db8004'>{volume}%</span>",
     "format-source-muted": "󰍭 Muted",
     "on-click": "pamixer --default-source -t",
     "on-scroll-up": "pamixer --default-source -i 5",
@@ -124,7 +124,7 @@
     "scroll-step": 5,
   },
   "network": {
-    "format-wifi": "󰤨 <span foreground='#EA9D34'>{signalStrength}%</span>",
+    "format-wifi": "󰤨 <span foreground='#db8004'>{signalStrength}%</span>",
     "format-ethernet": "{ipaddr}/{cidr}",
     "tooltip-format": "{essid} - {ifname} via {gwaddr}",
     "format-linked": "{ifname} (No IP)",
