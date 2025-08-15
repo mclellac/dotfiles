@@ -58,3 +58,19 @@ Here are some of the most important keybindings in this configuration:
 | `Super + P` | Pin window |
 | `Super + Left/Right/Up/Down` | Move focus |
 | `Super + Shift + Left/Right/Up/Down` | Move window |
+
+## Theme
+
+This configuration uses a custom theme based on the Tokyo Night color palette.
+
+| Name      | Hex       | RGB             |
+| --------- | --------- | --------------- |
+| Orange    | `#EA9D34` | `234, 157, 52`  |
+| Background| `#1a1b26` | `26, 27, 38`    |
+| Foreground| `#c0caf5` | `192, 202, 245` |
+| Inactive  | `#414868` | `65, 72, 104`   |
+| Blue      | `#7aa2f7` | `122, 162, 247` |
+| Cyan      | `#7dcfff` | `125, 207, 255` |
+| Green     | `#9ece6a` | `158, 206, 106` |
+| Red/Urgent| `#f7768e` | `247, 118, 142` |
+| Magenta   | `#ff79c6` | `255, 121, 198` |
