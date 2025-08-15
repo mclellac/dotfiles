@@ -1,6 +1,6 @@
 @define-color background #1a1b26;
 @define-color foreground #c0caf5;
-@define-color highlight #ff9e64;
+@define-color highlight #EA9D34;
 @define-color accent_blue #7aa2f7;
 @define-color accent_cyan #7dcfff;
 @define-color accent_green #9ece6a;
@@ -33,8 +33,8 @@ window#waybar {
 #pulseaudio,
 #custom-weather,
 #custom-power {
-    padding: 2px 10px;
-    margin: 8px 4px;
+    padding: 0px 5px;
+    margin: 4px 2px;
 }
 
 #workspaces {
@@ -48,7 +48,7 @@ window#waybar {
 }
 
 #workspaces button.focused {
-    color: @background;
+    color: #1a1b26;
     background-color: @highlight;
     border-radius: 10px;
 }
