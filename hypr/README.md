@@ -23,7 +23,7 @@ This configuration uses the following plugins:
 `hyprexpo` is a workspace overview plugin that allows you to see all your workspaces at once.
 
 **Usage:**
-There is no explicit keybinding set for `hyprexpo` in this configuration. It may be triggered by a default keybinding or a mouse gesture. The configuration in `hyprland.conf` can be consulted for more details.
+The keybinding for `hyprexpo` is `CTRL+SUPER+UP_ARROW`.
 
 ### hyprbars
 
@@ -31,6 +31,8 @@ There is no explicit keybinding set for `hyprexpo` in this configuration. It may
 
 **Configuration:**
 This plugin is configured to only show on terminal windows. It uses a blacklist approach, defined in `hypr/hyprland/rules.conf`, to disable the bar for common non-terminal applications.
+
+The bar changes color to indicate whether the window is active or inactive. It has one button to close the active window.
 
 ## Keybindings
 
@@ -40,6 +42,7 @@ Here are some of the most important keybindings in this configuration:
 | --- | --- |
 | `Super + Space` | Launch application launcher (fuzzel) |
 | `Super + V` | Show clipboard history |
+| `CTRL + Super + Up` | Show workspace overview (hyprexpo) |
 | `Super + Shift + S` | Take a screen snip |
 | `Super + Q` | Close active window |
 | `Super + L` | Lock the session |
