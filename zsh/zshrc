@@ -195,4 +195,4 @@ fi
 eval "$(starship init zsh)"
 
 # Load colors from pywal
-(cat ~/.cache/wal/sequences &)
+#(cat ~/.cache/wal/sequences &)
