@@ -1,6 +1,9 @@
 @define-color background #1a1b26;
 @define-color foreground #c0caf5;
-@define-color accent #7aa2f7;
+@define-color highlight #ff9e64;
+@define-color accent_blue #7aa2f7;
+@define-color accent_cyan #7dcfff;
+@define-color accent_green #9ece6a;
 @define-color urgent #f7768e;
 @define-color inactive #414868;
 @define-color charging #9ece6a;
@@ -46,7 +49,7 @@ window#waybar {
 
 #workspaces button.focused {
     color: @background;
-    background-color: @accent;
+    background-color: @highlight;
     border-radius: 10px;
 }
 
@@ -68,9 +71,17 @@ window#waybar {
     color: @foreground;
 }
 
+#cpu {
+    color: @accent_cyan;
+}
+
+#memory {
+    color: @accent_green;
+}
+
 #battery.charging,
 #battery.plugged {
-    color: @charging;
+    color: @accent_green;
 }
 
 #battery.critical:not(.charging) {

@@ -69,14 +69,14 @@
     },
   },
   "cpu": {
-    "format": "CPU {usage}%",
+    "format": "CPU <span foreground='#ff9e64'>{usage}%</span>",
     "interval": 2,
     "states": {
       "critical": 90,
     },
   },
   "memory": {
-    "format": "Mem {percentage}%",
+    "format": "Mem <span foreground='#ff9e64'>{percentage}%</span>",
     "interval": 2,
     "states": {
       "critical": 80,
@@ -88,16 +88,16 @@
       "warning": 30,
       "critical": 15,
     },
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 󰂄",
-    "format-plugged": "{capacity}% 󰚥",
+    "format": "<span foreground='#ff9e64'>{capacity}%</span> {icon}",
+    "format-charging": "<span foreground='#ff9e64'>{capacity}%</span> 󰂄",
+    "format-plugged": "<span foreground='#ff9e64'>{capacity}%</span> 󰚥",
     "format-alt": "{time} {icon}",
     // "format-good": "", // An empty format will hide the module
     // "format-full": "",
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
   "pulseaudio": {
-    "format": "{icon} {volume}%",
+    "format": "{icon} <span foreground='#ff9e64'>{volume}%</span>",
     "tooltip": false,
     "format-muted": " Muted",
     "on-click": "pamixer -t",
@@ -116,7 +116,7 @@
   },
   "pulseaudio#microphone": {
     "format": "{format_source}",
-    "format-source": "󰍬 {volume}%",
+    "format-source": "󰍬 <span foreground='#ff9e64'>{volume}%</span>",
     "format-source-muted": "󰍭 Muted",
     "on-click": "pamixer --default-source -t",
     "on-scroll-up": "pamixer --default-source -i 5",
@@ -124,7 +124,7 @@
     "scroll-step": 5,
   },
   "network": {
-    "format-wifi": "󰤨  {signalStrength}%",
+    "format-wifi": "󰤨 <span foreground='#ff9e64'>{signalStrength}%</span>",
     "format-ethernet": "{ipaddr}/{cidr}",
     "tooltip-format": "{essid} - {ifname} via {gwaddr}",
     "format-linked": "{ifname} (No IP)",
