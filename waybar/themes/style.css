@@ -1,20 +1,20 @@
-@define-color background #28292e;
+@define-color background #343640;
 @define-color foreground #8c90a1;
 @define-color highlight #db8004;
 @define-color accent_blue #42718a;
 @define-color accent_cyan #1c9999;
 @define-color accent_green #228f69;
 @define-color urgent #b51d39;
-@define-color inactive #2a3152;
+@define-color inactive #51566e;
 @define-color charging #228f69;
 @define-color background_transparent rgba(40, 41, 46, 0.8);
 
 * {
     border: none;
-    border-radius: 10px;
+    border-radius: 0px;
     font-family: "iosevka nerd font", "Font Awesome 6 Free";
     font-weight: 500;
-    font-size: 16px;
+    font-size: 17px;
     min-height: 0;
 }
 
@@ -43,7 +43,7 @@ window#waybar {
 
 #workspaces button {
     padding: 2px 5px;
-    color: @inactive;
+    color: @foreground;
     background-color: transparent;
 }
 
