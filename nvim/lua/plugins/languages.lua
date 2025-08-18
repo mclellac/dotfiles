@@ -143,7 +143,6 @@ return {
         go = { "golangci-lint" },
         sh = { "shellcheck" },
         markdown = { "markdownlint" },
-        vcl = { "vclint" },
         c = { "clang-tidy" },
         terraform = { "tflint" },
         helm = { "helmlint" },
@@ -188,6 +187,6 @@ return {
     end,
     event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
-    build = '<CMD>GoInstallBinaries<CR>',
+    build = "<CMD>GoInstallBinaries<CR>",
   },
 }
