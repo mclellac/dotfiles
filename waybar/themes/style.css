@@ -1,12 +1,12 @@
-@define-color background #343640;
+@define-color background #28292e;
 @define-color foreground #8c90a1;
-@define-color highlight #db8004;
-@define-color accent_blue #42718a;
-@define-color accent_cyan #1c9999;
-@define-color accent_green #228f69;
+@define-color highlight #f5a623;
+@define-color accent_blue #028EB6;
+@define-color accent_cyan #028EB6;
+@define-color accent_green #32a852;
 @define-color urgent #b51d39;
-@define-color inactive #51566e;
-@define-color charging #228f69;
+@define-color inactive #9AD7F5;
+@define-color charging #32a852;
 @define-color background_transparent rgba(40, 41, 46, 0.8);
 
 * {

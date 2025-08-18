@@ -59,16 +59,16 @@ Here are some of the most important keybindings in this configuration:
 
 ## Theme
 
-This configuration uses a custom theme based on the Tokyo Night color palette.
+This configuration uses a custom theme based on a vibrant blue and cyan palette.
 
-| Name      | Hex       | RGB             |
-| --------- | --------- | --------------- |
-| Orange    | `#db8004` | `219, 128, 4`   |
-| Background| `#28292e` | `40, 41, 46`    |
-| Foreground| `#8c90a1` | `140, 144, 161` |
-| Inactive  | `#2a3152` | `42, 49, 82`    |
-| Blue      | `#42718a` | `66, 113, 138`  |
-| Cyan      | `#1c9999` | `28, 153, 153`  |
-| Green     | `#228f69` | `34, 143, 105`  |
-| Red/Urgent| `#b51d39` | `181, 29, 57`   |
-| Magenta   | `#a33976` | `163, 57, 118`  |
+| Name      | Hex       |
+| --------- | --------- |
+| Orange    | `#f5a623` |
+| Background| `#28292e` |
+| Foreground| `#8c90a1` |
+| Inactive  | `#9AD7F5` |
+| Blue      | `#028EB6` |
+| Cyan      | `#028EB6` |
+| Green     | `#32a852` |
+| Red/Urgent| `#b51d39` |
+| Magenta   | `#a33976` |
