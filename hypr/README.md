@@ -32,8 +32,6 @@ The keybinding for `hyprexpo` is `CTRL+SUPER+UP_ARROW`.
 **Configuration:**
 This plugin is configured to only show on terminal windows. It uses a blacklist approach, defined in `hypr/hyprland/rules.conf`, to disable the bar for common non-terminal applications.
 
-The bar changes color to indicate whether the window is active or inactive. It has one button to close the active window.
-
 ## Keybindings
 
 Here are some of the most important keybindings in this configuration:
