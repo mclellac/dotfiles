@@ -7,20 +7,20 @@
 @define-color urgent #ad2840;
 @define-color inactive #1b2e38;
 @define-color charging #05876F;
-@define-color background_transparent rgba(40, 41, 46, 0.8);
+@define-color background_transparent rgba(40, 41, 46, 0.6);
 
 * {
-    border: none;
-    border-radius: 0px;
-    font-family: "iosevka nerd font", "Font Awesome 6 Free";
-    font-weight: 500;
-    font-size: 17px;
-    min-height: 0;
+  border: none;
+  border-radius: 0px;
+  font-family: "Iosevka Nerd Font", "Font Awesome 6 Free";
+  font-weight: 600;
+  font-size: 20px;
+  min-height: 0;
 }
 
 window#waybar {
-    background: @background_transparent;
-    color: @foreground;
+  background: @background_transparent;
+  color: @foreground;
 }
 
 #workspaces,
@@ -33,30 +33,30 @@ window#waybar {
 #pulseaudio,
 #custom-weather,
 #custom-power {
-    padding: 0px 5px;
-    margin: 4px 2px;
+  padding: 0px 5px;
+  margin: 4px 2px;
 }
 
 #workspaces {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 #workspaces button {
-    padding: 2px 5px;
-    color: @foreground;
-    background-color: transparent;
+  padding: 2px 5px;
+  color: @foreground;
+  background-color: transparent;
 }
 
 #workspaces button.focused {
-    color: @background;
-    background-color: @highlight;
-    border-radius: 10px;
+  color: @background;
+  background-color: @highlight;
+  border-radius: 10px;
 }
 
 #workspaces button.urgent {
-    color: @background;
-    background-color: @urgent;
-    border-radius: 10px;
+  color: @background;
+  background-color: @urgent;
+  border-radius: 10px;
 }
 
 #clock,
@@ -68,23 +68,23 @@ window#waybar {
 #pulseaudio,
 #custom-weather,
 #custom-power {
-    color: @foreground;
+  color: @foreground;
 }
 
 #cpu {
-    color: @accent_cyan;
+  color: @accent_cyan;
 }
 
 #memory {
-    color: @accent_green;
+  color: @accent_cyan;
 }
 
 #battery.charging,
 #battery.plugged {
-    color: @accent_green;
+  color: @accent_green;
 }
 
 #battery.critical:not(.charging) {
-    background-color: @urgent;
-    color: @background;
+  background-color: @urgent;
+  color: @background;
 }
