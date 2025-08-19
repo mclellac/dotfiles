@@ -42,4 +42,4 @@ esac
 
 TEXT_CONTENT="$ICON $WEATHER_TEMP°C"
 
-jq -n --arg text "$TEXT_CONTENT" --arg tooltip "$WEATHER_DESC" '{"text": $text, "tooltip": $tooltip}'
+jq -c -n --arg text "$TEXT_CONTENT" --arg tooltip "$WEATHER_DESC" '{"text": $text, "tooltip": $tooltip}'
