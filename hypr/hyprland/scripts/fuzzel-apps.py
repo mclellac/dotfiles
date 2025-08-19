@@ -7,8 +7,11 @@ from pathlib import Path
 import json
 import configparser
 import re
+import argparse
 import shlex
 import shutil
+
+DEBUG = False
 
 def get_app_dirs():
     """
@@ -41,9 +44,13 @@ def parse_desktop_file(file_path):
         entry = parser["Desktop Entry"]
 
         if entry.getboolean("NoDisplay", False):
+            if DEBUG:
+                print(f"Skipping {file_path}: NoDisplay=true", file=sys.stderr)
             return None
 
         if "Exec" not in entry:
+            if DEBUG:
+                print(f"Skipping {file_path}: Missing Exec key", file=sys.stderr)
             return None
 
         exec_cmd = entry.get("Exec")
@@ -69,7 +76,9 @@ def parse_desktop_file(file_path):
             "exec": exec_cmd,
             "icon": entry.get("Icon", None),
         }
-    except Exception:
+    except Exception as e:
+        if DEBUG:
+            print(f"Error parsing {file_path}: {e}", file=sys.stderr)
         return None
 
 def get_cache_file():
@@ -123,6 +132,13 @@ def main():
     This script finds all .desktop files, parses them, caches the results,
     and then uses fuzzel to provide a searchable application launcher.
     """
+    global DEBUG
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
+    args = parser.parse_args()
+    if args.debug:
+        DEBUG = True
+
     cache_file = get_cache_file()
     app_dirs = get_app_dirs()
     apps = find_applications(cache_file, app_dirs)
@@ -148,7 +164,18 @@ def main():
 
         if selected_app_name in app_map:
             exec_command = app_map[selected_app_name]
-            subprocess.Popen(shlex.split(exec_command), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            if DEBUG:
+                print(f"Executing: {exec_command}", file=sys.stderr)
+                # In debug mode, we don't detach and we print stdout/stderr
+                proc = subprocess.Popen(shlex.split(exec_command), text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                stdout, stderr = proc.communicate()
+                print(f"Return code: {proc.returncode}", file=sys.stderr)
+                if stdout:
+                    print(f"stdout:\n{stdout}", file=sys.stderr)
+                if stderr:
+                    print(f"stderr:\n{stderr}", file=sys.stderr)
+            else:
+                subprocess.Popen(shlex.split(exec_command), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
