@@ -88,3 +88,14 @@ window#waybar {
   background-color: @urgent;
   color: @background;
 }
+
+tooltip {
+    background-color: @background;
+    border: 1px solid @highlight;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+tooltip label {
+    color: @foreground;
+}
