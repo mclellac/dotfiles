@@ -6,6 +6,9 @@ import sys
 from pathlib import Path
 import json
 import configparser
+import re
+import shlex
+import shutil
 
 def get_app_dirs():
     """
@@ -34,7 +37,7 @@ def parse_desktop_file(file_path):
     """
     parser = configparser.ConfigParser(interpolation=None)
     try:
-        parser.read(file_path)
+        parser.read(file_path, encoding='utf-8')
 
         entry = parser["Desktop Entry"]
         if entry.getboolean("NoDisplay", False):
@@ -44,9 +47,25 @@ def parse_desktop_file(file_path):
         if "Exec" not in entry:
             return None
 
+        exec_cmd = entry.get("Exec")
+        # Remove Desktop Entry Specification field codes.
+        exec_parts = shlex.split(exec_cmd)
+        exec_parts = [part for part in exec_parts if not part.startswith("%")]
+
+        # Heuristic for gapplication launch
+        if len(exec_parts) == 3 and exec_parts[0] == "gapplication" and exec_parts[1] == "launch":
+            app_id = exec_parts[2]
+            simple_name = app_id.split(".")[-1].lower()
+            if shutil.which(simple_name):
+                exec_cmd = simple_name
+            else:
+                exec_cmd = " ".join(exec_parts)
+        else:
+            exec_cmd = " ".join(exec_parts)
+
         return {
             "name": entry.get("Name", "Unnamed"),
-            "exec": entry.get("Exec").split(" ")[0], # Basic parsing of Exec
+            "exec": exec_cmd,
             "icon": entry.get("Icon", None),
         }
     except (configparser.Error, UnicodeDecodeError, FileNotFoundError):
@@ -70,7 +89,8 @@ def is_cache_stale(cache_file, app_dirs):
 
     cache_mtime = cache_file.stat().st_mtime
     for app_dir in app_dirs:
-        if app_dir.stat().st_mtime > cache_mtime:
+        # It's possible for a directory to be removed, so we check if it exists.
+        if app_dir.exists() and app_dir.stat().st_mtime > cache_mtime:
             return True
 
     return False
@@ -127,7 +147,7 @@ def main():
         if selected_app_name in app_map:
             exec_command = app_map[selected_app_name]
             # Execute the command in the background
-            subprocess.Popen(exec_command.split(), start_new_session=True)
+            subprocess.Popen(shlex.split(exec_command), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     except subprocess.CalledProcessError as e:
         # This will happen if the user closes fuzzel without selecting anything (e.g. pressing Esc)
@@ -137,6 +157,7 @@ def main():
     except FileNotFoundError:
         print("Error: fuzzel command not found. Is it installed and in your PATH?", file=sys.stderr)
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
