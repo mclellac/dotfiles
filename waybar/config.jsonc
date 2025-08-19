@@ -13,8 +13,16 @@
     "network",
     "pulseaudio",
     "custom/weather",
+    "custom/updates",
     "custom/power",
   ],
+  "custom/updates": {
+    "exec": "~/.config/waybar/scripts/update-checker.sh",
+    "return-type": "json",
+    "format": "󰏔 {text}",
+    "interval": 3600,
+    "tooltip": true
+  },
   "custom/power": {
     "format": "",
     "on-click": "~/.config/waybar/scripts/power.sh",
@@ -22,8 +30,9 @@
   },
   "custom/weather": {
     "exec": "~/.config/waybar/scripts/weather.sh",
+    "return-type": "json",
     "interval": 1800,
-    "tooltip": true,
+    "tooltip": false,
     "format": "{text}"
   },
   "hyprland/workspaces": {
