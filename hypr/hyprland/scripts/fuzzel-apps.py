@@ -132,9 +132,9 @@ def main():
     fuzzel_input = ""
     for app in apps:
         if app.get("icon"):
-            fuzzel_input += f"{app['name']}\\0icon\\x1f{app['icon']}\\n"
+            fuzzel_input += f"{app['name']}\0icon\x1f{app['icon']}\n"
         else:
-            fuzzel_input += f"{app['name']}\\n"
+            fuzzel_input += f"{app['name']}\n"
 
     try:
         fuzzel_proc = subprocess.run(
