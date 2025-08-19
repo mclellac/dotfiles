@@ -1,41 +1,18 @@
 #!/bin/sh
 
+if ! command -v jq >/dev/null; then
+    echo '{"text": "ERR: jq not found", "tooltip": "Please install jq to use the update checker."}'
+    exit 1
+fi
+
 # Get the OS ID from /etc/os-release
 OS_ID=$(grep -oP '(?<=^ID=).+' /etc/os-release | tr -d '"')
 
-# Function to get updates for Arch Linux
-get_arch_updates() {
-    UPDATES=$(checkupdates)
+get_updates() {
+    UPDATES="$1"
     if [ -n "$UPDATES" ]; then
         COUNT=$(echo "$UPDATES" | wc -l)
-        TOOLTIP=$(echo "$UPDATES")
-        echo "{\"text\": \"$COUNT\", \"tooltip\": \"$TOOLTIP\"}"
-    else
-        echo "{}"
-    fi
-}
-
-# Function to get updates for Fedora
-get_fedora_updates() {
-    UPDATES=$(dnf check-update -q | grep -v '^Obsoleting ')
-    if [ -n "$UPDATES" ]; then
-        COUNT=$(echo "$UPDATES" | wc -l)
-        TOOLTIP=$(echo "$UPDATES" | awk '{print $1}')
-        echo "{\"text\": \"$COUNT\", \"tooltip\": \"$TOOLTIP\"}"
-    else
-        echo "{}"
-    fi
-}
-
-# Function to get updates for Debian/Kali
-get_debian_updates() {
-    # It's important to run apt update in the background periodically
-    # This script will not run apt update to avoid sudo prompts
-    UPDATES=$(apt list --upgradable 2>/dev/null | tail -n +2)
-    if [ -n "$UPDATES" ]; then
-        COUNT=$(echo "$UPDATES" | wc -l)
-        TOOLTIP=$(echo "$UPDATES" | awk -F/ '{print $1}')
-        echo "{\"text\": \"$COUNT\", \"tooltip\": \"$TOOLTIP\"}"
+        jq -c -n --arg text "$COUNT" --arg tooltip "$UPDATES" '{"text": $text, "tooltip": $tooltip}'
     else
         echo "{}"
     fi
@@ -43,13 +20,18 @@ get_debian_updates() {
 
 case "$OS_ID" in
     "arch")
-        get_arch_updates
+        UPDATES=$(checkupdates)
+        get_updates "$UPDATES"
         ;;
     "fedora")
-        get_fedora_updates
+        UPDATES=$(dnf check-update -q | grep -v '^Obsoleting ' | awk '{print $1}')
+        get_updates "$UPDATES"
         ;;
     "debian" | "kali")
-        get_debian_updates
+        # It's important to run apt update in the background periodically
+        # This script will not run apt update to avoid sudo prompts
+        UPDATES=$(apt list --upgradable 2>/dev/null | tail -n +2 | awk -F/ '{print $1}')
+        get_updates "$UPDATES"
         ;;
     *)
         echo "{}" # Don't show anything if the OS is not supported
