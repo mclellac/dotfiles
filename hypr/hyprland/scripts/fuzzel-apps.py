@@ -18,7 +18,10 @@ def get_app_dirs():
     """
     Returns a list of directories where .desktop files are commonly found.
     """
-    xdg_data_home = Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
+    home = Path.home()
+    xdg_data_home = Path(
+        os.environ.get("XDG_DATA_HOME", home / ".local" / "share")
+    ).expanduser()
     xdg_data_dirs = [
         Path(p)
         for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(
@@ -91,7 +94,8 @@ def get_cache_file():
     """
     Returns the path to the cache file.
     """
-    xdg_cache_home = Path(os.environ.get("XDG_CACHE_HOME", "~/.cache")).expanduser()
+    home = Path.home()
+    xdg_cache_home = Path(os.environ.get("XDG_CACHE_HOME", home / ".cache")).expanduser()
     cache_dir = xdg_cache_home / "fuzzel-apps"
     cache_dir.mkdir(parents=True, exist_ok=True)
     return cache_dir / "apps.json"
@@ -101,7 +105,10 @@ def get_overrides_file():
     """
     Returns the path to the overrides file.
     """
-    xdg_config_home = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser()
+    home = Path.home()
+    xdg_config_home = Path(
+        os.environ.get("XDG_CONFIG_HOME", home / ".config")
+    ).expanduser()
     overrides_dir = xdg_config_home / "fuzzel"
     overrides_dir.mkdir(parents=True, exist_ok=True)
     return overrides_dir / "overrides.json"
