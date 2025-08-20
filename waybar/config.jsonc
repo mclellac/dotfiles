@@ -21,8 +21,7 @@
     "tooltip": true,
     "tooltip-format": "{tooltip}",
     "interval": 3600,
-    "on-click": "kitty -e sudo dnf upgrade -y",
-    "escape": true
+    "on-click": "kitty -e sudo dnf upgrade -y"
   },
   "custom/power": {
     "format": "",
