@@ -7,7 +7,6 @@
   "modules-right": [
     "custom/updates",
     "custom/weather",
-    "cpu_text",
     "cpu",
     "memory",
     "pulseaudio",

@@ -14,7 +14,7 @@ get_updates() {
         COUNT=$(echo "$UPDATES" | wc -l)
         jq -c -n --arg text "$COUNT" --arg tooltip "$UPDATES" '{"text": $text, "tooltip": $tooltip}'
     else
-        echo "{}"
+        jq -c -n --arg text "0" --arg tooltip "No updates available" '{"text": $text, "tooltip": $tooltip}'
     fi
 }
 
@@ -34,6 +34,6 @@ case "$OS_ID" in
         get_updates "$UPDATES"
         ;;
     *)
-        echo "{}" # Don't show anything if the OS is not supported
+        jq -c -n --arg text "N/A" --arg tooltip "Unsupported OS for updates" '{"text": $text, "tooltip": $tooltip}'
         ;;
 esac
