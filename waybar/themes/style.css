@@ -100,6 +100,7 @@ tooltip {
 
 tooltip label {
   color: @foreground;
+  margin: 20px;
 }
 
 #pulseaudio {

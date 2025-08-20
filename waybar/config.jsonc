@@ -5,13 +5,13 @@
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["clock"],
   "modules-right": [
-    "tray",
-    "custom/weather",
     "custom/updates",
+    "custom/weather",
     "cpu_text",
     "cpu",
     "memory",
     "pulseaudio",
+    "tray",
     "custom/power",
   ],
   "custom/updates": {
@@ -21,7 +21,8 @@
     "tooltip": true,
     "tooltip-format": "{tooltip}",
     "interval": 3600,
-    "on-click": "kitty -e sudo dnf upgrade -y"
+    "on-click": "kitty -e sudo dnf upgrade -y",
+    "escape": true,
   },
   "custom/power": {
     "format": "",
