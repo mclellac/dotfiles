@@ -100,6 +100,7 @@ tooltip {
 
 tooltip label {
   color: @foreground;
+  margin: 25px;
 }
 
 #pulseaudio {
@@ -115,7 +116,7 @@ tooltip label {
 }
 
 #custom-updates.updates {
-  color: @urgent;
+  color: @accent_green;
 }
 
 #custom-updates.hidden {
