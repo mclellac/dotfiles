@@ -18,10 +18,7 @@ def get_app_dirs():
     """
     Returns a list of directories where .desktop files are commonly found.
     """
-    home = Path.home()
-    xdg_data_home = Path(
-        os.environ.get("XDG_DATA_HOME", home / ".local" / "share")
-    ).expanduser()
+    xdg_data_home = Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
     xdg_data_dirs = [
         Path(p)
         for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(
@@ -94,8 +91,7 @@ def get_cache_file():
     """
     Returns the path to the cache file.
     """
-    home = Path.home()
-    xdg_cache_home = Path(os.environ.get("XDG_CACHE_HOME", home / ".cache")).expanduser()
+    xdg_cache_home = Path(os.environ.get("XDG_CACHE_HOME", "~/.cache")).expanduser()
     cache_dir = xdg_cache_home / "fuzzel-apps"
     cache_dir.mkdir(parents=True, exist_ok=True)
     return cache_dir / "apps.json"
@@ -105,10 +101,7 @@ def get_overrides_file():
     """
     Returns the path to the overrides file.
     """
-    home = Path.home()
-    xdg_config_home = Path(
-        os.environ.get("XDG_CONFIG_HOME", home / ".config")
-    ).expanduser()
+    xdg_config_home = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser()
     overrides_dir = xdg_config_home / "fuzzel"
     overrides_dir.mkdir(parents=True, exist_ok=True)
     return overrides_dir / "overrides.json"
@@ -256,25 +249,12 @@ def main():
                 if stderr:
                     print(f"stderr:\n{stderr}", file=sys.stderr)
             else:
-                # In the normal case, we use hyprctl to launch the application.
-                # This is more robust than Popen when running from a keybinding
-                # in Hyprland, as it correctly handles the environment.
-                try:
-                    subprocess.run(
-                        ["hyprctl", "dispatch", "exec", f"[float] {exec_command}"],
-                        check=True,
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL,
-                    )
-                except FileNotFoundError:
-                    # Fallback to Popen if hyprctl is not found
-                    subprocess.Popen(
-                        shlex.split(exec_command),
-                        start_new_session=True,
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL,
-                    )
-
+                subprocess.Popen(
+                    shlex.split(exec_command),
+                    start_new_session=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
 
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
