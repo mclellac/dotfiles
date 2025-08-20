@@ -57,17 +57,13 @@ def parse_desktop_file(file_path):
         exec_parts = shlex.split(exec_cmd)
         exec_parts = [part for part in exec_parts if not part.startswith("%")]
 
-        if len(exec_parts) == 3 and exec_parts[0] == "gapplication" and exec_parts[1] == "launch":
+        if len(exec_parts) >= 3 and exec_parts[0] == "gapplication" and exec_parts[1] == "launch":
             app_id = exec_parts[2]
-            # Special case for gnome-maps
-            if app_id == "org.gnome.Maps":
-                exec_cmd = "gnome-maps"
+            simple_name = app_id.split(".")[-1].lower()
+            if shutil.which(simple_name):
+                exec_cmd = simple_name
             else:
-                simple_name = app_id.split(".")[-1].lower()
-                if shutil.which(simple_name):
-                    exec_cmd = simple_name
-                else:
-                    exec_cmd = " ".join(exec_parts)
+                exec_cmd = " ".join(exec_parts)
         else:
             exec_cmd = " ".join(exec_parts)
 
@@ -89,6 +85,31 @@ def get_cache_file():
     cache_dir = xdg_cache_home / "fuzzel-apps"
     cache_dir.mkdir(parents=True, exist_ok=True)
     return cache_dir / "apps.json"
+
+
+def get_overrides_file():
+    """
+    Returns the path to the overrides file.
+    """
+    xdg_config_home = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser()
+    overrides_dir = xdg_config_home / "fuzzel-apps"
+    overrides_dir.mkdir(parents=True, exist_ok=True)
+    return overrides_dir / "overrides.json"
+
+
+def load_overrides(overrides_file):
+    """
+    Loads the overrides from the given file.
+    """
+    if not overrides_file.exists():
+        return {}
+    try:
+        with open(overrides_file, "r") as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        if DEBUG:
+            print(f"Warning: Could not decode overrides file at {overrides_file}", file=sys.stderr)
+        return {}
 
 def is_cache_stale(cache_file, app_dirs):
     """
@@ -142,6 +163,13 @@ def main():
     cache_file = get_cache_file()
     app_dirs = get_app_dirs()
     apps = find_applications(cache_file, app_dirs)
+
+    overrides_file = get_overrides_file()
+    overrides = load_overrides(overrides_file)
+
+    for app in apps:
+        if app["name"] in overrides:
+            app["exec"] = overrides[app["name"]]
 
     app_map = {app["name"]: app["exec"] for app in apps}
 
