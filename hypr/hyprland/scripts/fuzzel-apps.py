@@ -7,12 +7,8 @@ from pathlib import Path
 import json
 import configparser
 import re
-import argparse
 import shlex
 import shutil
-
-DEBUG = False
-
 
 def get_app_dirs():
     """
@@ -20,10 +16,7 @@ def get_app_dirs():
     """
     xdg_data_home = Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
     xdg_data_dirs = [
-        Path(p)
-        for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(
-            ":"
-        )
+        Path(p) for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(":")
     ]
 
     app_dirs = [
@@ -38,35 +31,29 @@ def get_app_dirs():
     # Filter out directories that don't exist
     return [d for d in app_dirs if d.is_dir()]
 
-
 def parse_desktop_file(file_path):
     """
     Parses a .desktop file and returns a dictionary of its properties.
     """
     parser = configparser.ConfigParser(interpolation=None)
     try:
-        parser.read(file_path, encoding="utf-8")
-        entry = parser["Desktop Entry"]
+        parser.read(file_path, encoding='utf-8')
 
+        entry = parser["Desktop Entry"]
         if entry.getboolean("NoDisplay", False):
-            if DEBUG:
-                print(f"Skipping {file_path}: NoDisplay=true", file=sys.stderr)
             return None
 
+        # The Exec key is required.
         if "Exec" not in entry:
-            if DEBUG:
-                print(f"Skipping {file_path}: Missing Exec key", file=sys.stderr)
             return None
 
         exec_cmd = entry.get("Exec")
+        # Remove Desktop Entry Specification field codes.
         exec_parts = shlex.split(exec_cmd)
         exec_parts = [part for part in exec_parts if not part.startswith("%")]
 
-        if (
-            len(exec_parts) >= 3
-            and exec_parts[0] == "gapplication"
-            and exec_parts[1] == "launch"
-        ):
+        # Heuristic for gapplication launch
+        if len(exec_parts) == 3 and exec_parts[0] == "gapplication" and exec_parts[1] == "launch":
             app_id = exec_parts[2]
             simple_name = app_id.split(".")[-1].lower()
             if shutil.which(simple_name):
@@ -81,11 +68,8 @@ def parse_desktop_file(file_path):
             "exec": exec_cmd,
             "icon": entry.get("Icon", None),
         }
-    except Exception as e:
-        if DEBUG:
-            print(f"Error parsing {file_path}: {e}", file=sys.stderr)
+    except (configparser.Error, UnicodeDecodeError, FileNotFoundError):
         return None
-
 
 def get_cache_file():
     """
@@ -96,35 +80,6 @@ def get_cache_file():
     cache_dir.mkdir(parents=True, exist_ok=True)
     return cache_dir / "apps.json"
 
-
-def get_overrides_file():
-    """
-    Returns the path to the overrides file.
-    """
-    xdg_config_home = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser()
-    overrides_dir = xdg_config_home / "fuzzel"
-    overrides_dir.mkdir(parents=True, exist_ok=True)
-    return overrides_dir / "overrides.json"
-
-
-def load_overrides(overrides_file):
-    """
-    Loads the overrides from the given file.
-    """
-    if not overrides_file.exists():
-        return {}
-    try:
-        with open(overrides_file, "r") as f:
-            return json.load(f)
-    except json.JSONDecodeError:
-        if DEBUG:
-            print(
-                f"Warning: Could not decode overrides file at {overrides_file}",
-                file=sys.stderr,
-            )
-        return {}
-
-
 def is_cache_stale(cache_file, app_dirs):
     """
     Checks if the cache is stale by comparing modification times.
@@ -134,11 +89,11 @@ def is_cache_stale(cache_file, app_dirs):
 
     cache_mtime = cache_file.stat().st_mtime
     for app_dir in app_dirs:
+        # It's possible for a directory to be removed, so we check if it exists.
         if app_dir.exists() and app_dir.stat().st_mtime > cache_mtime:
             return True
 
     return False
-
 
 def find_applications(cache_file, app_dirs):
     """
@@ -154,6 +109,7 @@ def find_applications(cache_file, app_dirs):
         for desktop_file in app_dir.rglob("*.desktop"):
             app_info = parse_desktop_file(desktop_file)
             if app_info:
+                # Use the app name as a key to avoid duplicates
                 apps[app_info["name"]] = app_info
 
     app_list = list(apps.values())
@@ -168,58 +124,15 @@ def main():
     This script finds all .desktop files, parses them, caches the results,
     and then uses fuzzel to provide a searchable application launcher.
     """
-    # Ensure a sane PATH environment variable to find executables, especially when
-    # run from a minimal environment like the hyprland exec dispatcher.
-    home_dir = Path.home()
-    sane_paths = [
-        str(home_dir / ".local/bin"),
-        "/usr/local/sbin",
-        "/usr/local/bin",
-        "/usr/sbin",
-        "/usr/bin",
-        "/sbin",
-        "/bin",
-    ]
-    original_path = os.environ.get("PATH", "")
-
-    # Combine sane paths with the original path, avoiding duplicates
-    path_parts = sane_paths
-    if original_path:
-        path_parts.extend(original_path.split(os.pathsep))
-
-    unique_paths = list(dict.fromkeys(path_parts))
-    os.environ["PATH"] = os.pathsep.join(unique_paths)
-
-    global DEBUG
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
-    args = parser.parse_args()
-    if args.debug:
-        DEBUG = True
-
     cache_file = get_cache_file()
     app_dirs = get_app_dirs()
     apps = find_applications(cache_file, app_dirs)
-    app_map = {app["name"]: app for app in apps}
 
-    overrides_file = get_overrides_file()
-    overrides = load_overrides(overrides_file)
+    # Create a mapping from name to exec command
+    app_map = {app["name"]: app["exec"] for app in apps}
 
-    for name, exec_cmd in overrides.items():
-        if name in app_map:
-            app_map[name]["exec"] = exec_cmd
-        else:
-            app_map[name] = {"name": name, "exec": exec_cmd, "icon": None}
-
-    apps = list(app_map.values())
-    exec_map = {app["name"]: app["exec"] for app in apps}
-
-    fuzzel_input = ""
-    for app in apps:
-        if app.get("icon"):
-            fuzzel_input += f"{app['name']}\0icon\x1f{app['icon']}\n"
-        else:
-            fuzzel_input += f"{app['name']}\n"
+    # Format for fuzzel
+    fuzzel_input = "\n".join(app_map.keys())
 
     try:
         fuzzel_proc = subprocess.run(
@@ -227,44 +140,22 @@ def main():
             input=fuzzel_input,
             capture_output=True,
             text=True,
-            check=True,
+            check=True
         )
         selected_app_name = fuzzel_proc.stdout.strip()
 
-        if selected_app_name in exec_map:
-            exec_command = exec_map[selected_app_name]
-            if DEBUG:
-                print(f"Executing: {exec_command}", file=sys.stderr)
-                # In debug mode, we don't detach and we print stdout/stderr
-                proc = subprocess.Popen(
-                    shlex.split(exec_command),
-                    text=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                )
-                stdout, stderr = proc.communicate()
-                print(f"Return code: {proc.returncode}", file=sys.stderr)
-                if stdout:
-                    print(f"stdout:\n{stdout}", file=sys.stderr)
-                if stderr:
-                    print(f"stderr:\n{stderr}", file=sys.stderr)
-            else:
-                subprocess.Popen(
-                    shlex.split(exec_command),
-                    start_new_session=True,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
+        if selected_app_name in app_map:
+            exec_command = app_map[selected_app_name]
+            # Execute the command in the background
+            subprocess.Popen(shlex.split(exec_command), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     except subprocess.CalledProcessError as e:
+        # This will happen if the user closes fuzzel without selecting anything (e.g. pressing Esc)
         if e.returncode != 1:
             print(f"Fuzzel exited with error: {e}", file=sys.stderr)
             sys.exit(1)
     except FileNotFoundError:
-        print(
-            "Error: fuzzel command not found. Is it installed and in your PATH?",
-            file=sys.stderr,
-        )
+        print("Error: fuzzel command not found. Is it installed and in your PATH?", file=sys.stderr)
         sys.exit(1)
 
 
