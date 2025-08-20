@@ -163,15 +163,19 @@ def main():
     cache_file = get_cache_file()
     app_dirs = get_app_dirs()
     apps = find_applications(cache_file, app_dirs)
+    app_map = {app["name"]: app for app in apps}
 
     overrides_file = get_overrides_file()
     overrides = load_overrides(overrides_file)
 
-    for app in apps:
-        if app["name"] in overrides:
-            app["exec"] = overrides[app["name"]]
+    for name, exec_cmd in overrides.items():
+        if name in app_map:
+            app_map[name]["exec"] = exec_cmd
+        else:
+            app_map[name] = {"name": name, "exec": exec_cmd, "icon": None}
 
-    app_map = {app["name"]: app["exec"] for app in apps}
+    apps = list(app_map.values())
+    exec_map = {app["name"]: app["exec"] for app in apps}
 
     fuzzel_input = ""
     for app in apps:
@@ -190,8 +194,8 @@ def main():
         )
         selected_app_name = fuzzel_proc.stdout.strip()
 
-        if selected_app_name in app_map:
-            exec_command = app_map[selected_app_name]
+        if selected_app_name in exec_map:
+            exec_command = exec_map[selected_app_name]
             if DEBUG:
                 print(f"Executing: {exec_command}", file=sys.stderr)
                 # In debug mode, we don't detach and we print stdout/stderr
