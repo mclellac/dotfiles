@@ -256,12 +256,25 @@ def main():
                 if stderr:
                     print(f"stderr:\n{stderr}", file=sys.stderr)
             else:
-                subprocess.Popen(
-                    shlex.split(exec_command),
-                    start_new_session=True,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
+                # In the normal case, we use hyprctl to launch the application.
+                # This is more robust than Popen when running from a keybinding
+                # in Hyprland, as it correctly handles the environment.
+                try:
+                    subprocess.run(
+                        ["hyprctl", "dispatch", "exec", f"[float] {exec_command}"],
+                        check=True,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+                except FileNotFoundError:
+                    # Fallback to Popen if hyprctl is not found
+                    subprocess.Popen(
+                        shlex.split(exec_command),
+                        start_new_session=True,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                    )
+
 
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
