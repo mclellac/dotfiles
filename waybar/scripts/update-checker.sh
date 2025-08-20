@@ -34,6 +34,6 @@ case "$OS_ID" in
         get_updates "$UPDATES"
         ;;
     *)
-        echo "{}" # Don't show anything if the OS is not supported
+        jq -c -n --arg text "N/A" --arg tooltip "Unsupported OS for updates" '{"text": $text, "tooltip": $tooltip}'
         ;;
 esac
