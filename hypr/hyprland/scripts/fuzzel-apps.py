@@ -168,6 +168,28 @@ def main():
     This script finds all .desktop files, parses them, caches the results,
     and then uses fuzzel to provide a searchable application launcher.
     """
+    # Ensure a sane PATH environment variable to find executables, especially when
+    # run from a minimal environment like the hyprland exec dispatcher.
+    home_dir = Path.home()
+    sane_paths = [
+        str(home_dir / ".local/bin"),
+        "/usr/local/sbin",
+        "/usr/local/bin",
+        "/usr/sbin",
+        "/usr/bin",
+        "/sbin",
+        "/bin",
+    ]
+    original_path = os.environ.get("PATH", "")
+
+    # Combine sane paths with the original path, avoiding duplicates
+    path_parts = sane_paths
+    if original_path:
+        path_parts.extend(original_path.split(os.pathsep))
+
+    unique_paths = list(dict.fromkeys(path_parts))
+    os.environ["PATH"] = os.pathsep.join(unique_paths)
+
     global DEBUG
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true", help="Enable debug mode")
