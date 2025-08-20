@@ -32,6 +32,7 @@ window#waybar {
 #network,
 #pulseaudio,
 #custom-weather,
+#custom-updates,
 #custom-power {
   padding: 0px 10px;
   margin: 4px 5px;
@@ -67,6 +68,7 @@ window#waybar {
 #network,
 #pulseaudio,
 #custom-weather,
+#custom-updates,
 #custom-power {
   color: @foreground;
 }
@@ -93,9 +95,25 @@ tooltip {
   background-color: @background;
   border: 2px solid @accent_cyan;
   border-radius: 10px;
-  padding: 10px;
+  padding: 15px;
 }
 
 tooltip label {
   color: @foreground;
+}
+
+#pulseaudio {
+  color: @accent_green;
+}
+
+#custom-weather {
+  color: @accent_blue;
+}
+
+#custom-power {
+  color: @urgent;
+}
+
+#custom-updates.updates {
+  color: @urgent;
 }

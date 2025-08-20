@@ -17,9 +17,12 @@
   "custom/updates": {
     "exec": "~/.config/waybar/scripts/update-checker.sh",
     "return-type": "json",
-    "format": "󰏔 {text}",
-    "interval": 3600,
+    "format": "{text} 󰏔",
     "tooltip": true,
+    "tooltip-format": "{tooltip}",
+    "interval": 3600,
+    "on-click": "kitty -e sudo dnf upgrade -y",
+    "escape": true
   },
   "custom/power": {
     "format": "",
@@ -55,7 +58,7 @@
   "clock": {
     "format": "{:%I:%M %p} 󰥔 ",
     "format-alt": "{:%A, %B %d, %Y (%R)}  ",
-    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "tooltip-format": "{calendar}",
     "calendar": {
       "mode": "month",
       "mode-mon-col": 3,
