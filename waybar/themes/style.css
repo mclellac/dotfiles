@@ -118,3 +118,13 @@ tooltip label {
 #custom-updates.updates {
   color: @urgent;
 }
+
+#cpu:hover,
+#memory:hover,
+#pulseaudio:hover,
+#custom-weather:hover,
+#custom-updates:hover,
+#custom-power:hover {
+  background-color: @inactive;
+  border-radius: 10px;
+}
