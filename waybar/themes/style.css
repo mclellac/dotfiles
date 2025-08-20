@@ -108,7 +108,7 @@ tooltip label {
 }
 
 #custom-weather {
-  color: @accent_blue;
+  padding: 5px;
 }
 
 #custom-power {

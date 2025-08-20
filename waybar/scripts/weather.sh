@@ -31,15 +31,16 @@ WEATHER_DESC=$(echo "$PARSED_DATA" | jq -r ".weatherDesc[0].value")
 
 ICON=""
 case "$WEATHER_DESC" in
-    *Sunny*) ICON="☀️";;
-    *Clear*) ICON="☀️";;
-    *Cloudy*) ICON="☁️";;
-    *Partly*cloudy*) ICON="⛅️";;
-    *Rain*) ICON="🌧️";;
-    *Snow*) ICON="❄️";;
-    *Mist*) ICON="🌫️";;
+*Sunny*) ICON="☀️" ;;
+*Clear*) ICON="☀️" ;;
+*Cloudy*) ICON="☁️" ;;
+*Overcast*) ICON="☁️" ;;
+*Partly*cloudy*) ICON="⛅️" ;;
+*Rain*) ICON="🌧️" ;;
+*Snow*) ICON="❄️" ;;
+*Mist*) ICON="🌫️" ;;
 esac
 
 TEXT_CONTENT="$ICON $WEATHER_TEMP°C"
 
-jq -c -n --arg text "$TEXT_CONTENT" --arg tooltip "$WEATHER_DESC" '{"text": $text, "tooltip": $tooltip}'
+jq -c -n --arg text "$TEXT_CONTENT" --arg tooltip "$TEXT_CONTENT $WEATHER_DESC" '{"text": $text, "tooltip": $tooltip}'

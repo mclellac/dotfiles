@@ -30,7 +30,7 @@
     "exec": "~/.config/waybar/scripts/weather.sh",
     "return-type": "json",
     "interval": 1800,
-    "tooltip": false,
+    "tooltip": true,
     "format": "{text}",
   },
   "hyprland/workspaces": {
