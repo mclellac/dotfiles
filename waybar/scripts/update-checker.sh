@@ -12,9 +12,9 @@ get_updates() {
     UPDATES="$1"
     if [ -n "$UPDATES" ]; then
         COUNT=$(echo "$UPDATES" | wc -l)
-        jq -c -n --arg text "$COUNT" --arg tooltip "$UPDATES" '{"text": $text, "tooltip": $tooltip}'
+        jq -c -n --arg text "$COUNT" --arg tooltip "$UPDATES" '{"text": $text, "tooltip": $tooltip, "class": "updates"}'
     else
-        jq -c -n --arg text "0" --arg tooltip "No updates available" '{"text": $text, "tooltip": $tooltip}'
+        echo '{"text": "", "class": "hidden"}'
     fi
 }
 
