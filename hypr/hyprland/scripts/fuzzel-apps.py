@@ -13,13 +13,17 @@ import shutil
 
 DEBUG = False
 
+
 def get_app_dirs():
     """
     Returns a list of directories where .desktop files are commonly found.
     """
     xdg_data_home = Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
     xdg_data_dirs = [
-        Path(p) for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(":")
+        Path(p)
+        for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(
+            ":"
+        )
     ]
 
     app_dirs = [
@@ -34,13 +38,14 @@ def get_app_dirs():
     # Filter out directories that don't exist
     return [d for d in app_dirs if d.is_dir()]
 
+
 def parse_desktop_file(file_path):
     """
     Parses a .desktop file and returns a dictionary of its properties.
     """
     parser = configparser.ConfigParser(interpolation=None)
     try:
-        parser.read(file_path, encoding='utf-8')
+        parser.read(file_path, encoding="utf-8")
         entry = parser["Desktop Entry"]
 
         if entry.getboolean("NoDisplay", False):
@@ -57,7 +62,11 @@ def parse_desktop_file(file_path):
         exec_parts = shlex.split(exec_cmd)
         exec_parts = [part for part in exec_parts if not part.startswith("%")]
 
-        if len(exec_parts) >= 3 and exec_parts[0] == "gapplication" and exec_parts[1] == "launch":
+        if (
+            len(exec_parts) >= 3
+            and exec_parts[0] == "gapplication"
+            and exec_parts[1] == "launch"
+        ):
             app_id = exec_parts[2]
             simple_name = app_id.split(".")[-1].lower()
             if shutil.which(simple_name):
@@ -77,6 +86,7 @@ def parse_desktop_file(file_path):
             print(f"Error parsing {file_path}: {e}", file=sys.stderr)
         return None
 
+
 def get_cache_file():
     """
     Returns the path to the cache file.
@@ -92,7 +102,7 @@ def get_overrides_file():
     Returns the path to the overrides file.
     """
     xdg_config_home = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser()
-    overrides_dir = xdg_config_home / "fuzzel-apps"
+    overrides_dir = xdg_config_home / "fuzzel"
     overrides_dir.mkdir(parents=True, exist_ok=True)
     return overrides_dir / "overrides.json"
 
@@ -108,8 +118,12 @@ def load_overrides(overrides_file):
             return json.load(f)
     except json.JSONDecodeError:
         if DEBUG:
-            print(f"Warning: Could not decode overrides file at {overrides_file}", file=sys.stderr)
+            print(
+                f"Warning: Could not decode overrides file at {overrides_file}",
+                file=sys.stderr,
+            )
         return {}
+
 
 def is_cache_stale(cache_file, app_dirs):
     """
@@ -124,6 +138,7 @@ def is_cache_stale(cache_file, app_dirs):
             return True
 
     return False
+
 
 def find_applications(cache_file, app_dirs):
     """
@@ -190,7 +205,7 @@ def main():
             input=fuzzel_input,
             capture_output=True,
             text=True,
-            check=True
+            check=True,
         )
         selected_app_name = fuzzel_proc.stdout.strip()
 
@@ -199,7 +214,12 @@ def main():
             if DEBUG:
                 print(f"Executing: {exec_command}", file=sys.stderr)
                 # In debug mode, we don't detach and we print stdout/stderr
-                proc = subprocess.Popen(shlex.split(exec_command), text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                proc = subprocess.Popen(
+                    shlex.split(exec_command),
+                    text=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
                 stdout, stderr = proc.communicate()
                 print(f"Return code: {proc.returncode}", file=sys.stderr)
                 if stdout:
@@ -207,15 +227,24 @@ def main():
                 if stderr:
                     print(f"stderr:\n{stderr}", file=sys.stderr)
             else:
-                subprocess.Popen(shlex.split(exec_command), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                subprocess.Popen(
+                    shlex.split(exec_command),
+                    start_new_session=True,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
 
     except subprocess.CalledProcessError as e:
         if e.returncode != 1:
             print(f"Fuzzel exited with error: {e}", file=sys.stderr)
             sys.exit(1)
     except FileNotFoundError:
-        print("Error: fuzzel command not found. Is it installed and in your PATH?", file=sys.stderr)
+        print(
+            "Error: fuzzel command not found. Is it installed and in your PATH?",
+            file=sys.stderr,
+        )
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
