@@ -110,10 +110,10 @@ apps_with_history=$(
 sorted_apps=$(echo "$apps_with_history" | jq 'sort_by(-.count, .name)')
 
 # --- Fuzzel Execution ---
-fuzzel_input_template=$(echo "$sorted_apps" | jq -r '.[] | .name + "\\0icon\\x1f" + (.icon // "application-x-executable") + "\\n"')
+fuzzel_input_template=$(echo "$sorted_apps" | jq -r '.[] | .name + "\\0icon\\x1f" + (.icon // "application-x-executable")')
 
 chosen_app_name=""
-if ! chosen_app_name=$(printf "%b" "$fuzzel_input_template" | fuzzel --dmenu --log-level=none); then
+if ! chosen_app_name=$(printf "%b\n" "$fuzzel_input_template" | fuzzel --dmenu --log-level=none); then
     exit 0
 fi
 
@@ -138,7 +138,7 @@ jq --arg name "$chosen_app_name" '.[$name] = (.[$name] // 0) + 1' <(jq . "$HISTO
 if [ "$is_terminal" = "true" ]; then
     nohup "$TERMCMD" bash -c "$exec_cmd" >/dev/null 2>&1 &
 else
-    nohup bash -c "$exec_cmd" >/dev/null 2>&1 &
+    nohup bash -l -c "$exec_cmd" >/dev/null 2>&1 &
 fi
 
 exit 0
