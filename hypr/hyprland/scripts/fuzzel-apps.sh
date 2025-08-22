@@ -6,7 +6,26 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+# --- Wayland & Path Environment ---
+# Ensure essential Wayland variables are set
+export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-1}"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+# Set a robust PATH
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
+
 set -euo pipefail
+
+# --- Debugging ---
+# Enable with FUZZEL_DEBUG=1
+debug() {
+    # Notice the change here to '-ne 0' to catch any non-zero value
+    [ "${FUZZEL_DEBUG:-0}" -ne 0 ] && echo "DEBUG: $1" >&2
+}
+
+debug "Script started."
+debug "WAYLAND_DISPLAY=$WAYLAND_DISPLAY"
+debug "XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR"
+debug "PATH=$PATH"
 
 # --- Error Handling & Dependencies ---
 die() {
@@ -15,12 +34,14 @@ die() {
 }
 
 check_dependencies() {
+    debug "Checking dependencies..."
     local dependencies=(jq find stat awk printf fuzzel zsh)
     for cmd in "${dependencies[@]}"; do
         if ! command -v "$cmd" &>/dev/null; then
             die "Required command '$cmd' is not installed. Please install it to continue."
         fi
     done
+    debug "All dependencies are satisfied."
 }
 
 # --- Configuration & Paths ---
@@ -32,31 +53,57 @@ HISTORY_FILE="$HISTORY_DIR/history.json"
 OVERRIDES_FILE="$CONFIG_DIR/overrides.json"
 TERMCMD="${TERMCMD:-kitty}"
 
+debug "Configuration paths:"
+debug "  CONFIG_DIR=$CONFIG_DIR"
+debug "  CACHE_DIR=$CACHE_DIR"
+debug "  HISTORY_DIR=$HISTORY_DIR"
+debug "  CACHE_FILE=$CACHE_FILE"
+debug "  HISTORY_FILE=$HISTORY_FILE"
+debug "  OVERRIDES_FILE=$OVERRIDES_FILE"
+debug "  TERMCMD=$TERMCMD"
+
 # --- Setup ---
 # Ensures that all necessary directories and files exist.
 # Provides explicit error messages if creation fails.
 setup_directories() {
+    debug "Setting up directories..."
     mkdir -p "$CONFIG_DIR" "$CACHE_DIR" "$HISTORY_DIR" || die "Failed to create required directories."
     if [ ! -s "$HISTORY_FILE" ]; then
+        debug "History file is missing or empty, creating..."
         echo "{}" >"$HISTORY_FILE" || die "Failed to create history file. Check permissions for $HISTORY_DIR."
     fi
+    debug "Directories are set up."
 }
 
 # --- Cache Management ---
 is_cache_stale() {
-    if [ ! -f "$CACHE_FILE" ]; then return 0; fi
+    if [ ! -f "$CACHE_FILE" ]; then
+        debug "Cache file not found. Stale."
+        return 0
+    fi
 
     local app_dirs_array=("$@")
     local cache_mtime
     cache_mtime=$(stat -c %Y "$CACHE_FILE")
+    debug "Cache mtime: $(date -d @"$cache_mtime" 2>/dev/null || echo "$cache_mtime")"
 
-    [ -f "$OVERRIDES_FILE" ] && [ "$(stat -c %Y "$OVERRIDES_FILE")" -gt "$cache_mtime" ] && return 0
-    [ "$0" -nt "$CACHE_FILE" ] && return 0
+    if [ -f "$OVERRIDES_FILE" ] && [ "$(stat -c %Y "$OVERRIDES_FILE")" -gt "$cache_mtime" ]; then
+        debug "Overrides file is newer. Stale."
+        return 0
+    fi
+    if [ "$0" -nt "$CACHE_FILE" ]; then
+        debug "Script is newer. Stale."
+        return 0
+    fi
 
     for dir in "${app_dirs_array[@]}"; do
-        [ -d "$dir" ] && [ "$(stat -c %Y "$dir")" -gt "$cache_mtime" ] && return 0
+        if [ -d "$dir" ] && [ "$(stat -c %Y "$dir")" -gt "$cache_mtime" ]; then
+            debug "Directory '$dir' is newer. Stale."
+            return 0
+        fi
     done
 
+    debug "Cache is fresh."
     return 1
 }
 
@@ -102,17 +149,22 @@ parse_desktop_files() {
 # Generates the application cache by parsing .desktop files and merging with overrides.
 generate_cache() {
     local app_dirs_array=("$@")
+    debug "Generating cache from directories: ${app_dirs_array[*]}"
     local scanned_apps
     scanned_apps=$(parse_desktop_files "${app_dirs_array[@]}")
     scanned_apps=${scanned_apps:-'[]'}
+    debug "Found $(echo "$scanned_apps" | jq length) applications from .desktop files."
 
     local overrides_apps='[]'
     if [ -f "$OVERRIDES_FILE" ]; then
+        debug "Loading overrides from $OVERRIDES_FILE"
         overrides_apps=$(jq 'to_entries | map({name: .key, exec: .value, terminal: false})' "$OVERRIDES_FILE" 2>/dev/null || echo '[]')
+        debug "Found $(echo "$overrides_apps" | jq length) applications from overrides."
     fi
 
     jq -n --argjson overrides "$overrides_apps" --argjson scanned "$scanned_apps" \
         '($overrides + $scanned) | unique_by(.name)' >"$CACHE_FILE"
+    debug "Cache generated and saved to $CACHE_FILE."
 }
 
 # --- Main Logic ---
@@ -130,9 +182,13 @@ main() {
         [ -d "$dir/flatpak/exports/share/applications" ] && app_dirs_array+=("$dir/flatpak/exports/share/applications")
     done
     [ -d "/var/lib/flatpak/exports/share/applications" ] && app_dirs_array+=("/var/lib/flatpak/exports/share/applications")
+    debug "Application directories: ${app_dirs_array[*]}"
 
     if is_cache_stale "${app_dirs_array[@]}"; then
+        debug "Cache is stale, regenerating..."
         generate_cache "${app_dirs_array[@]}"
+    else
+        debug "Using fresh cache."
     fi
 
     if [ ! -s "$CACHE_FILE" ]; then
@@ -141,6 +197,7 @@ main() {
 
     local history
     history=$(jq . "$HISTORY_FILE" 2>/dev/null || echo "{}")
+    debug "Loaded history with $(echo "$history" | jq 'length') entries."
 
     local apps_with_history
     apps_with_history=$(jq -s '
@@ -151,14 +208,17 @@ main() {
     local sorted_apps
     sorted_apps=$(echo "$apps_with_history" | jq 'sort_by(-.count, .name)')
 
+    debug "Presenting $(echo "$sorted_apps" | jq 'length') apps to fuzzel."
     local chosen_app_name
     chosen_app_name=$(echo "$sorted_apps" |
         jq -r '.[] | .name' |
         fuzzel --dmenu --log-level=none || true)
 
     if [ -z "$chosen_app_name" ]; then
+        debug "Fuzzel was cancelled by the user."
         exit 0 # User cancelled fuzzel
     fi
+    debug "User chose: '$chosen_app_name'"
 
     local chosen_app_details
     chosen_app_details=$(echo "$sorted_apps" | jq --arg name "$chosen_app_name" '.[] | select(.name == $name)')
@@ -168,6 +228,7 @@ main() {
     fi
 
     # Update history before launching
+    debug "Updating history for '$chosen_app_name'."
     local tmp_history_file
     tmp_history_file=$(mktemp)
     jq --arg name "$chosen_app_name" '.[$name] = (.[$name] // 0) + 1' <(echo "$history") >"$tmp_history_file" && mv "$tmp_history_file" "$HISTORY_FILE"
@@ -175,14 +236,18 @@ main() {
     local exec_cmd is_terminal
     exec_cmd=$(echo "$chosen_app_details" | jq -r '.exec')
     is_terminal=$(echo "$chosen_app_details" | jq -r '.terminal')
+    debug "Launch details: exec='$exec_cmd', terminal='$is_terminal'"
 
     # Launch the application
     if [ "$is_terminal" = "true" ]; then
+        debug "Launching in terminal: $TERMCMD zsh -c \"$exec_cmd\""
         nohup "$TERMCMD" zsh -c "$exec_cmd" >/dev/null 2>&1 &
     else
         # Use a login shell to ensure the user's environment is loaded
+        debug "Launching directly: zsh -l -c \"$exec_cmd\""
         nohup zsh -l -c "$exec_cmd" >/dev/null 2>&1 &
     fi
+    debug "Script finished."
 }
 
 main "$@"
