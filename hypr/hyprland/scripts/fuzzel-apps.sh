@@ -66,7 +66,7 @@ parse_desktop_files() {
         return
     fi
 
-    find "${app_dirs_array[@]}" -mindepth 1 -type f -name "*.desktop" -print0 2>/dev/null |
+    find "${app_dirs_array[@]}" -mindepth 1 -type f -name "*.desktop" -print0 |
         while IFS= read -r -d '' desktop_file; do
             awk -F'=' '
             BEGIN {
@@ -152,10 +152,7 @@ main() {
     sorted_apps=$(echo "$apps_with_history" | jq 'sort_by(-.count, .name)')
 
     local fuzzel_input
-    fuzzel_input=$(echo "$sorted_apps" | jq -r '.[] | .name, (.icon // "application-x-executable")' |
-        while read -r name; read -r icon; do
-            printf "%s\0icon\x1f%s\n" "$name" "$icon"
-        done)
+    fuzzel_input=$(echo "$sorted_apps" | jq -r '.[] | .name + "\u0000icon\u001f" + (.icon // "application-x-executable")')
 
     local chosen_app_name
     chosen_app_name=$(printf "%s" "$fuzzel_input" | fuzzel --dmenu --log-level=none || true)
