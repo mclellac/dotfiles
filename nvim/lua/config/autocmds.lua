@@ -9,25 +9,30 @@
 
 -- Quit Neovim if the only windows left are special ones like file explorers
 local function quit_if_only_special_windows()
-  local normal_window_found = false
-  -- Loop through all windows
+  -- Loop through all windows to check if any are "normal"
   for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local buf = vim.api.nvim_win_get_buf(win)
-    local buftype = vim.bo[buf].buftype
-    local filetype = vim.bo[buf].filetype
+    if vim.api.nvim_win_is_valid(win) then
+      local buf = vim.api.nvim_win_get_buf(win)
+      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_is_loaded(buf) then
+        local buflisted = vim.api.nvim_buf_get_option(buf, "buflisted")
+        local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+        local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
 
-    -- Consider a window "normal" if it has a listed buffer that is
-    -- not of a special type and not the snacks plugin.
-    if vim.bo[buf].buflisted and buftype == "" and filetype ~= "snacks" then
-      normal_window_found = true
-      break
+        -- A "normal" window is one with a listed buffer, no special buftype,
+        -- and not the snacks file explorer.
+        if buflisted and buftype == "" and filetype ~= "snacks" then
+          -- Found a normal window, so we do nothing and exit the function.
+          return
+        end
+      end
     end
   end
 
-  -- If no normal windows were found, it means only special windows are left.
-  if not normal_window_found then
+  -- If the loop completes, no normal windows were found.
+  -- Defer the quit command to avoid race conditions with other autocommands.
+  vim.defer_fn(function()
     vim.cmd("qall")
-  end
+  end, 10)
 end
 
 vim.api.nvim_create_autocmd("BufEnter", {
