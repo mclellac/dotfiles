@@ -6,9 +6,9 @@ import sys
 from pathlib import Path
 import json
 import configparser
-import re
 import shlex
 import shutil
+
 
 def get_app_dirs():
     """
@@ -16,7 +16,10 @@ def get_app_dirs():
     """
     xdg_data_home = Path(os.environ.get("XDG_DATA_HOME", "~/.local/share")).expanduser()
     xdg_data_dirs = [
-        Path(p) for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(":")
+        Path(p)
+        for p in os.environ.get("XDG_DATA_DIRS", "/usr/local/share:/usr/share").split(
+            ":"
+        )
     ]
 
     app_dirs = [
@@ -25,11 +28,10 @@ def get_app_dirs():
     ]
     app_dirs.extend([d / "applications" for d in xdg_data_dirs])
     app_dirs.extend([d / "flatpak/exports/share/applications" for d in xdg_data_dirs])
-    # Add the flatpak system-wide directory
     app_dirs.append(Path("/var/lib/flatpak/exports/share/applications"))
 
-    # Filter out directories that don't exist
     return [d for d in app_dirs if d.is_dir()]
+
 
 def parse_desktop_file(file_path):
     """
@@ -37,48 +39,51 @@ def parse_desktop_file(file_path):
     """
     parser = configparser.ConfigParser(interpolation=None)
     try:
-        parser.read(file_path, encoding='utf-8')
-
+        parser.read(file_path, encoding="utf-8")
         entry = parser["Desktop Entry"]
-        if entry.getboolean("NoDisplay", False):
-            return None
 
-        # The Exec key is required.
-        if "Exec" not in entry:
+        if entry.getboolean("NoDisplay", False) or "Exec" not in entry:
             return None
 
         exec_cmd = entry.get("Exec")
-        # Remove Desktop Entry Specification field codes.
-        exec_parts = shlex.split(exec_cmd)
-        exec_parts = [part for part in exec_parts if not part.startswith("%")]
+        # Remove Desktop Entry Specification field codes like %f, %U, etc.
+        exec_parts = [
+            part for part in shlex.split(exec_cmd) if not part.startswith("%")
+        ]
 
-        # Heuristic for gapplication launch
-        if len(exec_parts) == 3 and exec_parts[0] == "gapplication" and exec_parts[1] == "launch":
+        # Heuristic to simplify gapplication launch commands
+        if (
+            len(exec_parts) == 3
+            and exec_parts[0] == "gapplication"
+            and exec_parts[1] == "launch"
+        ):
             app_id = exec_parts[2]
             simple_name = app_id.split(".")[-1].lower()
-            if shutil.which(simple_name):
-                exec_cmd = simple_name
-            else:
-                exec_cmd = " ".join(exec_parts)
+            exec_cmd = (
+                simple_name if shutil.which(simple_name) else " ".join(exec_parts)
+            )
         else:
             exec_cmd = " ".join(exec_parts)
 
         return {
             "name": entry.get("Name", "Unnamed"),
             "exec": exec_cmd,
+            "terminal": entry.getboolean("Terminal", False),
             "icon": entry.get("Icon", None),
         }
     except (configparser.Error, UnicodeDecodeError, FileNotFoundError):
         return None
 
+
 def get_cache_file():
     """
-    Returns the path to the cache file.
+    Returns the path to the application cache file.
     """
     xdg_cache_home = Path(os.environ.get("XDG_CACHE_HOME", "~/.cache")).expanduser()
     cache_dir = xdg_cache_home / "fuzzel-apps"
     cache_dir.mkdir(parents=True, exist_ok=True)
     return cache_dir / "apps.json"
+
 
 def is_cache_stale(cache_file, app_dirs):
     """
@@ -89,16 +94,14 @@ def is_cache_stale(cache_file, app_dirs):
 
     cache_mtime = cache_file.stat().st_mtime
     for app_dir in app_dirs:
-        # It's possible for a directory to be removed, so we check if it exists.
         if app_dir.exists() and app_dir.stat().st_mtime > cache_mtime:
             return True
-
     return False
+
 
 def find_applications(cache_file, app_dirs):
     """
-    Finds all applications by searching for .desktop files.
-    Caches the results.
+    Finds all applications by searching for .desktop files and caches the results.
     """
     if not is_cache_stale(cache_file, app_dirs):
         with open(cache_file, "r") as f:
@@ -109,30 +112,25 @@ def find_applications(cache_file, app_dirs):
         for desktop_file in app_dir.rglob("*.desktop"):
             app_info = parse_desktop_file(desktop_file)
             if app_info:
-                # Use the app name as a key to avoid duplicates
                 apps[app_info["name"]] = app_info
 
     app_list = list(apps.values())
     with open(cache_file, "w") as f:
-        json.dump(app_list, f)
-
+        json.dump(app_list, f, indent=2)
     return app_list
 
 
 def main():
     """
-    This script finds all .desktop files, parses them, caches the results,
-    and then uses fuzzel to provide a searchable application launcher.
+    Finds .desktop files, caches them, and uses fuzzel to launch the selected application via hyprctl.
     """
     cache_file = get_cache_file()
     app_dirs = get_app_dirs()
     apps = find_applications(cache_file, app_dirs)
 
-    # Create a mapping from name to exec command
-    app_map = {app["name"]: app["exec"] for app in apps}
-
-    # Format for fuzzel
-    fuzzel_input = "\n".join(app_map.keys())
+    # Create a mapping from the app name to its full data dictionary
+    app_map = {app["name"]: app for app in apps}
+    fuzzel_input = "\n".join(sorted(app_map.keys()))
 
     try:
         fuzzel_proc = subprocess.run(
@@ -140,22 +138,35 @@ def main():
             input=fuzzel_input,
             capture_output=True,
             text=True,
-            check=True
+            check=True,
         )
         selected_app_name = fuzzel_proc.stdout.strip()
 
         if selected_app_name in app_map:
-            exec_command = app_map[selected_app_name]
-            # Execute the command in the background
-            subprocess.Popen(shlex.split(exec_command), start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            app_info = app_map[selected_app_name]
+            exec_command = app_info["exec"]
+
+            # If the app requires a terminal, wrap the command
+            if app_info["terminal"]:
+                terminal = os.environ.get("TERMCMD", "kitty")
+                final_command = f"{terminal} {exec_command}"
+            else:
+                final_command = exec_command
+
+            # Use hyprctl to dispatch the exec command for better integration
+            subprocess.Popen(
+                ["hyprctl", "dispatch", "exec", final_command],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
 
     except subprocess.CalledProcessError as e:
-        # This will happen if the user closes fuzzel without selecting anything (e.g. pressing Esc)
+        # Fuzzel exits with code 1 when the user presses Esc; ignore it.
         if e.returncode != 1:
             print(f"Fuzzel exited with error: {e}", file=sys.stderr)
             sys.exit(1)
     except FileNotFoundError:
-        print("Error: fuzzel command not found. Is it installed and in your PATH?", file=sys.stderr)
+        print("Error: `fuzzel` or `hyprctl` command not found.", file=sys.stderr)
         sys.exit(1)
 
 
