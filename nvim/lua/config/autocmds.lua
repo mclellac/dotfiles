@@ -35,7 +35,7 @@ local function quit_if_only_special_windows()
   end, 10)
 end
 
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("WinClosed", {
   group = vim.api.nvim_create_augroup("QuitOnLastNormalBuffer", { clear = true }),
   pattern = "*",
   callback = quit_if_only_special_windows,
