@@ -35,20 +35,6 @@ setup_directories() {
     [ ! -s "$HISTORY_FILE" ] && echo "{}" >"$HISTORY_FILE"
 }
 
-# --- Application Directories ---
-get_app_dirs() {
-    local app_dirs=()
-    [ -d "$HOME/.local/share/applications" ] && app_dirs+=("$HOME/.local/share/applications")
-    [ -d "$HOME/.local/share/flatpak/exports/share/applications" ] && app_dirs+=("$HOME/.local/share/flatpak/exports/share/applications")
-    IFS=':' read -r -a xdg_data_dirs <<<"${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
-    for dir in "${xdg_data_dirs[@]}"; do
-        [ -d "$dir/applications" ] && app_dirs+=("$dir/applications")
-        [ -d "$dir/flatpak/exports/share/applications" ] && app_dirs+=("$dir/flatpak/exports/share/applications")
-    done
-    [ -d "/var/lib/flatpak/exports/share/applications" ] && app_dirs+=("/var/lib/flatpak/exports/share/applications")
-    echo "${app_dirs[@]}"
-}
-
 # --- Cache Management ---
 is_cache_stale() {
     if [ ! -f "$CACHE_FILE" ]; then return 0; fi
@@ -72,6 +58,11 @@ is_cache_stale() {
 # It prefers en_US and en names, and handles missing icons.
 parse_desktop_files() {
     local app_dirs_array=("$@")
+    if [ ${#app_dirs_array[@]} -eq 0 ]; then
+        echo "[]"
+        return
+    fi
+
     find "${app_dirs_array[@]}" -mindepth 1 -type f -name "*.desktop" -print0 2>/dev/null |
         while IFS= read -r -d '' desktop_file; do
             awk -F'=' '
@@ -126,9 +117,16 @@ main() {
     check_dependencies
     setup_directories
 
-    local app_dirs
-    app_dirs=$(get_app_dirs)
-    local app_dirs_array=($app_dirs)
+    # --- Application Directories ---
+    local app_dirs_array=()
+    [ -d "$HOME/.local/share/applications" ] && app_dirs_array+=("$HOME/.local/share/applications")
+    [ -d "$HOME/.local/share/flatpak/exports/share/applications" ] && app_dirs_array+=("$HOME/.local/share/flatpak/exports/share/applications")
+    IFS=':' read -r -a xdg_data_dirs <<<"${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+    for dir in "${xdg_data_dirs[@]}"; do
+        [ -d "$dir/applications" ] && app_dirs_array+=("$dir/applications")
+        [ -d "$dir/flatpak/exports/share/applications" ] && app_dirs_array+=("$dir/flatpak/exports/share/applications")
+    done
+    [ -d "/var/lib/flatpak/exports/share/applications" ] && app_dirs_array+=("/var/lib/flatpak/exports/share/applications")
 
     if is_cache_stale "${app_dirs_array[@]}"; then
         generate_cache "${app_dirs_array[@]}"
