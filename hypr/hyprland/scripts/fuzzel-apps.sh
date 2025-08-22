@@ -16,10 +16,8 @@ export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 set -euo pipefail
 
 # --- Debugging ---
-# Enable with FUZZEL_DEBUG=1
 debug() {
-    # Notice the change here to '-ne 0' to catch any non-zero value
-    [ "${FUZZEL_DEBUG:-0}" -ne 0 ] && echo "DEBUG: $1" >&2
+    echo "DEBUG: $1" >&2
 }
 
 debug "Script started."
@@ -240,12 +238,14 @@ main() {
 
     # Launch the application
     if [ "$is_terminal" = "true" ]; then
-        debug "Launching in terminal: $TERMCMD zsh -c \"$exec_cmd\""
-        nohup "$TERMCMD" zsh -c "$exec_cmd" >/dev/null 2>&1 &
+        # Use an interactive shell to ensure aliases/functions are available.
+        debug "Launching in terminal: $TERMCMD zsh -i -c \"$exec_cmd\""
+        nohup "$TERMCMD" zsh -i -c "$exec_cmd" >/dev/null 2>&1 &
     else
-        # Use a login shell to ensure the user's environment is loaded
-        debug "Launching directly: zsh -l -c \"$exec_cmd\""
-        nohup zsh -l -c "$exec_cmd" >/dev/null 2>&1 &
+        # Use a login, interactive shell to ensure the user's full environment is loaded,
+        # including aliases and functions from .zshrc.
+        debug "Launching directly: zsh -l -i -c \"$exec_cmd\""
+        nohup zsh -l -i -c "$exec_cmd" >/dev/null 2>&1 &
     fi
     debug "Script finished."
 }
