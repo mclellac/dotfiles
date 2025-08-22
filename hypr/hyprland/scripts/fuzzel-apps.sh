@@ -152,10 +152,13 @@ main() {
     sorted_apps=$(echo "$apps_with_history" | jq 'sort_by(-.count, .name)')
 
     local fuzzel_input
-    fuzzel_input=$(echo "$sorted_apps" | jq -r '.[] | .name + "\0icon\x1f" + (.icon // "application-x-executable")')
+    fuzzel_input=$(echo "$sorted_apps" | jq -r '.[] | .name, (.icon // "application-x-executable")' |
+        while read -r name; read -r icon; do
+            printf "%s\0icon\x1f%s\n" "$name" "$icon"
+        done)
 
     local chosen_app_name
-    chosen_app_name=$(printf "%b" "$fuzzel_input" | fuzzel --dmenu --log-level=none || true)
+    chosen_app_name=$(printf "%s" "$fuzzel_input" | fuzzel --dmenu --log-level=none || true)
 
     if [ -z "$chosen_app_name" ]; then
         exit 0 # User cancelled fuzzel
