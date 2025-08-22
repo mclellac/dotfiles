@@ -14,6 +14,7 @@ return {
           "pyright",
           "rust_analyzer",
           "gopls",
+          "bashls",
           "marksman",
           "lemminx",
           "clangd",
