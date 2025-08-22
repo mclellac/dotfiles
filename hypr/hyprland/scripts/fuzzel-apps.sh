@@ -61,8 +61,7 @@ is_cache_stale() {
 }
 
 # Function to parse .desktop files and convert them to a JSON array.
-# It extracts Name, Exec, Icon, Terminal, and NoDisplay fields.
-# It prefers en_US and en names, and handles missing icons.
+# It extracts Name, Exec, and Terminal fields.
 parse_desktop_files() {
     local app_dirs_array=("$@")
     if [ ${#app_dirs_array[@]} -eq 0 ]; then
@@ -75,7 +74,7 @@ parse_desktop_files() {
             awk -F'=' '
             BEGIN {
                 generic_name=""; en_name=""; en_us_name="";
-                exec_cmd=""; icon=""; terminal="false"; nodisplay="false";
+                exec_cmd=""; terminal="false"; nodisplay="false";
             }
             /\[Desktop Entry\]/ { in_entry=1 }
             in_entry {
@@ -84,7 +83,6 @@ parse_desktop_files() {
                 if ($1 == "Name[en]")    { en_name = val }
                 if ($1 == "Name[en_US]") { en_us_name = val }
                 if ($1 == "Exec" && !exec_cmd)      { exec_cmd = val }
-                if ($1 == "Icon" && !icon)          { icon = val }
                 if ($1 == "Terminal")               { terminal = (val == "true" ? "true" : "false") }
                 if ($1 == "NoDisplay")              { nodisplay = (val == "true" ? "true" : "false") }
             }
@@ -94,9 +92,7 @@ parse_desktop_files() {
                     gsub(/%[a-zA-Z]/, "", exec_cmd);
                     gsub(/\\/, "\\\\", name); gsub(/"/, "\\\"", name); gsub(/\n/, "\\n", name);
                     gsub(/\\/, "\\\\", exec_cmd); gsub(/"/, "\\\"", exec_cmd);
-                    gsub(/\\/, "\\\\", icon); gsub(/"/, "\\\"", icon);
-                    if (!icon) icon="application-x-executable";
-                    printf "{\"name\":\"%s\",\"exec\":\"%s\",\"terminal\":%s,\"icon\":\"%s\"}\n", name, exec_cmd, terminal, icon
+                    printf "{\"name\":\"%s\",\"exec\":\"%s\",\"terminal\":%s}\n", name, exec_cmd, terminal
                 }
             }
         ' "$desktop_file"
@@ -112,7 +108,7 @@ generate_cache() {
 
     local overrides_apps='[]'
     if [ -f "$OVERRIDES_FILE" ]; then
-        overrides_apps=$(jq 'to_entries | map({name: .key, exec: .value, terminal: false, icon: "application-x-executable"})' "$OVERRIDES_FILE" 2>/dev/null || echo '[]')
+        overrides_apps=$(jq 'to_entries | map({name: .key, exec: .value, terminal: false})' "$OVERRIDES_FILE" 2>/dev/null || echo '[]')
     fi
 
     jq -n --argjson overrides "$overrides_apps" --argjson scanned "$scanned_apps" \
@@ -157,9 +153,8 @@ main() {
 
     local chosen_app_name
     chosen_app_name=$(echo "$sorted_apps" |
-        jq -r '.[] | .name + "\u0000icon\u001f" + (.icon // "application-x-executable")' |
-        fuzzel --dmenu --log-level=none |
-        cut -z -f1 || true)
+        jq -r '.[] | .name' |
+        fuzzel --dmenu --log-level=none || true)
 
     if [ -z "$chosen_app_name" ]; then
         exit 0 # User cancelled fuzzel
