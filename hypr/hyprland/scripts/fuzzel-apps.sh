@@ -29,10 +29,13 @@ OVERRIDES_FILE="$CONFIG_DIR/overrides.json"
 TERMCMD="${TERMCMD:-kitty}"
 
 # --- Setup ---
+# Ensures that all necessary directories and files exist.
+# Provides explicit error messages if creation fails.
 setup_directories() {
-    mkdir -p "$CONFIG_DIR" "$CACHE_DIR" "$HISTORY_DIR"
-    # Create history file as an empty JSON object if it doesn't exist or is empty
-    [ ! -s "$HISTORY_FILE" ] && echo "{}" >"$HISTORY_FILE"
+    mkdir -p "$CONFIG_DIR" "$CACHE_DIR" "$HISTORY_DIR" || die "Failed to create required directories."
+    if [ ! -s "$HISTORY_FILE" ]; then
+        echo "{}" >"$HISTORY_FILE" || die "Failed to create history file. Check permissions for $HISTORY_DIR."
+    fi
 }
 
 # --- Cache Management ---
@@ -114,103 +117,73 @@ generate_cache() {
 
 # --- Main Logic ---
 main() {
-    echo "[DEBUG] Running fuzzel-apps.sh"
-    echo "[DEBUG] Step 1: Checking dependencies..."
     check_dependencies
-    echo "[DEBUG] Step 1: OK"
-
-    echo "[DEBUG] Step 2: Setting up directories..."
     setup_directories
-    echo "[DEBUG] Step 2: OK"
 
-    echo "[DEBUG] Step 3: Discovering application directories..."
+    # --- Application Directories ---
     local app_dirs_array=()
     [ -d "$HOME/.local/share/applications" ] && app_dirs_array+=("$HOME/.local/share/applications")
     [ -d "$HOME/.local/share/flatpak/exports/share/applications" ] && app_dirs_array+=("$HOME/.local/share/flatpak/exports/share/applications")
-
-    echo "[DEBUG] Reading XDG_DATA_DIRS..."
     IFS=':' read -r -a xdg_data_dirs <<<"${XDG_DATA_DIRS:-/usr/local/share:/usr/share}" || true
-    echo "[DEBUG] Populating applications from XDG_DATA_DIRS..."
     for dir in "${xdg_data_dirs[@]}"; do
         [ -d "$dir/applications" ] && app_dirs_array+=("$dir/applications")
         [ -d "$dir/flatpak/exports/share/applications" ] && app_dirs_array+=("$dir/flatpak/exports/share/applications")
     done
     [ -d "/var/lib/flatpak/exports/share/applications" ] && app_dirs_array+=("/var/lib/flatpak/exports/share/applications")
-    echo "[DEBUG] Step 3: OK. Found ${#app_dirs_array[@]} directories."
 
-    echo "[DEBUG] Step 4: Checking cache status..."
     if is_cache_stale "${app_dirs_array[@]}"; then
-        echo "[DEBUG] Cache is stale. Generating new cache..."
         generate_cache "${app_dirs_array[@]}"
-        echo "[DEBUG] Cache generation complete."
-    else
-        echo "[DEBUG] Cache is up to date."
     fi
-    echo "[DEBUG] Step 4: OK"
 
     if [ ! -s "$CACHE_FILE" ]; then
         die "Application cache is empty. No applications found."
     fi
 
-    echo "[DEBUG] Step 5: Loading history and applications..."
     local history
     history=$(jq . "$HISTORY_FILE" 2>/dev/null || echo "{}")
+
     local apps_with_history
     apps_with_history=$(jq -s '
         .[0] as $history | .[1] as $apps |
         $apps | map(. + {count: ($history[.name] // 0)})
     ' <(echo "$history") "$CACHE_FILE")
-    echo "[DEBUG] Step 5: OK"
 
-    echo "[DEBUG] Step 6: Sorting applications..."
     local sorted_apps
     sorted_apps=$(echo "$apps_with_history" | jq 'sort_by(-.count, .name)')
-    echo "[DEBUG] Step 6: OK"
 
-    echo "[DEBUG] Step 7: Preparing input for fuzzel..."
     local fuzzel_input
     fuzzel_input=$(echo "$sorted_apps" | jq -r '.[] | .name + "\0icon\x1f" + (.icon // "application-x-executable")')
-    echo "[DEBUG] Step 7: OK"
 
-    echo "[DEBUG] Step 8: Launching fuzzel..."
     local chosen_app_name
     chosen_app_name=$(printf "%b" "$fuzzel_input" | fuzzel --dmenu --log-level=none || true)
-    echo "[DEBUG] Step 8: OK. Fuzzel returned."
 
     if [ -z "$chosen_app_name" ]; then
-        echo "[DEBUG] No application chosen. Exiting."
         exit 0 # User cancelled fuzzel
     fi
-    echo "[DEBUG] User chose: $chosen_app_name"
 
-    echo "[DEBUG] Step 9: Finding application details..."
     local chosen_app_details
     chosen_app_details=$(echo "$sorted_apps" | jq --arg name "$chosen_app_name" '.[] | select(.name == $name)')
 
     if [ -z "$chosen_app_details" ]; then
         die "Could not find details for '$chosen_app_name'"
     fi
-    echo "[DEBUG] Step 9: OK"
 
-    echo "[DEBUG] Step 10: Updating history..."
+    # Update history before launching
     local tmp_history_file
     tmp_history_file=$(mktemp)
     jq --arg name "$chosen_app_name" '.[$name] = (.[$name] // 0) + 1' <(echo "$history") >"$tmp_history_file" && mv "$tmp_history_file" "$HISTORY_FILE"
-    echo "[DEBUG] Step 10: OK"
 
-    echo "[DEBUG] Step 11: Launching application..."
     local exec_cmd is_terminal
     exec_cmd=$(echo "$chosen_app_details" | jq -r '.exec')
     is_terminal=$(echo "$chosen_app_details" | jq -r '.terminal')
 
+    # Launch the application
     if [ "$is_terminal" = "true" ]; then
-        echo "[DEBUG] Launching in terminal: $TERMCMD zsh -c \"$exec_cmd\""
         nohup "$TERMCMD" zsh -c "$exec_cmd" >/dev/null 2>&1 &
     else
-        echo "[DEBUG] Launching GUI: zsh -l -c \"$exec_cmd\""
+        # Use a login shell to ensure the user's environment is loaded
         nohup zsh -l -c "$exec_cmd" >/dev/null 2>&1 &
     fi
-    echo "[DEBUG] Step 11: OK. Script finished."
 }
 
 main "$@"
