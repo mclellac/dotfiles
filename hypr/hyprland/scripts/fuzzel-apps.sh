@@ -70,7 +70,7 @@ generate_cache() {
                     name = en_us_name ? en_us_name : (en_name ? en_name : generic_name);
                     if (name && exec_cmd && nodisplay != "true") {
                         gsub(/%[a-zA-Z]/, "", exec_cmd);
-                        gsub(/\\/, "\\\\", name); gsub(/"/, "\\\"", name);
+                        gsub(/\\/, "\\\\", name); gsub(/"/, "\\\"", name); gsub(/\n/, "\\n", name);
                         gsub(/\\/, "\\\\", exec_cmd); gsub(/"/, "\\\"", exec_cmd);
                         gsub(/\\/, "\\\\", icon); gsub(/"/, "\\\"", icon);
                         if (!icon) icon="application-x-executable";
@@ -110,9 +110,6 @@ apps_with_history=$(
 sorted_apps=$(echo "$apps_with_history" | jq 'sort_by(-.count, .name)')
 
 # --- Fuzzel Execution ---
-# Use jq to create a printf-compatible format string.
-# Each line will be 'AppName\0icon\x1fIconName\n'
-# Then pipe to printf "%b" to correctly interpret the backslash escapes.
 fuzzel_input_template=$(echo "$sorted_apps" | jq -r '.[] | .name + "\\0icon\\x1f" + (.icon // "application-x-executable") + "\\n"')
 
 chosen_app_name=""
@@ -139,9 +136,9 @@ tmp_history_file=$(mktemp)
 jq --arg name "$chosen_app_name" '.[$name] = (.[$name] // 0) + 1' <(jq . "$HISTORY_FILE" 2>/dev/null || echo "{}") > "$tmp_history_file" && mv "$tmp_history_file" "$HISTORY_FILE"
 
 if [ "$is_terminal" = "true" ]; then
-    hyprctl dispatch exec -- "$TERMCMD" sh -c "$exec_cmd"
+    hyprctl dispatch exec -- "$TERMCMD" bash -c "$exec_cmd"
 else
-    hyprctl dispatch exec -- sh -c "$exec_cmd"
+    hyprctl dispatch exec -- bash -c "$exec_cmd"
 fi
 
 exit 0

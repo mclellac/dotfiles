@@ -19,8 +19,8 @@ local function quit_if_only_special_windows()
         local filetype = vim.api.nvim_buf_get_option(buf, "filetype")
 
         -- A "normal" window is one with a listed buffer, no special buftype,
-        -- and not the snacks file explorer.
-        if buflisted and buftype == "" and filetype ~= "snacks" then
+        -- and not a known special filetype like snacks or the dashboard.
+        if buflisted and buftype == "" and filetype ~= "snacks" and filetype ~= "dashboard" then
           -- Found a normal window, so we do nothing and exit the function.
           return
         end
