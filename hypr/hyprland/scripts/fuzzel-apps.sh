@@ -2,6 +2,10 @@
 # A robust application launcher for Fuzzel with JSON caching,
 # custom overrides, usage frequency sorting, and icon support.
 
+# Set a standard UTF-8 locale to ensure consistent behavior of text-processing tools.
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 set -euo pipefail
 
 # --- Error Handling & Dependencies ---
