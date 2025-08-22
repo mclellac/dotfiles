@@ -7,28 +7,33 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*",
-  callback = function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local buftype = vim.api.nvim_buf_get_option(bufnr, "buftype")
-    if buftype == "nofile" then
-      local bufname = vim.api.nvim_buf_get_name(bufnr)
-      if bufname:match("snacks") then
-        local bufnrs = vim.api.nvim_list_bufs()
-        local has_other_buffer = false
-        for _, b in ipairs(bufnrs) do
-          if b ~= bufnr and vim.api.nvim_buf_is_loaded(b) and vim.bo[b].buflisted then
-            has_other_buffer = true
-            break
-          end
-        end
-        if not has_other_buffer then
-          vim.cmd("q")
-        end
-      end
+-- Quit Neovim if the only windows left are special ones like file explorers
+local function quit_if_only_special_windows()
+  local normal_window_found = false
+  -- Loop through all windows
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local buftype = vim.bo[buf].buftype
+    local filetype = vim.bo[buf].filetype
+
+    -- Consider a window "normal" if it has a listed buffer that is
+    -- not of a special type and not the snacks plugin.
+    if vim.bo[buf].buflisted and buftype == "" and filetype ~= "snacks" then
+      normal_window_found = true
+      break
     end
-  end,
+  end
+
+  -- If no normal windows were found, it means only special windows are left.
+  if not normal_window_found then
+    vim.cmd("qall")
+  end
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("QuitOnLastNormalBuffer", { clear = true }),
+  pattern = "*",
+  callback = quit_if_only_special_windows,
 })
 
 vim.api.nvim_create_autocmd("User", {
