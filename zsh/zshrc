@@ -121,6 +121,8 @@ compctl -K _pip_completion pip
 # LLVM path & DOOM emacs
 export PATH="/usr/local/opt/llvm/bin:${HOME}/.config/emacs/bin:${HOME}/.local/bin:/usr/local/opt/yq@3/bin:$PATH"
 
+source <(fzf --zsh)
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # Solarized colors
 #export FZF_DEFAULT_OPTS='

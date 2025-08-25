@@ -122,12 +122,33 @@ tooltip label {
 #custom-updates.hidden {
 }
 
-#cpu:hover,
-#memory:hover,
-#pulseaudio:hover,
-#custom-weather:hover,
-#custom-updates:hover,
+#cpu:hover {
+  color:black;
+  background-color: @accent_cyan;
+  border-radius: 10px;
+}
+#memory:hover {
+  color: black;
+  background-color: @accent_cyan;
+  border-radius: 10px;
+}
+#pulseaudio:hover {
+  color: black;
+  background-color: @accent_cyan;
+  border-radius: 10px;
+}
+#custom-weather:hover {
+  color: black;
+  background-color: @accent_cyan;
+  border-radius: 10px;
+}
+#custom-updates:hover {
+  color: black;
+  background-color: @accent_cyan;
+  border-radius: 10px;
+}
 #custom-power:hover {
-  background-color: @inactive;
+  color: black;
+  background-color: @accent_cyan;
   border-radius: 10px;
 }

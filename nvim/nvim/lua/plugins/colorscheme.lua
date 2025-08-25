@@ -131,12 +131,12 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      --colorscheme = "material",
+      colorscheme = "material",
       --colorscheme = "catppuccin-mocha",
       --colorscheme = "catppuccin-macchiato",
       --colorscheme = "adwaita",
       --colorscheme = "rose-pine-dawn",
-      colorscheme = "gruvbox",
+      --colorscheme = "gruvbox",
     },
   },
 }
