@@ -6,26 +6,12 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-# --- Critical Environment for GUI Apps ---
-# Pass through essential variables for Wayland/XWayland and DBus,
-# providing sensible defaults based on the user's environment if they are not set.
-export DISPLAY="${DISPLAY:-:0}"
-export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}"
-export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP:-Hyprland}"
-export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-Hyprland}"
-export XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-wayland}"
-export GDK_BACKEND="${GDK_BACKEND:-wayland}"
-export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-wayland}"
-export SDL_VIDEODRIVER="${SDL_VIDEODRIVER:-wayland}"
-export MOZ_ENABLE_WAYLAND="${MOZ_ENABLE_WAYLAND:-1}"
-export _JAVA_AWT_WM_NONREPARENTING=1
-
 # --- Wayland & Path Environment ---
 # Ensure essential Wayland variables are set
 export WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-1}"
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
-# Set a robust PATH. We prepend the user's existing PATH if available.
-export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin${PATH:+:$PATH}"
+# Set a robust PATH
+export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
 
 set -euo pipefail
 
@@ -258,8 +244,9 @@ main() {
     else
         # Use a login, interactive shell to ensure the user's full environment is loaded,
         # including aliases and functions from .zshrc.
-        debug "Launching directly: zsh -l -i -c \"$exec_cmd\""
-        nohup zsh -l -i -c "$exec_cmd" >/dev/null 2>&1 &
+        #debug "Launching directly: zsh -l -i -c \"$exec_cmd\""
+        debug "uwsm app $exec_cmd"
+        uwsm app "$exec_cmd"
     fi
     debug "Script finished."
 }
