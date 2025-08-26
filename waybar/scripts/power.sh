@@ -1,20 +1,42 @@
-#!/bin/sh
+#!/bin/bash
 
-entries="  Shutdown\n  Reboot\n  Logout\n" #   Lock"
+entries="   Shutdown
+   Reboot
+   Logout
+   Lock"
 
-selected=$(echo -e $entries | fuzzel --dmenu --prompt "Power Menu")
+selected=$(printf '%s' "$entries" | fuzzel --dmenu --prompt 'Power Menu:')
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+confirm() {
+    local prompt="$1"
+    answer=$(printf "No\nYes" | fuzzel --dmenu --prompt "$prompt")
+    [ "$answer" = "Yes" ]
+}
 
 case "$selected" in
 *Shutdown)
-    systemctl poweroff
+    if confirm "Are you sure you want to shut down?"; then
+        systemctl poweroff
+    fi
     ;;
 *Reboot)
-    systemctl reboot
+    if confirm "Are you sure you want to reboot?"; then
+        systemctl reboot
+    fi
     ;;
 *Logout)
-    hyprctl dispatch exit
+    if confirm "Are you sure you want to log out?"; then
+        hyprctl dispatch exit
+    fi
     ;;
-#  *Lock)
-#    hyprlock
-#    ;;
+*Lock)
+    # No confirmation needed for locking
+    hyprlock
+    ;;
 esac
+
+exit 0
