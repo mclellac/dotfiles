@@ -244,8 +244,8 @@ main() {
     else
         # Use a login, interactive shell to ensure the user's full environment is loaded,
         # including aliases and functions from .zshrc.
-        debug "Launching with: nohup zsh -l -i -c \"$exec_cmd\""
-        nohup zsh -l -i -c "$exec_cmd" >/dev/null 2>&1 &
+        debug "Launching with: eval \"LIBGL_ALWAYS_SOFTWARE=1 $exec_cmd\" &"
+        eval "LIBGL_ALWAYS_SOFTWARE=1 $exec_cmd" &
     fi
     debug "Script finished."
 }
