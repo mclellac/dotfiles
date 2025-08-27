@@ -20,10 +20,7 @@ This configuration uses the following plugins:
 
 ### hyprexpo
 
-`hyprexpo` is a workspace overview plugin that allows you to see all your workspaces at once.
-
-**Usage:**
-The keybinding for `hyprexpo` is `CTRL+SUPER+UP_ARROW`.
+`hyprexpo` is a workspace overview plugin that allows you to see all your workspaces at once. This plugin is currently configured but does not have an active keybinding.
 
 ### hyprbars
 
@@ -40,17 +37,14 @@ Here are some of the most important keybindings in this configuration:
 | --- | --- |
 | `Super + Space` | Launch application launcher (fuzzel) |
 | `Super + V` | Show clipboard history |
-| `CTRL + Super + Up` | Show workspace overview (hyprexpo) |
 | `Super + Shift + S` | Take a screen snip |
 | `Super + Q` | Close active window |
-| `Super + L` | Lock the session |
 | `Super + Return` | Launch terminal (kitty) |
 | `Super + E` | Launch file manager |
 | `Super + W` | Launch web browser |
 | `Super + C` | Launch code editor |
 | `Super + [0-9]` | Switch to workspace |
 | `Super + Alt + [0-9]` | Move window to workspace |
-| `Super + S` | Toggle special workspace (scratchpad) |
 | `Super + D` | Maximize window |
 | `Super + F` | Toggle fullscreen |
 | `Super + P` | Pin window |
@@ -59,16 +53,16 @@ Here are some of the most important keybindings in this configuration:
 
 ## Theme
 
-This configuration uses a custom theme based on a vibrant blue and cyan palette.
+This configuration uses a custom color scheme defined in `hypr/hyprland.conf`. The palette is based on a dark background with vibrant blue and cyan accents.
 
-| Name      | Hex       |
-| --------- | --------- |
-| Orange    | `#f5a623` |
-| Background| `#28292e` |
-| Foreground| `#8c90a1` |
-| Inactive  | `#9AD7F5` |
-| Blue      | `#028EB6` |
-| Cyan      | `#028EB6` |
-| Green     | `#32a852` |
-| Red/Urgent| `#b51d39` |
-| Magenta   | `#a33976` |
+| Variable     | Hex       |
+| ------------ | --------- |
+| `$active`    | `#028EB6` |
+| `$inactive`  | `#1b2e38` |
+| `$background`| `#28292e` |
+| `$foreground`| `#8c90a1` |
+| `$cyan`      | `#9AD7F5` |
+| `$orange`    | `#ff9500` |
+| `$green`     | `#05876f` |
+| `$red`       | `#ad2840` |
+| `$magenta`   | `#c259af` |
