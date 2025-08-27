@@ -244,9 +244,8 @@ main() {
     else
         # Use a login, interactive shell to ensure the user's full environment is loaded,
         # including aliases and functions from .zshrc.
-        #debug "Launching directly: zsh -l -i -c \"$exec_cmd\""
-        debug "uwsm app $exec_cmd"
-        uwsm app "$exec_cmd"
+        debug "Launching with: nohup zsh -l -i -c \"$exec_cmd\""
+        nohup zsh -l -i -c "$exec_cmd" >/dev/null 2>&1 &
     fi
     debug "Script finished."
 }
