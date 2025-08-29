@@ -1,18 +1,29 @@
-backtraces_path = "${HOME}/neovide_backtraces.log" # see below for the default platform specific location
-fork = false
-frame = "full"
-idle = true
-maximized = false
-mouse-cursor-icon = "arrow"
-neovim-bin = "/usr/bin/nvim"                         # in reality found dynamically on $PATH if unset
-no-multigrid = false
-srgb = false
-tabs = true
-theme = "auto"
-title-hidden = true
-vsync = true
 wsl = false
+theme = "dark"
 
 [font]
-normal = [] # Will use the bundled Fira Code Nerd Font by default
-size = 14.0
+  normal = ["Iosevka Nerd Font"]
+  size = 14.0
+
+[window]
+  padding = {top = 10, left = 10, right = 10, bottom = 10}
+  decorations = "none"
+  title_hidden = true
+
+[visual_effects]
+  blur = true
+  contrast = 1.0
+  gamma = 1.0
+  saturation = 1.0
+  trail_effect = "railgun"
+  trail_density = 10
+
+[cursor]
+  animation_length = 0.05
+  blink_animation = "solid"
+  blink_interval = 500
+  hide_on_typing = true
+  unfocused_style = "block"
+
+# For more options, see the Neovide documentation:
+# https://neovide.dev/configuration.html

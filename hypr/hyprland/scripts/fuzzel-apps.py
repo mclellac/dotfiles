@@ -130,7 +130,16 @@ def main():
 
     # Create a mapping from the app name to its full data dictionary
     app_map = {app["name"]: app for app in apps}
-    fuzzel_input = "\n".join(sorted(app_map.keys()))
+
+    # Format entries for fuzzel with icon support
+    fuzzel_input_lines = []
+    for name, app_data in sorted(app_map.items()):
+        icon_name = app_data.get("icon")
+        if icon_name:
+            fuzzel_input_lines.append(f"{name}\0icon\x1f{icon_name}")
+        else:
+            fuzzel_input_lines.append(name)
+    fuzzel_input = "\n".join(fuzzel_input_lines)
 
     try:
         fuzzel_proc = subprocess.run(
