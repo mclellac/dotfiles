@@ -153,7 +153,7 @@ def main() -> None:
                 current_os = distro.id().lower()
             except ImportError:
                 console.print(
-                    "[bold red]Error:[/bold red] Unable to determine the operating system."
+                    "[bold red]Error:[/bold red] Unable to determine the operating system. Make sure python package `distro` is installed."
                 )
                 return
 
@@ -166,6 +166,7 @@ def main() -> None:
             pip_packages = os_config.get("pip-packages", [])
             copr_repo = os_config.get("copr-repo", {}).get("name")
 
+            print(current_os)
             if current_os == "fedora":
                 create_empty_file(".zsh.gnu")
                 create_empty_file(".zprivate")
