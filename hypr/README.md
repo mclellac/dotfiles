@@ -35,7 +35,7 @@ Here are some of the most important keybindings in this configuration:
 
 | Keybinding | Description |
 | --- | --- |
-| `Super + Space` | Launch application launcher (fuzzel) |
+| `Super + Space` | Launch application launcher (walker) |
 | `Super + V` | Show clipboard history |
 | `Super + Shift + S` | Take a screen snip |
 | `Super + Q` | Close active window |
