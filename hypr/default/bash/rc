@@ -1,7 +1,7 @@
-source ~/.local/share/omarchy/default/bash/shell
-source ~/.local/share/omarchy/default/bash/aliases
-source ~/.local/share/omarchy/default/bash/functions
-source ~/.local/share/omarchy/default/bash/prompt
-source ~/.local/share/omarchy/default/bash/init
-source ~/.local/share/omarchy/default/bash/envs
-[[ $- == *i* ]] && bind -f ~/.local/share/omarchy/default/bash/inputrc
+source ~/.config/hypr/default/bash/shell
+source ~/.config/hypr/default/bash/aliases
+source ~/.config/hypr/default/bash/functions
+source ~/.config/hypr/default/bash/prompt
+source ~/.config/hypr/default/bash/init
+source ~/.config/hypr/default/bash/envs
+[[ $- == *i* ]] && bind -f ~/.config/hypr/default/bash/inputrc

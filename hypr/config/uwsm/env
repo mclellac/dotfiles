@@ -1,4 +1,4 @@
-export OMARCHY_PATH=$HOME/.local/share/omarchy
+export OMARCHY_PATH=$HOME/.config/hypr
 export PATH=$OMARCHY_PATH/bin/:$PATH
 export TERMINAL=alacritty
 
