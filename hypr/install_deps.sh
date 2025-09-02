@@ -53,6 +53,8 @@ PACMAN_PACKAGES=(
     wf-recorder
     wl-clipboard
     xdg-utils
+    gum
+    xmlstarlet
 )
 
 # AUR packages
