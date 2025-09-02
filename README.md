@@ -79,6 +79,63 @@ The core of the configuration resides in the `~/.config/hypr/` directory. Here's
 -   `scripts/`: Contains scripts that are used by Hyprland but are not intended to be run directly by the user.
 -   `config/`: Holds configuration files for other applications that are styled by the theming system, such as Alacritty, Waybar, and Walker.
 
+### Dependencies
+
+This setup relies on a number of external applications and tools. You will need to install them using your package manager. For Arch Linux, you can use `pacman` for official packages and an AUR helper like `yay` for packages from the Arch User Repository.
+
+**Core Components**
+*   `hyprland`: The Wayland compositor itself.
+*   `uwsm`: The Universal Wayland Session Manager, used to launch all applications.
+*   `waybar`: The status bar at the top of the screen.
+*   `walker-git`: The application launcher and menu frontend.
+*   `hypridle` & `hyprlock`: For idle management and screen locking.
+*   `mako`: The notification daemon.
+*   `swaybg`: For setting the desktop background.
+*   `swayosd`: The on-screen display for volume, brightness, etc.
+*   `polkit-gnome`: The PolicyKit authentication agent.
+*   `xdg-utils`: For core desktop integration like identifying the default browser.
+*   `wl-clipboard`: For Wayland clipboard utilities (`wl-copy`, `wl-clip-persist`).
+
+**System Utilities**
+*   `pamixer`: For programmatic audio control.
+*   `playerctl`: To control media players.
+*   `power-profiles-daemon`: For managing system power profiles.
+*   `jq`: A command-line JSON processor, used in various scripts.
+*   `fastfetch`: For displaying system information.
+*   `yay`: An AUR helper, required for installing some packages.
+
+**Screenshotting & Recording**
+*   `hyprshot`: A screenshot tool for Hyprland.
+*   `satty-bin`: A powerful screen annotation and capture tool.
+*   `wf-recorder`: For screen recording on Wayland.
+
+**Input & Language**
+*   `fcitx5-im`, `fcitx5-qt`, `fcitx5-gtk`: For input method support.
+
+**Fonts**
+*   `ttf-meslo-nerd`
+*   `ttf-firacode-nerd`
+*   `ttf-victor-mono-nerd`
+*   The custom `omarchy` icon font is included in this repository.
+
+**Core Applications**
+*   `alacritty` or `kitty`: A fast, GPU-accelerated terminal emulator.
+*   `neovim`: The editor.
+*   `btop`: The system resource monitor.
+*   `nautilus`: The file manager.
+*   `chromium`: The recommended web browser for full feature compatibility (like web app mode).
+
+A consolidated installation command for Arch Linux would look something like this (excluding AUR packages):
+
+```bash
+sudo pacman -S --needed hyprland waybar hypridle hyprlock mako swaybg swayosd polkit-gnome xdg-utils wl-clipboard pamixer playerctl power-profiles-daemon jq fastfetch neovim btop nautilus chromium alacritty kitty fcitx5-im fcitx5-qt fcitx5-gtk ttf-meslo-nerd ttf-firacode-nerd ttf-victor-mono-nerd
+```
+
+For AUR packages (`uwsm`, `walker-git`, `satty-bin`, `yay`, etc.), you will need to use `yay`:
+```bash
+yay -S --needed uwsm walker-git satty-bin
+```
+
 ### Theming
 
 A powerful script-based theming system allows for a consistent look and feel across the entire desktop environment.
