@@ -23,7 +23,7 @@ PACMAN_PACKAGES=(
     base-devel
     btop
     chromium
-    fastfetch
+    #fastfetch
     fcitx5-im
     fcitx5-gtk
     fcitx5-qt
@@ -60,16 +60,15 @@ PARU_PACKAGES=(
     1password
     spotify
     uwsm
-    walker-git
-    satty-bin
+    #walker-git
+    #satty-bin
 )
-
 
 # --- Installation Logic ---
 
 # Function to install paru if not present
 install_paru() {
-    if ! command -v paru &> /dev/null; then
+    if ! command -v paru &>/dev/null; then
         print_info "paru not found. Attempting to install it..."
 
         # Ensure build dependencies are present
@@ -84,7 +83,7 @@ install_paru() {
         (cd /tmp/paru && makepkg -si --noconfirm)
 
         # Verify installation
-        if ! command -v paru &> /dev/null; then
+        if ! command -v paru &>/dev/null; then
             print_error "paru installation failed. Please install it manually from the AUR and re-run the script."
             exit 1
         else
