@@ -37,7 +37,6 @@ Session.vim
 __pycache__/
 *.py[cod]
 .installed.cfg
-bin
 develop-eggs
 dist
 downloads
