@@ -1,0 +1,5 @@
+#!/bin/bash
+
+hypr-refresh-config waybar/config.jsonc
+hypr-refresh-config waybar/style.css
+hypr-restart-waybar

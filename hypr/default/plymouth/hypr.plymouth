@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=Hypr
+Description=Hypr splash screen.
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/hypr
+ScriptFile=/usr/share/plymouth/themes/hypr/hypr.script
+ConsoleLogBackgroundColor=0x1a1b26

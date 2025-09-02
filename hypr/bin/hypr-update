@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+hypr-snapshot create || [ $? -eq 127 ]
+hypr-update-git
+hypr-migrate
+hypr-update-system-pkgs
+hypr-update-restart
+hypr-restart-waybar # removes update-available icon

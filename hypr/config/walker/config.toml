@@ -1,5 +1,5 @@
 close_when_open = true
-theme = "omarchy-default"
+theme = "default"
 theme_base = []
 theme_location = ["~/.config/hypr/default/walker/themes/"]
 hotreload_theme = true
@@ -38,14 +38,10 @@ hide_category = true
 hidden = true
 
 [[builtins.bookmarks.entries]]
-label = "Omarchy - Github"
-url = "https://github.com/basecamp/omarchy"
-keywords = ["omarchy", "github"]
+label = "Hypr - Github"
+url = "https://github.com/basecamp/hypr"
+keywords = ["hypr", "github"]
 
-[[builtins.bookmarks.entries]]
-label = "Omarchy Manual"
-url = "https://manuals.omamix.org/2/the-omarchy-manual"
-keywords = ["omarchy"]
 
 [builtins.calc]
 name = "Calculator"

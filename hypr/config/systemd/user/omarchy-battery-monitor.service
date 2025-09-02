@@ -1,8 +1,8 @@
 [Unit]
-Description=Omarchy Battery Monitor Check
+Description=Hypr Battery Monitor Check
 After=graphical-session.target
 
 [Service]
 Type=oneshot
-ExecStart=%h/.config/hypr/bin/omarchy-battery-monitor
+ExecStart=%h/.config/hypr/bin/hypr-battery-monitor
 Environment=DISPLAY=:0

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+hypr-refresh-config swayosd/config.toml
+hypr-refresh-config swayosd/style.css
+hypr-restart-swayosd
