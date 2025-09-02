@@ -121,7 +121,7 @@ function _pip_completion {
 compctl -K _pip_completion pip
 
 # LLVM path & DOOM emacs
-export PATH="/usr/local/opt/llvm/bin:${HOME}/.config/emacs/bin:${HOME}/.local/bin:/usr/local/opt/yq@3/bin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:${HOME}/.config/emacs/bin:${HOME}/.local/bin:/usr/local/opt/yq@3/bin:~/.config/hypr/bin:$PATH"
 
 source <(fzf --zsh)
 
