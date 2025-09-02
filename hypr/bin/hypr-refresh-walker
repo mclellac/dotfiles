@@ -1,0 +1,4 @@
+#!/bin/bash
+
+hypr-refresh-config walker/config.toml
+hypr-restart-walker

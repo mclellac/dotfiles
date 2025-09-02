@@ -1,0 +1,3 @@
+#!/bin/bash
+
+hypr-restart-app fcitx5

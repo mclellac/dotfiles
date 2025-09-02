@@ -116,7 +116,7 @@ This setup relies on a number of external applications and tools. You will need 
 *   `ttf-meslo-nerd`
 *   `ttf-firacode-nerd`
 *   `ttf-victor-mono-nerd`
-*   The custom `omarchy` icon font is included in this repository.
+*   The custom `hypr` icon font is included in this repository.
 
 **Core Applications**
 *   `alacritty` or `kitty`: A fast, GPU-accelerated terminal emulator.
@@ -140,10 +140,10 @@ yay -S --needed uwsm walker-git satty-bin
 
 A powerful script-based theming system allows for a consistent look and feel across the entire desktop environment.
 
--   **How it Works**: The `omarchy-theme-set <theme-name>` script creates symbolic links from the chosen theme's files in `hypr/themes/<theme-name>/` to the `hypr/theme/` directory. Hyprland and other applications are configured to load their settings from this `hypr/theme/` directory, instantly applying the new look.
--   **Available Themes**: To see a list of all available themes, run `omarchy-theme-list`.
--   **Switching Themes**: Use `omarchy-theme-set <theme-name>` to switch to a different theme. You can also use `omarchy-theme-next` to cycle through available themes.
--   **Creating a New Theme**: The easiest way to create a new theme is to copy an existing one (`cp -r hypr/themes/rose-pine hypr/themes/my-awesome-theme`), customize the files within the new directory, and then apply it with `omarchy-theme-set my-awesome-theme`.
+-   **How it Works**: The `hypr-theme-set <theme-name>` script creates symbolic links from the chosen theme's files in `hypr/themes/<theme-name>/` to the `hypr/theme/` directory. Hyprland and other applications are configured to load their settings from this `hypr/theme/` directory, instantly applying the new look.
+-   **Available Themes**: To see a list of all available themes, run `hypr-theme-list`.
+-   **Switching Themes**: Use `hypr-theme-set <theme-name>` to switch to a different theme. You can also use `hypr-theme-next` to cycle through available themes.
+-   **Creating a New Theme**: The easiest way to create a new theme is to copy an existing one (`cp -r hypr/themes/rose-pine hypr/themes/my-awesome-theme`), customize the files within the new directory, and then apply it with `hypr-theme-set my-awesome-theme`.
 
 ### Keybindings
 
@@ -173,12 +173,12 @@ The following keybindings are defined in `~/.config/hypr/bindings.conf`. This li
 
 ### Scripts
 
-The `hypr/bin/` directory is filled with powerful `omarchy-` scripts. The most important one is `omarchy-menu`, which is typically bound to `SUPER + SPACE`. It provides a comprehensive, searchable menu system (using `walker`) to access almost all functionality of the desktop.
+The `hypr/bin/` directory is filled with powerful `hypr-` scripts. The most important one is `hypr-menu`, which is typically bound to `SUPER + SPACE`. It provides a comprehensive, searchable menu system (using `walker`) to access almost all functionality of the desktop.
 
 The main categories in the menu include:
 
 -   **Apps**: Launch applications.
--   **Learn**: Access documentation for Keybindings, Omarchy, Hyprland, etc.
+-   **Learn**: Access documentation for Keybindings, Hypr, Hyprland, etc.
 -   **Capture**: Take screenshots or screen recordings.
 -   **Toggle**: Enable/disable features like the screensaver, night light, or top bar.
 -   **Style**: Change the theme, font, or background.
@@ -189,9 +189,9 @@ The main categories in the menu include:
 -   **System**: Lock screen, suspend, restart, or shutdown.
 
 Other notable scripts include:
--   `omarchy-launch-browser`: Launches the system's default web browser.
--   `omarchy-launch-webapp`: Launches a URL as a standalone web application using your browser's `--app` feature.
--   `omarchy-cmd-terminal-cwd`: A clever script that gets the working directory of the currently focused terminal, so that new terminals can be opened in the same path.
+-   `hypr-launch-browser`: Launches the system's default web browser.
+-   `hypr-launch-webapp`: Launches a URL as a standalone web application using your browser's `--app` feature.
+-   `hypr-cmd-terminal-cwd`: A clever script that gets the working directory of the currently focused terminal, so that new terminals can be opened in the same path.
 
 ### Customization
 
@@ -199,4 +199,4 @@ Other notable scripts include:
 -   **Monitors**: Adjust your monitor layout, resolution, and scaling in `~/.config/hypr/monitors.conf`.
 -   **Startup Apps**: Add or remove startup applications in `~/.config/hypr/autostart.conf`.
 -   **Themes**: Create or modify themes in the `~/.config/hypr/themes/` directory.
--   **Scripts**: You can modify any of the `omarchy-` scripts in `~/.config/hypr/bin/` to change their behavior.
+-   **Scripts**: You can modify any of the `hypr-` scripts in `~/.config/hypr/bin/` to change their behavior.
