@@ -21,7 +21,14 @@ if [[ ! -d "$THEME_PATH" ]]; then
 fi
 
 # Update theme symlinks
-ln -nsf "$THEME_PATH" "$CURRENT_THEME_DIR"
+# Ensure the theme directory exists and is a directory, then clear it
+mkdir -p "$CURRENT_THEME_DIR"
+find "$CURRENT_THEME_DIR" -mindepth 1 -delete
+
+# Symlink all files from the theme folder
+for file in "$THEME_PATH"/*; do
+  ln -s "$file" "$CURRENT_THEME_DIR/"
+done
 
 # Change gnome modes
 if [[ -f ~/.config/hypr/theme/light.mode ]]; then
