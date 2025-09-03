@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cmd="$*"
-setsid alacritty --class Hypr -e bash -c "hypr-show-logo; $cmd; hypr-show-done"
+setsid alacritty --class Hypr -e bash -c 'hypr-show-logo; eval "$1"; hypr-show-done' -- "$*"

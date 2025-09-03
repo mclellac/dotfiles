@@ -69,6 +69,7 @@ touch "$HOME/.config/alacritty/alacritty.toml"
 pkill -SIGUSR2 btop
 hypr-restart-waybar
 hypr-restart-swayosd
+hypr-restart-walker
 makoctl reload
 hyprctl reload
 
