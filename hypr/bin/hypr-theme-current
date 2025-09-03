@@ -1,8 +1,14 @@
 #!/bin/bash
 
-set -e
-
 source "$(dirname "$0")/hypr-utils"
 check_deps realpath sed basename
 
-basename "$(realpath "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/theme")" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+theme_link="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/theme"
+
+if [[ ! -e "$theme_link" ]]; then
+    echo "Error: Current theme is not set. The symlink at '$theme_link' is missing or broken." >&2
+    exit 1
+fi
+
+theme_path=$(realpath "$theme_link")
+basename "$theme_path" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'

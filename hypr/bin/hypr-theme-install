@@ -3,7 +3,7 @@
 set -e
 
 source "$(dirname "$0")/hypr-utils"
-check_deps gum git hypr-theme-set notify-send
+check_deps gum git hypr-theme-set
 
 # hypr-theme-install: Install a new theme from a git repo for Hypr
 # Usage: hypr-theme-install <git-repo-url>
@@ -34,4 +34,4 @@ git clone "$REPO_URL" "$THEME_PATH"
 # Apply the new theme with hypr-theme-set
 hypr-theme-set $THEME_NAME
 
-notify-send "Theme '$THEME_NAME' installed and applied" -t 2000
+echo "Theme '$THEME_NAME' installed and applied"

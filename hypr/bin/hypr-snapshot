@@ -3,7 +3,7 @@
 set -e
 
 source "$(dirname "$0")/hypr-utils"
-check_deps snapper hypr-version awk sudo limine-snapper-restore notify-send
+check_deps snapper hypr-version awk sudo limine-snapper-restore
 
 COMMAND="$1"
 
@@ -25,7 +25,7 @@ create)
     sudo snapper -c "$config" create -c number -d "$DESC"
   done
   echo
-  notify-send "System snapshot created" "Description: $DESC" -t 3000
+  echo "System snapshot created. Description: $DESC"
   ;;
 restore)
   sudo limine-snapper-restore

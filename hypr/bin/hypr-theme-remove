@@ -3,7 +3,7 @@
 set -e
 
 source "$(dirname "$0")/hypr-utils"
-check_deps gum hypr-theme-next notify-send
+check_deps gum hypr-theme-next
 
 # hypr-theme-remove: Remove a theme from Hypr by name
 # Usage: hypr-theme-remove <theme-name>
@@ -44,4 +44,4 @@ fi
 # Now remove the theme directory for THEME_NAME
 rm -rf "$THEME_PATH"
 
-notify-send "Theme '$THEME_NAME' has been removed." -t 2000
+echo "Theme '$THEME_NAME' has been removed."
