@@ -3,7 +3,7 @@
 set -e
 
 source "$(dirname "$0")/hypr-utils"
-check_deps gsettings chromium pkill makoctl hyprctl hypr-restart-waybar hypr-restart-swayosd hypr-restart-walker hypr-theme-bg-next notify-send
+check_deps gsettings chromium pkill makoctl hyprctl hypr-restart-waybar hypr-restart-swayosd hypr-restart-walker hypr-theme-bg-next
 
 # hypr-theme-set: Set a theme, specified by its name.
 # Usage: hypr-theme-set <theme-name>
@@ -75,4 +75,4 @@ done
 # Set new background
 hypr-theme-bg-next
 
-notify-send "Theme changed to $THEME_NAME" -t 2000
+echo "Theme changed to $THEME_NAME"

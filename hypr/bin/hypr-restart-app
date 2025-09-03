@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
 source "$(dirname "$0")/hypr-utils"
-check_deps pkill setsid uwsm
+check_deps pkill setsid uwsm pgrep
 
-pkill -x "$1" || true
+if pgrep -x "$1" > /dev/null; then
+    pkill -x "$1"
+fi
+
 setsid uwsm app -- "$1" >/dev/null 2>&1 &
