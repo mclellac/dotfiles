@@ -4,7 +4,7 @@ set -e
 
 export PATH="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bin:${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/scripts:$HOME/.config/scripts:${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bin:$PATH"
 source "$(dirname "$0")/hypr-utils"
-check_deps walker alacritty notify-send hypr-launch-floating-terminal-with-presentation hypr-menu-keybindings hypr-launch-webapp hypr-theme-bg-next hypr-theme-list hypr-theme-current hypr-theme-set hypr-font-list hypr-font-current hypr-font-set pkill hyprpicker hypr-cmd-screenshot hypr-cmd-screenrecord hypr-toggle-screensaver hypr-toggle-nightlight hypr-toggle-idle hypr-toggle-waybar rfkill blueberry hypr-powerprofiles-list powerprofilesctl hypr-setup-dns hypr-setup-fingerprint hypr-setup-fido2 hypr-restart-hypridle hypr-restart-hyprsunset hypr-restart-swayosd hypr-restart-walker hypr-restart-waybar hypr-restart-xcompose hypr-pkg-install hypr-pkg-aur-install hypr-webapp-install hypr-tui-install hypr-install-dropbox hypr-install-tailscale hypr-install-steam hypr-theme-install nautilus hypr-install-dev-env hypr-install-docker-dbs hypr-pkg-remove hypr-webapp-remove hypr-tui-remove hypr-theme-remove hypr-update hypr-theme-update hypr-cmd-tzupdate hypr-refresh-hyprland hypr-refresh-hypridle hypr-refresh-hyprlock hypr-refresh-hyprsunset hypr-refresh-plymouth hypr-refresh-swayosd hypr-refresh-walker hypr-refresh-waybar hypr-restart-wifi hypr-restart-bluetooth hypr-lock-screen hypr-launch-screensaver systemctl uwsm fastfetch
+check_deps walker alacritty notify-send hypr-launch-floating-terminal-with-presentation hypr-menu-keybindings hypr-launch-webapp hypr-theme-bg-next hypr-theme-list hypr-theme-current hypr-theme-set hypr-font-list hypr-font-current hypr-font-set pkill hyprpicker hypr-cmd-screenshot hypr-cmd-screenrecord hypr-toggle-screensaver hypr-toggle-nightlight hypr-toggle-idle hypr-toggle-waybar rfkill blueberry hypr-powerprofiles-list powerprofilesctl hypr-setup-dns hypr-setup-fingerprint hypr-setup-fido2 hypr-restart-hypridle hypr-restart-hyprsunset hypr-restart-swayosd hypr-restart-walker hypr-restart-waybar hypr-restart-xcompose hypr-pkg-install hypr-pkg-aur-install hypr-webapp-install hypr-tui-install hypr-install-dropbox hypr-install-tailscale hypr-install-steam hypr-theme-install nautilus hypr-install-dev-env hypr-install-docker-dbs hypr-pkg-remove hypr-webapp-remove hypr-tui-remove hypr-theme-remove hypr-update hypr-theme-update hypr-cmd-tzupdate hypr-refresh-hyprland hypr-refresh-hypridle hypr-refresh-hyprlock hypr-refresh-hyprsunset hypr-refresh-swayosd hypr-refresh-walker hypr-refresh-waybar hypr-restart-wifi hypr-restart-bluetooth hypr-lock-screen hypr-launch-screensaver systemctl uwsm fastfetch
 
 menu() {
     local prompt="$1"
@@ -351,12 +351,11 @@ show_update_process_menu() {
 }
 
 show_update_config_menu() {
-    case $(menu "Use default config" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n󱣴  Plymouth\n  Swayosd\n󰌧  Walker\n󰍜  Waybar") in
+    case $(menu "Use default config" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar") in
     *Hyprland*) present_terminal hypr-refresh-hyprland ;;
     *Hypridle*) present_terminal hypr-refresh-hypridle ;;
     *Hyprlock*) present_terminal hypr-refresh-hyprlock ;;
     *Hyprsunset*) present_terminal hypr-refresh-hyprsunset ;;
-    *Plymouth*) present_terminal hypr-refresh-plymouth ;;
     *Swayosd*) present_terminal hypr-refresh-swayosd ;;
     *Walker*) present_terminal hypr-refresh-walker ;;
     *Waybar*) present_terminal hypr-refresh-waybar ;;
