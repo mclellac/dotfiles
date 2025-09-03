@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+
+source "$(dirname "$0")/hypr-utils"
+check_deps gum git hypr-theme-set notify-send
+
 # hypr-theme-install: Install a new theme from a git repo for Hypr
 # Usage: hypr-theme-install <git-repo-url>
 
@@ -14,7 +19,7 @@ if [ -z "$REPO_URL" ]; then
   exit 1
 fi
 
-THEMES_DIR="$HOME/.config/hypr/themes"
+THEMES_DIR="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/themes"
 THEME_NAME=$(basename "$REPO_URL" .git | sed -E 's/^hypr-//; s/-theme$//')
 THEME_PATH="$THEMES_DIR/$THEME_NAME"
 
@@ -23,11 +28,10 @@ if [ -d "$THEME_PATH" ]; then
   rm -rf "$THEME_PATH"
 fi
 
-# Clone the repo directly to ~/.config/hypr/themes
-if ! git clone "$REPO_URL" "$THEME_PATH"; then
-  echo "Error: Failed to clone theme repo."
-  exit 1
-fi
+# Clone the repo directly to the themes directory
+git clone "$REPO_URL" "$THEME_PATH"
 
 # Apply the new theme with hypr-theme-set
 hypr-theme-set $THEME_NAME
+
+notify-send "Theme '$THEME_NAME' installed and applied" -t 2000

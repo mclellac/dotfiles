@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Utility functions for hypr scripts
+
+# check_deps: Check if the given commands exist in the system.
+# Usage: check_deps <command1> <command2> ...
+check_deps() {
+    for dep in "$@"; do
+        if ! command -v "$dep" &> /dev/null; then
+            echo "Error: Dependency '$dep' not found. Please install it and try again." >&2
+            exit 1
+        fi
+    done
+}

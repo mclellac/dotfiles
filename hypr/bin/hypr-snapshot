@@ -1,15 +1,15 @@
 #!/bin/bash
 
+set -e
+
+source "$(dirname "$0")/hypr-utils"
+check_deps snapper hypr-version awk sudo limine-snapper-restore notify-send
+
 COMMAND="$1"
-OMARCHY_PATH=${OMARCHY_PATH:-$HOME/.config/hypr}
 
 if [[ -z $COMMAND ]]; then
   echo "Usage: hypr-snapshot <create|restore>" >&2
   exit 1
-fi
-
-if ! command -v snapper &>/dev/null; then
-  exit 127 # hypr-update can use this to just ignore if snapper is not available
 fi
 
 case "$COMMAND" in
@@ -25,6 +25,7 @@ create)
     sudo snapper -c "$config" create -c number -d "$DESC"
   done
   echo
+  notify-send "System snapshot created" "Description: $DESC" -t 3000
   ;;
 restore)
   sudo limine-snapper-restore

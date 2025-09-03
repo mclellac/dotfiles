@@ -1,0 +1,2 @@
+#!/bin/bash
+touch "${XDG_CONFIG_HOME:-$HOME/.config}/alacritty/alacritty.toml"
