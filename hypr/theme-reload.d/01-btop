@@ -1,5 +1,0 @@
-#!/bin/bash
-pid=$(pidof btop)
-if [[ -n "$pid" ]]; then
-    kill -SIGUSR2 "$pid"
-fi

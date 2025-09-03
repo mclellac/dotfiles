@@ -1,10 +1,6 @@
 #!/bin/bash
 
-set -e
-
-export PATH="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bin:${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/scripts:$HOME/.config/scripts:${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bin:$PATH"
-source "$(dirname "$0")/hypr-utils"
-check_deps walker alacritty notify-send hypr-launch-floating-terminal-with-presentation hypr-menu-keybindings hypr-launch-webapp hypr-theme-bg-next hypr-theme-list hypr-theme-current hypr-theme-set hypr-font-list hypr-font-current hypr-font-set pkill hyprpicker hypr-cmd-screenshot hypr-cmd-screenrecord hypr-toggle-screensaver hypr-toggle-nightlight hypr-toggle-idle hypr-toggle-waybar rfkill blueberry hypr-powerprofiles-list powerprofilesctl hypr-setup-dns hypr-setup-fingerprint hypr-setup-fido2 hypr-restart-hypridle hypr-restart-hyprsunset hypr-restart-swayosd hypr-restart-walker hypr-restart-waybar hypr-restart-xcompose hypr-pkg-install hypr-pkg-aur-install hypr-webapp-install hypr-tui-install hypr-install-dropbox hypr-install-tailscale hypr-install-steam hypr-theme-install nautilus hypr-install-dev-env hypr-install-docker-dbs hypr-pkg-remove hypr-webapp-remove hypr-tui-remove hypr-theme-remove hypr-update hypr-theme-update hypr-cmd-tzupdate hypr-refresh-hyprland hypr-refresh-hypridle hypr-refresh-hyprlock hypr-refresh-hyprsunset hypr-refresh-swayosd hypr-refresh-walker hypr-refresh-waybar hypr-restart-wifi hypr-restart-bluetooth hypr-lock-screen hypr-launch-screensaver systemctl uwsm fastfetch
+export PATH="$HOME/.config/hypr/bin:$HOME/.config/hypr/scripts:$HOME/.config/scripts:$HOME/.config/hypr/bin:$PATH"
 
 menu() {
     local prompt="$1"
@@ -34,7 +30,7 @@ present_terminal() {
 }
 
 edit_in_nvim() {
-    echo "Editing config file: $1" >&2
+    notify-send "Editing config file" "$1"
     alacritty -e nvim "$1"
 }
 
@@ -59,24 +55,30 @@ aur_install_and_launch() {
 }
 
 show_learn_menu() {
-    case $(menu "Learn" "  Keybindings\n  Hypr\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
-    *Keybindings*) hypr-menu-keybindings ;;
-    *Hypr*) hypr-launch-webapp "https://learn.omacom.io/2/the-hypr-manual" ;;
-    *Hyprland*) hypr-launch-webapp "https://wiki.hypr.land/" ;;
-    *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
-    *Bash*) hypr-launch-webapp "https://devhints.io/bash" ;;
-    *Neovim*) hypr-launch-webapp "https://www.lazyvim.org/keymaps" ;;
+    local selection
+    selection=$(menu "Learn" "  Keybindings\n  Hypr\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Keybindings") hypr-menu-keybindings ;;
+    "Hypr") hypr-launch-webapp "https://learn.omacom.io/2/the-hypr-manual" ;;
+    "Hyprland") hypr-launch-webapp "https://wiki.hypr.land/" ;;
+    "Arch") hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
+    "Bash") hypr-launch-webapp "https://devhints.io/bash" ;;
+    "Neovim") hypr-launch-webapp "https://www.lazyvim.org/keymaps" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_style_menu() {
-    case $(menu "Style" "󰸌  Theme\n  Font\n  Background\n󱄄  Screensaver\n  About") in
-    *Theme*) show_theme_menu ;;
-    *Font*) show_font_menu ;;
-    *Background*) hypr-theme-bg-next ;;
-    *Screensaver*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/branding/screensaver.txt" ;;
-    *About*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/branding/about.txt" ;;
+    local selection
+    selection=$(menu "Style" "󰸌  Theme\n  Font\n  Background\n󱄄  Screensaver\n  About" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Theme") show_theme_menu ;;
+    "Font") show_font_menu ;;
+    "Background") hypr-theme-bg-next ;;
+    "Screensaver") edit_in_nvim ~/.config/hypr/branding/screensaver.txt ;;
+    "About") edit_in_nvim ~/.config/hypr/branding/about.txt ;;
     *) show_main_menu ;;
     esac
 }
@@ -100,65 +102,80 @@ show_font_menu() {
 }
 
 show_capture_menu() {
-    case $(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color") in
-    *Screenshot*) show_screenshot_menu ;;
-    *Screenrecord*) show_screenrecord_menu ;;
-    *Color*) pkill hyprpicker || hyprpicker -a ;;
+    local selection
+    selection=$(menu "Capture" "  Screenshot\n  Screenrecord\n󰃉  Color" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Screenshot") show_screenshot_menu ;;
+    "Screenrecord") show_screenrecord_menu ;;
+    "Color") pkill hyprpicker || hyprpicker -a ;;
     *) show_main_menu ;;
     esac
 }
 
 show_screenshot_menu() {
-    case $(menu "Screenshot" "  Region\n  Window\n  Display") in
-    *Region*) hypr-cmd-screenshot ;;
-    *Window*) hypr-cmd-screenshot window ;;
-    *Display*) hypr-cmd-screenshot output ;;
+    local selection
+    selection=$(menu "Screenshot" "  Region\n  Window\n  Display" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Region") hypr-cmd-screenshot ;;
+    "Window") hypr-cmd-screenshot window ;;
+    "Display") hypr-cmd-screenshot output ;;
     *) show_capture_menu ;;
     esac
 }
 
 show_screenrecord_menu() {
-    case $(menu "Screenrecord" "  Region\n  Display") in
-    *Region*) hypr-cmd-screenrecord ;;
-    *Display*) hypr-cmd-screenrecord output ;;
+    local selection
+    selection=$(menu "Screenrecord" "  Region\n  Display" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Region") hypr-cmd-screenrecord ;;
+    "Display") hypr-cmd-screenrecord output ;;
     *) show_capture_menu ;;
     esac
 }
 
 show_toggle_menu() {
-    case $(menu "Toggle" "󱄄  Screensaver\n󰔎  Nightlight\n󱫖  Idle Lock\n󰍜  Top Bar") in
-    *Screensaver*) hypr-toggle-screensaver ;;
-    *Nightlight*) hypr-toggle-nightlight ;;
-    *Idle*) hypr-toggle-idle ;;
-    *Bar*) hypr-toggle-waybar ;;
+    local selection
+    selection=$(menu "Toggle" "󱄄  Screensaver\n󰔎  Nightlight\n󱫖  Idle Lock\n󰍜  Top Bar" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Screensaver") hypr-toggle-screensaver ;;
+    "Nightlight") hypr-toggle-nightlight ;;
+    "Idle Lock") hypr-toggle-idle ;;
+    "Top Bar") hypr-toggle-waybar ;;
     *) show_main_menu ;;
     esac
 }
 
 show_setup_menu() {
     local options="  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n󰍹  Monitors"
-    [ -f "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bindings.conf" ] && options="$options\n  Keybindings"
-    [ -f "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/input.conf" ] && options="$options\n  Input"
+    [ -f ~/.config/hypr/bindings.conf ] && options="$options\n  Keybindings"
+    [ -f ~/.config/hypr/input.conf ] && options="$options\n  Input"
     options="$options\n󰱔  DNS\n  Config\n󰈷  Fingerprint\n  Fido2"
 
-    case $(menu "Setup" "$options") in
-    *Audio*) alacritty --class=Wiremix -e wiremix ;;
-    *Wifi*)
+    local selection
+    selection=$(menu "Setup" "$options" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Audio") alacritty --class=Wiremix -e wiremix ;;
+    "Wifi")
         rfkill unblock wifi
         alacritty --class=Impala -e impala
         ;;
-    *Bluetooth*)
+    "Bluetooth")
         rfkill unblock bluetooth
         blueberry
         ;;
-    *Power*) show_setup_power_menu ;;
-    *Monitors*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/monitors.conf" ;;
-    *Keybindings*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bindings.conf" ;;
-    *Input*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/input.conf" ;;
-    *DNS*) present_terminal hypr-setup-dns ;;
-    *Config*) show_setup_config_menu ;;
-    *Fingerprint*) present_terminal hypr-setup-fingerprint ;;
-    *Fido2*) present_terminal hypr-setup-fido2 ;;
+    "Power Profile") show_setup_power_menu ;;
+    "Monitors") edit_in_nvim ~/.config/hypr/monitors.conf ;;
+    "Keybindings") edit_in_nvim ~/.config/hypr/bindings.conf ;;
+    "Input") edit_in_nvim ~/.config/hypr/input.conf ;;
+    "DNS") present_terminal hypr-setup-dns ;;
+    "Config") show_setup_config_menu ;;
+    "Fingerprint") present_terminal hypr-setup-fingerprint ;;
+    "Fido2") present_terminal hypr-setup-fido2 ;;
     *) show_main_menu ;;
     esac
 }
@@ -174,52 +191,64 @@ show_setup_power_menu() {
 }
 
 show_setup_config_menu() {
-    case $(menu "Setup" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar\n󰞅  XCompose") in
-    *Hyprland*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hyprland.conf" ;;
-    *Hypridle*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hypridle.conf" && hypr-restart-hypridle ;;
-    *Hyprlock*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hyprlock.conf" ;;
-    *Hyprsunset*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hyprsunset.conf" && hypr-restart-hyprsunset ;;
-    *Swayosd*) edit_in_nvim ~/.config/swayosd/config.toml && hypr-restart-swayosd ;;
-    *Walker*) edit_in_nvim ~/.config/walker/config.toml && hypr-restart-walker ;;
-    *Waybar*) edit_in_nvim ~/.config/waybar/config.jsonc && hypr-restart-waybar ;;
-    *XCompose*) edit_in_nvim ~/.XCompose && hypr-restart-xcompose ;;
+    local selection
+    selection=$(menu "Setup" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar\n󰞅  XCompose" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Hyprland") edit_in_nvim ~/.config/hypr/hyprland.conf ;;
+    "Hypridle") edit_in_nvim ~/.config/hypr/hypridle.conf && hypr-restart-hypridle ;;
+    "Hyprlock") edit_in_nvim ~/.config/hypr/hyprlock.conf ;;
+    "Hyprsunset") edit_in_nvim ~/.config/hypr/hyprsunset.conf && hypr-restart-hyprsunset ;;
+    "Swayosd") edit_in_nvim ~/.config/swayosd/config.toml && hypr-restart-swayosd ;;
+    "Walker") edit_in_nvim ~/.config/walker/config.toml && hypr-restart-walker ;;
+    "Waybar") edit_in_nvim ~/.config/waybar/config.jsonc && hypr-restart-waybar ;;
+    "XCompose") edit_in_nvim ~/.XCompose && hypr-restart-xcompose ;;
     *) show_main_menu ;;
     esac
 }
 
 show_install_menu() {
-    case $(menu "Install" "󰣇  Package\n󰣇  AUR\n  Web App\n  TUI\n  Service\n  Style\n󰵮  Development\n  Editor\n󱚤  AI\n  Gaming") in
-    *Package*) terminal hypr-pkg-install ;;
-    *AUR*) terminal hypr-pkg-aur-install ;;
-    *Web*) present_terminal hypr-webapp-install ;;
-    *TUI*) present_terminal hypr-tui-install ;;
-    *Service*) show_install_service_menu ;;
-    *Style*) show_install_style_menu ;;
-    *Development*) show_install_development_menu ;;
-    *Editor*) show_install_editor_menu ;;
-    *AI*) show_install_ai_menu ;;
-    *Gaming*) show_install_gaming_menu ;;
+    local selection
+    selection=$(menu "Install" "󰣇  Package\n󰣇  AUR\n  Web App\n  TUI\n  Service\n  Style\n󰵮  Development\n  Editor\n󱚤  AI\n  Gaming" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Package") terminal hypr-pkg-install ;;
+    "AUR") terminal hypr-pkg-aur-install ;;
+    "Web App") present_terminal hypr-webapp-install ;;
+    "TUI") present_terminal hypr-tui-install ;;
+    "Service") show_install_service_menu ;;
+    "Style") show_install_style_menu ;;
+    "Development") show_install_development_menu ;;
+    "Editor") show_install_editor_menu ;;
+    "AI") show_install_ai_menu ;;
+    "Gaming") show_install_gaming_menu ;;
     *) show_main_menu ;;
     esac
 }
 
 show_install_service_menu() {
-    case $(menu "Install" "  Dropbox\n  Tailscale\n󰟵  Bitwarden") in
-    *Dropbox*) present_terminal hypr-install-dropbox ;;
-    *Tailscale*) present_terminal hypr-install-tailscale ;;
-    *Bitwarden*) install_and_launch "Bitwarden" "bitwarden bitwarden-cli" "bitwarden" ;;
+    local selection
+    selection=$(menu "Install" "  Dropbox\n  Tailscale\n󰟵  Bitwarden" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Dropbox") present_terminal hypr-install-dropbox ;;
+    "Tailscale") present_terminal hypr-install-tailscale ;;
+    "Bitwarden") install_and_launch "Bitwarden" "bitwarden bitwarden-cli" "bitwarden" ;;
     *) show_install_menu ;;
     esac
 }
 
 show_install_editor_menu() {
-    case $(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Sublime Text\n  Helix\n  Emacs") in
-    *VSCode*) install_and_launch "VSCode" "visual-studio-code-bin" "code" ;;
-    *Cursor*) install_and_launch "Cursor" "cursor-bin" "cursor" ;;
-    *Zed*) install_and_launch "Zed" "zed" "dev.zed.Zed" ;;
-    *Sublime*) aur_install_and_launch "Sublime Text" "sublime-text-4" "sublime_text" ;;
-    *Helix*) install "Helix" "helix" ;;
-    *Emacs*) install "Emacs" "emacs-wayland" && systemctl --user enable --now emacs.service ;;
+    local selection
+    selection=$(menu "Install" "  VSCode\n  Cursor\n  Zed\n  Sublime Text\n  Helix\n  Emacs" | sed 's/^.*  //')
+
+    case "$selection" in
+    "VSCode") install_and_launch "VSCode" "visual-studio-code-bin" "code" ;;
+    "Cursor") install_and_launch "Cursor" "cursor-bin" "cursor" ;;
+    "Zed") install_and_launch "Zed" "zed" "dev.zed.Zed" ;;
+    "Sublime Text") aur_install_and_launch "Sublime Text" "sublime-text-4" "sublime_text" ;;
+    "Helix") install "Helix" "helix" ;;
+    "Emacs") install "Emacs" "emacs-wayland" && systemctl --user enable --now emacs.service ;;
     *) show_install_menu ;;
     esac
 }
@@ -231,154 +260,197 @@ show_install_ai_menu() {
             echo ollama
     )
 
-    case $(menu "Install" "󱚤  Claude Code\n󱚤  Gemini\n󱚤  OpenAI Codex [AUR]\n󱚤  LM Studio\n󱚤  Ollama\n󱚤  Crush\n󱚤  opencode") in
-    *Claude*) install "Claude Code" "claude-code" ;;
-    *OpenAI*) aur_install "OpenAI Codex" "openai-codex-bin" ;;
-    *Gemini*) install "Gemini" "gemini-cli" ;;
-    *Studio*) install "LM Studio" "lmstudio" ;;
-    *Ollama*) install "Ollama" $ollama_pkg ;;
-    *Crush*) install "Crush" "crush-bin" ;;
-    *opencode*) install "opencode" "opencode-bin" ;;
+    local selection
+    selection=$(menu "Install" "󱚤  Claude Code\n󱚤  Gemini\n󱚤  OpenAI Codex [AUR]\n󱚤  LM Studio\n󱚤  Ollama\n󱚤  Crush\n󱚤  opencode" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Claude Code") install "Claude Code" "claude-code" ;;
+    "OpenAI Codex [AUR]") aur_install "OpenAI Codex" "openai-codex-bin" ;;
+    "Gemini") install "Gemini" "gemini-cli" ;;
+    "LM Studio") install "LM Studio" "lmstudio" ;;
+    "Ollama") install "Ollama" $ollama_pkg ;;
+    "Crush") install "Crush" "crush-bin" ;;
+    "opencode") install "opencode" "opencode-bin" ;;
     *) show_install_menu ;;
     esac
 }
 
 show_install_gaming_menu() {
-    case $(menu "Install" "  Steam\n  RetroArch [AUR]\n󰍳  Minecraft") in
-    *Steam*) present_terminal hypr-install-steam ;;
-    *RetroArch*) aur_install_and_launch "RetroArch" "retroarch retroarch-assets libretro libretro-fbneo" "com.libretro.RetroArch.desktop" ;;
-    *Minecraft*) install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
+    local selection
+    selection=$(menu "Install" "  Steam\n  RetroArch [AUR]\n󰍳  Minecraft" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Steam") present_terminal hypr-install-steam ;;
+    "RetroArch [AUR]") aur_install_and_launch "RetroArch" "retroarch retroarch-assets libretro libretro-fbneo" "com.libretro.RetroArch.desktop" ;;
+    "Minecraft") install_and_launch "Minecraft" "minecraft-launcher" "minecraft-launcher" ;;
     *) show_install_menu ;;
     esac
 }
 
 show_install_style_menu() {
-    case $(menu "Install" "󰸌  Theme\n  Background\n  Font") in
-    *Theme*) present_terminal hypr-theme-install ;;
-    *Background*) nautilus "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/theme/backgrounds" ;;
-    *Font*) show_install_font_menu ;;
+    local selection
+    selection=$(menu "Install" "󰸌  Theme\n  Background\n  Font" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Theme") present_terminal hypr-theme-install ;;
+    "Background") nautilus ~/.config/hypr/theme/backgrounds ;;
+    "Font") show_install_font_menu ;;
     *) show_install_menu ;;
     esac
 }
 
 show_install_font_menu() {
-    case $(menu "Install" "  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono" "-w 350") in
-    *Meslo*) install_font "Meslo LG Mono" "ttf-meslo-nerd" "MesloLGL Nerd Font" ;;
-    *Fira*) install_font "Fira Code" "ttf-firacode-nerd" "FiraCode Nerd Font" ;;
-    *Victor*) install_font "Victor Code" "ttf-victor-mono-nerd" "VictorMono Nerd Font" ;;
-    *Bistream*) install_font "Bistream Vera Code" "ttf-bitstream-vera-mono-nerd" "BitstromWera Nerd Font" ;;
+    local selection
+    selection=$(menu "Install" "  Meslo LG Mono\n  Fira Code\n  Victor Code\n  Bistream Vera Mono" "-w 350" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Meslo LG Mono") install_font "Meslo LG Mono" "ttf-meslo-nerd" "MesloLGL Nerd Font" ;;
+    "Fira Code") install_font "Fira Code" "ttf-firacode-nerd" "FiraCode Nerd Font" ;;
+    "Victor Code") install_font "Victor Code" "ttf-victor-mono-nerd" "VictorMono Nerd Font" ;;
+    "Bistream Vera Mono") install_font "Bistream Vera Code" "ttf-bitstream-vera-mono-nerd" "BitstromWera Nerd Font" ;;
     *) show_install_menu ;;
     esac
 }
 
 show_install_development_menu() {
-    case $(menu "Install" "󰫏  Ruby on Rails\n  Docker DB\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml") in
-    *Rails*) present_terminal "hypr-install-dev-env ruby" ;;
-    *Docker*) present_terminal hypr-install-docker-dbs ;;
-    *JavaScript*) show_install_javascript_menu ;;
-    *Go*) present_terminal "hypr-install-dev-env go" ;;
-    *PHP*) show_install_php_menu ;;
-    *Python*) present_terminal "hypr-install-dev-env python" ;;
-    *Elixir*) show_install_elixir_menu ;;
-    *Zig*) present_terminal "hypr-install-dev-env zig" ;;
-    *Rust*) present_terminal "hypr-install-dev-env rust" ;;
-    *Java*) present_terminal "hypr-install-dev-env java" ;;
-    *NET*) present_terminal "hypr-install-dev-env dotnet" ;;
-    *OCaml*) present_terminal "hypr-install-dev-env ocaml" ;;
+    local selection
+    selection=$(menu "Install" "󰫏  Ruby on Rails\n  Docker DB\n  JavaScript\n  Go\n  PHP\n  Python\n  Elixir\n  Zig\n  Rust\n  Java\n  .NET\n  OCaml" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Ruby on Rails") present_terminal "hypr-install-dev-env ruby" ;;
+    "Docker DB") present_terminal hypr-install-docker-dbs ;;
+    "JavaScript") show_install_javascript_menu ;;
+    "Go") present_terminal "hypr-install-dev-env go" ;;
+    "PHP") show_install_php_menu ;;
+    "Python") present_terminal "hypr-install-dev-env python" ;;
+    "Elixir") show_install_elixir_menu ;;
+    "Zig") present_terminal "hypr-install-dev-env zig" ;;
+    "Rust") present_terminal "hypr-install-dev-env rust" ;;
+    "Java") present_terminal "hypr-install-dev-env java" ;;
+    ".NET") present_terminal "hypr-install-dev-env dotnet" ;;
+    "OCaml") present_terminal "hypr-install-dev-env ocaml" ;;
     *) show_install_menu ;;
     esac
 }
 
 show_install_javascript_menu() {
-    case $(menu "Install" "  Node.js\n  Bun\n  Deno") in
-    *Node*) present_terminal "hypr-install-dev-env node" ;;
-    *Bun*) present_terminal "hypr-install-dev-env bun" ;;
-    *Deno*) present_terminal "hypr-install-dev-env deno" ;;
+    local selection
+    selection=$(menu "Install" "  Node.js\n  Bun\n  Deno" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Node.js") present_terminal "hypr-install-dev-env node" ;;
+    "Bun") present_terminal "hypr-install-dev-env bun" ;;
+    "Deno") present_terminal "hypr-install-dev-env deno" ;;
     *) show_install_development_menu ;;
     esac
 }
 
 show_install_php_menu() {
-    case $(menu "Install" "  PHP\n  Laravel\n  Symfony") in
-    *PHP*) present_terminal "hypr-install-dev-env php" ;;
-    *Laravel*) present_terminal "hypr-install-dev-env laravel" ;;
-    *Symfony*) present_terminal "hypr-install-dev-env symfony" ;;
+    local selection
+    selection=$(menu "Install" "  PHP\n  Laravel\n  Symfony" | sed 's/^.*  //')
+
+    case "$selection" in
+    "PHP") present_terminal "hypr-install-dev-env php" ;;
+    "Laravel") present_terminal "hypr-install-dev-env laravel" ;;
+    "Symfony") present_terminal "hypr-install-dev-env symfony" ;;
     *) show_install_development_menu ;;
     esac
 }
 
 show_install_elixir_menu() {
-    case $(menu "Install" "  Elixir\n  Phoenix") in
-    *Elixir*) present_terminal "hypr-install-dev-env elixir" ;;
-    *Phoenix*) present_terminal "hypr-install-dev-env phoenix" ;;
+    local selection
+    selection=$(menu "Install" "  Elixir\n  Phoenix" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Elixir") present_terminal "hypr-install-dev-env elixir" ;;
+    "Phoenix") present_terminal "hypr-install-dev-env phoenix" ;;
     *) show_install_development_menu ;;
     esac
 }
 
 show_remove_menu() {
-    case $(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰸌  Theme\n󰈷  Fingerprint\n  Fido2") in
-    *Package*) terminal hypr-pkg-remove ;;
-    *Web*) present_terminal hypr-webapp-remove ;;
-    *TUI*) present_terminal hypr-tui-remove ;;
-    *Theme*) present_terminal hypr-theme-remove ;;
-    *Fingerprint*) present_terminal "hypr-setup-fingerprint --remove" ;;
-    *Fido2*) present_terminal "hypr-setup-fido2 --remove" ;;
+    local selection
+    selection=$(menu "Remove" "󰣇  Package\n  Web App\n  TUI\n󰸌  Theme\n󰈷  Fingerprint\n  Fido2" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Package") terminal hypr-pkg-remove ;;
+    "Web App") present_terminal hypr-webapp-remove ;;
+    "TUI") present_terminal hypr-tui-remove ;;
+    "Theme") present_terminal hypr-theme-remove ;;
+    "Fingerprint") present_terminal "hypr-setup-fingerprint --remove" ;;
+    "Fido2") present_terminal "hypr-setup-fido2 --remove" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_update_menu() {
-    case $(menu "Update" " Hypr\n  Config\n󰸌  Themes\n  Process\n󰇅  Hardware\n  Timezone") in
-    *Hypr*) present_terminal hypr-update ;;
-    *Config*) show_update_config_menu ;;
-    *Themes*) present_terminal hypr-theme-update ;;
-    *Process*) show_update_process_menu ;;
-    *Hardware*) show_update_hardware_menu ;;
-    *Timezone*) hypr-cmd-tzupdate ;;
+    local selection
+    selection=$(menu "Update" " Hypr\n  Config\n󰸌  Themes\n  Process\n󰇅  Hardware\n  Timezone" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Hypr") present_terminal hypr-update ;;
+    "Config") show_update_config_menu ;;
+    "Themes") present_terminal hypr-theme-update ;;
+    "Process") show_update_process_menu ;;
+    "Hardware") show_update_hardware_menu ;;
+    "Timezone") hypr-cmd-tzupdate ;;
     *) show_main_menu ;;
     esac
 }
 
 show_update_process_menu() {
-    case $(menu "Restart" "  Hypridle\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar") in
-    *Hypridle*) hypr-restart-hypridle ;;
-    *Hyprsunset*) hypr-restart-hyprsunset ;;
-    *Swayosd*) hypr-restart-swayosd ;;
-    *Walker*) hypr-restart-walker ;;
-    *Waybar*) hypr-restart-waybar ;;
+    local selection
+    selection=$(menu "Restart" "  Hypridle\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Hypridle") hypr-restart-hypridle ;;
+    "Hyprsunset") hypr-restart-hyprsunset ;;
+    "Swayosd") hypr-restart-swayosd ;;
+    "Walker") hypr-restart-walker ;;
+    "Waybar") hypr-restart-waybar ;;
     *) show_update_menu ;;
     esac
 }
 
 show_update_config_menu() {
-    case $(menu "Use default config" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar") in
-    *Hyprland*) present_terminal hypr-refresh-hyprland ;;
-    *Hypridle*) present_terminal hypr-refresh-hypridle ;;
-    *Hyprlock*) present_terminal hypr-refresh-hyprlock ;;
-    *Hyprsunset*) present_terminal hypr-refresh-hyprsunset ;;
-    *Swayosd*) present_terminal hypr-refresh-swayosd ;;
-    *Walker*) present_terminal hypr-refresh-walker ;;
-    *Waybar*) present_terminal hypr-refresh-waybar ;;
+    local selection
+    selection=$(menu "Use default config" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n󱣴  Plymouth\n  Swayosd\n󰌧  Walker\n󰍜  Waybar" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Hyprland") present_terminal hypr-refresh-hyprland ;;
+    "Hypridle") present_terminal hypr-refresh-hypridle ;;
+    "Hyprlock") present_terminal hypr-refresh-hyprlock ;;
+    "Hyprsunset") present_terminal hypr-refresh-hyprsunset ;;
+    "Plymouth") present_terminal hypr-refresh-plymouth ;;
+    "Swayosd") present_terminal hypr-refresh-swayosd ;;
+    "Walker") present_terminal hypr-refresh-walker ;;
+    "Waybar") present_terminal hypr-refresh-waybar ;;
     *) show_update_menu ;;
     esac
 }
 
 show_update_hardware_menu() {
-    case $(menu "Restart" "󱚾  Wi-Fi\n󰂯  Bluetooth") in
-    *Wi-Fi*) present_terminal hypr-restart-wifi ;;
-    *Bluetooth*) present_terminal hypr-restart-bluetooth ;;
+    local selection
+    selection=$(menu "Restart" "󱚾  Wi-Fi\n󰂯  Bluetooth" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Wi-Fi") present_terminal hypr-restart-wifi ;;
+    "Bluetooth") present_terminal hypr-restart-bluetooth ;;
     *) show_update_menu ;;
     esac
 }
 
 show_system_menu() {
-    case $(menu "System" "  Lock\n󱄄  Screensaver\n󰤄  Suspend\n  Relaunch\n󰜉  Restart\n󰐥  Shutdown") in
-    *Lock*) hypr-lock-screen ;;
-    *Screensaver*) hypr-launch-screensaver force ;;
-    *Suspend*) systemctl suspend ;;
-    *Relaunch*) uwsm stop ;;
-    *Restart*) systemctl reboot ;;
-    *Shutdown*) systemctl poweroff ;;
+    local selection
+    selection=$(menu "System" "  Lock\n󱄄  Screensaver\n󰤄  Suspend\n  Relaunch\n󰜉  Restart\n󰐥  Shutdown" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Lock") hypr-lock-screen ;;
+    "Screensaver") hypr-launch-screensaver force ;;
+    "Suspend") systemctl suspend ;;
+    "Relaunch") uwsm stop ;;
+    "Restart") systemctl reboot ;;
+    "Shutdown") systemctl poweroff ;;
     *) show_main_menu ;;
     esac
 }
@@ -388,22 +460,25 @@ show_main_menu() {
 }
 
 go_to_menu() {
-    case "${1,,}" in
-    *apps*) walker -p "Launch…" ;;
-    *learn*) show_learn_menu ;;
-    *style*) show_style_menu ;;
-    *theme*) show_theme_menu ;;
-    *capture*) show_capture_menu ;;
-    *screenshot*) show_screenshot_menu ;;
-    *screenrecord*) show_screenrecord_menu ;;
-    *toggle*) show_toggle_menu ;;
-    *setup*) show_setup_menu ;;
-    *power*) show_setup_power_menu ;;
-    *install*) show_install_menu ;;
-    *remove*) show_remove_menu ;;
-    *update*) show_update_menu ;;
-    *about*) alacritty --class Hypr -o font.size=9 -e bash -c 'fastfetch; read -n 1 -s' ;;
-    *system*) show_system_menu ;;
+    local selection
+    selection=$(echo "$1" | sed 's/^.*  //')
+
+    case "$selection" in
+    "Apps") walker -p "Launch…" ;;
+    "Learn") show_learn_menu ;;
+    "Style") show_style_menu ;;
+    "Theme") show_theme_menu ;;
+    "Capture") show_capture_menu ;;
+    "Screenshot") show_screenshot_menu ;;
+    "Screenrecord") show_screenrecord_menu ;;
+    "Toggle") show_toggle_menu ;;
+    "Setup") show_setup_menu ;;
+    "Power") show_setup_power_menu ;;
+    "Install") show_install_menu ;;
+    "Remove") show_remove_menu ;;
+    "Update") show_update_menu ;;
+    "About") alacritty --class Hypr -o font.size=9 -e bash -c 'fastfetch; read -n 1 -s' ;;
+    "System") show_system_menu ;;
     esac
 }
 

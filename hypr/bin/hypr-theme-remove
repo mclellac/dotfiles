@@ -1,15 +1,10 @@
 #!/bin/bash
 
-set -e
-
-source "$(dirname "$0")/hypr-utils"
-check_deps gum hypr-theme-next
-
 # hypr-theme-remove: Remove a theme from Hypr by name
 # Usage: hypr-theme-remove <theme-name>
 
 if [ -z "$1" ]; then
-  mapfile -t extra_themes < <(find "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/themes" -mindepth 1 -maxdepth 1 -type d ! -xtype l -printf '%f\n')
+  mapfile -t extra_themes < <(find ~/.config/hypr/themes -mindepth 1 -maxdepth 1 -type d ! -xtype l -printf '%f\n')
 
   if [[ ${#extra_themes[@]} -gt 0 ]]; then
     THEME_NAME=$(gum choose --header="Remove extra theme" "${extra_themes[@]}")
@@ -21,8 +16,8 @@ else
   THEME_NAME="$1"
 fi
 
-THEMES_DIR="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/themes"
-CURRENT_DIR="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/current"
+THEMES_DIR="$HOME/.config/hypr/themes"
+CURRENT_DIR="$HOME/.config/hypr/current"
 THEME_PATH="$THEMES_DIR/$THEME_NAME"
 
 # Ensure a theme was set
@@ -43,5 +38,3 @@ fi
 
 # Now remove the theme directory for THEME_NAME
 rm -rf "$THEME_PATH"
-
-echo "Theme '$THEME_NAME' has been removed."

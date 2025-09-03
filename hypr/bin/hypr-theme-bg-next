@@ -1,14 +1,9 @@
 #!/bin/bash
 
-set -e
-
-source "$(dirname "$0")/hypr-utils"
-check_deps notify-send pkill swaybg uwsm readlink
-
 # Cycles through the background images available
 
-BACKGROUNDS_DIR="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/theme/backgrounds/"
-CURRENT_BACKGROUND_LINK="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/current/background"
+BACKGROUNDS_DIR="$HOME/.config/hypr/theme/backgrounds/"
+CURRENT_BACKGROUND_LINK="$HOME/.config/hypr/current/background"
 
 mapfile -d '' -t BACKGROUNDS < <(find "$BACKGROUNDS_DIR" -type f -print0 | sort -z)
 TOTAL=${#BACKGROUNDS[@]}
