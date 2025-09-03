@@ -1,6 +1,10 @@
 #!/bin/bash
 
-export PATH="$HOME/.config/hypr/bin:$HOME/.config/hypr/scripts:$HOME/.config/scripts:$HOME/.config/hypr/bin:$PATH"
+set -e
+
+export PATH="${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bin:${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/scripts:$HOME/.config/scripts:${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bin:$PATH"
+source "$(dirname "$0")/hypr-utils"
+check_deps walker alacritty notify-send hypr-launch-floating-terminal-with-presentation hypr-menu-keybindings hypr-launch-webapp hypr-theme-bg-next hypr-theme-list hypr-theme-current hypr-theme-set hypr-font-list hypr-font-current hypr-font-set pkill hyprpicker hypr-cmd-screenshot hypr-cmd-screenrecord hypr-toggle-screensaver hypr-toggle-nightlight hypr-toggle-idle hypr-toggle-waybar rfkill blueberry hypr-powerprofiles-list powerprofilesctl hypr-setup-dns hypr-setup-fingerprint hypr-setup-fido2 hypr-restart-hypridle hypr-restart-hyprsunset hypr-restart-swayosd hypr-restart-walker hypr-restart-waybar hypr-restart-xcompose hypr-pkg-install hypr-pkg-aur-install hypr-webapp-install hypr-tui-install hypr-install-dropbox hypr-install-tailscale hypr-install-steam hypr-theme-install nautilus hypr-install-dev-env hypr-install-docker-dbs hypr-pkg-remove hypr-webapp-remove hypr-tui-remove hypr-theme-remove hypr-update hypr-theme-update hypr-cmd-tzupdate hypr-refresh-hyprland hypr-refresh-hypridle hypr-refresh-hyprlock hypr-refresh-hyprsunset hypr-refresh-plymouth hypr-refresh-swayosd hypr-refresh-walker hypr-refresh-waybar hypr-restart-wifi hypr-restart-bluetooth hypr-lock-screen hypr-launch-screensaver systemctl uwsm fastfetch
 
 menu() {
     local prompt="$1"
@@ -71,8 +75,8 @@ show_style_menu() {
     *Theme*) show_theme_menu ;;
     *Font*) show_font_menu ;;
     *Background*) hypr-theme-bg-next ;;
-    *Screensaver*) edit_in_nvim ~/.config/hypr/branding/screensaver.txt ;;
-    *About*) edit_in_nvim ~/.config/hypr/branding/about.txt ;;
+    *Screensaver*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/branding/screensaver.txt" ;;
+    *About*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/branding/about.txt" ;;
     *) show_main_menu ;;
     esac
 }
@@ -133,8 +137,8 @@ show_toggle_menu() {
 
 show_setup_menu() {
     local options="  Audio\n  Wifi\n󰂯  Bluetooth\n󱐋  Power Profile\n󰍹  Monitors"
-    [ -f ~/.config/hypr/bindings.conf ] && options="$options\n  Keybindings"
-    [ -f ~/.config/hypr/input.conf ] && options="$options\n  Input"
+    [ -f "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bindings.conf" ] && options="$options\n  Keybindings"
+    [ -f "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/input.conf" ] && options="$options\n  Input"
     options="$options\n󰱔  DNS\n  Config\n󰈷  Fingerprint\n  Fido2"
 
     case $(menu "Setup" "$options") in
@@ -148,9 +152,9 @@ show_setup_menu() {
         blueberry
         ;;
     *Power*) show_setup_power_menu ;;
-    *Monitors*) edit_in_nvim ~/.config/hypr/monitors.conf ;;
-    *Keybindings*) edit_in_nvim ~/.config/hypr/bindings.conf ;;
-    *Input*) edit_in_nvim ~/.config/hypr/input.conf ;;
+    *Monitors*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/monitors.conf" ;;
+    *Keybindings*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/bindings.conf" ;;
+    *Input*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/input.conf" ;;
     *DNS*) present_terminal hypr-setup-dns ;;
     *Config*) show_setup_config_menu ;;
     *Fingerprint*) present_terminal hypr-setup-fingerprint ;;
@@ -171,10 +175,10 @@ show_setup_power_menu() {
 
 show_setup_config_menu() {
     case $(menu "Setup" "  Hyprland\n  Hypridle\n  Hyprlock\n  Hyprsunset\n  Swayosd\n󰌧  Walker\n󰍜  Waybar\n󰞅  XCompose") in
-    *Hyprland*) edit_in_nvim ~/.config/hypr/hyprland.conf ;;
-    *Hypridle*) edit_in_nvim ~/.config/hypr/hypridle.conf && hypr-restart-hypridle ;;
-    *Hyprlock*) edit_in_nvim ~/.config/hypr/hyprlock.conf ;;
-    *Hyprsunset*) edit_in_nvim ~/.config/hypr/hyprsunset.conf && hypr-restart-hyprsunset ;;
+    *Hyprland*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hyprland.conf" ;;
+    *Hypridle*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hypridle.conf" && hypr-restart-hypridle ;;
+    *Hyprlock*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hyprlock.conf" ;;
+    *Hyprsunset*) edit_in_nvim "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/hyprsunset.conf" && hypr-restart-hyprsunset ;;
     *Swayosd*) edit_in_nvim ~/.config/swayosd/config.toml && hypr-restart-swayosd ;;
     *Walker*) edit_in_nvim ~/.config/walker/config.toml && hypr-restart-walker ;;
     *Waybar*) edit_in_nvim ~/.config/waybar/config.jsonc && hypr-restart-waybar ;;
@@ -251,7 +255,7 @@ show_install_gaming_menu() {
 show_install_style_menu() {
     case $(menu "Install" "󰸌  Theme\n  Background\n  Font") in
     *Theme*) present_terminal hypr-theme-install ;;
-    *Background*) nautilus ~/.config/hypr/theme/backgrounds ;;
+    *Background*) nautilus "${HYPR_CONFIG_DIR:-$HOME/.config/hypr}/theme/backgrounds" ;;
     *Font*) show_install_font_menu ;;
     *) show_install_menu ;;
     esac
