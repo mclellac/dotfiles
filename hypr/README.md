@@ -12,34 +12,52 @@ This Hyprland configuration is designed to be modular, customizable, and easy to
 
 ## Directory Structure
 
-The `hypr` directory contains all the configuration for Hyprland and related applications.
+The `hypr` directory contains all the configuration for Hyprland and related applications. It is intended to be placed at `~/.config/hypr`.
 
 -   `hyprland.conf`: The main entry point for Hyprland's configuration. It sources other configuration files.
 -   `monitors.conf`: Defines monitor setups, resolutions, and workspaces.
 -   `input.conf`: Configures input devices like keyboards and mice.
--   `bindings.conf`: Contains custom keybindings for applications and scripts.
+-   `bindings/`: Contains custom keybindings for applications and scripts, organized by category.
+-   `apps/`: Contains application-specific configurations for hyprland.
 -   `envs.conf`: Sets environment variables for the Hyprland session.
 -   `autostart.conf`: Specifies applications and scripts to run on startup.
 -   `theme/`: This directory holds the currently active theme. It contains symlinks to the files of the selected theme from the `themes/` directory. **Do not edit files in this directory directly.**
 -   `themes/`: This directory contains all available themes. Each theme has its own subdirectory.
--   `bin/`: Contains various helper scripts for managing the environment, including theme switching, power menus, and application launchers.
+-   `bin/`: Contains various helper scripts for managing the environment, including theme switching, power menus, and application launchers. These are meant to be run by the user.
 -   `scripts/`: Contains scripts that are used by hyprland, but not intended to be run by the user directly.
--   `config/`: Contains configuration files for other applications that are themed, such as alacritty, kitty, rofi, etc.
+-   `config/`: Contains configuration files for other applications that are themed, such as alacritty, waybar, walker, etc. These are intended to be symlinked into `~/.config`.
 -   `applications/`: Contains `.desktop` files for applications.
+-   `default/`: Contains default configuration files for various applications and shell environments.
 
 ## Installation
 
-To install this configuration, follow these steps:
+It is recommended to use a dotfile manager to install these configurations. The intended structure is as follows:
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url> ~/.config
-    ```
-2.  **Install dependencies:** This configuration depends on a few key packages. You will need to install them using your package manager.
-    -   `hyprland`: The Wayland compositor.
-    -   `waybar`: The status bar.
-    -   `uwsm`: The Universal Wayland Session Manager. This is a crucial dependency for many of the scripts. You can install it from the Arch Linux repositories (`sudo pacman -S uwsm`).
-    -   Other dependencies: You may need to install other packages depending on the scripts and applications you use.
+-   The `hypr` directory should be located at `~/.config/hypr`.
+-   The contents of the `hypr/config` directory should be symlinked to `~/.config`. For example, `hypr/config/alacritty` should be symlinked to `~/.config/alacritty`.
+
+Example manual installation:
+
+```bash
+# 1. Clone the repository (or your fork)
+git clone <repository-url> ~/hypr-dotfiles
+
+# 2. Create the main hypr config directory
+mkdir -p ~/.config/hypr
+cp -r ~/hypr-dotfiles/hypr/* ~/.config/hypr/
+
+# 3. Symlink the application configs
+for config in ~/hypr-dotfiles/hypr/config/*; do
+  ln -s "$config" ~/.config/
+done
+```
+
+**Dependencies:** This configuration depends on a few key packages. You will need to install them using your package manager.
+-   `hyprland`: The Wayland compositor.
+-   `waybar`: The status bar.
+-   `walker`: The application launcher.
+-   `uwsm`: The Universal Wayland Session Manager. This is a crucial dependency for many of the scripts. You can install it from the Arch Linux repositories (`sudo pacman -S uwsm`).
+-   Other dependencies: You may need to install other packages depending on the scripts and applications you use. Check the `install_deps.sh` script for a more complete list.
 
 ## Theming
 
@@ -52,6 +70,16 @@ This setup uses a script-based theming system that applies a consistent look and
     *   It clears the `hypr/theme/` directory of any existing symlinks.
     *   It creates new symlinks in `hypr/theme/` that point to all the files in the `hypr/themes/<theme-name>/` directory.
 3.  **Configuration Sourcing**: The main `hypr/hyprland.conf` file sources `~/.config/hypr/theme/hyprland.conf`. Because of the symlinking, this effectively loads the `hyprland.conf` from the currently active theme. Other applications are reloaded to apply their new theme files.
+
+### Walker Theming
+
+The application launcher, `walker`, is also themed. Here's how it works:
+
+1.  **Configuration**: `walker`'s configuration is located at `~/.config/walker/config.toml`.
+2.  **Theme Locations**: The `theme_location` in this file is set to look in two places:
+    *   `~/.config/hypr/theme`: This is the directory where the current theme's `walker.css` is symlinked.
+    *   `~/.config/hypr/default/walker/themes`: This directory contains fallback and default themes for `walker`.
+3.  **Applying Themes**: When `hypr-theme-set` is run, it symlinks the `walker.css` from the chosen theme into `~/.config/hypr/theme`, and `walker` automatically picks it up.
 
 ### Creating a New Theme
 

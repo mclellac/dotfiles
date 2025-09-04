@@ -27,7 +27,7 @@ find "$CURRENT_THEME_DIR" -mindepth 1 -delete
 
 # Symlink all files from the theme folder
 for file in "$THEME_PATH"/*; do
-  ln -s "$file" "$CURRENT_THEME_DIR/"
+  ln -s "$file" "$CURRENT_THEME_DIR"
 done
 
 # Change gnome modes
