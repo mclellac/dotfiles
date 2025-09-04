@@ -62,7 +62,7 @@ PARU_PACKAGES=(
     1password
     spotify
     uwsm
-    #walker-git
+    walker-git
     #satty-bin
 )
 
