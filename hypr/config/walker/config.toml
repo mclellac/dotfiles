@@ -1,7 +1,7 @@
 close_when_open = true
 theme = "default"
 theme_base = []
-theme_location = ["~/.config/hypr/default/walker/themes/"]
+theme_location = ["~/.config/hypr/theme", "~/.config/hypr/default/walker/themes"]
 hotreload_theme = true
 force_keyboard_focus = true
 timeout = 60
