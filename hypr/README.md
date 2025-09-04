@@ -43,26 +43,72 @@ To install this configuration, follow these steps:
 
 ## Theming
 
-This setup uses a script-based theming system that applies a consistent look and feel across multiple applications.
+This setup uses a script-based theming system that applies a consistent look and feel across multiple applications. The core of this system is the `hypr-theme-set` script.
 
-### How it Works
+### The `hypr-theme-set` Script
 
-1.  **Theme Storage**: All themes are located in the `hypr/themes/` directory. Each theme is a directory containing configuration files for different applications (e.g., `hyprland.conf`, `waybar.css`, `alacritty.toml`).
-2.  **Theme Activation**: The `hypr-theme-set` script is used to change the active theme. When you run `hypr-theme-set <theme-name>`, the script does the following:
-    *   It clears the `hypr/theme/` directory of any existing symlinks.
-    *   It creates new symlinks in `hypr/theme/` that point to all the files in the `hypr/themes/<theme-name>/` directory.
-3.  **Configuration Sourcing**: The main `hypr/hyprland.conf` file sources `~/.config/hypr/theme/hyprland.conf`. Because of the symlinking, this effectively loads the `hyprland.conf` from the currently active theme. Other applications are reloaded to apply their new theme files.
+The `hypr-theme-set` script is the heart of the theming system. When you run `hypr-theme-set <theme-name>`, it performs the following actions:
+
+1.  **Symlinking**: The script first clears the `~/.config/hypr/theme/` directory. It then creates new symlinks in this directory that point to all the files in the selected theme's directory (e.g., `~/.config/hypr/themes/<theme-name>/*`). This makes the selected theme's files "active".
+
+2.  **Application Theming**: The script then proceeds to theme various applications:
+    *   **GTK/Gnome**: It sets the GTK theme (e.g., to `Adwaita-dark`) and icon theme based on the presence of `light.mode` and `icons.theme` files in the theme directory.
+    *   **Chromium**: It sets the browser's color scheme and theme color.
+    *   **Alacritty**: It touches the `alacritty.toml` file to trigger a configuration reload.
+    *   **Other Applications**: It restarts `btop`, `waybar`, `swayosd`, and `mako` to apply their new themes. Waybar, SwayOSD, and Mako all have configuration files that source the theme's CSS file from `~/.config/hypr/theme/`.
+    *   **Hyprland**: It reloads Hyprland, which sources its theme from `~/.config/hypr/theme/hyprland.conf`.
+    *   **Background**: It sets a new desktop background from the theme's `backgrounds` directory.
+
+### Themed Applications
+
+The following applications are themed by the `hypr-theme-set` script:
+
+*   Alacritty (terminal)
+*   btop (resource monitor)
+*   Chromium (web browser)
+*   GTK/Gnome applications
+*   Hyprland (window manager)
+*   Mako (notification daemon)
+*   SwayOSD (on-screen display)
+*   Waybar (status bar)
+
+**Note**: Some applications, like `walker`, have their own theming mechanism which is not controlled by `hypr-theme-set`. See the "Walker Theming" section for more details.
+
+### Walker Theming
+
+The `walker` application launcher is **not** themed by the `hypr-theme-set` script. It uses its own theming system.
+
+-   **Configuration**: Walker's configuration is located at `~/.config/walker/config.toml`.
+-   **Theme Location**: The `theme_location` key in `config.toml` points to `~/.config/hypr/default/walker/themes/`, which contains a set of pre-defined themes (e.g., `dmenu_250`).
+-   **Theme Selection**: The `hypr-menu` script launches walker and tells it which theme to use with the `--theme` flag (e.g., `walker --theme dmenu_250`).
+
+The `walker.css` files present in each theme's directory (e.g., `hypr/themes/catppuccin/walker.css`) are currently **not used**.
 
 ### Creating a New Theme
 
 To create your own theme, follow these steps:
 
-1.  **Create a Theme Directory**: Copy an existing theme directory from `hypr/themes/` to a new directory with your theme's name. For example:
+1.  **Create a Theme Directory**: Copy an existing theme directory from `hypr/themes/` to a new directory with your theme's name (e.g., `my-awesome-theme`).
+
     ```bash
-    cp -r hypr/themes/rose-pine hypr/themes/my-awesome-theme
+    cp -r ~/.config/hypr/themes/rose-pine ~/.config/hypr/themes/my-awesome-theme
     ```
-2.  **Customize Theme Files**: Edit the files inside your new theme directory (`hypr/themes/my-awesome-theme/`) to your liking. You can change colors, fonts, wallpapers, and other settings. Pay close attention to `hyprland.conf` for window decorations, `waybar.css` for the bar, and the terminal configuration (`alacritty.toml` or `kitty.conf`).
+
+2.  **Customize Theme Files**: Edit the files inside your new theme directory (`~/.config/hypr/themes/my-awesome-theme/`) to your liking. You will need to at least provide:
+    *   `alacritty.toml`: Alacritty terminal theme.
+    *   `btop.theme`: btop resource monitor theme.
+    *   `chromium.theme`: Chromium theme color.
+    *   `hyprland.conf`: Hyprland window manager theme (borders, gaps, etc.).
+    *   `hyprlock.conf`: Hyprlock lock screen theme.
+    *   `icons.theme`: GTK icon theme name.
+    *   `mako.ini`: Mako notification theme.
+    *   `neovim.lua`: Neovim theme.
+    *   `swayosd.css`: SwayOSD on-screen display theme.
+    *   `waybar.css`: Waybar status bar theme.
+    *   A `backgrounds/` directory containing at least one wallpaper image.
+
 3.  **Set the New Theme**: Apply your new theme by running:
+
     ```bash
     hypr-theme-set my-awesome-theme
     ```
@@ -85,8 +131,6 @@ Here are some of the most important scripts in the `hypr/bin` directory:
 
 This configuration is already very powerful and well-structured. Here are a few suggestions for further improvement:
 
+-   **Unify Walker Theming**: The `walker` theming is separate from the main `hypr-theme-set` system. It could be beneficial to integrate it, so that `walker`'s theme changes automatically with the system theme. This would likely involve modifying the `hypr-theme-set` script to update `walker`'s configuration.
 -   **Pacman Repository:** The configuration includes a custom pacman repository. If you don't own the `pkgs.hypr.org` domain, you should either remove this repository from `hypr/default/pacman/pacman.conf` or set up your own pacman repository.
 -   **Plymouth Theme:** The configuration includes a custom plymouth theme. You can customize the images in `hypr/default/plymouth` to create your own boot splash screen.
--   **Nerd Fonts:** The Waybar configuration uses a custom font to display an icon. A better approach would be to use a Nerd Font, which includes a large collection of icons. This would remove the dependency on the custom font and make it easier to customize the icons.
--   **Review `old.hypr`:** There is an `old.hypr` directory that contains an old configuration. You may want to review this directory and remove it if it's no longer needed.
--   **Review `hyprpanel`:** There is a `hyprpanel` directory that contains a configuration for a panel. It's not clear if this is still being used. You may want to review this and remove it if it's not needed.
