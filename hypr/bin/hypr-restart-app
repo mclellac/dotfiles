@@ -1,26 +1,4 @@
 #!/bin/bash
 
-# Function to send notifications
-notify() {
-    notify-send "Hypr App Restart" "$1" -t 3000
-}
-
-if [[ -z "$1" ]]; then
-    notify "Usage: hypr-restart-app <app-name>"
-    exit 1
-fi
-
-APP_NAME="$1"
-
-# Kill the existing application process
-pkill -x "$APP_NAME"
-sleep 0.1 # Give it a moment to die
-
-# Restart the application using uwsm
-if ! setsid uwsm app -- "$APP_NAME" >/dev/null 2>&1 & then
-    notify "Error: Failed to restart '$APP_NAME' using uwsm."
-    exit 1
-fi
-
-# We can't easily get a success message here as it's a background process
-# The notification in hypr-theme-set is more appropriate.
+pkill -x $1
+setsid uwsm app -- $1 >/dev/null 2>&1 &

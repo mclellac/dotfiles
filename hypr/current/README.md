@@ -1,1 +1,0 @@
-Current background set here.
