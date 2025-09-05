@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo -e "\e[32mUpdate Hypr\e[0m"
-git -C $OMARCHY_PATH pull --autostash
-git -C $OMARCHY_PATH diff --check || git -C $OMARCHY_PATH reset --merge
+git -C $HYPRPATH pull --autostash
+git -C $HYPRPATH diff --check || git -C $HYPRPATH reset --merge

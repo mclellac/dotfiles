@@ -49,9 +49,9 @@ This setup uses a script-based theming system that applies a consistent look and
 
 1.  **Theme Storage**: All themes are located in the `hypr/themes/` directory. Each theme is a directory containing configuration files for different applications (e.g., `hyprland.conf`, `waybar.css`, `alacritty.toml`).
 2.  **Theme Activation**: The `hypr-theme-set` script is used to change the active theme. When you run `hypr-theme-set <theme-name>`, the script does the following:
-    *   It clears the `hypr/theme/` directory of any existing symlinks.
-    *   It creates new symlinks in `hypr/theme/` that point to all the files in the `hypr/themes/<theme-name>/` directory.
-3.  **Configuration Sourcing**: The main `hypr/hyprland.conf` file sources `~/.config/hypr/theme/hyprland.conf`. Because of the symlinking, this effectively loads the `hyprland.conf` from the currently active theme. Other applications are reloaded to apply their new theme files.
+    *   It clears the `hypr/current/theme` directory of any existing symlinks.
+    *   It creates new symlinks in `hypr/current/theme` that point to all the files in the `hypr/themes/<theme-name>/` directory.
+3.  **Configuration Sourcing**: The main `hypr/hyprland.conf` file sources `~/.config/hypr/current/themehyprland.conf`. Because of the symlinking, this effectively loads the `hyprland.conf` from the currently active theme. Other applications are reloaded to apply their new theme files.
 
 ### Creating a New Theme
 

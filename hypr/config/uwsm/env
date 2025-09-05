@@ -1,5 +1,5 @@
-export OMARCHY_PATH=$HOME/.config/hypr
-export PATH=$OMARCHY_PATH/bin/:$PATH
+export HYPR_PATH=$HOME/.config/hypr
+export PATH=$HYPR_PATH/bin/:$PATH
 export TERMINAL=alacritty
 
 if command -v mise &> /dev/null; then

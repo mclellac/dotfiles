@@ -1,4 +1,4 @@
-general.import = [ "~/.config/hypr/theme/alacritty.toml" ]
+general.import = [ "~/.config/hypr/current/themealacritty.toml" ]
 
 [env]
 TERM = "xterm-256color"

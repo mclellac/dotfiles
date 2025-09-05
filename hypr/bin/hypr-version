@@ -1,3 +1,3 @@
 #!/bin/bash
 
-git -C "$OMARCHY_PATH" describe --tags $(git -C "$OMARCHY_PATH" rev-list --tags --max-count=1)
+git -C "$HYPRPATH" describe --tags $(git -C "$HYPRPATH" rev-list --tags --max-count=1)

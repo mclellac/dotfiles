@@ -1,0 +1,1 @@
+/home/mclellac/.config/hypr/themes//ristretto/neovim.lua
