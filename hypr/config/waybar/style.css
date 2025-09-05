@@ -1,4 +1,4 @@
-@import "../hypr/current/themewaybar.css";
+@import "../hypr/current/theme/waybar.css";
 
 * {
   background-color: @background;
