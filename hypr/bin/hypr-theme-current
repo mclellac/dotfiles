@@ -1,3 +1,4 @@
 #!/bin/bash
 
-basename "$(realpath "$HOME/.config/hypr/theme")" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'
+cat "$HOME/.config/hypr/current/theme/.theme" 2>/dev/null || echo ""
+#basename "$(realpath "$HOME/.config/hypr/current/theme")" | sed -E 's/(^|-)([a-z])/\1\u\2/g; s/-/ /g'

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="$HOME/.config/hypr/bin:$HOME/.config/hypr/scripts:$HOME/.config/scripts:$HOME/.config/hypr/bin:$PATH"
+export PATH="$HOME/.config/hypr/bin:$PATH"
 
 menu() {
     local prompt="$1"
@@ -14,7 +14,7 @@ menu() {
         local index
         index=$(echo -e "$options" | grep -nxF "$preselect" | cut -d: -f1)
         if [[ -n "$index" ]]; then
-            args+=("-c" "$(("$index" - 1))")
+            args+=("-a" "$index")
         fi
     fi
 
@@ -22,11 +22,11 @@ menu() {
 }
 
 terminal() {
-    alacritty --class Hypr -e "$@"
+    alacritty --class -e "$@"
 }
 
 present_terminal() {
-    hypr-launch-floating-terminal-with-presentation $1
+    -launch-floating-terminal-with-presentation $1
 }
 
 edit_in_nvim() {
@@ -55,9 +55,9 @@ aur_install_and_launch() {
 }
 
 show_learn_menu() {
-    case $(menu "Learn" "  Keybindings\n  Hypr\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
+    case $(menu "Learn" "  Keybindings\n  Om\n  Hyprland\n󰣇  Arch\n  Neovim\n󱆃  Bash") in
     *Keybindings*) hypr-menu-keybindings ;;
-    *Hypr*) hypr-launch-webapp "https://learn.omacom.io/2/the-hypr-manual" ;;
+    *Om*) hypr-launch-webapp "https://learn.omacom.io/2/the-hypr-manual" ;;
     *Hyprland*) hypr-launch-webapp "https://wiki.hypr.land/" ;;
     *Arch*) hypr-launch-webapp "https://wiki.archlinux.org/title/Main_page" ;;
     *Bash*) hypr-launch-webapp "https://devhints.io/bash" ;;
@@ -82,12 +82,13 @@ show_theme_menu() {
     if [[ "$theme" == "CNCLD" || -z "$theme" ]]; then
         show_main_menu
     else
+        echo "$theme"
         hypr-theme-set "$theme"
     fi
 }
 
 show_font_menu() {
-    theme=$(menu "Font" "$(hypr-font-list)" "-w 350" "$(hypr-font-current)")
+    theme=$(menu "Font" "$(hypr-font-list)" "-w 350" "$(hyprhypr-font-current)")
     if [[ "$theme" == "CNCLD" || -z "$theme" ]]; then
         show_main_menu
     else
@@ -123,10 +124,10 @@ show_screenrecord_menu() {
 
 show_toggle_menu() {
     case $(menu "Toggle" "󱄄  Screensaver\n󰔎  Nightlight\n󱫖  Idle Lock\n󰍜  Top Bar") in
-    *Screensaver*) hypr-toggle-screensaver ;;
-    *Nightlight*) hypr-toggle-nightlight ;;
-    *Idle*) hypr-toggle-idle ;;
-    *Bar*) hypr-toggle-waybar ;;
+    *Screensaver*) -toggle-screensaver ;;
+    *Nightlight*) -toggle-nightlight ;;
+    *Idle*) -toggle-idle ;;
+    *Bar*) -toggle-waybar ;;
     *) show_main_menu ;;
     esac
 }
@@ -151,16 +152,16 @@ show_setup_menu() {
     *Monitors*) edit_in_nvim ~/.config/hypr/monitors.conf ;;
     *Keybindings*) edit_in_nvim ~/.config/hypr/bindings.conf ;;
     *Input*) edit_in_nvim ~/.config/hypr/input.conf ;;
-    *DNS*) present_terminal hypr-setup-dns ;;
+    *DNS*) present_terminal -setup-dns ;;
     *Config*) show_setup_config_menu ;;
-    *Fingerprint*) present_terminal hypr-setup-fingerprint ;;
-    *Fido2*) present_terminal hypr-setup-fido2 ;;
+    *Fingerprint*) present_terminal -setup-fingerprint ;;
+    *Fido2*) present_terminal -setup-fido2 ;;
     *) show_main_menu ;;
     esac
 }
 
 show_setup_power_menu() {
-    profile=$(menu "Power Profile" "$(hypr-powerprofiles-list)" "" "$(powerprofilesctl get)")
+    profile=$(menu "Power Profile" "$(-powerprofiles-list)" "" "$(powerprofilesctl get)")
 
     if [[ "$profile" == "CNCLD" || -z "$profile" ]]; then
         show_main_menu
@@ -251,7 +252,7 @@ show_install_gaming_menu() {
 show_install_style_menu() {
     case $(menu "Install" "󰸌  Theme\n  Background\n  Font") in
     *Theme*) present_terminal hypr-theme-install ;;
-    *Background*) nautilus ~/.config/hypr/current/themebackgrounds ;;
+    *Background*) nautilus ~/.config//current/theme/backgrounds ;;
     *Font*) show_install_font_menu ;;
     *) show_install_menu ;;
     esac
@@ -317,15 +318,15 @@ show_remove_menu() {
     *Web*) present_terminal hypr-webapp-remove ;;
     *TUI*) present_terminal hypr-tui-remove ;;
     *Theme*) present_terminal hypr-theme-remove ;;
-    *Fingerprint*) present_terminal "hypr-setup-fingerprint --remove" ;;
-    *Fido2*) present_terminal "hypr-setup-fido2 --remove" ;;
+    *Fingerprint*) present_terminal "-setup-fingerprint --remove" ;;
+    *Fido2*) present_terminal "-setup-fido2 --remove" ;;
     *) show_main_menu ;;
     esac
 }
 
 show_update_menu() {
-    case $(menu "Update" " Hypr\n  Config\n󰸌  Themes\n  Process\n󰇅  Hardware\n  Timezone") in
-    *Hypr*) present_terminal hypr-update ;;
+    case $(menu "Update" " \n  Config\n󰸌  Themes\n  Process\n󰇅  Hardware\n  Timezone") in
+    **) present_terminal hypr-update ;;
     *Config*) show_update_config_menu ;;
     *Themes*) present_terminal hypr-theme-update ;;
     *Process*) show_update_process_menu ;;
@@ -370,8 +371,8 @@ show_update_hardware_menu() {
 
 show_system_menu() {
     case $(menu "System" "  Lock\n󱄄  Screensaver\n󰤄  Suspend\n  Relaunch\n󰜉  Restart\n󰐥  Shutdown") in
-    *Lock*) hypr-lock-screen ;;
-    *Screensaver*) hypr-launch-screensaver force ;;
+    *Lock*) -lock-screen ;;
+    *Screensaver*) -launch-screensaver force ;;
     *Suspend*) systemctl suspend ;;
     *Relaunch*) uwsm stop ;;
     *Restart*) systemctl reboot ;;
@@ -399,7 +400,7 @@ go_to_menu() {
     *install*) show_install_menu ;;
     *remove*) show_remove_menu ;;
     *update*) show_update_menu ;;
-    *about*) alacritty --class Hypr -o font.size=9 -e bash -c 'fastfetch; read -n 1 -s' ;;
+    *about*) alacritty --class -o font.size=9 -e bash -c 'fastfetch; read -n 1 -s' ;;
     *system*) show_system_menu ;;
     esac
 }

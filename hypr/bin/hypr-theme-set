@@ -65,6 +65,8 @@ fi
 # Trigger alacritty config reload
 touch "$HOME/.config/alacritty/alacritty.toml"
 
+echo "$THEME_NAME" >"$HOME/.config/hypr/current/theme/.theme"
+
 # Restart components to apply new theme
 pkill -SIGUSR2 btop
 hypr-restart-waybar
