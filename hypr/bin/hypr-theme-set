@@ -1,65 +1,68 @@
 #!/bin/bash
 
+# Function to send notifications
+notify() {
+    notify-send "Hypr Theme" "$1" -t 3000
+}
+
 # hypr-theme-set: Set a theme, specified by its name.
 # Usage: hypr-theme-set <theme-name>
 
-if [[ -z "$1" && "$1" != "CNCLD" ]]; then
-  echo "Usage: hypr-theme-set <theme-name>" >&2
-  exit 1
+if [[ -z "$1" || "$1" == "CNCLD" ]]; then
+    notify "Theme selection cancelled."
+    exit 1
 fi
 
-THEMES_DIR="$HOME/.config/hypr/themes/"
-CURRENT_THEME_DIR="$HOME/.config/hypr/theme"
-
-THEME_NAME=$(echo "$1" | sed -E 's/<[^>]+>//g' | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+THEME_NAME_FORMATTED="$1"
+THEME_NAME=$(echo "$THEME_NAME_FORMATTED" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+THEMES_DIR="$HOME/.config/hypr/themes"
 THEME_PATH="$THEMES_DIR/$THEME_NAME"
+CURRENT_THEME_DIR="$HOME/.config/hypr/theme"
 
 # Check if the theme entered exists
 if [[ ! -d "$THEME_PATH" ]]; then
-  echo "Theme '$THEME_NAME' does not exist in $THEMES_DIR" >&2
-  exit 2
+    notify "Error: Theme '$THEME_NAME_FORMATTED' does not exist."
+    exit 2
 fi
 
 # Update theme symlinks
-# Ensure the theme directory exists and is a directory, then clear it
+notify "Setting theme to $THEME_NAME_FORMATTED..."
 mkdir -p "$CURRENT_THEME_DIR"
 find "$CURRENT_THEME_DIR" -mindepth 1 -delete
-
-# Symlink all files from the theme folder
 for file in "$THEME_PATH"/*; do
-  ln -s "$file" "$CURRENT_THEME_DIR"
+    ln -s "$file" "$CURRENT_THEME_DIR"
 done
 
-# Change gnome modes
-if [[ -f ~/.config/hypr/theme/light.mode ]]; then
-  gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
-  gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
+# --- Apply theme to various applications ---
+
+# Change GNOME settings
+if [[ -f "$CURRENT_THEME_DIR/light.mode" ]]; then
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-light"
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita"
 else
-  gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
-  gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+    gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark"
 fi
 
-# Change gnome icon theme color
-if [[ -f ~/.config/hypr/theme/icons.theme ]]; then
-  gsettings set org.gnome.desktop.interface icon-theme "$(<~/.config/hypr/theme/icons.theme)"
+if [[ -f "$CURRENT_THEME_DIR/icons.theme" ]]; then
+    gsettings set org.gnome.desktop.interface icon-theme "$(<"$CURRENT_THEME_DIR/icons.theme")"
 else
-  gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
+    gsettings set org.gnome.desktop.interface icon-theme "Yaru-blue"
 fi
 
 # Change Chromium colors
 if command -v chromium &>/dev/null; then
-  if [[ -f ~/.config/hypr/theme/light.mode ]]; then
-    chromium --no-startup-window --set-color-scheme="light"
-  else
-    chromium --no-startup-window --set-color-scheme="dark"
-  fi
+    if [[ -f "$CURRENT_THEME_DIR/light.mode" ]]; then
+        chromium --no-startup-window --set-color-scheme="light" &>/dev/null
+    else
+        chromium --no-startup-window --set-color-scheme="dark" &>/dev/null
+    fi
 
-  if [[ -f ~/.config/hypr/theme/chromium.theme ]]; then
-    chromium --no-startup-window --set-theme-color="$(<~/.config/hypr/theme/chromium.theme)"
-  else
-    # Use a default, neutral grey if theme doesn't have a color
-    chromium --no-startup-window --set-theme-color="28,32,39"
-  fi
+    if [[ -f "$CURRENT_THEME_DIR/chromium.theme" ]]; then
+        chromium --no-startup-window --set-theme-color="$(<"$CURRENT_THEME_DIR/chromium.theme")" &>/dev/null
+    else
+        chromium --no-startup-window --set-theme-color="28,32,39" &>/dev/null
+    fi
 fi
 
 # Trigger alacritty config reload
@@ -67,11 +70,13 @@ touch "$HOME/.config/alacritty/alacritty.toml"
 
 # Restart components to apply new theme
 pkill -SIGUSR2 btop || true
-hypr-restart-waybar || true
-hypr-restart-swayosd || true
-hypr-restart-walker || true
-makoctl reload || true
-hyprctl reload
+hypr-restart-waybar || notify "Failed to restart Waybar."
+hypr-restart-swayosd || notify "Failed to restart SwayOSD."
+hypr-restart-walker || notify "Failed to restart Walker."
+makoctl reload || notify "Failed to reload Mako."
+hyprctl reload || notify "Failed to reload Hyprland."
 
 # Set new background
 hypr-theme-bg-next
+
+notify "Theme '$THEME_NAME_FORMATTED' applied successfully."
