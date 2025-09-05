@@ -1,92 +1,227 @@
-# Hyprland Configuration Documentation
+# Hyprland Configuration
 
-This document explains the structure and customization of this Hyprland setup.
-
-## Design Philosophy
-
-This Hyprland configuration is designed to be modular, customizable, and easy to manage. It follows a few key principles:
-
--   **Modularity:** The configuration is broken down into smaller, self-contained files, making it easier to understand and modify. The main `hyprland.conf` file sources these smaller files.
--   **Default and User Overrides:** The configuration uses a `default` directory to store the base settings. Users can then override these settings by creating their own configuration files in the root of the `hypr` directory. This allows for easy customization without modifying the base configuration.
--   **Script-Based Management:** The environment is managed by a collection of shell scripts located in the `hypr/bin` directory. These scripts handle tasks such as theme switching, application launching, and system management.
-
-## Directory Structure
-
-The `hypr` directory contains all the configuration for Hyprland and related applications.
-
--   `hyprland.conf`: The main entry point for Hyprland's configuration. It sources other configuration files.
--   `monitors.conf`: Defines monitor setups, resolutions, and workspaces.
--   `input.conf`: Configures input devices like keyboards and mice.
--   `bindings.conf`: Contains custom keybindings for applications and scripts.
--   `envs.conf`: Sets environment variables for the Hyprland session.
--   `autostart.conf`: Specifies applications and scripts to run on startup.
--   `theme/`: This directory holds the currently active theme. It contains symlinks to the files of the selected theme from the `themes/` directory. **Do not edit files in this directory directly.**
--   `themes/`: This directory contains all available themes. Each theme has its own subdirectory.
--   `bin/`: Contains various helper scripts for managing the environment, including theme switching, power menus, and application launchers.
--   `scripts/`: Contains scripts that are used by hyprland, but not intended to be run by the user directly.
--   `config/`: Contains configuration files for other applications that are themed, such as alacritty, kitty, rofi, etc.
--   `applications/`: Contains `.desktop` files for applications.
+This repository contains a complete and highly customizable configuration for the Hyprland Wayland compositor. It's designed to be modular, themeable, and easy to manage, with a focus on script-based control. This document provides a comprehensive guide to the entire setup.
 
 ## Installation
 
-To install this configuration, follow these steps:
+The installation is handled by a single script.
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url> ~/.config
+    git clone https://github.com/your-username/hypr.git ~/.config/hypr
     ```
-2.  **Install dependencies:** This configuration depends on a few key packages. You will need to install them using your package manager.
-    -   `hyprland`: The Wayland compositor.
-    -   `waybar`: The status bar.
-    -   `uwsm`: The Universal Wayland Session Manager. This is a crucial dependency for many of the scripts. You can install it from the Arch Linux repositories (`sudo pacman -S uwsm`).
-    -   Other dependencies: You may need to install other packages depending on the scripts and applications you use.
+2.  **Run the installation script:**
+    ```bash
+    ~/.config/hypr/install_deps.sh
+    ```
+
+### The Installation Script (`install_deps.sh`)
+
+The `install_deps.sh` script automates the setup process. Here's what it does:
+
+1.  **Installs `paru`:** It first checks if `paru` (an AUR helper) is installed. If not, it clones the `paru` repository and installs it.
+2.  **Installs Official Packages:** It then uses `pacman` to install a long list of packages from the official Arch Linux repositories.
+3.  **Installs AUR Packages:** Finally, it uses `paru` to install a few packages from the Arch User Repository (AUR).
+
+#### Packages Installed
+
+*   **Official Packages (`pacman`):**
+    ```
+    base-devel btop chromium fcitx5-im fcitx5-gtk fcitx5-qt git hyprland hypridle hyprlock hyprshot jq kitty lazydocker mako nautilus neovim obsidian pamixer playerctl polkit-gnome power-profiles-daemon signal-desktop swaybg swayosd ttf-firacode-nerd ttf-meslo-nerd ttf-victor-mono-nerd waybar wf-recorder wl-clipboard xdg-utils gum xmlstarlet
+    ```
+*   **AUR Packages (`paru`):**
+    ```
+    1password spotify uwsm
+    ```
+
+## Configuration Structure
+
+The configuration is highly modular, with a central `hyprland.conf` that sources other files.
+
+*   `hyprland.conf`: The main configuration file.
+*   `monitors.conf`: Monitor setup.
+*   `input.conf`: Input device configuration.
+*   `bindings.conf`: User-specific keybindings.
+*   `envs.conf`: Environment variables.
+*   `autostart.conf`: Startup applications.
+
+### Directories
+
+*   `bin/`: The core scripts for managing the environment.
+*   `config/`: Default configurations for various applications.
+*   `current/`: Symlinks to the active theme's files.
+*   `default/`: The base configuration files.
+*   `scripts/`: Helper scripts used by other scripts.
+*   `themes/`: All available themes.
+*   `applications/`: `.desktop` files.
 
 ## Theming
 
-This setup uses a script-based theming system that applies a consistent look and feel across multiple applications.
+The theming system is powerful and script-based.
 
-### How it Works
+### Applying a Theme
 
-1.  **Theme Storage**: All themes are located in the `hypr/themes/` directory. Each theme is a directory containing configuration files for different applications (e.g., `hyprland.conf`, `waybar.css`, `alacritty.toml`).
-2.  **Theme Activation**: The `hypr-theme-set` script is used to change the active theme. When you run `hypr-theme-set <theme-name>`, the script does the following:
-    *   It clears the `hypr/current/theme` directory of any existing symlinks.
-    *   It creates new symlinks in `hypr/current/theme` that point to all the files in the `hypr/themes/<theme-name>/` directory.
-3.  **Configuration Sourcing**: The main `hypr/hyprland.conf` file sources `~/.config/hypr/current/themehyprland.conf`. Because of the symlinking, this effectively loads the `hyprland.conf` from the currently active theme. Other applications are reloaded to apply their new theme files.
+To change the theme, run:
+```bash
+hypr-theme-set <theme-name>
+```
+You can also use the `hypr-menu` to select a theme.
 
-### Creating a New Theme
+### Creating a Theme
 
-To create your own theme, follow these steps:
+1.  Copy an existing theme directory in `themes/`.
+2.  Customize the files in your new theme's directory.
+3.  Apply your theme with `hypr-theme-set`.
 
-1.  **Create a Theme Directory**: Copy an existing theme directory from `hypr/themes/` to a new directory with your theme's name. For example:
-    ```bash
-    cp -r hypr/themes/rose-pine hypr/themes/my-awesome-theme
-    ```
-2.  **Customize Theme Files**: Edit the files inside your new theme directory (`hypr/themes/my-awesome-theme/`) to your liking. You can change colors, fonts, wallpapers, and other settings. Pay close attention to `hyprland.conf` for window decorations, `waybar.css` for the bar, and the terminal configuration (`alacritty.toml` or `kitty.conf`).
-3.  **Set the New Theme**: Apply your new theme by running:
-    ```bash
-    hypr-theme-set my-awesome-theme
-    ```
+## Key Scripts
 
-## Key Scripts (`hypr/bin`)
+The `bin/` directory is the heart of this configuration. All scripts are designed to be run from the `hypr-menu`.
 
-Here are some of the most important scripts in the `hypr/bin` directory:
+### `hypr-menu`
 
--   `hypr-theme-set <theme-name>`: Sets the specified theme.
--   `hypr-theme-list`: Lists all available themes.
--   `hypr-theme-next`: Switches to the next available theme.
--   `hypr-theme-bg-next`: Switches to the next background image for the current theme.
--   `hypr-menu`: Opens the main application launcher (a replacement for rofi/wofi, likely `walker`).
--   `hypr-lock-screen`: Locks the screen.
--   `hypr-restart-app <app-name>`: A generic script to restart applications. It uses `uwsm` to manage the application session.
+This script, typically bound to `SUPER + SPACE`, opens a searchable menu (using `walker`) that provides access to almost all functionality of the desktop. It's a multi-level menu system with the following structure:
 
-**Note on `uwsm`:** Many of the scripts in this configuration depend on the **Universal Wayland Session Manager (`uwsm`)**. This tool is used to manage application sessions and ensure they are started and stopped correctly. You must have `uwsm` installed for these scripts to work. On Arch Linux, you can install it with `sudo pacman -S uwsm`.
+*   **Go:** The main menu.
+    *   **Apps:** Opens `walker` to launch an application.
+    *   **Learn:** Provides access to documentation and learning resources.
+        *   **Keybindings:** Opens a searchable list of keybindings.
+        *   **Hypr:** Opens the custom Hypr manual in a web browser.
+        *   **Hyprland:** Opens the official Hyprland wiki.
+        *   **Arch:** Opens the Arch Linux wiki.
+        *   **Bash:** Opens a Bash scripting cheatsheet.
+        *   **Neovim:** Opens the LazyVim keymaps documentation.
+    *   **Capture:** Tools for capturing the screen.
+        *   **Screenshot:** Takes a screenshot.
+            *   **Region:** Takes a screenshot of a selected region.
+            *   **Window:** Takes a screenshot of the active window.
+            *   **Display:** Takes a screenshot of the entire display.
+        *   **Screenrecord:** Records the screen.
+            *   **Region:** Records a selected region.
+            *   **Display:** Records the entire display.
+        *   **Color:** Opens a color picker.
+    *   **Toggle:** Toggles various system features.
+        *   **Screensaver:** Toggles the screensaver on and off.
+        *   **Nightlight:** Toggles the nightlight (redshift).
+        *   **Idle Lock:** Toggles locking the screen on idle.
+        *   **Top Bar:** Toggles the Waybar on and off.
+    *   **Style:** Manages the look and feel of the desktop.
+        *   **Theme:** Opens a menu to select and apply a new theme.
+        *   **Font:** Opens a menu to select and apply a new font.
+        *   **Background:** Switches to the next background image for the current theme.
+        *   **Screensaver:** Opens the screensaver text file in `nvim`.
+        *   **About:** Opens the about text file in `nvim`.
+    *   **Setup:** Configures system settings.
+        *   **Audio:** Opens `wiremix` to configure audio.
+        *   **Wifi:** Opens `impala` to configure wifi.
+        *   **Bluetooth:** Opens `blueberry` to configure bluetooth.
+        *   **Power Profile:** Opens a menu to select a power profile.
+        *   **Monitors:** Opens `monitors.conf` in `nvim`.
+        *   **Keybindings:** Opens `bindings.conf` in `nvim`.
+        *   **Input:** Opens `input.conf` in `nvim`.
+        *   **DNS:** Runs the `hypr-setup-dns` script.
+        *   **Config:** Opens a sub-menu to edit various configuration files.
+            *   **Hyprland:** Opens `hyprland.conf`.
+            *   **Hypridle:** Opens `hypridle.conf`.
+            *   **Hyprlock:** Opens `hyprlock.conf`.
+            *   **Hyprsunset:** Opens `hyprsunset.conf`.
+            *   **Swayosd:** Opens `swayosd/config.toml`.
+            *   **Walker:** Opens `walker/config.toml`.
+            *   **Waybar:** Opens `waybar/config.jsonc`.
+            *   **XCompose:** Opens `~/.XCompose`.
+        *   **Fingerprint:** Runs the `hypr-setup-fingerprint` script.
+        *   **Fido2:** Runs the `hypr-setup-fido2` script.
+    *   **Install:** Installs new software.
+        *   **Package:** Installs a package from the official repositories.
+        *   **AUR:** Installs a package from the AUR.
+        *   **Web App:** Runs the `hypr-webapp-install` script.
+        *   **TUI:** Runs the `hypr-tui-install` script.
+        *   **Service:** Opens a sub-menu to install services like Dropbox and Tailscale.
+        *   **Style:** Opens a sub-menu to install themes, backgrounds, and fonts.
+        *   **Development:** Opens a sub-menu to install development environments for various languages.
+        *   **Editor:** Opens a sub-menu to install various text editors.
+        *   **AI:** Opens a sub-menu to install AI tools.
+        *   **Gaming:** Opens a sub-menu to install Steam, RetroArch, and Minecraft.
+    *   **Remove:** Removes software.
+        *   **Package:** Removes a package.
+        *   **Web App:** Runs the `hypr-webapp-remove` script.
+        *   **TUI:** Runs the `hypr-tui-remove` script.
+        *   **Theme:** Runs the `hypr-theme-remove` script.
+        *   **Fingerprint:** Runs the `hypr-setup-fingerprint --remove` script.
+        *   **Fido2:** Runs the `hypr-setup-fido2 --remove` script.
+    *   **Update:** Manages updates.
+        *   **Hypr:** Runs the `hypr-update` script.
+        *   **Config:** Opens a sub-menu to refresh configuration files to their defaults.
+        *   **Themes:** Runs the `hypr-theme-update` script.
+        *   **Process:** Opens a sub-menu to restart various services.
+        *   **Hardware:** Opens a sub-menu to restart wifi and bluetooth.
+        *   **Timezone:** Runs the `hypr-cmd-tzupdate` script.
+    *   **About:** Opens `fastfetch` to display system information.
+    *   **System:** Manages the system state.
+        *   **Lock:** Locks the screen.
+        *   **Screensaver:** Launches the screensaver.
+        *   **Suspend:** Suspends the system.
+        *   **Relaunch:** Relaunches Hyprland.
+        *   **Restart:** Reboots the system.
+        *   **Shutdown:** Shuts down the system.
 
-## Suggestions for Improvement
+### Other Key Scripts
 
-This configuration is already very powerful and well-structured. Here are a few suggestions for further improvement:
+*   **`hypr-theme-set <theme-name>`:** This script applies a new theme. It works by clearing the `~/.config/hypr/current/theme` directory and then creating new symlinks to the files in the specified theme's directory (`~/.config/hypr/themes/<theme-name>`). It also handles setting the GTK theme, icon theme, and Chromium theme colors. Finally, it restarts key components like Waybar, Swayosd, and Mako to apply the new theme.
 
--   **Pacman Repository:** The configuration includes a custom pacman repository. If you don't own the `pkgs.hypr.org` domain, you should either remove this repository from `hypr/default/pacman/pacman.conf` or set up your own pacman repository.
--   **Plymouth Theme:** The configuration includes a custom plymouth theme. You can customize the images in `hypr/default/plymouth` to create your own boot splash screen.
--   **Nerd Fonts:** The Waybar configuration uses a custom font to display an icon. A better approach would be to use a Nerd Font, which includes a large collection of icons. This would remove the dependency on the custom font and make it easier to customize the icons.
--   **Review `old.hypr`:** There is an `old.hypr` directory that contains an old configuration. You may want to review this directory and remove it if it's no longer needed.
--   **Review `hyprpanel`:** There is a `hyprpanel` directory that contains a configuration for a panel. It's not clear if this is still being used. You may want to review this and remove it if it's not needed.
+*   **`hypr-theme-list`:** This script simply lists the names of all the available themes by listing the directories in `~/.config/hypr/themes`.
+
+*   **`hypr-theme-next`:** This script switches to the next available theme in the `~/.config/hypr/themes` directory. It does this by finding the current theme and then selecting the next one in the list.
+
+*   **`hypr-theme-bg-next`:** This script switches to the next wallpaper in the current theme's `backgrounds` directory. It keeps track of the current wallpaper in a file and cycles through the available images.
+
+*   **`hypr-refresh-config <config-file>`:** This script copies a default configuration file from `~/.config/hypr/config` to the user's config directory (e.g., `~/.config/hypr/config/alacritty/alacritty.toml` to `~/.config/alacritty/alacritty.toml`). It also creates a timestamped backup of the user's old configuration file.
+
+*   **`hypr-lock-screen`:** This script locks the screen using `hyprlock`.
+
+## Keybindings
+
+The keybindings are defined in `bindings.conf` and the `bindings/` directory.
+
+| Keybinding | Action |
+|---|---|
+| `SUPER + RETURN` | Open terminal (`alacritty`) |
+| `SUPER + SPACE` | Open `hypr-menu` |
+| `SUPER + Q` | Close active window |
+| `SUPER + F` | Toggle fullscreen |
+| `SUPER + [1-9]` | Switch to workspace |
+| `SUPER + SHIFT + [1-9]` | Move active window to workspace |
+| `SUPER + P` | Toggle pseudo-tiling |
+| `SUPER + S` | Toggle floating |
+| `SUPER + H/J/K/L` | Move focus |
+| `SUPER + SHIFT + H/J/K/L` | Move window |
+| `PrintScreen` | Screenshot region |
+| `SUPER + PrintScreen` | Screenshot window |
+| `CTRL + PrintScreen` | Screenshot output |
+
+## Custom and Legacy Components
+
+This configuration includes several custom and potentially legacy components.
+
+### Pacman Repository
+
+The `default/pacman/pacman.conf` file includes a custom pacman repository:
+
+```
+[hypr]
+SigLevel = Optional TrustAll
+Server = https://pkgs.hypr.org/$arch
+```
+
+If you don't own or trust this repository, you should remove this section from your `pacman.conf`.
+
+### Plymouth Theme
+
+The `default/plymouth` directory contains a custom plymouth theme. You can customize the images in this directory to create your own boot splash screen.
+
+### `hyprpanel`
+
+The `hyprpanel` directory contains configuration for a custom panel. This component does not appear to be used in the current configuration and is likely a leftover from a previous setup.
+
+### `old.hypr`
+
+The `old.hypr` directory contains a previous version of the configuration. It is not used and can likely be removed.
