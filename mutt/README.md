@@ -51,13 +51,13 @@ The keybindings are heavily inspired by Vim and optimized for speed.
 | `Q`             | Quit Neomutt                     |
 | `/`             | Search                           |
 | `\CB`           | Toggle the sidebar               |
-| `Ctrl-n` / `Ctrl-p` | Next / Previous mailbox in sidebar |
-| `Ctrl-j` / `Ctrl-k` | Next / Previous mailbox in sidebar |
-| `Ctrl-o`        | **Open** selected sidebar mailbox |
+| `Ctrl-n` / `Ctrl-p` | Highlight Next/Prev mailbox in sidebar |
+| `Ctrl-j` / `Ctrl-k` | Highlight Next/Prev mailbox in sidebar |
+| `Ctrl-o` / `Ctrl-l` | **Open** highlighted sidebar mailbox   |
 | `<F2>`          | Switch to Personal account       |
 | `<F3>`          | Switch to Work account           |
 
-*Note: Selecting a mailbox in the sidebar only highlights it. You must press `Ctrl-o` to actually open the selected mailbox.*
+*Note: Selecting a mailbox in the sidebar only highlights it. You must press `Ctrl-o` or `Ctrl-l` to actually open the selected mailbox.*
 
 ### Index View (Mail List)
 
