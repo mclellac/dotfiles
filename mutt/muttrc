@@ -79,6 +79,23 @@ set sort = 'threads'
 set sort_aux = 'reverse-last-date-received'
 set auto_tag = yes
 
+# Composition & Safety
+# ------------------------------------------------------------------------------
+set fast_reply = yes                    # Skip prompt for To/Subject when replying
+set fcc_attach = yes                    # Save attachments in Sent messages
+set abort_nosubject = ask-yes           # Ask before sending messages with no subject
+set abort_unmodified = ask-yes          # Ask before sending unmodified messages
+set wait_key = no                       # Don't wait for key press after external commands
+
+# Text Processing
+# ------------------------------------------------------------------------------
+set text_flowed = yes                   # Generate format=flowed emails (modern wrapping)
+
+# Status Bar
+# ------------------------------------------------------------------------------
+# Cleaner status bar format showing Folder, Message Counts, and Progress
+set status_format = " %f   Msgs: %M  %?n? New: %n ?  %?d? Del: %d ?  %?F? Flag: %F ?  %?t? Tag: %t ?  %>  %P "
+
 # Auto display HTML
 # ------------------------------------------------------------------------------
 set mailcap_path    = ~/.mutt/mailcap

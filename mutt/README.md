@@ -66,6 +66,7 @@ The keybindings are heavily inspired by Vim and optimized for speed.
 | `j` / `k`       | Move down / up                   |
 | `gg` / `G`      | Go to first / last email         |
 | `e`             | **Archive** (Move to All Mail)   |
+| `S`             | **Spam** (Move to Spam)          |
 | `d` (double)    | Delete email (Trash)             |
 | `!`             | Mark as **Unread**               |
 | `+`             | Mark as **Important**            |
