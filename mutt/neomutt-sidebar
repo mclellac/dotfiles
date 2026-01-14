@@ -27,8 +27,4 @@ set sidebar_short_path = yes
 # Show only mailboxes with new mail? (Toggle with keybinding if needed)
 set sidebar_new_mail_only = no
 
-# Keybindings
-bind index,pager <C-k> sidebar-prev
-bind index,pager <C-j> sidebar-next
-bind index,pager <C-o> sidebar-open
-bind index,pager \CB sidebar-toggle-visible
+# Keybindings (moved to keybindings file)

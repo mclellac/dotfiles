@@ -12,6 +12,18 @@ To use this configuration effectively, you need the following installed:
 - **mktemp**: Used for securely creating temporary files when opening emails in the browser.
  - **libsixel-bin** (optional): Provides `img2sixel` for viewing images inline in the terminal.
 
+## Mouse Support
+
+Mouse support in Neomutt is currently experimental and may require a custom build or a specific version (e.g., compiled with `--devel-mouse`).
+
+To attempt to enable mouse support (for clicking to select emails/folders), uncomment the following line in `~/.mutt/muttrc`:
+
+```bash
+set mouse = yes
+```
+
+If your version supports it, you will be able to click to select items. If not, this setting may cause an error on startup.
+
 ## Configuration Structure
 
 The configuration is split into several files in the `~/.mutt` directory:
@@ -39,11 +51,13 @@ The keybindings are heavily inspired by Vim and optimized for speed.
 | `Q`             | Quit Neomutt                     |
 | `/`             | Search                           |
 | `\CB`           | Toggle the sidebar               |
-| `Ctrl-j`        | Next mailbox in sidebar          |
-| `Ctrl-k`        | Previous mailbox in sidebar      |
-| `Ctrl-o`        | Open selected sidebar mailbox    |
+| `Ctrl-n` / `Ctrl-p` | Next / Previous mailbox in sidebar |
+| `Ctrl-j` / `Ctrl-k` | Next / Previous mailbox in sidebar |
+| `Ctrl-o`        | **Open** selected sidebar mailbox |
 | `<F2>`          | Switch to Personal account       |
 | `<F3>`          | Switch to Work account           |
+
+*Note: Selecting a mailbox in the sidebar only highlights it. You must press `Ctrl-o` to actually open the selected mailbox.*
 
 ### Index View (Mail List)
 
@@ -69,6 +83,7 @@ The keybindings are heavily inspired by Vim and optimized for speed.
 | --------------- | -------------------------------- |
 | `B`             | **Open in Browser** (View HTML)  |
 | `j` / `k`       | Scroll down / up                 |
+| `Ctrl-d` / `Ctrl-u` | Scroll half-page down / up   |
 | `v`             | View attachments                 |
 | `e`             | Archive                          |
 | `d` (double)    | Delete                           |

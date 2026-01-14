@@ -29,6 +29,8 @@ bind index,pager d noop
 # Navigation
 bind generic,index,pager <PageUp>       previous-page
 bind generic,index,pager <PageDown>     next-page
+bind index,pager \Cd                    half-down
+bind index,pager \Cu                    half-up
 bind generic,index,pager,attach j       next-entry
 bind generic,index,pager,attach k       previous-entry
 bind index J                            next-entry
@@ -127,5 +129,7 @@ bind attach s         save-entry
 
 bind index,pager <C-k> sidebar-prev
 bind index,pager <C-j> sidebar-next
+bind index,pager \Cp   sidebar-prev
+bind index,pager \Cn   sidebar-next
 bind index,pager <C-o> sidebar-open
 bind index,pager \CB sidebar-toggle-visible
