@@ -13,6 +13,18 @@ macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/acct/work<enter><c
 macro generic ,r ":source ~/.mutt/muttrc\n" "Reload muttrc"
 
 # ------------------------------------------------------------------------------
+# Sidebar (Moved to top to ensure loading)
+# ------------------------------------------------------------------------------
+
+bind index,pager <C-k> sidebar-prev
+bind index,pager <C-j> sidebar-next
+bind index,pager <C-p> sidebar-prev
+bind index,pager <C-n> sidebar-next
+bind index,pager <C-o> sidebar-open
+bind index,pager <C-l> sidebar-open
+bind index,pager <C-b> sidebar-toggle-visible
+
+# ------------------------------------------------------------------------------
 # Generic Bindings (apply in multiple views)
 # ------------------------------------------------------------------------------
 
@@ -29,8 +41,8 @@ bind index,pager d noop
 # Navigation
 bind generic,index,pager <PageUp>       previous-page
 bind generic,index,pager <PageDown>     next-page
-bind index,pager <C-d>                  half-down
-bind index,pager <C-u>                  half-up
+# Note: half-down/up are bound for pager below. Index bindings are at the end.
+
 bind generic,index,pager,attach j       next-entry
 bind generic,index,pager,attach k       previous-entry
 bind index J                            next-entry
@@ -93,6 +105,8 @@ bind pager <Left>     exit
 bind pager h          exit
 bind pager <Right>    view-attachments
 bind pager l          view-attachments
+bind pager <C-d>      half-down
+bind pager <C-u>      half-up
 
 # Email actions
 bind pager m          mail
@@ -125,13 +139,10 @@ bind attach h         exit
 bind attach s         save-entry
 
 # ------------------------------------------------------------------------------
-# Sidebar
+# Optional/Experimental Bindings (At the end)
 # ------------------------------------------------------------------------------
 
-bind index,pager <C-k> sidebar-prev
-bind index,pager <C-j> sidebar-next
-bind index,pager <C-p> sidebar-prev
-bind index,pager <C-n> sidebar-next
-bind index,pager <C-o> sidebar-open
-bind index,pager <C-l> sidebar-open
-bind index,pager <C-b> sidebar-toggle-visible
+# Try to bind half-page scrolling for Index.
+# This is a Neomutt feature and might fail on standard Mutt.
+bind index <C-d>      half-down
+bind index <C-u>      half-up
