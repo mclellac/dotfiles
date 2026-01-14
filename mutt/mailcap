@@ -21,18 +21,17 @@ text/html; lynx -dump -force_html -width=120 -display_charset=utf-8 %s; copiouso
 
 # Attempt to display images inline using img2sixel.
 # This requires a terminal that supports sixel graphics.
-# If your terminal doesn't support sixel, it will gracefully fail,
-# and you can use the 'o' keybinding to open the image in an external viewer.
-# image/jpeg; img2sixel '%s'; copiousoutput
-# image/png; img2sixel '%s'; copiousoutput
-# image/gif; img2sixel '%s'; copiousoutput
-# image/bmp; img2sixel '%s'; copiousoutput
-# image/tiff; img2sixel '%s'; copiousoutput
-# image/webp; img2sixel '%s'; copiousoutput
-# image/svg+xml; img2sixel '%s'; copiousoutput
-# image/x-xpixmap; img2sixel '%s'; copiousoutput
+# The 'test' clause ensures this is only used if img2sixel is installed.
+image/jpeg; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/png; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/gif; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/bmp; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/tiff; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/webp; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/svg+xml; img2sixel '%s'; test=which img2sixel; copiousoutput
+image/x-xpixmap; img2sixel '%s'; test=which img2sixel; copiousoutput
 
-# Use xdg-open for images (since img2sixel is missing)
+# Use xdg-open for images (fallback if img2sixel is missing or for external viewing)
 image/jpeg; xdg-open '%s';
 image/png; xdg-open '%s';
 image/gif; xdg-open '%s';
