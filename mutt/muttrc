@@ -43,8 +43,8 @@ set delete
 set confirmappend=no    # Confirm when appending messages to an existing mailbox?
 
 # Gmail Folders
-set trash = "+[Gmail]/Trash"
-set postponed = "+[Gmail]/Drafts"
+# set trash = "+[Gmail]/Trash"      # Configured in account files
+# set postponed = "+[Gmail]/Drafts" # Configured in account files
 unset record            # prevent dups in Sent
 
 unset move              # gmail does that
