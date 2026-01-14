@@ -24,6 +24,36 @@ color index         color212        default         "~T"                    # Ta
 color index         color231        default         "~O"                    # Old (White)
 color index         color215        default         "~P"                    # From Me (Orange)
 
+# Domain-specific colors (User Defined)
+color index color111 default "~f gmail.com"
+color index color111 default "~f hotmail.com"
+color index color150 default "~f crave.ca"
+color index color150 default "~f netflix.com"
+color index color150 default "~f primevideo.com"
+color index color222 default "~f amazon.ca"
+color index color212 default "~f torontohydro.com"
+color index color202 default "~f irobot.com"
+color index color197 default "~f rogers.com"
+color index color161 default "~f cibc.com"
+color index color117 default "~f steampowered.com"
+color index color114 default "~f wealthsimple.com"
+color index color124 default "~f petdesk.com"
+color index color129 default "~f interact.ca"
+color index color139 default "~f github.com"
+
+# More Common Domains (Brand Colors)
+color index color196 default "~f youtube.com"       # YouTube Red
+color index color33  default "~f facebook.com"      # Facebook Blue
+color index color33  default "~f linkedin.com"      # LinkedIn Blue
+color index color39  default "~f twitter.com"       # Twitter Cyan
+color index color83  default "~f spotify.com"       # Spotify Green
+color index color250 default "~f apple.com"         # Apple Grey
+color index color33  default "~f microsoft.com"     # Microsoft Blue
+color index color203 default "~f airbnb.com"        # Airbnb Red/Pink
+color index color27  default "~f paypal.com"        # PayPal Blue
+color index color99  default "~f twitch.tv"         # Twitch Purple
+color index color202 default "~f soundcloud.com"    # SoundCloud Orange
+
 # Message Header Colors (Pager View)
 # ------------------------------------------------------------------------------
 color hdrdefault    color243        default         # Default Headers (Grey)

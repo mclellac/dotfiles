@@ -46,8 +46,8 @@ bind generic,index,pager,attach G       last-entry
 bind index <Return>   display-message
 bind index <Right>    display-message
 bind index l          display-message
-bind index <Left>     exit
-bind index h          exit
+bind index <Left>     noop
+bind index h          noop
 
 # Mailbox management
 macro index c         "<change-folder>?<toggle-mailboxes>" "Change to a different mailbox"
@@ -132,4 +132,5 @@ bind index,pager <C-j> sidebar-next
 bind index,pager \Cp   sidebar-prev
 bind index,pager \Cn   sidebar-next
 bind index,pager <C-o> sidebar-open
+bind index,pager \Cl   sidebar-open
 bind index,pager \CB sidebar-toggle-visible
