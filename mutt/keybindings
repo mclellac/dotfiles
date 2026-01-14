@@ -12,19 +12,6 @@ macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/acct/personal<ente
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/acct/work<enter><change-folder>!<enter>' "Switch to Work account"
 macro generic ,r ":source ~/.mutt/muttrc\n" "Reload muttrc"
 
-# ------------------------------------------------------------------------------
-# Sidebar (Moved to top to ensure loading)
-# ------------------------------------------------------------------------------
-
-bind index,pager <C-k> sidebar-prev
-bind index,pager <C-j> sidebar-next
-bind index,pager <C-p> sidebar-prev
-bind index,pager <C-n> sidebar-next
-bind index,pager <C-o> sidebar-open
-bind index,pager <C-l> sidebar-open
-bind index,pager <C-b> sidebar-toggle-visible
-
-# ------------------------------------------------------------------------------
 # Generic Bindings (apply in multiple views)
 # ------------------------------------------------------------------------------
 
