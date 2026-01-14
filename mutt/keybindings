@@ -68,6 +68,7 @@ bind index W          clear-flag
 bind index *          flag-message # Star a message
 macro index !         'WN' "Mark email as unread"
 macro index +         '<save-message>=[Gmail]/Important<enter><enter><sync-mailbox>' "Mark as important"
+macro index e         "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
 
 # Threads
 bind index za         collapse-all
@@ -103,6 +104,7 @@ bind pager |          pipe-message
 
 # Attachments
 bind pager v          view-attachments
+macro pager B "<pipe-entry>f=\`mktemp --suffix=.html\`; cat > \$f && xdg-open \$f<Enter>" "Open email in browser"
 
 # Quoting
 bind pager za         toggle-quoted

@@ -15,6 +15,14 @@ ignore *                                      # ignore all headers
 unignore from: to: cc: date: subject:         # show only these
 hdr_order from: to: cc: date: subject:        # and in this order
 
+# Index View Options
+set index_format = "%4C %Z %?X?A& ? %D %-15.15F %s (%-4.4c)"
+set date_format = "%b %d"
+
+# Performance (Header Cache)
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+
 # Pager options
 # ------------------------------------------------------------------------------
 set help=no 		                    # hide help bar
@@ -29,7 +37,12 @@ set quit=ask-no
 set askcc=yes
 set delete
 set confirmappend=no    # Confirm when appending messages to an existing mailbox?
+
+# Gmail Folders
+set trash = "+[Gmail]/Trash"
+set postponed = "+[Gmail]/Drafts"
 unset record            # prevent dups in Sent
+
 unset move              # gmail does that
 # unset mark_old          # read/new is good enough
 unset markers           # no ugly plus signs
@@ -85,7 +98,7 @@ set beep=no # no beep sound
 
 # Sidebar settings
 # ------------------------------------------------------------------------------
-set sidebar_visible = no  # don't show unless asked for
+set sidebar_visible = yes
 set sidebar_format="%B%?F? [%F]?%* %?N?%N/?%S"
 set mail_check_stats
 
