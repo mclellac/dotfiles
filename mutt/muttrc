@@ -23,6 +23,10 @@ set date_format = "%b %d"
 set header_cache = "~/.mutt/cache/headers"
 set message_cachedir = "~/.mutt/cache/bodies"
 
+# Mouse Support
+# ------------------------------------------------------------------------------
+# set mouse = yes    # Uncomment if your Neomutt version supports it
+
 # Pager options
 # ------------------------------------------------------------------------------
 set help=no 		                    # hide help bar
