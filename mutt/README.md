@@ -1,126 +1,94 @@
-# Mutt Configuration
+# Neomutt Configuration (Dracula Theme)
 
-This is a modern configuration for the Mutt email client, with a focus on a clean and efficient workflow. It uses a modular structure, with separate files for accounts, colors, and keybindings.
+This is a modern configuration for the Neomutt email client, optimized for Gmail and focused on a clean, efficient workflow. It uses a modular structure with separate files for accounts, colors, keybindings, and sidebar settings.
 
-## Installation
+## Dependencies
 
-To use this configuration, you need to have Mutt or NeoMutt installed. You can then clone this repository and symlink the `mutt` directory to `~/.mutt`.
+To use this configuration effectively, you need the following installed:
 
-```bash
-git clone <repository-url>
-ln -s <repository-path>/mutt ~/.mutt
-```
+- **neomutt**: The email client itself.
+- **lynx**: Required for rendering HTML emails inline.
+- **xdg-open**: Required for opening links, images, and HTML emails in your default browser/viewer.
+- **mktemp**: Used for securely creating temporary files when opening emails in the browser.
 
-## Configuration
+## Configuration Structure
 
-The configuration is split into several files:
+The configuration is split into several files in the `~/.mutt` directory:
 
-- `muttrc`: The main configuration file.
-- `acct/`: Contains the configuration for your email accounts. You should have one file per account.
-- `colors`: The color scheme.
-- `keybindings`: Custom keybindings.
-- `mailcap`: Defines how to handle different MIME types.
-- `neomutt-sidebar`: Configuration for the NeoMutt sidebar.
-
-### Accounts
-
-To configure your email accounts, you need to create a file in the `acct/` directory for each account. You can use the `acct/personal` and `acct/work` files as templates. You should enter your app passwords for each account in the corresponding file.
+- `muttrc`: The main entry point.
+- `acct/`: Account-specific configurations (one per file).
+- `colors`: The **Dracula** color theme.
+- `keybindings`: Custom keybindings (Vim-inspired).
+- `mailcap`: MIME type handling (HTML, images, etc.).
+- `neomutt-sidebar`: Sidebar configuration.
 
 ### Colors
 
-The color scheme is defined in the `colors` file. This configuration uses a modified version of the popular **Gruvbox** theme, which is designed to be easy on the eyes. You can, of course, customize it to your liking by editing the `colors` file.
+The color scheme uses the **Dracula** theme, offering high contrast and a modern aesthetic that is easy on the eyes.
 
-### Keybindings
+## Keybindings
 
-The keybindings are defined in the `keybindings` file. They are heavily inspired by Vim.
+The keybindings are heavily inspired by Vim and optimized for speed.
 
-#### Global Keys
+### Global / Navigation
 
 | Key             | Description                      |
 | --------------- | -------------------------------- |
-| `q`             | Quit Mutt                        |
-| `Q`             | Quit Mutt without confirmation   |
-| `,` + `<Space>` | Reload the configuration         |
+| `q`             | Exit context (or quit)           |
+| `Q`             | Quit Neomutt                     |
 | `/`             | Search                           |
-| `:`             | Enter a command                  |
-| `<F2>`          | Switch to the personal account   |
-| `<F3>`          | Switch to the work account       |
 | `\CB`           | Toggle the sidebar               |
-| `Ctrl-j` / `Ctrl-k` | Navigate the sidebar             |
-| `Ctrl-o`        | Open a mailbox from the sidebar  |
+| `Ctrl-j`        | Next mailbox in sidebar          |
+| `Ctrl-k`        | Previous mailbox in sidebar      |
+| `Ctrl-o`        | Open selected sidebar mailbox    |
+| `<F2>`          | Switch to Personal account       |
+| `<F3>`          | Switch to Work account           |
 
-#### Index View (Mailbox)
+### Index View (Mail List)
 
 | Key             | Description                      |
 | --------------- | -------------------------------- |
-| `j` / `k` / `J` / `K` | Move down / up                   |
-| `l` / `<Enter>` | Open the selected email          |
-| `h` / `<Left>`  | Go back to the folder list       |
-| `gg` / `G`      | Go to the first / last email     |
-| `c`             | Change to a different mailbox    |
-| `s`             | Sync the mailbox                 |
-| `m`             | Compose a new email              |
-| `r`             | Reply to all (group reply)       |
-| `R`             | Reply to all on the list         |
-| `f`             | Forward the email                |
-| `dd`            | Delete the selected email        |
-| `dt`            | Delete the entire thread         |
-| `u`             | Undelete message                 |
-| `w`             | Mark email as read               |
-| `W`             | Mark email as unread             |
-| `*`             | Star a message                   |
-| `+`             | Mark as important                |
+| `j` / `k`       | Move down / up                   |
+| `gg` / `G`      | Go to first / last email         |
+| `e`             | **Archive** (Move to All Mail)   |
+| `d` (double)    | Delete email (Trash)             |
+| `!`             | Mark as **Unread**               |
+| `+`             | Mark as **Important**            |
+| `*`             | Star message                     |
+| `w`             | Set Flag                         |
+| `W`             | Clear Flag                       |
+| `r`             | Group reply                      |
+| `R`             | List reply                       |
 | `za`            | Collapse all threads             |
-| `zA`            | Collapse/expand the current thread |
-| `t`             | Tag an entry                     |
-| `T`             | Tag a thread                     |
+| `zA`            | Toggle thread collapse           |
 
-#### Pager View (Reading an Email)
+### Pager View (Reading)
 
 | Key             | Description                      |
 | --------------- | -------------------------------- |
+| `B`             | **Open in Browser** (View HTML)  |
 | `j` / `k`       | Scroll down / up                 |
-| `h` / `<Left>`  | Go back to the index view        |
-| `gg` / `G`      | Go to the top / bottom of the email |
-| `m`             | Compose a new email              |
-| `r`             | Reply to all (group reply)       |
-| `R`             | Reply to all on the list         |
-| `f`             | Forward the email                |
-| `dd`            | Delete the email                 |
-| `dt`            | Delete the entire thread         |
-| `s`             | Save the email                   |
-| `v` / `o`       | View attachments                 |
-| `|`             | Pipe the email to a command      |
-| `za` / `zA`     | Toggle quoted text               |
+| `v`             | View attachments                 |
+| `e`             | Archive                          |
+| `d` (double)    | Delete                           |
+| `r` / `R`       | Reply (Group / List)             |
+| `f`             | Forward                          |
 
 ## Viewing HTML Emails and Attachments
 
-This configuration is set up to handle HTML emails and various attachments in a modern way.
-
 ### HTML Emails
+HTML emails are automatically rendered to text using `lynx` for distraction-free reading in the terminal.
 
-HTML emails are automatically rendered to text using `lynx`. This provides a good reading experience directly in the terminal.
+To view complex formatting or images that don't render well in text:
+- Press **`B`** while reading an email to open it in your default web browser.
 
-If you want to open the original HTML email in your graphical browser, you can add the following macro to your `keybindings` file:
+### Images & Attachments
+- **Images**: Automatically open in your default image viewer using `xdg-open` (configured in `mailcap`).
+- **Documents**: PDFs and other documents open in their default system applications via `xdg-open`.
 
-```muttrc
-macro index,pager <F9> "<pipe-message>cat > /tmp/mutt-mail.html && xdg-open /tmp/mutt-mail.html<Enter>" "Open email in browser"
-```
+## Gmail Features
 
-### Images
-
-If your terminal supports `sixel` graphics, images attached to emails will be displayed directly in the terminal. If not, they will be opened in your default image viewer.
-
-### Other Attachments
-
-Other attachments, like PDFs or office documents, will be opened in their default application using `xdg-open`.
-
-## Tips and Tricks
-
-- You can reload the configuration at any time by pressing `,` followed by `<Space>`.
-- The sidebar can be toggled with `Ctrl-b`.
-- You can search for emails by pressing `/`.
-
----
-
-*This README was last updated on 2025-08-06.*
+This configuration is tuned for Gmail:
+- **Archive**: The `e` key moves messages to `[Gmail]/All Mail`.
+- **Folders**: Trash, Drafts, and Sent Mail are correctly mapped.
+- **Header Caching**: Enabled to speed up loading large mailboxes.
