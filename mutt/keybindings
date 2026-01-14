@@ -29,8 +29,8 @@ bind index,pager d noop
 # Navigation
 bind generic,index,pager <PageUp>       previous-page
 bind generic,index,pager <PageDown>     next-page
-bind index,pager \Cd                    half-down
-bind index,pager \Cu                    half-up
+bind index,pager <C-d>                  half-down
+bind index,pager <C-u>                  half-up
 bind generic,index,pager,attach j       next-entry
 bind generic,index,pager,attach k       previous-entry
 bind index J                            next-entry
@@ -71,6 +71,7 @@ bind index *          flag-message # Star a message
 macro index !         'WN' "Mark email as unread"
 macro index +         '<save-message>=[Gmail]/Important<enter><enter><sync-mailbox>' "Mark as important"
 macro index e         "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
+macro index,pager S   "<save-message>=[Gmail]/Spam<enter><enter>" "Move to Spam"
 
 # Threads
 bind index za         collapse-all
@@ -79,7 +80,7 @@ bind index zA         collapse-thread
 # Tagging
 bind index t          tag-entry
 bind index T          tag-thread
-bind index \CT        tag-pattern
+bind index <C-t>      tag-pattern
 
 # ------------------------------------------------------------------------------
 # Pager View (Reading an Email)
@@ -129,8 +130,8 @@ bind attach s         save-entry
 
 bind index,pager <C-k> sidebar-prev
 bind index,pager <C-j> sidebar-next
-bind index,pager \Cp   sidebar-prev
-bind index,pager \Cn   sidebar-next
+bind index,pager <C-p> sidebar-prev
+bind index,pager <C-n> sidebar-next
 bind index,pager <C-o> sidebar-open
-bind index,pager \Cl   sidebar-open
-bind index,pager \CB sidebar-toggle-visible
+bind index,pager <C-l> sidebar-open
+bind index,pager <C-b> sidebar-toggle-visible
