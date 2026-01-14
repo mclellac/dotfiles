@@ -79,6 +79,7 @@ set auto_tag = yes
 # ------------------------------------------------------------------------------
 set mailcap_path    = ~/.mutt/mailcap
 set implicit_autoview
+auto_view text/html
 alternative_order text/plain text/html text/enriched text/calendar
 
 # Remove ""Autoview using"" message.

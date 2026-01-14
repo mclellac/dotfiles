@@ -10,6 +10,7 @@ To use this configuration effectively, you need the following installed:
 - **lynx**: Required for rendering HTML emails inline.
 - **xdg-open**: Required for opening links, images, and HTML emails in your default browser/viewer.
 - **mktemp**: Used for securely creating temporary files when opening emails in the browser.
+ - **libsixel-bin** (optional): Provides `img2sixel` for viewing images inline in the terminal.
 
 ## Configuration Structure
 
@@ -83,7 +84,9 @@ To view complex formatting or images that don't render well in text:
 - Press **`B`** while reading an email to open it in your default web browser.
 
 ### Images & Attachments
-- **Images**: Automatically open in your default image viewer using `xdg-open` (configured in `mailcap`).
+- **Images**:
+  - If **libsixel** is installed and your terminal supports it, images will render directly in the terminal window.
+  - Otherwise, they will open in your default external image viewer using `xdg-open`.
 - **Documents**: PDFs and other documents open in their default system applications via `xdg-open`.
 
 ## Gmail Features
