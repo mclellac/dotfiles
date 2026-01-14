@@ -1,110 +1,45 @@
-# vim: filetype=muttrc
+# Dracula Theme for Neomutt
 
-# 256-color scheme for Mutt
+# General Colors
+color normal        color252        default
+color error         color203        default
+color markers       color231        default
+color tilde         color243        default
+color status        color231        color236
 
-# Default
-color normal    color252      default
+# Index Colors
+color index         color252        default         ".*"
+color index         color203        default         "~D"                    # Deleted
+color index         color84         default         "~F"                    # Flagged
+color index         color117        default         "~N"                    # New
+color index         color212        default         "~T"                    # Tagged
+color index         color231        default         "~O"                    # Old
 
-# Basic Colors
-color tree	    color111        default
-color error	    color211	default
-color message	color111    	default
-color status	color252     color235
-color indicator	color222      color240
+# Message Header Colors
+color hdrdefault    color243        default
+color header        color117        default         "^Subject"
+color header        color212        default         "^From"
+color header        color231        default         "^To"
+color header        color231        default         "^Cc"
 
-# Uncolor certain messages
-uncolor index "~E"
-uncolor index "~P"
-uncolor index "~C @.ca"
-uncolor index "~N ~u"
-uncolor index "~N !~u"
-uncolor index "~T"
-uncolor index "~D"
+# Message Body Colors
+color quoted        color61         default
+color quoted1       color117        default
+color quoted2       color84         default
+color quoted3       color212        default
+color quoted4       color203        default
 
-# Recolor them appropriately
-color index color211       default     "~E" # Expired
-color index color219    default     "~P" # From me
-color index color150           default     "~C @.ca"
-color index color150          default     "~N ~u"  # new ML mail
-color index color150         default     "~N !~u" # new non-ML mail
-color index color216   default     "~T" # Tagged
-color index color211           default         "~D" # Deleted
-color index color252         default     "~N !~T !~F !~p !~P"
-color index color252		    default		"~A"        # all messages
-color index color250		default		"~O"        # old messages
-color index color183		    default		"~Q"        # messages that have been replied to
-color index color240	    	default		"~R"        # read messages
-color index color252           default		"~U"        # unread messages
-color index color252           default		"~U~$"      # unread, unreferenced messages
-color index color246		default		"~v"        # messages part of a collapsed thread
-color index color246		default		"~P"        # messages from me
-color index color252	        default		"~p!~F"     # messages to me
-color index color111		    default		"~N~p!~F"   # new messages to me
-color index color111		    default		"~U~p!~F"   # unread messages to me
-color index color240	    	default		"~R~p!~F"   # messages to me
-color index color216		    default		"~F"        # flagged messages
-color index color150		    default		"~F~p"      # flagged messages to me
-color index color111		default		"~N~F"      # new flagged messages
-color index color150		default		"~N~F~p"    # new flagged messages to me
-color index color150 	default		"~U~F~p"    # new flagged messages to me
-color index color211		default         "~D"        # deleted messages
-color index color246		default		"~v~(!~N)"  # collapsed thread with no unread
-color index color183		default		"~v~(~N)"   # collapsed thread with some unread
-color index color150         default		"~N~v~(~N)" # collapsed thread with unread parent
-
-# Header
-color header color219  default     "^from:"
-color header color150          default     "^to:"
-color header color222         default     "^cc:"
-color header color111     default    "^subject:"
-
-# Message bodies
-color attachment color246  default
-color search     color211          default
-color signature  color246         default
-color tilde      color246  default
-color hdrdefault color222       default
-color bold       color219 default
+color signature     color243        default
+color bold          color231        default
+color underline     color231        default
+color attachment    color212        default
 
 # URLs
-color body color111 default "(^|<| )mailto:[^ ]+@[^ ]( |>|$)"
-color body color111 default "(^|<| )(http|https|ftp|file|telnet|news|finger)://[^ ]+( |>|$)"
-color body color111 default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
-color body color111  default  "((@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]),)*@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\.[0-9]?[0-9]?[0-9]\\]):)?[0-9a-z_.+%$-]+@(([0-9a-z-]+\\.)*[0-9a-z-]+\\.?|#[0-9]+|\\[[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\.[0-2]?[0-9]?[0-9]\\])"
+color body          color117        default         "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+"
+color body          color117        default         "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+"
 
-# *bold*, _underline_, and /italic/
-color body color219 default "(^| )\\*[^ ]+\\*( |$)"
-color body color150 default "(^| )_[^ ]+_( |$)"
-color body color183 default "(^| )/[^ ]+/( |$)"
-
-# Quoted text
-color quoted  color183 default
-color quoted1 color111          default
-color quoted2 color150         default
-color quoted3 color222        default
-color quoted4 color219       default
-color quoted5 color150   default
-color quoted6 color222  default
-color quoted7 color111    default
-
-# PGP messages
-color body color150     default     "^gpg signature OK.*"
-color body color222          default     "^gpg "
-color body color211       default     "^gpg signature NOT OK. *"
-
-# Domain-specific colors
-color index color111 default "~f gmail.com"
-color index color111 default "~f hotmail.com"
-color index color150 default "~f crave.ca"
-color index color150 default "~f netflix.com"
-color index color150 default "~f primevideo.com"
-color index color222 default "~f amazon.ca"
-color index color212 default "~f torontohydro.com"
-color index color202 default "~f irobot.com"
-color index color197 default "~f rogers.com"
-color index color161 default "~f cibc.com"
-color index color117 default "~f steampowered.com"
-color index color114 default "~f wealthsimple.com"
-color index color124 default "~f petdesk.com"
-color index color129 default "~f interact.ca"
-color index color139 default "~f github.com"
+# Sidebar Colors
+color sidebar_divider    color243        default
+color sidebar_new        color117        default
+color sidebar_flagged    color203        default
+color sidebar_highlight  color231        color236

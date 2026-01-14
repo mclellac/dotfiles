@@ -8,7 +8,7 @@
 
 # Use lynx to render HTML emails in the terminal.
 # The `copiousoutput` option tells Mutt to expect a lot of output.
-text/html; lynx -dump -force_html %s; copiousoutput;
+text/html; lynx -dump -force_html -width=120 -display_charset=utf-8 %s; copiousoutput;
 
 # To open HTML emails in your default browser, you can use a keybinding like this in your muttrc:
 # macro pager B "<pipe-message>urlview<Enter>" "Browse URLs"
@@ -23,18 +23,28 @@ text/html; lynx -dump -force_html %s; copiousoutput;
 # This requires a terminal that supports sixel graphics.
 # If your terminal doesn't support sixel, it will gracefully fail,
 # and you can use the 'o' keybinding to open the image in an external viewer.
-image/jpeg; img2sixel '%s'; copiousoutput
-image/png; img2sixel '%s'; copiousoutput
-image/gif; img2sixel '%s'; copiousoutput
-image/bmp; img2sixel '%s'; copiousoutput
-image/tiff; img2sixel '%s'; copiousoutput
-image/webp; img2sixel '%s'; copiousoutput
-image/svg+xml; img2sixel '%s'; copiousoutput
-image/x-xpixmap; img2sixel '%s'; copiousoutput
+# image/jpeg; img2sixel '%s'; copiousoutput
+# image/png; img2sixel '%s'; copiousoutput
+# image/gif; img2sixel '%s'; copiousoutput
+# image/bmp; img2sixel '%s'; copiousoutput
+# image/tiff; img2sixel '%s'; copiousoutput
+# image/webp; img2sixel '%s'; copiousoutput
+# image/svg+xml; img2sixel '%s'; copiousoutput
+# image/x-xpixmap; img2sixel '%s'; copiousoutput
+
+# Use xdg-open for images (since img2sixel is missing)
+image/jpeg; xdg-open '%s';
+image/png; xdg-open '%s';
+image/gif; xdg-open '%s';
+image/bmp; xdg-open '%s';
+image/tiff; xdg-open '%s';
+image/webp; xdg-open '%s';
+image/svg+xml; xdg-open '%s';
+image/x-xpixmap; xdg-open '%s';
 
 # Fallback for other image types or for opening in an external viewer.
 # The 'o' keybinding in the attachment view will use this.
-image/*; xdg-open '%s'; copiousoutput
+image/*; xdg-open '%s';
 
 # ------------------------------------------------------------------------------
 # Documents
