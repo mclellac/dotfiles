@@ -107,7 +107,7 @@ bind pager |          pipe-message
 
 # Attachments
 bind pager v          view-attachments
-macro pager B "<pipe-message>f=\`mktemp --suffix=.html\`; cat > \$f && xdg-open \$f<Enter>" "Open email in browser"
+macro pager B "<view-attachments><search>text/html<enter><view-mailcap><exit>" "Open html part in browser"
 
 # Quoting
 bind pager za         toggle-quoted
