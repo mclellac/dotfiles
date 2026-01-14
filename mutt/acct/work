@@ -11,6 +11,7 @@ set realname 	= "real name"
 
 set spoolfile 	= "+INBOX"
 set postponed 	= "+[Gmail]/Drafts"
+# If [Gmail]/Drafts is invalid, try: set postponed = "+Drafts"
 set trash		= "imaps://imap.gmail.com/[Gmail]/Bin" 
 set ispell      = "aspell --mode=email check"
 set include=yes
