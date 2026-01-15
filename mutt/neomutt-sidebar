@@ -30,17 +30,31 @@ set sidebar_new_mail_only = no
 # Keybindings
 # ------------------------------------------------------------------------------
 
-# Unbind defaults to prevent conflicts (e.g., next-entry)
-unbind index,pager <C-k>
-unbind index,pager <C-j>
-unbind index,pager <C-p>
-unbind index,pager <C-n>
+# Explicitly unbind to prevent conflicts with default 'next-entry' / 'previous-entry'
+unbind index <C-k>
+unbind index <C-j>
+unbind index <C-p>
+unbind index <C-n>
 
-# Sidebar Navigation
-bind index,pager <C-k> sidebar-prev
-bind index,pager <C-j> sidebar-next
-bind index,pager <C-p> sidebar-prev
-bind index,pager <C-n> sidebar-next
-bind index,pager <C-o> sidebar-open
-bind index,pager <C-l> sidebar-open
-bind index,pager <C-b> sidebar-toggle-visible
+unbind pager <C-k>
+unbind pager <C-j>
+unbind pager <C-p>
+unbind pager <C-n>
+
+# Sidebar Navigation (Index)
+bind index <C-k> sidebar-prev
+bind index <C-j> sidebar-next
+bind index <C-p> sidebar-prev
+bind index <C-n> sidebar-next
+bind index <C-o> sidebar-open
+bind index <C-l> sidebar-open
+bind index <C-b> sidebar-toggle-visible
+
+# Sidebar Navigation (Pager)
+bind pager <C-k> sidebar-prev
+bind pager <C-j> sidebar-next
+bind pager <C-p> sidebar-prev
+bind pager <C-n> sidebar-next
+bind pager <C-o> sidebar-open
+bind pager <C-l> sidebar-open
+bind pager <C-b> sidebar-toggle-visible
