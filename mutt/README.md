@@ -9,27 +9,34 @@ The `install.sh` script will attempt to install the following dependencies:
 - **neomutt**: The email client.
 - **urlscan**: For extracting and opening URLs (`Ctrl-l`).
 - **w3m**: Required by `beautiful_html_render` for rendering HTML emails inline.
-- **pandoc**: Used for converting Markdown to HTML in the composer (`M` macro).
+- **pandoc**: Used for converting Markdown to HTML in the composer (`M` macro) and rendering HTML emails.
+- **glow**: Terminal markdown renderer, used for displaying HTML emails.
+- **notmuch**: For fast email indexing and searching.
+- **isync (mbsync)**: For synchronizing IMAP mailboxes locally.
 - **git-split-diffs**: Used for viewing patch files (`attach P` macro).
 - **xdg-utils (xdg-open)**: For opening links and attachments in default external applications.
 - **sc-im**: For viewing spreadsheet attachments (Excel/CSV).
 - **mpv**: For viewing video attachments.
 - **Perl** & **Sed**: Used in display filters.
 
-*Note: `isync` (mbsync) and `notmuch` are no longer required as this configuration uses IMAP directly.*
-
 ## Installation
 
 1.  **Run the install script**:
     ```bash
-    ./install.sh
+    ./install-mutt.sh
     ```
-    This script works on Arch Linux, Debian/Ubuntu, Fedora, and macOS. It will install the dependencies and copy the configuration files to `~/.config/mutt`.
+    This script works on Arch Linux, Debian/Ubuntu, Fedora, and macOS. It will install the dependencies, copy the configuration files to `~/.config/mutt`, and set up notmuch/isync configs.
 
 2.  **Configure Accounts**:
     Edit the account files in `~/.config/mutt/acct/`:
     *   `personal`: Update `imap_user`, `imap_pass`, `smtp_url` (with user), `smtp_pass`, `from`, and `realname`.
     *   `work`: Similar configuration if needed.
+
+3.  **Configure Syncing (Notmuch/isync)**:
+    *   Edit `~/.config/isync/mbsyncrc` with your IMAP details (see `isync/mbsyncrc.example` for reference).
+    *   Run `mbsync -a` to download your email.
+    *   Run `notmuch new` to index the downloaded email.
+    *   Neomutt is configured to look for the notmuch database in `~/.local/share/mail`. Ensure `mbsyncrc` downloads to this location.
 
 ## Keybindings
 
@@ -48,6 +55,7 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 | `<F2>`          | **Switch to Personal Account**             |
 | `<F3>`          | **Switch to Work Account**                 |
 | `c`             | Compose Mail                               |
+| `O`             | **Sync Mail** (Run `mbsync -a`)            |
 
 ### Index View (Mail List)
 | Key             | Description                                |
@@ -92,7 +100,8 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 
 ## Features
 
-- **HTML Rendering**: HTML emails are rendered inline using `w3m` via the `beautiful_html_render` script.
+- **HTML Rendering**: HTML emails are rendered inline using `pandoc` and `glow` via the `beautiful_html_render` script.
 - **URL Scanning**: Use `Ctrl-l` to list and select URLs from the current message.
 - **Gmail Optimization**: "Quick Delete" (`D`) and "Quick Archive" (`A`) are configured to move messages to the Archive folder, mimicking Gmail's archive behavior.
 - **Patch Viewing**: Integration with `git-split-diffs` for viewing patches.
+- **Notmuch Integration**: Fast searching and indexing is enabled. Ensure you sync your mail locally using `mbsync`.
