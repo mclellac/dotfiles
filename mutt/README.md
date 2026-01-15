@@ -37,7 +37,7 @@ The configuration is split into several files in the `~/.mutt` directory:
 
 ### Colors
 
-The color scheme uses the **Dracula** theme, offering high contrast and a modern aesthetic that is easy on the eyes. The theme avoids pink and purple colors, favoring blues, cyans, greens, and oranges.
+The color scheme uses the **Dracula** theme, offering high contrast and a modern aesthetic that is easy on the eyes.
 
 ## Keybindings
 
@@ -111,13 +111,3 @@ This configuration is tuned for Gmail:
 - **Archive**: The `e` key moves messages to `[Gmail]/All Mail`.
 - **Folders**: Trash, Drafts, and Sent Mail are correctly mapped.
 - **Header Caching**: Enabled to speed up loading large mailboxes.
-
-## Filtering Emails
-
-Since Neomutt is an IMAP client, it reflects the state of your mail server. For Gmail users, filtering emails into specific folders (labels) should be done on the server side:
-
-1.  Open Gmail in your web browser.
-2.  Go to **Settings** > **Filters and Blocked Addresses**.
-3.  Create a new filter (e.g., "From: facebook.com").
-4.  Choose "Skip the Inbox (Archive it)" and "Apply the label: [Your Label]".
-5.  Neomutt will now show these emails in the corresponding folder in the sidebar.
