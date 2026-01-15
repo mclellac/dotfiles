@@ -82,7 +82,14 @@ mkdir -p "$CONFIG_DIR"
 
 # Copy files
 echo "Copying configuration files to $CONFIG_DIR..."
-cp -r "$SCRIPT_DIR/"* "$CONFIG_DIR/"
+for item in "$SCRIPT_DIR/"*; do
+    basename_item=$(basename "$item")
+    if [ "$basename_item" == "acct" ] && [ -d "$CONFIG_DIR/acct" ]; then
+        echo "Account configuration already exists. Skipping overwrite of acct directory."
+    else
+        cp -r "$item" "$CONFIG_DIR/"
+    fi
+done
 
 # Make scripts executable
 chmod +x "$CONFIG_DIR/scripts/"*
