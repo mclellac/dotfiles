@@ -1,76 +1,22 @@
-# Mutt mailcap file
-#
-# This file defines how Mutt should handle different MIME types.
+# open html emails in browser (or whatever GUI program is used to render HTML)
+text/html; xdg-open %s ; nametemplate=%s.html
+# render html emails inline using magic (uncomment the line below to use lynx instead)
+# text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -collapse_br_tags -dump %s; nametemplate=%s.html; copiousoutput
+text/html; ~/.mutt/scripts/beautiful_html_render %s; nametemplate=%s.html; copiousoutput;
 
-# ------------------------------------------------------------------------------
-# HTML Mail
-# ------------------------------------------------------------------------------
+# show calendar invites
+text/calendar; ~/.mutt/scripts/render-calendar-attachment.py %s; copiousoutput;
+application/ics; ~/.mutt/scripts/mutt-viewical; copiousoutput;
 
-# Use xdg-open for interactive viewing of HTML (e.g., press Enter in attachment view)
-text/html; xdg-open %s; needsterminal;
+# open images externally
+image/*; xdg-open %s ;
 
-# Use lynx to render HTML emails in the terminal for auto_view.
-# The `copiousoutput` option tells Mutt to expect a lot of output.
-text/html; w3m -I %{charset} -T text/html -dump %s; copiousoutput;
+# open videos in mpv
+video/*; mpv --autofit-larger=90\%x90\% %s; needsterminal;
+video/*; setsid mpv --quiet %s &; copiousoutput
 
-# To open HTML emails in your default browser, you can use a keybinding like this in your muttrc:
-# macro pager B "<pipe-message>urlview<Enter>" "Browse URLs"
-# Or, to open the whole email in a browser:
-# macro index,pager <F9> "<pipe-message>cat > /tmp/mutt-mail.html && xdg-open /tmp/mutt-mail.html<Enter>" "Open email in browser"
+# open spreadsheets in sc-im
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; sc-im %s; needsterminal
 
-# ------------------------------------------------------------------------------
-# Images
-# ------------------------------------------------------------------------------
-
-# Attempt to display images inline using img2sixel.
-# This requires a terminal that supports sixel graphics.
-# The 'test' clause ensures this is only used if img2sixel is installed.
-# (Disabled as per user request - unreliable)
-# image/jpeg; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/png; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/gif; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/bmp; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/tiff; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/webp; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/svg+xml; img2sixel '%s'; test=which img2sixel; copiousoutput
-# image/x-xpixmap; img2sixel '%s'; test=which img2sixel; copiousoutput
-
-# Use xdg-open for images (fallback if img2sixel is missing or for external viewing)
-image/jpeg; xdg-open '%s';
-image/png; xdg-open '%s';
-image/gif; xdg-open '%s';
-image/bmp; xdg-open '%s';
-image/tiff; xdg-open '%s';
-image/webp; xdg-open '%s';
-image/svg+xml; xdg-open '%s';
-image/x-xpixmap; xdg-open '%s';
-
-# Fallback for other image types or for opening in an external viewer.
-# The 'o' keybinding in the attachment view will use this.
-image/*; xdg-open '%s';
-
-# ------------------------------------------------------------------------------
-# Documents
-# ------------------------------------------------------------------------------
-
-# View PDFs in your default PDF viewer.
-application/pdf; xdg-open '%s'
-
-# View other documents in your default application.
-application/msword; xdg-open '%s'
-application/vnd.openxmlformats-officedocument.wordprocessingml.document; xdg-open '%s'
-application/vnd.oasis.opendocument.text; xdg-open '%s'
-
-# ------------------------------------------------------------------------------
-# Fallback for unknown types
-# ------------------------------------------------------------------------------
-
-# For any other file type, try to open it with xdg-open.
-application/octet-stream; xdg-open '%s'
-
-# ------------------------------------------------------------------------------
-# Plain text
-# ------------------------------------------------------------------------------
-
-# Open plain text files in neovim.
-text/plain; nvim %s
+# open anything else externally
+application/pdf; xdg-open %s;
