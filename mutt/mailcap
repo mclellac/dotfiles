@@ -2,11 +2,11 @@
 text/html; xdg-open %s ; nametemplate=%s.html
 # render html emails inline using magic (uncomment the line below to use lynx instead)
 # text/html; lynx -assume_charset=%{charset} -display_charset=utf-8 -collapse_br_tags -dump %s; nametemplate=%s.html; copiousoutput
-text/html; ~/.mutt/scripts/beautiful_html_render %s; nametemplate=%s.html; copiousoutput;
+text/html; ~/.config/mutt/scripts/beautiful_html_render %s; nametemplate=%s.html; copiousoutput;
 
 # show calendar invites
-text/calendar; ~/.mutt/scripts/render-calendar-attachment.py %s; copiousoutput;
-application/ics; ~/.mutt/scripts/mutt-viewical; copiousoutput;
+text/calendar; ~/.config/mutt/scripts/render-calendar-attachment.py %s; copiousoutput;
+application/ics; ~/.config/mutt/scripts.config/mutt-viewical; copiousoutput;
 
 # open images externally
 image/*; xdg-open %s ;
