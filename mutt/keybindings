@@ -12,6 +12,26 @@ macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/acct/personal<ente
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/acct/work<enter><change-folder>!<enter>' "Switch to Work account"
 macro generic ,r ":source ~/.mutt/muttrc\n" "Reload muttrc"
 
+# ------------------------------------------------------------------------------
+# Sidebar Navigation (Explicit Bindings)
+# ------------------------------------------------------------------------------
+bind index <C-k> sidebar-prev
+bind index <C-j> sidebar-next
+bind index <C-p> sidebar-prev
+bind index <C-n> sidebar-next
+bind index <C-o> sidebar-open
+bind index <C-l> sidebar-open
+bind index <C-b> sidebar-toggle-visible
+
+bind pager <C-k> sidebar-prev
+bind pager <C-j> sidebar-next
+bind pager <C-p> sidebar-prev
+bind pager <C-n> sidebar-next
+bind pager <C-o> sidebar-open
+bind pager <C-l> sidebar-open
+bind pager <C-b> sidebar-toggle-visible
+
+# ------------------------------------------------------------------------------
 # Generic Bindings (apply in multiple views)
 # ------------------------------------------------------------------------------
 
@@ -125,11 +145,3 @@ bind attach <Left>    exit
 bind attach h         exit
 bind attach s         save-entry
 
-# ------------------------------------------------------------------------------
-# Optional/Experimental Bindings (At the end)
-# ------------------------------------------------------------------------------
-
-# Try to bind half-page scrolling for Index.
-# This is a Neomutt feature and might fail on standard Mutt.
-bind index <C-d>      half-down
-bind index <C-u>      half-up
