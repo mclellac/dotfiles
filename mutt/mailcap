@@ -6,7 +6,7 @@ text/html; ~/.config/mutt/scripts/beautiful_html_render %s; nametemplate=%s.html
 
 # show calendar invites
 text/calendar; ~/.config/mutt/scripts/render-calendar-attachment.py %s; copiousoutput;
-application/ics; ~/.config/mutt/scripts.config/mutt-viewical; copiousoutput;
+application/ics; ~/.config/mutt/scripts/mutt-viewical; copiousoutput;
 
 # open images externally
 image/*; xdg-open %s ;
