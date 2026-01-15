@@ -25,6 +25,9 @@ bind attach g noop
 bind index,pager g noop
 bind index,pager d noop
 unbind index,pager <C-b>
+unmacro index,pager <C-b>
+unbind generic <C-b>
+unmacro generic <C-b>
 
 # Navigation
 bind generic,index,pager <PageUp>       previous-page
