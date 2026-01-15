@@ -7,10 +7,10 @@ This is a modern configuration for the Neomutt email client, optimized for Gmail
 To use this configuration effectively, you need the following installed:
 
 - **neomutt**: The email client itself.
-- **lynx**: Required for rendering HTML emails inline.
+- **lynx** or **w3m**: Required for rendering HTML emails inline.
 - **xdg-open**: Required for opening links, images, and HTML emails in your default browser/viewer.
 - **mktemp**: Used for securely creating temporary files when opening emails in the browser.
- - **libsixel-bin** (optional): Provides `img2sixel` for viewing images inline in the terminal.
+- **libsixel-bin** (optional): Provides `img2sixel` for viewing images inline in the terminal.
 
 ## Mouse Support
 
@@ -50,14 +50,14 @@ The keybindings are heavily inspired by Vim and optimized for speed.
 | `q`             | Exit context (or quit)           |
 | `Q`             | Quit Neomutt                     |
 | `/`             | Search                           |
-| `\CB`           | Toggle the sidebar               |
-| `Ctrl-n` / `Ctrl-p` | Highlight Next/Prev mailbox in sidebar |
-| `Ctrl-j` / `Ctrl-k` | Highlight Next/Prev mailbox in sidebar |
-| `Ctrl-o` / `Ctrl-l` | **Open** highlighted sidebar mailbox   |
+| `Ctrl-b`        | Toggle the sidebar               |
+| `Ctrl-n` / `Ctrl-j` | Highlight Next mailbox in sidebar |
+| `Ctrl-p` / `Ctrl-k` | Highlight Prev mailbox in sidebar |
+| `Ctrl-o`        | **Open** highlighted sidebar mailbox   |
 | `<F2>`          | Switch to Personal account       |
 | `<F3>`          | Switch to Work account           |
 
-*Note: Selecting a mailbox in the sidebar only highlights it. You must press `Ctrl-o` or `Ctrl-l` to actually open the selected mailbox.*
+*Note: Selecting a mailbox in the sidebar only highlights it. You must press `Ctrl-o` to actually open the selected mailbox.*
 
 ### Index View (Mail List)
 
@@ -94,7 +94,7 @@ The keybindings are heavily inspired by Vim and optimized for speed.
 ## Viewing HTML Emails and Attachments
 
 ### HTML Emails
-HTML emails are automatically rendered to text using `lynx` for distraction-free reading in the terminal.
+HTML emails are automatically rendered to text using `w3m` (or `lynx`) for distraction-free reading in the terminal.
 
 To view complex formatting or images that don't render well in text:
 - Press **`B`** while reading an email to open it in your default web browser.

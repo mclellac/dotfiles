@@ -29,7 +29,7 @@ set message_cachedir = "~/.mutt/cache/bodies"
 
 # Pager options
 # ------------------------------------------------------------------------------
-set help=no 		                    # hide help bar
+set help=yes 		                    # show help bar
 set pager_index_lines = 0               # number of index lines to show
 set pager_context     = 10              # number of context lines to show
 set pager_stop                          # don't go to next message automatically
