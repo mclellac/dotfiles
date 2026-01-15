@@ -9,9 +9,13 @@ source ~/.config/mutt/keys/binds.muttrc
 
 #### Accounts
 # My accounts
-folder-hook 'Personal' 'source ~/.config/mutt/acct/personal'
-folder-hook 'Work' 'source ~/.config/mutt/acct/work'
+# folder-hook 'Personal' 'source ~/.config/mutt/acct/personal'
+# folder-hook 'Work' 'source ~/.config/mutt/acct/work'
 source ~/.config/mutt/acct/personal # Load Personal by default
+
+# Account switching macros
+macro index,pager <F2> '<enter-command>source ~/.config/mutt/acct/personal<enter><change-folder>+INBOX<enter>' "Switch to Personal account"
+macro index,pager <F3> '<enter-command>source ~/.config/mutt/acct/work<enter><change-folder>+INBOX<enter>' "Switch to Work account"
 
 #### General Settings
 set smtp_authenticators = 'gssapi:login'
@@ -62,12 +66,12 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set display_filter="perl -0777pe 's/___{10,}[^_]*microsoft teams meeting.*to join the meeting<([^>]*).*(___{10,})/\\n────────────────────────────────────────────────────────────────────────\\n\\nTeams Meeting ~~\\n\\nMeeting URL:\\n$1\\n\\n────────────────────────────────────────────────────────────────────────/is'| sed 's/^\\(To\\|CC\\): \\([^<]*[^>]\\)$/\\1\:<\\2>/g' | perl -0777pe 's/(((?!.*CC:)To:|CC:).+?(?=>\\n)>)/$1!REMOVE_ME!\\n!END!/gs' | sed '/^To:/{;:l N;/!END!/b; s/\\(\\n\\|  *\\|\\t\\t*\\)/ /g; bl}' | sed '/^To:/,/>$/ s/\\([^>]*>,\\?\\)/\\1\\n/g' | sed -e 's/^ \\(CC:\\)\\(.*$\\)/\\1\\n\\2/' -e 's/^\\(To:\\)\\(.*$\\)/\\1 --------------------------------------------------------------------\\n\\2/' -e 's/^!END!$/------------------------------------------------------------------------/' -e '/!REMOVE_ME!/d' -e '/\\[-- Type: text.* --\\]/d' -e '/\\[-- Autoview.* --\\]/d' -e '/\\[-- Type.* --\\]/d' -e '/\\[-- .*unsupported.* --\\]/d' -e '/\\[-- Attachment #[0-9] --\\]/d' -e 's/Attachment #[0-9]: //g' -e '/./,/^$/!d' -e 's/\\([A-Z]*\\), *\\([A-Za-z]*\\)\\(\"\\)\\?/\\2 \\L\\u\\1\\E\\3/g'"
 
 #### Notmuch Config
-# Kept from external config, might require adjustment if user doesn't use notmuch
-set nm_query_type=threads                                   # bring in the whole thread instead of just the matched message, really useful
-set nm_default_url = "notmuch:///$HOME/.local/share/mail"   # default notmuch URL
-set nm_record_tags = "sent"                                 # default 'sent' tag
-set virtual_spoolfile=yes                                   # allow using virtual mailboxes as spoolfile
-macro index \Cg "<enter-command>unset wait_key<enter><shell-escape>read -p 'Enter a search: ' x; echo \$x >~/.cache/mutt_terms<enter><change-folder>All Accounts<enter><limit>~i \"\`notmuch --config ~/.config/notmuch/notmuchrc search --output=messages \$(/bin/cat ~/.cache/mutt_terms) | head -n 1000 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a' | sed 's/id://g' \`\"<enter>" "Search all mailboxes in all accounts (Global search)"
+# Disabled as per user request (no local mail)
+# set nm_query_type=threads
+# set nm_default_url = "notmuch:///$HOME/.local/share/mail"
+# set nm_record_tags = "sent"
+# set virtual_spoolfile=yes
+# macro index \Cg ...
 
 #### Content/Autoview
 auto_view application/ics
