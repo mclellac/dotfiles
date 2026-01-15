@@ -1,17 +1,17 @@
 # vim: filetype=neomuttrc
-set mailcap_path = ~/.mutt/mailcap
+set mailcap_path = ~/.config/mutt/mailcap
 set rfc2047_parameters = yes
 set check_mbox_size = yes
 
 #### General Key Bindings
-source ~/.mutt/keys/unbinds.muttrc
-source ~/.mutt/keys/binds.muttrc
+source ~/.config/mutt/keys/unbinds.muttrc
+source ~/.config/mutt/keys/binds.muttrc
 
 #### Accounts
 # My accounts
-folder-hook 'Personal' 'source ~/.mutt/acct/personal'
-folder-hook 'Work' 'source ~/.mutt/acct/work'
-source ~/.mutt/acct/personal # Load Personal by default
+folder-hook 'Personal' 'source ~/.config/mutt/acct/personal'
+folder-hook 'Work' 'source ~/.config/mutt/acct/work'
+source ~/.config/mutt/acct/personal # Load Personal by default
 
 #### General Settings
 set smtp_authenticators = 'gssapi:login'
@@ -36,11 +36,11 @@ set thorough_search=no        # don't process mail (via mailcap etc) before pars
 set flag_safe                 # flagged messages can't be deleted
 
 #### Aliases
-set alias_file=~/.mutt/aliases
-source ~/.mutt/aliases
+set alias_file=~/.config/mutt/aliases
+source ~/.config/mutt/aliases
 
 #### Colors, Symbols and Formatting
-source ~/.mutt/colors
+source ~/.config/mutt/colors
 
 #### Header Options
 ignore *                                # ignore all headers
@@ -104,7 +104,7 @@ set beep=no  # don't beep for errors
 set beep_new # beep for new messages
 
 #### Text editor
-set editor="~/.mutt/scripts/mutt-trim %s; nvim +':set textwidth=72' +':set wrapmargin=0' +':set wrap' +':set spell' %s"
+set editor="~/.config/mutt/scripts/mutt-trim %s; nvim +':set textwidth=72' +':set wrapmargin=0' +':set wrap' +':set spell' %s"
 
 #### Markdown to html email conversion
 macro compose M "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=UTF-8\n" "Convert from MD to HTML"
