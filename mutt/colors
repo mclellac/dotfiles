@@ -1,6 +1,4 @@
-# Nerd icons idea based on https://github.com/sheoak/neomutt-powerline-nerdfonts/
-# Dracula colors based on Dracula Theme by Paul Townsend <paul@caprica.org>
-
+# Nord-inspired colors (No Purple/Pink)
 
 # Formatting   ----------------------------------------------------------------------
 set date_format = "%a %d %h %H:%M"
@@ -19,23 +17,21 @@ index-format-hook attachment_info '~A' "   "
 
 # General Colors   ------------------------------------------------------------------
 color normal default default                            # general text
-# Replaced color212 (pink) with color160 (red)
-color error color231 color160                           # error messages
+color error color1 default                              # error messages (Red)
 color message default default                           # messages at the bottom
 color prompt default default                            # prompt text
-color search black color10                              # search highlight
+color search black color3                               # search highlight (Black on Yellow/Orange)
 
 
 # Statusbar Colors   ----------------------------------------------------------------
-# Replaced color141 (purple) with color39 (blue)
-color status color39 default
+color status color6 default                              # Status bar (Cyan)
 color status color7 color8 '([a-zA-Z0-9\.,]|\[|\])(\s)'  # bubble content 1
 color status color7 color8 '(\s)([a-zA-Z0-9\.,]|\[|\])'  # bubble content 2
 color status color7 color8 '(\% )'                       # % symbol
 color status color7 color8 '(\S)'                        # empty spaces
 color status color8 default '(|)'                      # statusline "bubbles"
-color status color69 black '(\` )'                      # bubble account variation
-color status white color69 '([a-zA-Z0-9\.]+)( )'         # account text
+color status color4 black '(\` )'                       # bubble account variation (Blue)
+color status white color4 '([a-zA-Z0-9\.]+)( )'          # account text (White on Blue)
 color status green color8 ''                            # Unread messages count
 color status blue color8 ''                             # Read messages count icon
 color status yellow color8 ''                           # Flagged icon
@@ -43,35 +39,34 @@ color status red color8 ''                              # Pending delete icon
 
 
 # Index Colors   --------------------------------------------------------------------
-color index color15 default '~N'                # new messages
-color index color8 default '~R'                 # read messages
+color index color15 default '~N'                # new messages (White)
+color index color8 default '~R'                 # read messages (Grey)
 color index color8 default '~Q'                 # messages which have been replied to
-color index_collapsed color4 default            # collapsed thread (message count text)
-color index color5 default '!~Q^~p'             # sent only to me and haven't been replied to
-color index color22 default '~h X-Label..'     # messages with a complete label
-color index color6 default '~F'                 # flagged messages
-color index color6 default '~F~N'               # flagged messages (new)
-color index color14 default '~F~R'              # flagged messages (read)
-color index color1 default '~D'                 # deleted messages
+color index_collapsed color4 default            # collapsed thread (Blue)
+color index color6 default '!~Q^~p'             # sent only to me and haven't been replied to (Cyan)
+color index color2 default '~h X-Label..'      # messages with a complete label (Green)
+color index color3 default '~F'                 # flagged messages (Yellow)
+color index color3 default '~F~N'               # flagged messages (new)
+color index color14 default '~F~R'              # flagged messages (read) (Cyan/Blue)
+color index color1 default '~D'                 # deleted messages (Red)
 color index color1 default '~D~N'               # deleted messages (new)
 color index color9 default '~D~R'               # deleted messages (read)
-color index color3 default '~T'                 # tagged messages
-color index color3 default '~T~N'               # tagged messages (new)
-color index color11 default '~T~R'              # tagged messages (read)
-color tree  color8 color8                       # thread tree lines/arrow
-color indicator default color8                  # selection indicator
+color index color6 default '~T'                 # tagged messages (Cyan)
+color index color6 default '~T~N'               # tagged messages (new)
+color index color14 default '~T~R'              # tagged messages (read)
+color tree  color8 default                      # thread tree lines/arrow
+color indicator black color6                    # selection indicator (Black on Cyan)
 color index_date color8 default                 # date is always the same colour
 color index_label color6 default                # label is always the same colour
 
 
 # Sidebar Colors   ------------------------------------------------------------------
-color sidebar_indicator color14 black   # currently selected mailbox
+color sidebar_indicator color6 black    # currently selected mailbox (Cyan on Black)
 color sidebar_highlight white color8    # highlighted, but not open, mailbox.
 color sidebar_ordinary color8 default   # Color to give mailboxes by default
-color sidebar_divider color8 black      # divider between sidebar & content
-color sidebar_flagged red black         # mailboxes containing flagged mail
-color sidebar_new green black           # mailboxes containing new mail
-color sidebar_unread color7 default     # mailboxes containing unread mail
+color sidebar_divider color8 default    # divider between sidebar & content
+color sidebar_flagged red default       # mailboxes containing flagged mail
+color sidebar_new green default         # mailboxes containing new mail
 color sidebar_unread color7 default     # mailboxes containing unread mail
 
 
@@ -82,19 +77,17 @@ color hdrdefault color8 default
 # Message Body   --------------------------------------------------------------------
 
 # Attachments
-color attachment color8 default
+color attachment color6 default   # (Cyan)
 
 # Signature
 color signature color8 default
 
 # emails
-# color body  color14 default  '[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+'
-
 # hide "mailto"
 color body  color0 color0  '<mailto:[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+>'
 
 # URLs
-color body  color3 default  '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'
+color body  color4 default  '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'  # (Blue)
 
 # Dividers
 color body color8 default '(^[-_]*$)'
@@ -103,13 +96,11 @@ color body color8 default '(^[-_]*$)'
 color body color6 default '^(Date\/Time|Location|Organiser|Invitees|Teams Meeting)(:| \~\~)'
 
 # Quotes
-# Replaced color61 (purple) with color33 (blue)
-color quoted		color33		default
-color quoted1		color117	default
-color quoted2		color84		default
-color quoted3		color215	default
-# Replaced color212 (pink) with color166 (orange)
-color quoted4		color166	default
+color quoted		color4		default    # Blue
+color quoted1		color6		default    # Cyan
+color quoted2		color2		default    # Green
+color quoted3		color3		default    # Yellow
+color quoted4		color1		default    # Red
 
 # Forward/reply headers
 color body color8 default '(^(To|From|Sent|Subject):.*)'
@@ -133,9 +124,9 @@ color body color8 default '(^(To|From|Sent|Subject):.*)'
 # color   body    red             default         "^\-[^\-]+.*"
 # color   body    brightblue      default         "^@@ .*"
 # color   body    green           default         "LGTM"
-# color   body    brightmagenta   default         "-- Commit Summary --"
-# color   body    brightmagenta   default         "-- File Changes --"
-# color   body    brightmagenta   default         "-- Patch Links --"
+# color   body    cyan            default         "-- Commit Summary --"
+# color   body    cyan            default         "-- File Changes --"
+# color   body    cyan            default         "-- Patch Links --"
 # color   body    green           default         "^Merged #.*"
 # color   body    red             default         "^Closed #.*"
 # color   body    brightblue      default         "^Reply to this email.*"
