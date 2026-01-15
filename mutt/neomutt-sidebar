@@ -31,10 +31,20 @@ set sidebar_new_mail_only = no
 # ------------------------------------------------------------------------------
 
 # Sidebar Navigation
-bind index,pager <C-k> sidebar-prev
-bind index,pager <C-j> sidebar-next
-bind index,pager <C-p> sidebar-prev
-bind index,pager <C-n> sidebar-next
-bind index,pager <C-o> sidebar-open
-bind index,pager <C-l> sidebar-open
-bind index,pager <C-b> sidebar-toggle-visible
+bind index <C-k> sidebar-prev
+bind pager <C-k> sidebar-prev
+bind index <C-j> sidebar-next
+bind pager <C-j> sidebar-next
+
+bind index <C-p> sidebar-prev
+bind pager <C-p> sidebar-prev
+bind index <C-n> sidebar-next
+bind pager <C-n> sidebar-next
+
+bind index <C-o> sidebar-open
+bind pager <C-o> sidebar-open
+bind index <C-l> sidebar-open
+bind pager <C-l> sidebar-open
+
+bind index <C-b> sidebar-toggle-visible
+bind pager <C-b> sidebar-toggle-visible
