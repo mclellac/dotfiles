@@ -71,6 +71,9 @@ macro index,pager <sidebar_focus_off> '<enter-command>bind index j next-entry<en
 # Since we can't auto-run a macro on startup easily without a hook,
 # we set the initial state manually below.
 
+# Unbind Space to allow multi-key bindings
+bind index,pager <Space> noop
+
 # Initial Binding for Toggle
 macro index,pager <Space>w <sidebar_focus_on> "Toggle Focus"
 
