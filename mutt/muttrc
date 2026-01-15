@@ -39,6 +39,10 @@ set count_alternatives=yes    # recurse into text/multipart when looking for att
 set thorough_search=no        # don't process mail (via mailcap etc) before parsing with queries like ~B
 set flag_safe                 # flagged messages can't be deleted
 
+# Caching for speed
+set header_cache = ~/.cache/mutt/headers
+set message_cachedir = ~/.cache/mutt/bodies
+
 #### Aliases
 set alias_file=~/.config/mutt/aliases
 source ~/.config/mutt/aliases
@@ -66,12 +70,10 @@ set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
 set display_filter="perl -0777pe 's/___{10,}[^_]*microsoft teams meeting.*to join the meeting<([^>]*).*(___{10,})/\\n────────────────────────────────────────────────────────────────────────\\n\\nTeams Meeting ~~\\n\\nMeeting URL:\\n$1\\n\\n────────────────────────────────────────────────────────────────────────/is'| sed 's/^\\(To\\|CC\\): \\([^<]*[^>]\\)$/\\1\:<\\2>/g' | perl -0777pe 's/(((?!.*CC:)To:|CC:).+?(?=>\\n)>)/$1!REMOVE_ME!\\n!END!/gs' | sed '/^To:/{;:l N;/!END!/b; s/\\(\\n\\|  *\\|\\t\\t*\\)/ /g; bl}' | sed '/^To:/,/>$/ s/\\([^>]*>,\\?\\)/\\1\\n/g' | sed -e 's/^ \\(CC:\\)\\(.*$\\)/\\1\\n\\2/' -e 's/^\\(To:\\)\\(.*$\\)/\\1 --------------------------------------------------------------------\\n\\2/' -e 's/^!END!$/------------------------------------------------------------------------/' -e '/!REMOVE_ME!/d' -e '/\\[-- Type: text.* --\\]/d' -e '/\\[-- Autoview.* --\\]/d' -e '/\\[-- Type.* --\\]/d' -e '/\\[-- .*unsupported.* --\\]/d' -e '/\\[-- Attachment #[0-9] --\\]/d' -e 's/Attachment #[0-9]: //g' -e '/./,/^$/!d' -e 's/\\([A-Z]*\\), *\\([A-Za-z]*\\)\\(\"\\)\\?/\\2 \\L\\u\\1\\E\\3/g'"
 
 #### Notmuch Config
-# Disabled as per user request (no local mail)
-# set nm_query_type=threads
-# set nm_default_url = "notmuch:///$HOME/.local/share/mail"
+set nm_query_type=threads
+set nm_default_uri = "notmuch:///$HOME/.local/share/mail"
+set virtual_spoolfile=yes
 # set nm_record_tags = "sent"
-# set virtual_spoolfile=yes
-# macro index \Cg ...
 
 #### Content/Autoview
 auto_view application/ics

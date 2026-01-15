@@ -8,7 +8,7 @@ echo "Detected OS: $OSTYPE"
 
 install_arch() {
     echo "Installing dependencies for Arch Linux..."
-    sudo pacman -S --noconfirm neomutt urlscan w3m pandoc xdg-utils mpv
+    sudo pacman -S --noconfirm neomutt urlscan w3m pandoc xdg-utils mpv notmuch isync glow
     # sc-im might be in AUR. Check if installed, if not, warn.
     if ! command -v sc-im &> /dev/null; then
         echo "sc-im not found. It is recommended to install it from AUR (e.g., yay -S sc-im)."
@@ -18,12 +18,12 @@ install_arch() {
 install_debian() {
     echo "Installing dependencies for Debian/Ubuntu..."
     sudo apt update
-    sudo apt install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im
+    sudo apt install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im notmuch isync glow
 }
 
 install_fedora() {
     echo "Installing dependencies for Fedora..."
-    sudo dnf install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im
+    sudo dnf install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im notmuch isync glow
 }
 
 install_macos() {
@@ -32,7 +32,7 @@ install_macos() {
         echo "Homebrew not found. Please install Homebrew first."
         exit 1
     fi
-    brew install neomutt urlscan w3m pandoc mpv sc-im
+    brew install neomutt urlscan w3m pandoc mpv sc-im notmuch isync glow
     # xdg-open equivalent on mac is 'open', usually built-in or mapped by neomutt config if configured,
     # but we list xdg-utils just in case user has environment that uses it.
     # Actually macOS doesn't use xdg-utils by default for 'xdg-open' unless installed or aliased.
@@ -91,9 +91,32 @@ for item in "$SCRIPT_DIR/"*; do
     fi
 done
 
+# Copy notmuch config
+if [ -f "notmuch/notmuchrc" ]; then
+    echo "Copying notmuch configuration..."
+    cp "notmuch/notmuchrc" "$HOME/.notmuch-config"
+fi
+
+# Copy glow config
+if [ -d "glow" ]; then
+    echo "Copying glow configuration..."
+    mkdir -p "$HOME/.config/glow"
+    cp -r "glow/"* "$HOME/.config/glow/"
+fi
+
+# Copy mbsync example if not exists
+if [ ! -d "$HOME/.config/isync" ]; then
+    mkdir -p "$HOME/.config/isync"
+fi
+if [ -f "isync/mbsyncrc.example" ] && [ ! -f "$HOME/.config/isync/mbsyncrc" ]; then
+    echo "Copying mbsyncrc example..."
+    cp "isync/mbsyncrc.example" "$HOME/.config/isync/mbsyncrc"
+fi
+
 # Make scripts executable
 chmod +x "$CONFIG_DIR/scripts/"*
 
 echo "Installation complete!"
 echo "Configuration installed to $CONFIG_DIR"
 echo "Don't forget to update your account details in $CONFIG_DIR/acct/"
+echo "Please configure '$HOME/.config/isync/mbsyncrc' and run 'mbsync -a' followed by 'notmuch new' to initialize local mail."
