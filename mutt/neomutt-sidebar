@@ -36,11 +36,45 @@ unbind index,pager <C-j>
 unbind index,pager <C-p>
 unbind index,pager <C-n>
 
-# Sidebar Navigation
-bind index,pager <C-k> sidebar-prev
-bind index,pager <C-j> sidebar-next
-bind index,pager <C-p> sidebar-prev
-bind index,pager <C-n> sidebar-next
+# Open/Toggle bindings
 bind index,pager <C-o> sidebar-open
 bind index,pager <C-l> sidebar-open
 bind index,pager <C-b> sidebar-toggle-visible
+
+# Focus Toggle Logic
+# ------------------------------------------------------------------------------
+
+# Define macros for toggling focus between Sidebar and Email
+# We use <enter-command> to execute configuration changes dynamically.
+
+# Sidebar Focused Mode
+# - Bind navigation keys to sidebar commands
+# - Highlight sidebar divider (Cyan)
+# - Brighten sidebar highlight (Dark on Cyan)
+# - Dim index indicator (White on Dark Grey)
+# - Set Space+w to switch back to Email focus
+macro index,pager <sidebar_focus_on> '<enter-command>bind index,pager j sidebar-next<enter><enter-command>bind index,pager k sidebar-prev<enter><enter-command>bind index,pager <Down> sidebar-next<enter><enter-command>bind index,pager <Up> sidebar-prev<enter><enter-command>color sidebar_divider color117 default<enter><enter-command>color sidebar_highlight color236 color117<enter><enter-command>color indicator color252 color236<enter><enter-command>macro index,pager <Space>w <sidebar_focus_off><enter>' "Focus Sidebar"
+
+# Email Focused Mode
+# - Bind navigation keys to standard entry/line navigation
+# - Restore defaults for Index (entry) and Pager (line)
+# - Dim sidebar divider (Dark Grey)
+# - Dim sidebar highlight (White on Dark Grey)
+# - Brighten index indicator (Dark on Cyan)
+# - Set Space+w to switch to Sidebar focus
+# FIX: Separated index/pager bindings for j/k to ensure scrolling works in Pager
+macro index,pager <sidebar_focus_off> '<enter-command>bind index j next-entry<enter><enter-command>bind pager j next-line<enter><enter-command>bind index k previous-entry<enter><enter-command>bind pager k previous-line<enter><enter-command>bind index <Down> next-entry<enter><enter-command>bind index <Up> previous-entry<enter><enter-command>bind pager <Down> next-line<enter><enter-command>bind pager <Up> previous-line<enter><enter-command>color sidebar_divider color236 default<enter><enter-command>color sidebar_highlight color252 color236<enter><enter-command>color indicator color236 color117<enter><enter-command>macro index,pager <Space>w <sidebar_focus_on><enter>' "Focus Email"
+
+# Default State: Email Focused
+# We invoke the macro to set the bindings and colors initially,
+# or just set the macro for Space+w and initial colors.
+# Since we can't auto-run a macro on startup easily without a hook,
+# we set the initial state manually below.
+
+# Initial Binding for Toggle
+macro index,pager <Space>w <sidebar_focus_on> "Toggle Focus"
+
+# Initial Visual State (Email Focused)
+color sidebar_divider color236 default
+color sidebar_highlight color252 color236
+# color indicator is already set in colors file to active state
