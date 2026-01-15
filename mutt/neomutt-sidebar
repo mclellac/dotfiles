@@ -33,41 +33,50 @@ set sidebar_visible = yes
 # Keybindings
 # ------------------------------------------------------------------------------
 
-# Unbind defaults to prevent conflicts
+# 1. CLEANUP: Unbind potential conflicting keys
+# This prevents "aliasing" errors and "browser list" popups.
+unbind index,pager <Space>
+unbind index,pager <Tab>
+unbind index,pager \t
 unbind index,pager <C-k>
 unbind index,pager <C-j>
 unbind index,pager <C-p>
 unbind index,pager <C-n>
 
-# Standard Bindings (Fallback)
+# 2. BASE BINDINGS: Prevent defaults from interfering
+bind index,pager <Space> noop
+bind index,pager <Tab> noop
+
+# 3. DIRECT ACCESS (Fallbacks)
+# These work regardless of the "Focus" mode.
 bind index,pager <C-n> sidebar-toggle-visible
 bind index,pager <C-p> sidebar-prev
 bind index,pager <C-j> sidebar-next
 bind index,pager <C-o> sidebar-open
 
-# Focus Toggle Logic (<Tab>)
+# Focus Toggle Logic
 # ------------------------------------------------------------------------------
-
-# Unbind Tab to allow macro usage
-bind index,pager <Tab> noop
+# We use Ctrl-w (Window) as the primary reliable toggle.
+# We also attempt to support Space+w as requested.
 
 # Sidebar Focused Mode
 # - Bind j/k/Down/Up to sidebar commands
 # - Visuals: Cyan Divider, Dark on Cyan Highlight
 # - Message: "Sidebar Focus"
-macro index,pager <sidebar_focus_on> '<enter-command>bind index j sidebar-next<enter><enter-command>bind pager j sidebar-next<enter><enter-command>bind index k sidebar-prev<enter><enter-command>bind pager k sidebar-prev<enter><enter-command>bind index <Down> sidebar-next<enter><enter-command>bind pager <Down> sidebar-next<enter><enter-command>bind index <Up> sidebar-prev<enter><enter-command>bind pager <Up> sidebar-prev<enter><enter-command>color sidebar_divider color117 default<enter><enter-command>color sidebar_highlight color236 color117<enter><enter-command>color indicator color252 color236<enter><enter-command>macro index,pager <Tab> <sidebar_focus_off><enter><display-message>Sidebar Focus<enter>' "Focus Sidebar"
+macro index,pager <sidebar_focus_on> '<enter-command>bind index j sidebar-next<enter><enter-command>bind pager j sidebar-next<enter><enter-command>bind index k sidebar-prev<enter><enter-command>bind pager k sidebar-prev<enter><enter-command>bind index <Down> sidebar-next<enter><enter-command>bind pager <Down> sidebar-next<enter><enter-command>bind index <Up> sidebar-prev<enter><enter-command>bind pager <Up> sidebar-prev<enter><enter-command>color sidebar_divider color117 default<enter><enter-command>color sidebar_highlight color236 color117<enter><enter-command>color indicator color252 color236<enter><enter-command>macro index,pager <C-w> <sidebar_focus_off><enter><enter-command>macro index,pager <Space>w <sidebar_focus_off><enter><display-message>Sidebar Focus<enter>' "Focus Sidebar"
 
 # Email Focused Mode
-# - Bind j/k/Down/Up to standard commands
+# - Bind j/k/Down/Up to standard commands (entry/line)
 # - Visuals: Dark Grey Divider, White on Dark Grey Highlight
 # - Message: "Email Focus"
-macro index,pager <sidebar_focus_off> '<enter-command>bind index j next-entry<enter><enter-command>bind pager j next-line<enter><enter-command>bind index k previous-entry<enter><enter-command>bind pager k previous-line<enter><enter-command>bind index <Down> next-entry<enter><enter-command>bind pager <Down> next-line<enter><enter-command>bind index <Up> previous-entry<enter><enter-command>bind pager <Up> previous-line<enter><enter-command>color sidebar_divider color236 default<enter><enter-command>color sidebar_highlight color252 color236<enter><enter-command>color indicator color236 color117<enter><enter-command>macro index,pager <Tab> <sidebar_focus_on><enter><display-message>Email Focus<enter>' "Focus Email"
+macro index,pager <sidebar_focus_off> '<enter-command>bind index j next-entry<enter><enter-command>bind pager j next-line<enter><enter-command>bind index k previous-entry<enter><enter-command>bind pager k previous-line<enter><enter-command>bind index <Down> next-entry<enter><enter-command>bind pager <Down> next-line<enter><enter-command>bind index <Up> previous-entry<enter><enter-command>bind pager <Up> previous-line<enter><enter-command>color sidebar_divider color236 default<enter><enter-command>color sidebar_highlight color252 color236<enter><enter-command>color indicator color236 color117<enter><enter-command>macro index,pager <C-w> <sidebar_focus_on><enter><enter-command>macro index,pager <Space>w <sidebar_focus_on><enter><display-message>Email Focus<enter>' "Focus Email"
 
 # Default State: Email Focused
 # ------------------------------------------------------------------------------
 
-# Initial Binding
-macro index,pager <Tab> <sidebar_focus_on> "Toggle Sidebar Focus"
+# Initial Bindings
+macro index,pager <C-w> <sidebar_focus_on> "Toggle Sidebar Focus"
+macro index,pager <Space>w <sidebar_focus_on> "Toggle Sidebar Focus"
 
 # Initial Visuals
 color sidebar_divider color236 default
