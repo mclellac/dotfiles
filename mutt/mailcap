@@ -11,7 +11,7 @@ text/html; xdg-open %s; needsterminal;
 
 # Use lynx to render HTML emails in the terminal for auto_view.
 # The `copiousoutput` option tells Mutt to expect a lot of output.
-text/html; lynx -dump -force_html -width=120 -display_charset=utf-8 -image_links %s; copiousoutput;
+text/html; w3m -I %{charset} -T text/html -dump %s; copiousoutput;
 
 # To open HTML emails in your default browser, you can use a keybinding like this in your muttrc:
 # macro pager B "<pipe-message>urlview<Enter>" "Browse URLs"
