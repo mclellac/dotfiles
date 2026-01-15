@@ -1,116 +1,168 @@
-# Dracula Theme for Neomutt
-# Enhanced with richer syntax highlighting
+# Nerd icons idea based on https://github.com/sheoak/neomutt-powerline-nerdfonts/
+# Dracula colors based on Dracula Theme by Paul Townsend <paul@caprica.org>
 
-# General Colors
-# ------------------------------------------------------------------------------
-color normal        color252        default         # Text (White)
-color error         color203        default         # Errors (Red)
-color tilde         color243        default         # Tildes (Grey)
-color message       color117        default         # Info Messages (Cyan)
-color markers       color231        default         # Markers (+) (White)
-color attachment    color215        default         # Attachments (Orange)
-color search        color236        color215        # Search Matches (Orange bg)
-color status        color252        color236        # Status Bar (White on Dark Grey)
-color indicator     color236        color117        # Selection (Dark Grey on Cyan)
-color tree          color243        default         # Tree arrows (Grey)
 
-# Index Colors (Mailbox View)
-# ------------------------------------------------------------------------------
-color index         color252        default         ".*"                    # Default
-color index         color203        default         "~D"                    # Deleted (Red)
-color index         color84         default         "~F"                    # Flagged (Green)
-color index         bold color117   default         "~N"                    # New (Cyan) - Bold
-color index         color215        default         "~T"                    # Tagged (Orange)
-color index         color231        default         "~O"                    # Old (White)
-color index         color215        default         "~P"                    # From Me (Orange)
+# Formatting   ----------------------------------------------------------------------
+set date_format = "%a %d %h %H:%M"
+set index_format="  %zc %zs %zt  | %-35.35L   %@attachment_info@  %?M10?~(%1M) ?%-30.100s %> %?Y?%Y ? %(!%a %d %h %H:%M)  "
+set pager_format="%n %T %s%*  %{!%d %b · %H:%M} %?X? %X?%P"
+set status_format = " %D %?u? %u ?%?R? %R ?%?d? %d ?%?t? %t ?%?F? %F ?%?p? %p? \n  \n"
+set compose_format="-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
+# set vfolder_format = "%N %?n?%3n&   ?  %8m  · %f"
+set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
+set sidebar_format = '%D%?Z? [%Z]?%* %?S?%S?'
+index-format-hook attachment_info '=B text/calendar ~X 1' ' '
+index-format-hook attachment_info '=B text/calendar' "  "
+index-format-hook attachment_info '~X 1' "  "
+index-format-hook attachment_info '~A' "   "
 
-# Domain-specific colors (User Defined)
-color index color111 default "~f gmail.com"
-color index color111 default "~f hotmail.com"
-color index color150 default "~f crave.ca"
-color index color150 default "~f netflix.com"
-color index color150 default "~f primevideo.com"
-color index color222 default "~f amazon.ca"
-color index color215 default "~f torontohydro.com"
-color index color202 default "~f irobot.com"
-color index color202 default "~f rogers.com"
-color index color33  default "~f cibc.com"
-color index color117 default "~f steampowered.com"
-color index color114 default "~f wealthsimple.com"
-color index color124 default "~f petdesk.com"
-color index color39  default "~f interact.ca"
-color index color139 default "~f github.com"
 
-# More Common Domains (Brand Colors)
-color index color196 default "~f youtube.com"       # YouTube Red
-color index color33  default "~f facebook.com"      # Facebook Blue
-color index color33  default "~f linkedin.com"      # LinkedIn Blue
-color index color39  default "~f twitter.com"       # Twitter Cyan
-color index color83  default "~f spotify.com"       # Spotify Green
-color index color250 default "~f apple.com"         # Apple Grey
-color index color33  default "~f microsoft.com"     # Microsoft Blue
-color index color203 default "~f airbnb.com"        # Airbnb Red/Pink
-color index color27  default "~f paypal.com"        # PayPal Blue
-color index color27  default "~f twitch.tv"         # Twitch Blue
-color index color202 default "~f soundcloud.com"    # SoundCloud Orange
+# General Colors   ------------------------------------------------------------------
+color normal default default                            # general text
+# Replaced color212 (pink) with color160 (red)
+color error color231 color160                           # error messages
+color message default default                           # messages at the bottom
+color prompt default default                            # prompt text
+color search black color10                              # search highlight
 
-# Message Header Colors (Pager View)
-# ------------------------------------------------------------------------------
-color hdrdefault    color243        default         # Default Headers (Grey)
-color header        color117        default         "^From:"
-color header        color231        default         "^Subject:"
-color header        color117        default         "^To:"
-color header        color117        default         "^Cc:"
-color header        color117        default         "^Bcc:"
-color header        color215        default         "^Date:"
-color header        color215        default         "^Reply-To:"
-color header        color203        default         "^X-Spam-Status:"
 
-# Message Body Colors (Regex Highlighting)
-# ------------------------------------------------------------------------------
+# Statusbar Colors   ----------------------------------------------------------------
+# Replaced color141 (purple) with color39 (blue)
+color status color39 default
+color status color7 color8 '([a-zA-Z0-9\.,]|\[|\])(\s)'  # bubble content 1
+color status color7 color8 '(\s)([a-zA-Z0-9\.,]|\[|\])'  # bubble content 2
+color status color7 color8 '(\% )'                       # % symbol
+color status color7 color8 '(\S)'                        # empty spaces
+color status color8 default '(|)'                      # statusline "bubbles"
+color status color69 black '(\` )'                      # bubble account variation
+color status white color69 '([a-zA-Z0-9\.]+)( )'         # account text
+color status green color8 ''                            # Unread messages count
+color status blue color8 ''                             # Read messages count icon
+color status yellow color8 ''                           # Flagged icon
+color status red color8 ''                              # Pending delete icon
+
+
+# Index Colors   --------------------------------------------------------------------
+color index color15 default '~N'                # new messages
+color index color8 default '~R'                 # read messages
+color index color8 default '~Q'                 # messages which have been replied to
+color index_collapsed color4 default            # collapsed thread (message count text)
+color index color5 default '!~Q^~p'             # sent only to me and haven't been replied to
+color index color22 default '~h X-Label..'     # messages with a complete label
+color index color6 default '~F'                 # flagged messages
+color index color6 default '~F~N'               # flagged messages (new)
+color index color14 default '~F~R'              # flagged messages (read)
+color index color1 default '~D'                 # deleted messages
+color index color1 default '~D~N'               # deleted messages (new)
+color index color9 default '~D~R'               # deleted messages (read)
+color index color3 default '~T'                 # tagged messages
+color index color3 default '~T~N'               # tagged messages (new)
+color index color11 default '~T~R'              # tagged messages (read)
+color tree  color8 color8                       # thread tree lines/arrow
+color indicator default color8                  # selection indicator
+color index_date color8 default                 # date is always the same colour
+color index_label color6 default                # label is always the same colour
+
+
+# Sidebar Colors   ------------------------------------------------------------------
+color sidebar_indicator color14 black   # currently selected mailbox
+color sidebar_highlight white color8    # highlighted, but not open, mailbox.
+color sidebar_ordinary color8 default   # Color to give mailboxes by default
+color sidebar_divider color8 black      # divider between sidebar & content
+color sidebar_flagged red black         # mailboxes containing flagged mail
+color sidebar_new green black           # mailboxes containing new mail
+color sidebar_unread color7 default     # mailboxes containing unread mail
+color sidebar_unread color7 default     # mailboxes containing unread mail
+
+
+# Message Headers   -----------------------------------------------------------------
+color hdrdefault color8 default
+
+
+# Message Body   --------------------------------------------------------------------
+
+# Attachments
+color attachment color8 default
+
+# Signature
+color signature color8 default
+
+# emails
+# color body  color14 default  '[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+'
+
+# hide "mailto"
+color body  color0 color0  '<mailto:[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+>'
+
+# URLs
+color body  color3 default  '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'
+
+# Dividers
+color body color8 default '(^[-_]*$)'
+
+# Important info in calendar invites
+color body color6 default '^(Date\/Time|Location|Organiser|Invitees|Teams Meeting)(:| \~\~)'
 
 # Quotes
-color quoted        color33         default         # Blue
-color quoted1       color117        default         # Cyan
-color quoted2       color84         default         # Green
-color quoted3       color215        default         # Orange
-color quoted4       color203        default         # Red
+# Replaced color61 (purple) with color33 (blue)
+color quoted		color33		default
+color quoted1		color117	default
+color quoted2		color84		default
+color quoted3		color215	default
+# Replaced color212 (pink) with color166 (orange)
+color quoted4		color166	default
 
-# Signatures
-color signature     color243        default         # Grey
+# Forward/reply headers
+color body color8 default '(^(To|From|Sent|Subject):.*)'
 
-# URLs (Cyan)
-color body          color117        default         "(https?|ftp|gopher|finger|file)://[^ \">\t\r\n]*"
-color body          color117        default         "www\\.[-.a-z0-9]+\\.[a-z][a-z][a-z]?\\b"
+# Patch syntax highlighting
+# color   body    brightwhite     default         '^[[:space:]].*'
+# color   body    yellow          default         ^(diff).*
+# color   body    white           default         ^[\-\-\-].*
+# color   body    white           default         ^[\+\+\+].*
+# color   body    green           default         ^[\+].*
+# color   body    red             default         ^[\-].*
+# color   body    brightblue      default         [@@].*
+# color   body    cyan            default         ^(Signed-off-by).*
+# color   body    brightwhite     default         ^(Cc)
+# color   body    yellow          default         "^diff \-.*"
+# color   body    brightwhite     default         "^index [a-f0-9].*"
+# color   body    brightblue      default         "^---$"
+# color   body    white           default         "^\-\-\- .*"
+# color   body    white           default         "^[\+]{3} .*"
+# color   body    green           default         "^[\+][^\+]+.*"
+# color   body    red             default         "^\-[^\-]+.*"
+# color   body    brightblue      default         "^@@ .*"
+# color   body    green           default         "LGTM"
+# color   body    brightmagenta   default         "-- Commit Summary --"
+# color   body    brightmagenta   default         "-- File Changes --"
+# color   body    brightmagenta   default         "-- Patch Links --"
+# color   body    green           default         "^Merged #.*"
+# color   body    red             default         "^Closed #.*"
+# color   body    brightblue      default         "^Reply to this email.*"
 
-# Email Addresses (Orange)
-color body          color215        default         "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
-color body          color215        default         "mailto:[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
 
-# Dates and Times (Cyan)
-color body          color117        default         "([0-9]{1,2}-){2}[0-9]{4}"               # DD-MM-YYYY
-color body          color117        default         "[0-9]{4}(-[0-9]{1,2}){2}"               # YYYY-MM-DD
-color body          color117        default         "[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?"        # HH:MM(:SS)
+# Misc  -----------------------------------------------------------------------------
 
-# Numbers (Blue)
-color body          color39         default         "\\b[0-9]+\\b"
+# no addressed to me, to me, group, cc, sent by me, mailing list
+set to_chars=" "
 
-# IP Addresses (Blue)
-color body          color39         default         "\\b[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\b"
+# unchanged mailbox, changed, read only, attach mode
+set status_chars = " "
+ifdef crypt_chars set crypt_chars = " "
+set flag_chars = "      "
 
-# Emphasis (Bold/Underline/Italic styles in text)
-color body          color228        default         "(\\*|/|_)[a-zA-Z0-9]+(\\*|/|_)"  # *Bold* /Italic/ _Underline_ (Yellow)
+# hide some tags
+set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+tag-transforms "replied" "↻ "  \
+               "encrytpted" "" \
+               "signed" "" \
+               "attachment" "" \
 
-# Smileys (Yellow)
-color body          color228        default         "(:|;)(-)?(\\)|\\(|D|P)"
+# The formats must start with 'G' and the entire sequence is case sensitive.
+tag-formats "replied" "GR" \
+            "encrypted" "GE" \
+            "signed" "GS" \
+            "attachment" "GA" \
 
-# Horizontal Rules (Grey)
-color body          color243        default         "^(-|~|=|_){3,}+$"
-
-# Sidebar Colors
-# ------------------------------------------------------------------------------
-color sidebar_divider    color236        default         # Dark Grey (blend with bg)
-color sidebar_new        color84         default         # Green
-color sidebar_flagged    color203        default         # Red
-color sidebar_highlight  color236        color117        # Cyan background, Dark fg (Selected)
-color sidebar_indicator  color236        color117        # Cyan background (if indicator supported)
+ # don't put '+' at the beginning of wrapped lines
+set markers=no
