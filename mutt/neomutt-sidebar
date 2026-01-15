@@ -29,19 +29,24 @@ set sidebar_visible = yes
 # Keybindings
 # ------------------------------------------------------------------------------
 
-# Unbind and Unmacro to prevent conflicts
-unbind index,pager <C-b>
-unmacro index,pager <C-b>
-unbind index,pager <C-n>
-unmacro index,pager <C-n>
-unbind index,pager <C-p>
-unmacro index,pager <C-p>
-unbind index,pager <C-j>
-unmacro index,pager <C-j>
-unbind index,pager <C-k>
-unmacro index,pager <C-k>
-unbind index,pager <C-o>
-unmacro index,pager <C-o>
+# Aggressively unbind and unmacro to prevent ANY conflicts (especially Ctrl-b urlview)
+unbind generic,index,pager,browser,attach,editor,compose <C-b>
+unmacro generic,index,pager,browser,attach,editor,compose <C-b>
+unbind generic,index,pager,browser,attach,editor,compose \Cb
+unmacro generic,index,pager,browser,attach,editor,compose \Cb
+unbind generic,index,pager,browser,attach,editor,compose ^b
+unmacro generic,index,pager,browser,attach,editor,compose ^b
+
+unbind generic,index,pager,browser,attach,editor,compose <C-n>
+unmacro generic,index,pager,browser,attach,editor,compose <C-n>
+unbind generic,index,pager,browser,attach,editor,compose <C-p>
+unmacro generic,index,pager,browser,attach,editor,compose <C-p>
+unbind generic,index,pager,browser,attach,editor,compose <C-j>
+unmacro generic,index,pager,browser,attach,editor,compose <C-j>
+unbind generic,index,pager,browser,attach,editor,compose <C-k>
+unmacro generic,index,pager,browser,attach,editor,compose <C-k>
+unbind generic,index,pager,browser,attach,editor,compose <C-o>
+unmacro generic,index,pager,browser,attach,editor,compose <C-o>
 
 # Toggle visibility
 bind index,pager <C-b> sidebar-toggle-visible
