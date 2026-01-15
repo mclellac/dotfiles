@@ -29,13 +29,19 @@ set sidebar_visible = yes
 # Keybindings
 # ------------------------------------------------------------------------------
 
-# Unbind to prevent conflicts
+# Unbind and Unmacro to prevent conflicts
 unbind index,pager <C-b>
+unmacro index,pager <C-b>
 unbind index,pager <C-n>
+unmacro index,pager <C-n>
 unbind index,pager <C-p>
+unmacro index,pager <C-p>
 unbind index,pager <C-j>
+unmacro index,pager <C-j>
 unbind index,pager <C-k>
+unmacro index,pager <C-k>
 unbind index,pager <C-o>
+unmacro index,pager <C-o>
 
 # Toggle visibility
 bind index,pager <C-b> sidebar-toggle-visible
