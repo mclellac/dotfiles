@@ -56,6 +56,9 @@ color body color5 default "((\\+)?[0-9]{1,2}[[:space:].-]?)?(\\(?[0-9]{3}\\)?[[:
 # Addresses (Common patterns: Digits + Text + Street Suffix)
 color body color3 default "[0-9]+[[:space:]]+[a-zA-Z0-9[:space:].,#]+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Plaza|Plz|Square|Sq|Turnpike|Tpke|Parkway|Pkwy|Circle|Cir|Trail|Trl|Suite|Ste|Unit|Apt|Apartment|Room|Rm|Floor|Fl|Box)"
 
+# Text in brackets
+color body color245 default "\\[[^]]+\\]"
+
 
 # Index Colors   --------------------------------------------------------------------
 color index color15 default '~N'                # new messages (White)
