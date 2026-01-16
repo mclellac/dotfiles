@@ -125,4 +125,4 @@ set wait_key=no
 
 
 # this is a bit of a hack which you may not want/need
-timeout-hook 'exec sync-mailbox' # sync mailbox whenever idle
+# timeout-hook 'exec sync-mailbox' # sync mailbox whenever idle

@@ -1,27 +1,56 @@
 # mbsyncrc example for Gmail
 
-IMAPAccount ACCOUNT_ALIAS
+# Personal Account
+IMAPAccount personal
 Host imap.gmail.com
 User your.email@gmail.com
-PassCmd "pass Email/ACCOUNT_ALIAS" # Or use Pass: password
+PassCmd "pass Email/personal"
 AuthMechs LOGIN
 TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
-IMAPStore ACCOUNT_ALIAS-remote
-Account ACCOUNT_ALIAS
+IMAPStore personal-remote
+Account personal
 
-MaildirStore ACCOUNT_ALIAS-local
-Path ~/.local/share/mail/ACCOUNT_ALIAS/
-Inbox ~/.local/share/mail/ACCOUNT_ALIAS/INBOX
+MaildirStore personal-local
+Path ~/.local/share/mail/personal/
+Inbox ~/.local/share/mail/personal/INBOX
 SubFolders Verbatim
 
-Channel ACCOUNT_ALIAS
-Far :ACCOUNT_ALIAS-remote:
-Near :ACCOUNT_ALIAS-local:
+Channel personal
+Far :personal-remote:
+Near :personal-local:
 Patterns *
 Create Both
 Expunge Both
 SyncState *
 
-# Repeat for other accounts (e.g. work)
+# Work Account
+IMAPAccount work
+Host imap.gmail.com
+User your.work.email@gmail.com
+PassCmd "pass Email/work"
+AuthMechs LOGIN
+TLSType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore work-remote
+Account work
+
+MaildirStore work-local
+Path ~/.local/share/mail/work/
+Inbox ~/.local/share/mail/work/INBOX
+SubFolders Verbatim
+
+Channel work
+Far :work-remote:
+Near :work-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+# Sync all
+Group google
+Channel personal
+Channel work

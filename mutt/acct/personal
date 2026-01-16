@@ -1,18 +1,18 @@
 # Personal Account
 # ------------------------------------------------------------------------------
-set imap_check_subscribed
-set imap_user 	= "user@domain"
-set imap_pass 	= ""
-set folder 	    = "imaps://imap.gmail.com:993/"
-set smtp_url	= "smtps://user@domain@smtp.gmail.com/465"
-set smtp_pass 	= ""
+# set imap_check_subscribed
+# set imap_user 	= "user@domain"
+# set imap_pass 	= ""
+set folder 	    = "~/.local/share/mail/personal"
+# set smtp_url	= "smtps://user@domain@smtp.gmail.com/465"
+# set smtp_pass 	= ""
 set from 	    = "user@domain"
 set realname 	= "real name"
 
 set spoolfile 	= "+INBOX"
 # set postponed 	= "+[Gmail]/Drafts"
-set postponed = "+Drafts"
-set trash		= "imaps://imap.gmail.com/[Gmail]/Bin" 
+set postponed = "+[Gmail]/Drafts"
+set trash		= "+[Gmail]/Bin"
 set ispell      = "aspell --mode=email check"
 set include=yes
 
