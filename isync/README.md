@@ -36,7 +36,10 @@ This alias serves as a key identifier across several configuration files:
     *(Note: The install script does this for you)*
 
 2.  **Edit `~/.config/isync/mbsyncrc`**:
-    *   Replace `personal` (the example `ACCOUNT_ALIAS`) with your desired account name.
+    *   **Crucial**: Replace all occurrences of `ACCOUNT_ALIAS` with your actual account name (e.g., `personal` or `work`). You can use `sed` or your editor.
+      ```bash
+      sed -i 's/ACCOUNT_ALIAS/personal/g' ~/.config/isync/mbsyncrc
+      ```
     *   Update `Host`, `User`, and `PassCmd` (or `Pass`).
     *   Ensure `TLSType` is set to `IMAPS` (Gmail requires this).
 

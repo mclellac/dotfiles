@@ -1,27 +1,27 @@
 # mbsyncrc example for Gmail
 
-IMAPAccount personal
+IMAPAccount ACCOUNT_ALIAS
 Host imap.gmail.com
 User your.email@gmail.com
-PassCmd "pass Email/personal" # Or use Pass: password
+PassCmd "pass Email/ACCOUNT_ALIAS" # Or use Pass: password
 AuthMechs LOGIN
 TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
-IMAPStore personal-remote
-Account personal
+IMAPStore ACCOUNT_ALIAS-remote
+Account ACCOUNT_ALIAS
 
-MaildirStore personal-local
-Path ~/.local/share/mail/personal/
-Inbox ~/.local/share/mail/personal/INBOX
+MaildirStore ACCOUNT_ALIAS-local
+Path ~/.local/share/mail/ACCOUNT_ALIAS/
+Inbox ~/.local/share/mail/ACCOUNT_ALIAS/INBOX
 SubFolders Verbatim
 
-Channel personal
-Far :personal-remote:
-Near :personal-local:
+Channel ACCOUNT_ALIAS
+Far :ACCOUNT_ALIAS-remote:
+Near :ACCOUNT_ALIAS-local:
 Patterns *
 Create Both
 Expunge Both
 SyncState *
 
-# Repeat for Work account
+# Repeat for other accounts (e.g. work)
