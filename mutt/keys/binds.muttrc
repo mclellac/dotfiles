@@ -114,9 +114,9 @@ macro index ga "<change-folder>=Archive<enter>" "Go to Archive"
 macro index gS "<change-folder>=[Gmail]/Spam<enter>" "Go to Spam"
 
 # Notmuch Shortcuts
-macro index \\t "<vfolder-from-query>date:today..now<enter>" "Show Today's Mail"
-macro index \\f "<vfolder-from-query>tag:flagged<enter>" "Show Flagged Mail"
-macro index \\u "<vfolder-from-query>tag:unread<enter>" "Show Unread Mail"
+macro index <Tab> "<vfolder-from-query>date:today..now<enter>" "Show Today's Mail"
+macro index gf "<vfolder-from-query>tag:flagged<enter>" "Show Flagged Mail"
+macro index gu "<vfolder-from-query>tag:unread<enter>" "Show Unread Mail"
 
 # Unsubscribe (Placeholder using urlscan)
 macro index U "|urlscan -d -w 80 | grep -i unsubscribe<enter>" "Find unsubscribe links"
