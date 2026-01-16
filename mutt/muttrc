@@ -59,7 +59,6 @@ hdr_order from: to: cc: date: subject:  # header item ordering
 #### View Settings
 set allow_ansi             # allow ansi escape codes (e.g. colors)
 set pager_index_lines = 10 # number of index lines to show (0 = own window)
-set show_numbers = relative
 set pager_context = 3      # number of context lines to show
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus

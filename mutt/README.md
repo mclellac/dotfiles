@@ -18,6 +18,10 @@ The `install.sh` script will attempt to install the following dependencies:
 - **sc-im**: For viewing spreadsheet attachments (Excel/CSV).
 - **mpv**: For viewing video attachments.
 - **Perl** & **Sed**: Used in display filters.
+- **khard**: Address book manager.
+- **msmtp**: SMTP client.
+- **fzf**: Fuzzy finder for folder selection.
+- **gnupg**: Encryption and signing.
 
 ## Installation
 
@@ -46,7 +50,7 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 | Key             | Description                                |
 | --------------- | ------------------------------------------ |
 | `q`             | Exit / Quit                                |
-| `Ctrl-b`        | Toggle Sidebar visibility                  |
+| `B` / `Ctrl-b`  | Toggle Sidebar visibility                  |
 | `Ctrl-j`        | Sidebar Next                               |
 | `Ctrl-k`        | Sidebar Previous                           |
 | `Ctrl-o`        | **Open** highlighted sidebar mailbox       |
@@ -56,14 +60,24 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 | `<F3>`          | **Switch to Work Account**                 |
 | `c`             | Compose Mail                               |
 | `O`             | **Sync Mail** (Run `mbsync -a`)            |
+| `Ctrl-f`        | **Fuzzy Find Folder** (fzf)                |
 
 ### Index View (Mail List)
 | Key             | Description                                |
 | --------------- | ------------------------------------------ |
 | `j` / `k`       | Next / Previous email                      |
 | `gg` / `G`      | First / Last email                         |
+| `gi`            | Go to **Inbox**                            |
+| `gs`            | Go to **Sent**                             |
+| `gd`            | Go to **Drafts**                           |
+| `ga`            | Go to **Archive**                          |
+| `gS`            | Go to **Spam**                             |
+| `<Tab>`         | Show **Today's** Mail (Notmuch)            |
+| `gf`            | Show **Flagged** Mail (Notmuch)            |
+| `gu`            | Show **Unread** Mail (Notmuch)             |
 | `D`             | **Quick Delete** (Move to Archive & Sync)  |
 | `A`             | **Quick Archive** (Move to Archive & Sync) |
+| `S`             | Move to **Spam**                           |
 | `d`             | Delete Message (Mark for deletion)         |
 | `u`             | Undelete Message                           |
 | `<space>`       | Flag Message                               |
@@ -75,6 +89,8 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 | `r` / `R`       | Reply / Group Reply                        |
 | `F`             | Forward                                    |
 | `|`             | Pipe message                               |
+| `<Esc>v`        | Collapse/Expand All Threads                |
+| `U`             | Find Unsubscribe Links                     |
 
 ### Pager View (Reading)
 | Key             | Description                                |
@@ -105,3 +121,6 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 - **Gmail Optimization**: "Quick Delete" (`D`) and "Quick Archive" (`A`) are configured to move messages to the Archive folder, mimicking Gmail's archive behavior.
 - **Patch Viewing**: Integration with `git-split-diffs` for viewing patches.
 - **Notmuch Integration**: Fast searching and indexing is enabled. Ensure you sync your mail locally using `mbsync`.
+- **Address Book**: Uses `khard` for contacts.
+- **Notifications**: Desktop notifications via `notify-send`.
+- **GPG**: Integrated GPG support for signing and encryption.

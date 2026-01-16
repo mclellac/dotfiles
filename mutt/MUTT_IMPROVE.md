@@ -16,7 +16,7 @@ This document outlines potential improvements for the current neomutt configurat
 
 3.  **Relative Line Numbers**
     *   **Current:** Not enabled.
-    *   **Improvement:** Enable `set show_numbers = relative` (if supported by the installed neomutt version) to assist with Vim-style vertical navigation (e.g., `10j` to jump down 10 emails). [x]
+    *   **Improvement:** Enable `set show_numbers = relative` (if supported by the installed neomutt version) to assist with Vim-style vertical navigation (e.g., `10j` to jump down 10 emails). [x] (Removed due to incompatibility with current version)
 
 4.  **Refined Status Bar**
     *   **Current:** Complex format with extensive conditional rendering.
@@ -42,9 +42,10 @@ This document outlines potential improvements for the current neomutt configurat
 3.  **Notmuch Virtual Folder Shortcuts**
     *   **Current:** Relies on `mbsync` (`O`) and manual searches.
     *   **Improvement:** Add direct bindings for common Notmuch queries (Smart Views).
-        *   `\t` (Tab): Switch to "Today" (mails from today).
-        *   `\f`: Switch to "Flagged" messages.
-        *   `\u`: Switch to "Unread" messages across all accounts. [x]
+        *   `<Tab>`: Switch to "Today" (mails from today).
+        *   `gf`: Switch to "Flagged" messages.
+        *   `gu`: Switch to "Unread" messages across all accounts.
+    *   **Action:** Define macros in `keys/binds.muttrc`. [x]
 
 4.  **Unsubscribe Action**
     *   **Improvement:** Bind a key (e.g., `U`) to parse the `List-Unsubscribe` header and either open the URL or generate the unsubscribe email automatically. [x]
