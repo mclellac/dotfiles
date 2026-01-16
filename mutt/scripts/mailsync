@@ -3,7 +3,7 @@
 # Sync mail and give notification if there is new mail. - originally written by Luke Smith (lukesmith.xyz)
 
 # notmuch path
-export NOTMUCH_CONFIG="$HOME/.config/notmuch/notmuchrc"
+export NOTMUCH_CONFIG="$HOME/.notmuch-config"
 
 # For individual configurations:
 [ -d "$HOME/.local/share/pass" ] && export PASSWORD_STORE_DIR="$HOME/.local/share/pass"
