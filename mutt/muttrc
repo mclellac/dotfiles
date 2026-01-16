@@ -58,7 +58,8 @@ hdr_order from: to: cc: date: subject:  # header item ordering
 
 #### View Settings
 set allow_ansi             # allow ansi escape codes (e.g. colors)
-set pager_index_lines = 0  # number of index lines to show (0 = own window)
+set pager_index_lines = 10 # number of index lines to show (0 = own window)
+set show_numbers = relative
 set pager_context = 3      # number of context lines to show
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus
@@ -99,6 +100,7 @@ set use_threads=reverse
 set sort='last-date'
 set collapse_all = yes
 set uncollapse_new = no
+set new_mail_command="~/.config/mutt/scripts/notify_mail.sh &"
 set thread_received = yes
 set narrow_tree=no
 
@@ -111,6 +113,9 @@ set beep_new # beep for new messages
 
 #### Text editor
 set editor="~/.config/mutt/scripts/mutt-trim %s; nvim +':set textwidth=72' +':set wrapmargin=0' +':set wrap' +':set spell' %s"
+set query_command = "khard email --parsable '%s'"
+set sendmail = "/usr/bin/msmtp"
+source ~/.config/mutt/crypto/gpg.rc
 
 #### Markdown to html email conversion
 macro compose M "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=UTF-8\n" "Convert from MD to HTML"

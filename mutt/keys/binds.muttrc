@@ -32,6 +32,7 @@ bind index,pager f change-folder
 bind index,pager \Cu half-up
 bind index,pager \Cd half-down
 bind index,pager \Cb sidebar-toggle-visible
+bind index,pager B sidebar-toggle-visible
 bind index,pager \Cj sidebar-next
 bind index,pager \Ck sidebar-prev
 bind index,pager \Co sidebar-open
@@ -55,6 +56,7 @@ bind index,pager,attach,browser,query,alias,compose q exit
 # Mail manipulation from index list
 bind index t tag-entry
 bind index T tag-thread
+bind index <Esc>v collapse-all
 bind index <space> flag-message
 bind index u undelete-message
 bind index U undelete-thread
@@ -103,5 +105,26 @@ macro attach s '<save-entry><kill-line>~/Downloads/<enter>a' "Save file to ~/Dow
 macro browser h '<change-dir><kill-line>..<enter>' "Go to parent folder"
 macro index \Ca "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 macro attach,compose \cl "<pipe-entry> urlscan -d -w 80<Enter>" "call urlscan to extract URLs out of a message"
+
+# Vim-like Navigation
+macro index gi "<change-folder>!<enter>" "Go to Inbox"
+macro index gs "<change-folder>+Sent<enter>" "Go to Sent"
+macro index gd "<change-folder>+Drafts<enter>" "Go to Drafts"
+macro index ga "<change-folder>=Archive<enter>" "Go to Archive"
+macro index gS "<change-folder>=[Gmail]/Spam<enter>" "Go to Spam"
+
+# Notmuch Shortcuts
+macro index \\t "<vfolder-from-query>date:today..now<enter>" "Show Today's Mail"
+macro index \\f "<vfolder-from-query>tag:flagged<enter>" "Show Flagged Mail"
+macro index \\u "<vfolder-from-query>tag:unread<enter>" "Show Unread Mail"
+
+# Unsubscribe (Placeholder using urlscan)
+macro index U "|urlscan -d -w 80 | grep -i unsubscribe<enter>" "Find unsubscribe links"
+
+# FZF Integration
+macro index \Cf "<enter-command>set my_mailbox=\`find ~/.local/share/mail -type d -maxdepth 2 | fzf\`<enter><change-folder>\$my_mailbox<enter>" "Fuzzy change folder"
+
+# Spam Handling
+macro index S "<save-message>=[Gmail]/Spam<enter>" "Move to Spam"
 
 set abort_key = "<Esc>"
