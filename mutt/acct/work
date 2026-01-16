@@ -22,5 +22,6 @@ set certificate_file 	=~/.mutt/work/certificates
 
 # Neomutt needs to be told which mailboxes to check for new mail.
 # We use a dynamic script to find all local mailboxes to avoid errors with missing folders.
+# Quote the output to handle mailboxes with spaces (e.g. "All Mail").
 # ---------------------------------------------------------------------------------------------------
-mailboxes `cd "$HOME/.local/share/mail/work" && find . -maxdepth 4 -type d -name cur | sed 's|/cur$||;s|^\./|=|' | sort | tr '\n' ' '`
+mailboxes `cd "$HOME/.local/share/mail/work" && find . -maxdepth 4 -type d -name cur | sed 's|/cur$||;s|^\./|=|;s|^|"|;s|$|"|' | sort | tr '\n' ' '`
