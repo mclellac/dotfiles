@@ -48,7 +48,7 @@ color body color5 default "[0-9]{15,}"
 color body color5 default "[0-9]{3}-[0-9]{7}-[0-9]{7}"
 
 # Transaction/Confirmation IDs (Order Number:, Order:, ID:, etc)
-color body color5 default "([Oo]rder([[:space:]]+Number)?|[Cc]onfirmation|[Tt]ransaction|ID|[Ii]tem)[:#]?[[:space:]]*#?([A-Z0-9-]{3,})"
+color body color5 default "([Oo]rder|[Cc]onfirmation|[Tt]ransaction|ID|[Ii]tem|Invoice|Ref|Reference)([[:space:]]+(Number|ID|No|#|Code))?[:#]?[[:space:]]*#?([A-Z0-9-]{3,})"
 
 # Phone Numbers
 color body color5 default "((\\+)?[0-9]{1,2}[[:space:].-]?)?(\\(?[0-9]{3}\\)?[[:space:].-]?)[0-9]{3}[[:space:].-]?[0-9]{4}"
@@ -109,8 +109,8 @@ color body  color4 default  '(https?|ftp|news|file|git)://[-\.,/%~_:?&=\#a-zA-Z0
 color body  color4 default  'www\.[-\.a-z0-9]+\.[a-z][a-z]+'
 
 # Money
-color body  color2 default  '[$£€][0-9,]+\.?[0-9]*'
-color body  color2 default  '[0-9,]+\.?[0-9]*[[:space:]]*[$£€]'
+color body  color2 default  '[\$£€][0-9,]+\.?[0-9]*'
+color body  color2 default  '[0-9,]+\.?[0-9]*[[:space:]]*[\$£€]'
 color body  color2 default  '(USD|CAD|EUR|GBP)[[:space:]]*[0-9,]+\.?[0-9]*'
 color body  color2 default  '[0-9,]+\.?[0-9]*[[:space:]]*(USD|CAD|EUR|GBP)'
 
