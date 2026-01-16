@@ -8,7 +8,7 @@ echo "Detected OS: $OSTYPE"
 
 install_arch() {
     echo "Installing dependencies for Arch Linux..."
-    sudo pacman -S --noconfirm neomutt urlscan w3m pandoc xdg-utils mpv notmuch isync glow khard msmtp fzf npm
+    sudo pacman -S --needed --noconfirm neomutt urlscan w3m pandoc xdg-utils mpv notmuch isync glow khard msmtp fzf npm aspell
     # sc-im might be in AUR. Check if installed, if not, warn.
     if ! command -v sc-im &> /dev/null; then
         echo "sc-im not found. It is recommended to install it from AUR (e.g., yay -S sc-im)."
@@ -18,12 +18,12 @@ install_arch() {
 install_debian() {
     echo "Installing dependencies for Debian/Ubuntu..."
     sudo apt update
-    sudo apt install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im notmuch isync glow khard msmtp fzf npm
+    sudo apt install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im notmuch isync glow khard msmtp fzf npm aspell
 }
 
 install_fedora() {
     echo "Installing dependencies for Fedora..."
-    sudo dnf install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im notmuch isync glow khard msmtp fzf npm
+    sudo dnf install -y neomutt urlscan w3m pandoc xdg-utils mpv sc-im notmuch isync glow khard msmtp fzf npm aspell
 }
 
 install_macos() {
@@ -32,7 +32,7 @@ install_macos() {
         echo "Homebrew not found. Please install Homebrew first."
         exit 1
     fi
-    brew install neomutt urlscan w3m pandoc mpv sc-im notmuch isync glow khard msmtp fzf node
+    brew install neomutt urlscan w3m pandoc mpv sc-im notmuch isync glow khard msmtp fzf node aspell
     # xdg-open equivalent on mac is 'open', usually built-in or mapped by neomutt config if configured,
     # but we list xdg-utils just in case user has environment that uses it.
     # Actually macOS doesn't use xdg-utils by default for 'xdg-open' unless installed or aliased.
@@ -69,8 +69,12 @@ fi
 
 # Install git-split-diffs if npm is available
 if command -v npm &> /dev/null; then
-    echo "Installing git-split-diffs via npm..."
-    sudo npm install -g git-split-diffs || echo "Failed to install git-split-diffs. Please install it manually."
+    if ! command -v git-split-diffs &> /dev/null; then
+        echo "Installing git-split-diffs via npm..."
+        sudo npm install -g git-split-diffs || echo "Failed to install git-split-diffs. Please install it manually."
+    else
+        echo "git-split-diffs is already installed. Skipping."
+    fi
 else
     echo "npm not found. Skipping git-split-diffs installation."
 fi
