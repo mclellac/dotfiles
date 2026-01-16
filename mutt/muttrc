@@ -19,7 +19,7 @@ macro index,pager <F3> '<enter-command>source ~/.config/mutt/acct/work<enter><ch
 
 #### General Settings
 set smtp_authenticators = 'gssapi:login'
-set help = yes
+set help = no
 set sleep_time = 0		        # Pause 0 seconds for informational messages
 set pager_read_delay = 3      # View a message for 3 seconds to mark as read
 set mark_old = no		          # Unread mail stay unread until read
@@ -58,7 +58,7 @@ hdr_order from: to: cc: date: subject:  # header item ordering
 
 #### View Settings
 set allow_ansi             # allow ansi escape codes (e.g. colors)
-set pager_index_lines = 10 # number of index lines to show (0 = own window)
+set pager_index_lines = 0  # number of index lines to show (0 = own window)
 set pager_context = 3      # number of context lines to show
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus

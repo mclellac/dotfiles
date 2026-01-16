@@ -38,6 +38,7 @@ The `install.sh` script will attempt to install the following dependencies:
 
 3.  **Configure Syncing (Notmuch/isync)**:
     *   Edit `~/.config/isync/mbsyncrc` with your IMAP details (see `isync/mbsyncrc.example` for reference).
+    *   **Crucial**: Replace the placeholder `ACCOUNT_ALIAS` (e.g., `personal`) in the config with your actual account name. This name must match the folder created in `~/.local/share/mail/` and the account file in `mutt/acct/`.
     *   Run `mbsync -a` to download your email.
     *   Run `notmuch new` to index the downloaded email.
     *   Neomutt is configured to look for the notmuch database in `~/.local/share/mail`. Ensure `mbsyncrc` downloads to this location.

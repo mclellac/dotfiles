@@ -5,7 +5,7 @@ Host imap.gmail.com
 User your.email@gmail.com
 PassCmd "pass Email/personal" # Or use Pass: password
 AuthMechs LOGIN
-SSLType IMAPS
+TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore personal-remote
