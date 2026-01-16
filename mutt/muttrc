@@ -84,7 +84,7 @@ auto_view application/pgp-encrypted
 alternative_order text/calendar application/ics text/plain text/enriched text/html
 
 #### Sidebar Config
-set sidebar_divider_char = ' ░  '
+set sidebar_divider_char = ' ░    '
 set sidebar_folder_indent = yes
 set sidebar_indent_string = ' - '
 set sidebar_non_empty_mailbox_only = no

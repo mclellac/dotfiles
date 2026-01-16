@@ -36,7 +36,7 @@ color status red color8 ''                              # Pending delete icon
 
 
 # User Name Highlighting -----------------------------------------------------------
-color body color3 default "\\b([Cc]hris|[Mm]c[Ll]ellan|[Vv]iktoria|[Ss]erdetchnaia|[Mm]clellac)\\b"
+color body color3 default "\\b([Cc]arey|[Mm]c[Ll]elland|[Vv]iktoria|[Ss]erdetchnaia|[Mm]clellac|xorcsm)\\b"
 color body color3 default "\\b([Uu]ser [Nn]ame|[Rr]eal [Nn]ame)\\b" # Placeholder for unconfigured name
 
 
