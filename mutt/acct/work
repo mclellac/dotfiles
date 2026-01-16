@@ -16,9 +16,9 @@ set trash		= "+[Gmail]/Trash"
 set ispell      = "aspell --mode=email check"
 set include=yes
 
-set header_cache        =~/.mutt/cache/work/headers
-set message_cachedir 	=~/.mutt/cache/work/bodies
-set certificate_file 	=~/.mutt/work/certificates
+set header_cache        =~/.cache/mutt/work/headers
+set message_cachedir 	=~/.cache/mutt/work/bodies
+set certificate_file 	=~/.config/mutt/certificates/work
 
 # Neomutt needs to be told which mailboxes to check for new mail.
 # We use a dynamic python script to find all local mailboxes robustly.

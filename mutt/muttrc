@@ -113,7 +113,7 @@ set beep_new # beep for new messages
 #### Text editor
 set editor="~/.config/mutt/scripts/mutt-trim %s; nvim +':set textwidth=72' +':set wrapmargin=0' +':set wrap' +':set spell' %s"
 set query_command = "khard email --parsable '%s'"
-set sendmail = "/usr/bin/msmtp"
+set sendmail = "msmtp"
 source ~/.config/mutt/crypto/gpg.rc
 
 #### Markdown to html email conversion
