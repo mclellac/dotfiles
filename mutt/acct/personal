@@ -16,9 +16,9 @@ set trash		= "+[Gmail]/Trash"
 set ispell      = "aspell --mode=email check"
 set include=yes
 
-set header_cache        =~/.mutt/cache/personal/headers
-set message_cachedir 	=~/.mutt/cache/personal/bodies
-set certificate_file 	=~/.mutt/personal/certificates
+set header_cache        =~/.cache/mutt/personal/headers
+set message_cachedir 	=~/.cache/mutt/personal/bodies
+set certificate_file 	=~/.config/mutt/certificates/personal
 
 # Neomutt needs to be told which mailboxes to check for new mail.
 # It will not automatically discover all of your folders.

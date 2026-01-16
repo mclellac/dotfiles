@@ -11,6 +11,51 @@ This repository is tailored for my specific use-case, but you are welcome to use
 - Python 3.6 or higher
 - Unix-like operating system (Linux, macOS, etc.)
 
+### Mutt Configuration
+
+This repository includes a comprehensive configuration for Neomutt, designed for a fast, local-only email workflow using `isync` (mbsync) and `notmuch`.
+
+#### Dependencies
+
+The `install-mutt.sh` script automates the installation of the following dependencies:
+-   `neomutt`: The email client.
+-   `isync`: For syncing email (IMAP/SMTP).
+-   `notmuch`: For indexing and tagging email.
+-   `urlscan`: For handling URLs.
+-   `w3m` & `glow`: For rendering HTML emails.
+-   `pandoc`: For converting Markdown to HTML in the composer.
+-   `khard`: For address book management (requires `vobject`).
+-   `msmtp`: For sending email.
+-   `fzf`: For fuzzy finding mailboxes.
+-   `git-split-diffs`: For viewing patch files.
+
+#### Post-Installation Configuration
+
+After running `./install-mutt.sh`, you need to perform a few manual steps to configure your accounts:
+
+1.  **Configure Accounts**: Update `~/.config/mutt/acct/personal` and `~/.config/mutt/acct/work` with your email details.
+2.  **Configure mbsync**: Edit `~/.config/isync/mbsyncrc` with your IMAP/SMTP details.
+3.  **Configure MSMTP**: Create or edit `~/.msmtprc` for sending email.
+    ```
+    # Example ~/.msmtprc
+    defaults
+    auth           on
+    tls            on
+    tls_trust_file /etc/ssl/certs/ca-certificates.crt
+    logfile        ~/.msmtp.log
+
+    account personal
+    host smtp.gmail.com
+    port 587
+    from user@gmail.com
+    user user@gmail.com
+    passwordeval "pass email/personal"
+
+    account default : personal
+    ```
+4.  **Configure Khard**: Ensure you have a `~/.config/khard/khard.conf` pointing to your contacts (usually synced via vdirsyncer).
+5.  **Initialize Mail**: Run `mbsync -a` to fetch mail, then `notmuch new` to index it.
+
 ### Installation
 
 ```bash
