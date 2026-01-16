@@ -21,7 +21,7 @@ set message_cachedir 	=~/.mutt/cache/work/bodies
 set certificate_file 	=~/.mutt/work/certificates
 
 # Neomutt needs to be told which mailboxes to check for new mail.
-# We use a dynamic script to find all local mailboxes to avoid errors with missing folders.
-# Quote the output to handle mailboxes with spaces (e.g. "All Mail").
+# We use a dynamic python script to find all local mailboxes robustly.
+# This handles spaces and hierarchy correctly.
 # ---------------------------------------------------------------------------------------------------
-mailboxes `cd "$HOME/.local/share/mail/work" && find . -maxdepth 4 -type d -name cur | sed 's|/cur$||;s|^\./|=|;s|^|"|;s|$|"|' | sort | tr '\n' ' '`
+mailboxes `python3 ~/.config/mutt/scripts/find_mailboxes.py "$HOME/.local/share/mail/work"`
