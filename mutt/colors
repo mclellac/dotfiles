@@ -51,7 +51,7 @@ color body color5 default "\\b[0-9]{3}-[0-9]{7}-[0-9]{7}\\b"
 color body color5 default "\\b([Oo]rder([[:space:]]+Number)?|[Cc]onfirmation|[Tt]ransaction|ID|[Ii]tem)[:#]?[[:space:]]*#?([A-Z0-9-]{3,})\\b"
 
 # Phone Numbers
-color body color5 default "\\b(\+?[0-9]{1,2}[[:space:].-]?)?(\(?[0-9]{3}\)?[[:space:].-]?)[0-9]{3}[[:space:].-]?[0-9]{4}\\b"
+color body color5 default "\\b((\\+)?[0-9]{1,2}[[:space:].-]?)?(\\(?[0-9]{3}\\)?[[:space:].-]?)[0-9]{3}[[:space:].-]?[0-9]{4}\\b"
 
 # Addresses (Common patterns: Digits + Text + Street Suffix)
 color body color3 default "\\b[0-9]+[[:space:]]+[a-zA-Z0-9[:space:].,#]+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Plaza|Plz|Square|Sq|Turnpike|Tpke|Parkway|Pkwy|Circle|Cir|Trail|Trl|Suite|Ste|Unit|Apt|Apartment|Room|Rm|Floor|Fl|Box)\\b"
