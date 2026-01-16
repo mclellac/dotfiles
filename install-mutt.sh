@@ -94,7 +94,14 @@ done
 # Copy notmuch config
 if [ -f "notmuch/notmuchrc" ]; then
     if [ -f "$HOME/.notmuch-config" ]; then
-        echo "Found existing ~/.notmuch-config. Skipping notmuch configuration."
+        echo "Found existing ~/.notmuch-config."
+        if grep -q "path=~" "$HOME/.notmuch-config"; then
+            echo "Detected relative path '~' in ~/.notmuch-config. Notmuch requires absolute paths."
+            echo "Updating path to use $HOME..."
+            sed "s|path=~|path=$HOME|g" "$HOME/.notmuch-config" > "$HOME/.notmuch-config.tmp" && mv "$HOME/.notmuch-config.tmp" "$HOME/.notmuch-config"
+        else
+            echo "Skipping notmuch configuration."
+        fi
     else
         echo "Copying notmuch configuration..."
         sed "s|\$HOME|$HOME|g" "notmuch/notmuchrc" > "$HOME/.notmuch-config"
