@@ -36,6 +36,13 @@ The `install.sh` script will attempt to install the following dependencies:
     *   `personal`: Update `imap_user`, `imap_pass`, `smtp_url` (with user), `smtp_pass`, `from`, and `realname`.
     *   `work`: Similar configuration if needed.
 
+    > **Note:** The `mailboxes` setting in account files now uses a Python script (`find_mailboxes.py`) to robustly detect folders. Ensure `python3` is installed.
+
+### Features
+*   **Enhanced Highlighting:** Neomutt is configured to highlight Names, Dates, Money (USD/CAD/EUR/GBP), Tracking Numbers, and Transaction IDs in email bodies.
+*   **Startup:** Neomutt now opens the `INBOX` of the default account immediately upon launch.
+*   **Status Bar:** Improved status bar styling with solid pill colors.
+
 3.  **Configure Syncing (Notmuch/isync)**:
     *   Edit `~/.config/isync/mbsyncrc` with your IMAP details (see `isync/mbsyncrc.example` for reference).
     *   **Crucial**: Replace the placeholder `ACCOUNT_ALIAS` (e.g., `personal`) in the config with your actual account name. This name must match the folder created in `~/.local/share/mail/` and the account file in `mutt/acct/`.
