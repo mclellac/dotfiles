@@ -82,7 +82,7 @@ auto_view text/calendar
 auto_view text/plain
 auto_view text/html
 auto_view application/pgp-encrypted
-alternative_order text/calendar application/ics text/plain text/enriched text/html
+alternative_order text/calendar application/ics text/enriched text/html text/plain
 
 #### Sidebar Config
 set sidebar_divider_char = ' ░    '
