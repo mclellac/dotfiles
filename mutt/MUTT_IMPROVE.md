@@ -7,7 +7,7 @@ This document outlines potential improvements for the current neomutt configurat
 1.  **Split View Pager**
     *   **Current:** `pager_index_lines = 0` (Message opens in its own full window).
     *   **Improvement:** Set `pager_index_lines = 10` (or similar) to keep the index visible while reading a message. This provides better context and allows scrolling through the list while previewing, mimicking a "preview pane" workflow.
-    *   **Action:** Update `muttrc` with `set pager_index_lines = 10`. [x]
+    *   **Action:** Update `muttrc` with `set pager_index_lines = 10`. [x] (Reverted to 0 based on user preference for full window).
 
 2.  **Dynamic Sidebar**
     *   **Current:** Fixed width of 30 columns.
@@ -20,7 +20,13 @@ This document outlines potential improvements for the current neomutt configurat
 
 4.  **Refined Status Bar**
     *   **Current:** Complex format with extensive conditional rendering.
-    *   **Improvement:** While visually rich, it could be simplified or augmented with a "Connection/Sync Status" indicator. Since `isync` runs externally, a hook or file-check could update the status bar to show when a sync is in progress. (Considered but implementation is complex without external script polling).
+    *   **Improvement:** Simplified the status bar by removing double-height padding to save UI space.
+    *   **Action:** Removed trailing newlines from `status_format`. [x]
+
+5.  **Refined Help Bar**
+    *   **Current:** `set help = yes`.
+    *   **Improvement:** Hide the help bar to save UI space.
+    *   **Action:** `set help = no`. [x]
 
 ## Keybinding Improvements
 
