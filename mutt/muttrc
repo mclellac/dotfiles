@@ -71,7 +71,7 @@ set display_filter="perl -0777pe 's/___{10,}[^_]*microsoft teams meeting.*to joi
 
 #### Notmuch Config
 set nm_query_type=threads
-set nm_default_uri = "notmuch:///$HOME/.local/share/mail"
+set nm_default_uri = "notmuch:///`notmuch config get database.path 2>/dev/null || echo $HOME/.local/share/mail`"
 set virtual_spoolfile=yes
 # set nm_record_tags = "sent"
 
