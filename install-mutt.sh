@@ -93,8 +93,12 @@ done
 
 # Copy notmuch config
 if [ -f "notmuch/notmuchrc" ]; then
-    echo "Copying notmuch configuration..."
-    cp "notmuch/notmuchrc" "$HOME/.notmuch-config"
+    if [ -f "$HOME/.notmuch-config" ]; then
+        echo "Found existing ~/.notmuch-config. Skipping notmuch configuration."
+    else
+        echo "Copying notmuch configuration..."
+        cp "notmuch/notmuchrc" "$HOME/.notmuch-config"
+    fi
 fi
 
 # Copy glow config
@@ -108,9 +112,15 @@ fi
 if [ ! -d "$HOME/.config/isync" ]; then
     mkdir -p "$HOME/.config/isync"
 fi
-if [ -f "isync/mbsyncrc.example" ] && [ ! -f "$HOME/.config/isync/mbsyncrc" ]; then
-    echo "Copying mbsyncrc example..."
-    cp "isync/mbsyncrc.example" "$HOME/.config/isync/mbsyncrc"
+if [ -f "isync/mbsyncrc.example" ]; then
+    if [ -f "$HOME/.mbsyncrc" ]; then
+        echo "Found existing ~/.mbsyncrc. Skipping mbsync configuration."
+    elif [ -f "$HOME/.config/isync/mbsyncrc" ]; then
+        echo "Found existing ~/.config/isync/mbsyncrc. Skipping mbsync configuration."
+    else
+        echo "Copying mbsyncrc example..."
+        cp "isync/mbsyncrc.example" "$HOME/.config/isync/mbsyncrc"
+    fi
 fi
 
 # Make scripts executable
