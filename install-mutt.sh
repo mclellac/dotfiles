@@ -97,7 +97,7 @@ if [ -f "notmuch/notmuchrc" ]; then
         echo "Found existing ~/.notmuch-config. Skipping notmuch configuration."
     else
         echo "Copying notmuch configuration..."
-        cp "notmuch/notmuchrc" "$HOME/.notmuch-config"
+        sed "s|\$HOME|$HOME|g" "notmuch/notmuchrc" > "$HOME/.notmuch-config"
     fi
 fi
 
