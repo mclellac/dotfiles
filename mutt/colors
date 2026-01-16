@@ -42,19 +42,19 @@ color body color3 default "\\b([Uu]ser [Nn]ame|[Rr]eal [Nn]ame)\\b" # Placeholde
 
 # IDs and Numbers ------------------------------------------------------------------
 # Tracking Numbers and Order IDs (UPS, USPS/FedEx generic, Amazon-style, simple long digits)
-color body color5 default "\\b1Z[A-Z0-9]{16}\\b"
-color body color5 default "\\b(9[1-5]|9[89])[0-9]{20}\\b"
-color body color5 default "\\b[0-9]{15,}\\b"
-color body color5 default "\\b[0-9]{3}-[0-9]{7}-[0-9]{7}\\b"
+color body color5 default "1Z[A-Z0-9]{16}"
+color body color5 default "(9[1-5]|9[89])[0-9]{20}"
+color body color5 default "[0-9]{15,}"
+color body color5 default "[0-9]{3}-[0-9]{7}-[0-9]{7}"
 
 # Transaction/Confirmation IDs (Order Number:, Order:, ID:, etc)
-color body color5 default "\\b([Oo]rder([[:space:]]+Number)?|[Cc]onfirmation|[Tt]ransaction|ID|[Ii]tem)[:#]?[[:space:]]*#?([A-Z0-9-]{3,})\\b"
+color body color5 default "([Oo]rder([[:space:]]+Number)?|[Cc]onfirmation|[Tt]ransaction|ID|[Ii]tem)[:#]?[[:space:]]*#?([A-Z0-9-]{3,})"
 
 # Phone Numbers
-color body color5 default "\\b((\\+)?[0-9]{1,2}[[:space:].-]?)?(\\(?[0-9]{3}\\)?[[:space:].-]?)[0-9]{3}[[:space:].-]?[0-9]{4}\\b"
+color body color5 default "((\+)?[0-9]{1,2}[[:space:].-]?)?(\(?[0-9]{3}\)?[[:space:].-]?)[0-9]{3}[[:space:].-]?[0-9]{4}"
 
 # Addresses (Common patterns: Digits + Text + Street Suffix)
-color body color3 default "\\b[0-9]+[[:space:]]+[a-zA-Z0-9[:space:].,#]+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Plaza|Plz|Square|Sq|Turnpike|Tpke|Parkway|Pkwy|Circle|Cir|Trail|Trl|Suite|Ste|Unit|Apt|Apartment|Room|Rm|Floor|Fl|Box)\\b"
+color body color3 default "[0-9]+[[:space:]]+[a-zA-Z0-9[:space:].,#]+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Drive|Dr|Lane|Ln|Court|Ct|Plaza|Plz|Square|Sq|Turnpike|Tpke|Parkway|Pkwy|Circle|Cir|Trail|Trl|Suite|Ste|Unit|Apt|Apartment|Room|Rm|Floor|Fl|Box)"
 
 
 # Index Colors   --------------------------------------------------------------------
@@ -109,9 +109,10 @@ color body  color4 default  '(https?|ftp|news|file|git)://[-\.,/%~_:?&=\#a-zA-Z0
 color body  color4 default  'www\.[-\.a-z0-9]+\.[a-z][a-z]+'
 
 # Money
-color body  color2 default  '([\$£€][0-9,]+(\.[0-9]{2})?|[0-9,]+(\.[0-9]{2})?[\$£€])'
-color body  color2 default  '\\b(USD|CAD|EUR|GBP)[[:space:]]?[0-9,]+(\.[0-9]{2})?'
-color body  color2 default  '[0-9,]+(\.[0-9]{2})?[[:space:]]?(USD|CAD|EUR|GBP)\\b'
+color body  color2 default  '[$£€][0-9,]+\.?[0-9]*'
+color body  color2 default  '[0-9,]+\.?[0-9]*[[:space:]]*[$£€]'
+color body  color2 default  '(USD|CAD|EUR|GBP)[[:space:]]*[0-9,]+\.?[0-9]*'
+color body  color2 default  '[0-9,]+\.?[0-9]*[[:space:]]*(USD|CAD|EUR|GBP)'
 
 # Dates (Month Day Year formats)
 color body color3 default "\\b[0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4}\\b"
