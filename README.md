@@ -27,6 +27,7 @@ The `install-mutt.sh` script automates the installation of the following depende
 -   `khard`: For address book management (requires `vobject`).
 -   `msmtp`: For sending email.
 -   `fzf`: For fuzzy finding mailboxes.
+-   `aspell`: For spell checking.
 -   `git-split-diffs`: For viewing patch files.
 
 #### Post-Installation Configuration
