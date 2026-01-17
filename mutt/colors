@@ -12,7 +12,7 @@ color search black color3                               # search highlight (Blac
 color status color6 default                              # Status bar (Cyan)
 
 # Folder Pill (Blue)
-color status white color4 ' [^]+'                     # Folder text (White on Blue)
+color status white color4 ' [^]*'                     # Folder text (White on Blue)
 color status color4 default ' '                         # Left Sep (Blue on Default)
 color status color4 default ''                          # Right Sep (Blue on Default)
 color status default default ' '                         # Leading Hair Space (Reset)
