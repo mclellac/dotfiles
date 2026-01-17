@@ -10,14 +10,36 @@ color search black color3                               # search highlight (Blac
 
 # Statusbar Colors   ----------------------------------------------------------------
 color status color6 default                              # Status bar (Cyan)
-color status color8 default '(|)'                      # statusline "bubbles" separator
-color status color7 color8 ' [^]+'                     # bubble content (Grey BG)
-color status color4 black '(\` )'                       # bubble account variation (Blue)
-color status white color4 '([a-zA-Z0-9\.]+)( )'          # account text (White on Blue)
-color status green color8 ''                            # Unread messages count
-color status blue color8 ''                             # Read messages count icon
-color status yellow color8 ''                           # Flagged icon
-color status red color8 ''                              # Pending delete icon
+
+# Folder Pill (Blue)
+color status white color4 ' [^]+'                     # Folder text (White on Blue)
+color status color4 default ' '                         # Left Sep (Blue on Default)
+color status color4 default ''                          # Right Sep (Blue on Default)
+color status default default ' '                         # Leading Hair Space (Reset)
+
+# Unread Pill (Green)
+color status color2 default ' [0-9]+'                 # Unread Pill Border (Green on Default)
+color status white color2 ' [0-9]+'                     # Unread Content (White on Green)
+
+# Read Pill (Cyan)
+color status color6 default ' [0-9]+'                 # Read Pill Border (Cyan on Default)
+color status white color6 ' [0-9]+'                     # Read Content (White on Cyan)
+
+# Flagged Pill (Yellow)
+color status color3 default ' [0-9]+'                 # Flagged Pill Border (Yellow on Default)
+color status black color3 ' [0-9]+'                     # Flagged Content (Black on Yellow)
+
+# Deleted Pill (Red)
+color status color1 default ' [0-9]+'                 # Deleted Pill Border (Red on Default)
+color status white color1 ' [0-9]+'                     # Deleted Content (White on Red)
+
+# Tagged Pill (Magenta)
+color status color5 default ' [0-9]+'                 # Tagged Pill Border (Magenta on Default)
+color status white color5 ' [0-9]+'                     # Tagged Content (White on Magenta)
+
+# Postponed Pill (Grey)
+color status color245 default ' [0-9]+'               # Postponed Pill Border (Grey on Default)
+color status white color245 ' [0-9]+'                   # Postponed Content (White on Grey)
 
 
 # User Name Highlighting -----------------------------------------------------------
