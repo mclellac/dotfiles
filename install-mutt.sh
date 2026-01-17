@@ -2,7 +2,7 @@
 set -e
 
 CONFIG_DIR="$HOME/.config/mutt"
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/mutt"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/mutt"
 
 # Colors
 RED='\033[0;31m'
@@ -38,7 +38,7 @@ install_arch() {
     log_info "Installing dependencies for Arch Linux..."
     sudo pacman -S --needed --noconfirm neomutt urlscan w3m pandoc xdg-utils mpv notmuch isync glow khard msmtp fzf npm aspell
     # sc-im might be in AUR. Check if installed, if not, warn.
-    if ! command -v sc-im &> /dev/null; then
+    if ! command -v sc-im &>/dev/null; then
         log_warn "sc-im not found. It is recommended to install it from AUR (e.g., yay -S sc-im)."
     fi
 }
@@ -56,7 +56,7 @@ install_fedora() {
 
 install_macos() {
     log_info "Installing dependencies for macOS..."
-    if ! command -v brew &> /dev/null; then
+    if ! command -v brew &>/dev/null; then
         log_error "Homebrew not found. Please install Homebrew first."
         exit 1
     fi
@@ -67,7 +67,7 @@ install_macos() {
     # The mailcap config uses `xdg-open`. On macOS, one might need an alias:
     # alias xdg-open="open" or install a shim.
     # We will verify if xdg-open exists.
-    if ! command -v xdg-open &> /dev/null; then
+    if ! command -v xdg-open &>/dev/null; then
         log_warn "Creating xdg-open alias to open for macOS compatibility..."
         # This is tricky to make persistent without touching shellrc.
         # But for the script execution it's fine.
@@ -96,8 +96,8 @@ else
 fi
 
 # Install git-split-diffs if npm is available
-if command -v npm &> /dev/null; then
-    if ! command -v git-split-diffs &> /dev/null; then
+if command -v npm &>/dev/null; then
+    if ! command -v git-split-diffs &>/dev/null; then
         log_info "Installing git-split-diffs via npm..."
         sudo npm install -g git-split-diffs || log_error "Failed to install git-split-diffs. Please install it manually."
     else
@@ -130,13 +130,13 @@ if [ -f "notmuch/notmuchrc" ]; then
         if grep -q "path=~" "$HOME/.notmuch-config"; then
             log_warn "Detected relative path '~' in ~/.notmuch-config. Notmuch requires absolute paths."
             log_info "Updating path to use $HOME..."
-            sed "s|path=~|path=$HOME|g" "$HOME/.notmuch-config" > "$HOME/.notmuch-config.tmp" && mv "$HOME/.notmuch-config.tmp" "$HOME/.notmuch-config"
+            sed "s|path=~|path=$HOME|g" "$HOME/.notmuch-config" >"$HOME/.notmuch-config.tmp" && mv "$HOME/.notmuch-config.tmp" "$HOME/.notmuch-config"
         else
             log_info "Skipping notmuch configuration."
         fi
     else
         log_info "Copying notmuch configuration..."
-        sed "s|\$HOME|$HOME|g" "notmuch/notmuchrc" > "$HOME/.notmuch-config"
+        sed "s|\$HOME|$HOME|g" "notmuch/notmuchrc" >"$HOME/.notmuch-config"
     fi
 fi
 
@@ -168,4 +168,4 @@ chmod +x "$CONFIG_DIR/scripts/"*
 log_info "Installation complete!"
 log_info "Configuration installed to ${CYAN}$CONFIG_DIR${NC}"
 log_info "Don't forget to update your account details in ${CYAN}$CONFIG_DIR/acct/${NC}"
-log_info "Please configure '${CYAN}$HOME/.config/isync/mbsyncrc${NC}' and run 'mbsync -a' followed by 'notmuch new' to initialize local mail."
+log_info "Please configure '${CYAN}$HOME/.config/isync/mbsyncrc${NC}' and run ${CYAN}'mbsync -a'${NC} followed by 'notmuch new' to initialize local mail."
