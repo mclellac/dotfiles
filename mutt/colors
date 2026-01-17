@@ -9,7 +9,7 @@ color search black color3                               # search highlight (Blac
 
 
 # Statusbar Colors   ----------------------------------------------------------------
-color status color6 default                              # Status bar (Cyan)
+color status white default                              # Status bar (white)
 color status color8 default '(|)'                      # statusline "bubbles" separator
 color status color7 color8 ' [^]+'                     # bubble content (Grey BG)
 color status color4 black '(\` )'                       # bubble account variation (Blue)
@@ -46,20 +46,6 @@ color body color245 default "\\[[^]]+\\]"
 
 
 # Index Colors   --------------------------------------------------------------------
-color index color15 default '~N'                # new messages (White)
-color index color250 default '~R'               # read messages (Light Grey)
-color index color250 default '~Q'               # messages which have been replied to
-color index_collapsed color4 default            # collapsed thread (Blue)
-color index color2 default '~h X-Label..'      # messages with a complete label (Green)
-color index color3 default '~F'                 # flagged messages (Yellow)
-color index color3 default '~F~N'               # flagged messages (new)
-color index color14 default '~F~R'              # flagged messages (read) (Cyan/Blue)
-color index color1 default '~D'                 # deleted messages (Red)
-color index color1 default '~D~N'               # deleted messages (new)
-color index color9 default '~D~R'               # deleted messages (read)
-color index color6 default '~T'                 # tagged messages (Cyan)
-color index color6 default '~T~N'               # tagged messages (new)
-color index color14 default '~T~R'              # tagged messages (read)
 color tree  color250 default                    # thread tree lines/arrow
 color indicator black color6                    # selection indicator (Black on Cyan)
 color index_date color250 default               # date is always the same colour
@@ -189,3 +175,25 @@ color index color203 default "~f airbnb.com"         # Airbnb Red/Pink
 color index color27  default "~f paypal.com"         # PayPal Blue
 color index color93  default "~f twitch.tv"          # Twitch Purple
 color index color202 default "~f soundcloud.com"     # SoundCloud Orange
+
+# Status Colors (Moved to end to override domain colors)
+color index color15 default '~N'                # new messages (White)
+color index color15 default '~O'                # old/unread messages (White)
+color index color250 default '~R'               # read messages (Light Grey)
+color index color250 default '~Q'               # messages which have been replied to
+color index_collapsed color4 default            # collapsed thread (Blue)
+color index color2 default '~h X-Label..'      # messages with a complete label (Green)
+color index color3 default '~F'                 # flagged messages (Yellow)
+color index color3 default '~F~N'               # flagged messages (new)
+color index color14 default '~F~R'              # flagged messages (read) (Cyan/Blue)
+color index color1 default '~D'                 # deleted messages (Red)
+color index color1 default '~D~N'               # deleted messages (new)
+color index color9 default '~D~R'               # deleted messages (read)
+color index color6 default '~T'                 # tagged messages (Cyan)
+color index color6 default '~T~N'               # tagged messages (new)
+color index color14 default '~T~R'              # tagged messages (read)
+
+color tree  color250 default                    # thread tree lines/arrow
+color indicator black color6                    # selection indicator (Black on Cyan)
+color index_date color250 default               # date is always the same colour
+color index_label color6 default                # label is always the same colour
