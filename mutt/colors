@@ -12,21 +12,11 @@ color search black color3                               # search highlight (Blac
 color status color6 default                              # Status bar (Cyan)
 
 # Status Bar Pills (Solid Grey)
-# Separators (Grey on Default) - Defines the pill shape
+# Generic Content Rule (White on Grey) - Matches ANY pill body
+color status white color8 '[^]*'
+
+# Separators (Grey on Default) - Defines the pill shape (overrides edges of Generic Rule)
 color status color8 default '(|)'
-
-# Folder (Blue on Grey) - Matches "HairSpace LeftSep Content" at start of line
-color status white color8 '^ [^]*'
-color status default default ' '                         # Reset Hair Space
-color status color8 default ''                          # Reset Left Sep
-
-# Content Rules (White on Grey) - Matches "Icon Content"
-color status white color8 ' [^]*'                      # Unread
-color status white color8 ' [^]*'                      # Read
-color status white color8 ' [^]*'                      # Flagged
-color status white color8 ' [^]*'                      # Deleted
-color status white color8 ' [^]*'                      # Tagged
-color status white color8 ' [^]*'                      # Postponed
 
 # Icon Overrides (Color on Grey) - Matches just the icon
 color status green color8 ''
