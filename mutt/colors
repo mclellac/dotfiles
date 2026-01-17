@@ -22,8 +22,8 @@ color status color2 default ' [0-9]+'                 # Unread Pill Bor
 color status white color2 ' [0-9]+'                     # Unread Content (White on Green)
 
 # Read Pill (Cyan)
-color status color6 default ' [0-9]+'                 # Read Pill Border (Cyan on Default)
-color status white color6 ' [0-9]+'                     # Read Content (White on Cyan)
+color status color6 default ' [0-9]+'                 # Read Pill Border (Cyan on Default)
+color status white color6 ' [0-9]+'                     # Read Content (White on Cyan)
 
 # Flagged Pill (Yellow)
 color status color3 default ' [0-9]+'                 # Flagged Pill Border (Yellow on Default)
