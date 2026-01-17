@@ -79,6 +79,12 @@ color sidebar_unread color7 default     # mailboxes containing unread mail
 # Message Headers   -----------------------------------------------------------------
 color hdrdefault color250 default
 
+color header color2 default "^(Subject):"
+color header color4 default "^(From):"
+color header color4 default "^(To|Cc|Bcc):"
+color header color6 default "^(Date):"
+color header color245 default "^(Message-ID|References|In-Reply-To):"
+
 
 # Message Body   --------------------------------------------------------------------
 
