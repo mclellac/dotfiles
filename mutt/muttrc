@@ -49,7 +49,7 @@ source ~/.config/mutt/aliases
 
 #### Colors, Symbols and Formatting
 source ~/.config/mutt/colors
-#source ~/.config/mutt/formats
+source ~/.config/mutt/formats
 
 #### Header Options
 ignore *                                # ignore all headers
