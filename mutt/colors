@@ -16,8 +16,8 @@ color status color6 default                              # Status bar (Cyan)
 color status white color8 '[^]*'
 
 # Separators (Grey on Default) - Defines the pill shape (overrides edges of Generic Rule)
-color status color8 default ''
-color status color8 default ''
+color status color8 default "(^|[  ])"
+color status color8 default "($|[ ])"
 
 # Icon Overrides (Color on Grey) - Matches just the icon
 color status green color8 ''
