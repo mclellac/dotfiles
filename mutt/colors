@@ -9,7 +9,7 @@ color search black color3                               # search highlight (Blac
 
 
 # Statusbar Colors   ----------------------------------------------------------------
-color status color6 default                              # Status bar (Cyan)
+color status white default                              # Status bar (white)
 color status color8 default '(|)'                      # statusline "bubbles" separator
 color status color7 color8 ' [^]+'                     # bubble content (Grey BG)
 color status color4 black '(\` )'                       # bubble account variation (Blue)
