@@ -159,7 +159,7 @@ color   body    brightblue      default         "^Reply to this email.*"
 
 
 # Domain Specific Colors (Brand Colors)
-color index color196 default "~f gmail.com"          # Gmail Red
+color index color33 default "~f gmail.com"          # Gmail Blue
 color index color33  default "~f hotmail.com"        # Hotmail Blue
 color index color39  default "~f crave.ca"           # Crave Blue
 color index color196 default "~f netflix.com"        # Netflix Red
