@@ -13,6 +13,7 @@ set spoolfile 	= "+INBOX"
 # set postponed 	= "+[Gmail]/Drafts"
 set postponed = "+Drafts"
 set trash		= "+[Gmail]/Trash"
+set my_spam_folder = "+[Gmail]/Spam"
 set ispell      = "aspell --mode=email check"
 set include=yes
 
