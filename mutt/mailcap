@@ -14,7 +14,7 @@ application/ics; ~/.config/mutt/scripts/mutt-viewical; copiousoutput;
 image/*; xdg-open %s ;
 
 # open videos in mpv
-video/*; mpv --autofit-larger=90\%x90\% %s; needsterminal;
+video/*; ~/.config/mutt/scripts/open_video.sh %s; needsterminal;
 video/*; setsid mpv --quiet %s &; copiousoutput
 
 # open spreadsheets in sc-im
