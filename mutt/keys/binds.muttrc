@@ -108,7 +108,7 @@ macro attach,compose \cl "<pipe-entry> urlscan -d -w 80<Enter>" "call urlscan to
 
 # Vim-like Navigation
 macro index gi "<change-folder>!<enter>" "Go to Inbox"
-macro index gs "<change-folder>+Sent<enter>" "Go to Sent"
+macro index gs "<change-folder>\$my_sent_folder<enter>" "Go to Sent"
 macro index gd "<change-folder>+Drafts<enter>" "Go to Drafts"
 macro index ga "<change-folder>=Archive<enter>" "Go to Archive"
 macro index gS "<change-folder>\$my_spam_folder<enter>" "Go to Spam"

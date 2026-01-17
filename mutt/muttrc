@@ -19,7 +19,7 @@ macro index,pager <F3> '<enter-command>source ~/.config/mutt/acct/work<enter><ch
 
 #### General Settings
 set smtp_authenticators = 'gssapi:login'
-set help = no
+set help = yes
 set sleep_time = 0		        # Pause 0 seconds for informational messages
 set pager_read_delay = 3      # View a message for 3 seconds to mark as read
 set mark_old = no		          # Unread mail stay unread until read

@@ -111,6 +111,13 @@ Keybindings are defined in `keys/binds.muttrc` and are Vim-inspired.
 | `H`             | View Raw Message                           |
 | `Ctrl-l`        | Extract URLs (`urlscan`)                   |
 
+### Attachment View
+| Key             | Description                                |
+| --------------- | ------------------------------------------ |
+| `<return>`      | View Attachment                            |
+| `s`             | Save to `~/Downloads`                      |
+| `P`             | View Patch (`git-split-diffs`)             |
+
 ### Compose
 | Key             | Description                                |
 | --------------- | ------------------------------------------ |

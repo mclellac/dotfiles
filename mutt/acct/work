@@ -14,6 +14,7 @@ set spoolfile 	= "+INBOX"
 set postponed = "+Drafts"
 set trash		= "+[Gmail]/Trash"
 set my_spam_folder = "+[Gmail]/Spam"
+set my_sent_folder = "+[Gmail]/Sent Mail"
 set ispell      = "aspell --mode=email check"
 set include=yes
 
