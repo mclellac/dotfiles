@@ -27,7 +27,7 @@ set to_chars=" "
 # unchanged mailbox, changed, read only, attach mode
 set status_chars = " "
 ifdef crypt_chars set crypt_chars = " "
-set flag_chars = "󰎔"
+set flag_chars = "󰎔    "
 
 # Tags ------------------------------------------------------------------------------
 # hide some tags
