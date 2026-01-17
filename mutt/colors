@@ -12,12 +12,14 @@ color search black color3                               # search highlight (Blac
 color status color6 default                              # Status bar (Cyan)
 
 # Status Bar Pills (Solid Grey)
-# Generic Content Rule (White on Grey) - Matches ANY pill body
-color status white color8 '[^]*'
-
-# Separators (Grey on Default) - Defines the pill shape (overrides edges of Generic Rule)
+# Separators (Grey on Default) - Defines the pill shape
 color status color8 default ''
 color status color8 default ''
+
+# Content Rules (White on Grey) - Matches content explicitly to avoid coloring outside spaces
+color status white color8 "[^  ]+"       # Non-space content
+color status white color8 "[^  ]+[ ]"    # Content + Space (Stitch words)
+color status white color8 "[ ][^  ]+"    # Space + Content (Stitch words)
 
 # Icon Overrides (Color on Grey) - Matches just the icon
 color status green color8 ''
