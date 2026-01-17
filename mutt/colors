@@ -12,16 +12,29 @@ color search black color3                               # search highlight (Blac
 color status color6 default                              # Status bar (Cyan)
 
 # Status Bar Pills (Solid Grey)
-color status white color8 '[^]*'                      # Whole Pill (White on Grey)
-color status color8 default '(|)'                      # Separators (Grey on Default)
+# Separators (Grey on Default) - Defines the pill shape
+color status color8 default '(|)'
 
-# Icon Overrides (Color on Grey)
-color status green color8 ''                            # Unread (Green)
-color status cyan color8 ''                             # Read (Cyan)
-color status yellow color8 ''                           # Flagged (Yellow)
-color status red color8 ''                              # Deleted (Red)
-color status magenta color8 ''                          # Tagged (Magenta)
-color status white color8 ''                            # Postponed (White)
+# Folder (Blue on Grey) - Matches "HairSpace LeftSep Content" at start of line
+color status white color8 '^ [^]*'
+color status default default ' '                         # Reset Hair Space
+color status color8 default ''                          # Reset Left Sep
+
+# Content Rules (White on Grey) - Matches "Icon Content"
+color status white color8 ' [^]*'                      # Unread
+color status white color8 ' [^]*'                      # Read
+color status white color8 ' [^]*'                      # Flagged
+color status white color8 ' [^]*'                      # Deleted
+color status white color8 ' [^]*'                      # Tagged
+color status white color8 ' [^]*'                      # Postponed
+
+# Icon Overrides (Color on Grey) - Matches just the icon
+color status green color8 ''
+color status cyan color8 ''
+color status yellow color8 ''
+color status red color8 ''
+color status magenta color8 ''
+color status white color8 ''
 
 
 # User Name Highlighting -----------------------------------------------------------
