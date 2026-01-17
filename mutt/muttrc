@@ -95,6 +95,9 @@ set sidebar_width   = 30
 set sidebar_next_new_wrap = yes
 set sidebar_short_path = yes
 set sidebar_component_depth = 0
+set mail_check_stats = yes
+set mail_check_stats_interval = 60
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 
 #### Thread ordering
 set use_threads=reverse
