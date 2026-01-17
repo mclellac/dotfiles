@@ -100,8 +100,8 @@ set mail_check_stats_interval = 60
 set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 
 #### Thread ordering
-set use_threads=reverse
-set sort='last-date'
+set sort=threads
+set sort_aux=reverse-last-date
 set collapse_all = yes
 set uncollapse_new = no
 set new_mail_command="~/.config/mutt/scripts/notify_mail.sh &"
