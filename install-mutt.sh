@@ -168,4 +168,4 @@ chmod +x "$CONFIG_DIR/scripts/"*
 log_info "Installation complete!"
 log_info "Configuration installed to ${CYAN}$CONFIG_DIR${NC}"
 log_info "Don't forget to update your account details in ${CYAN}$CONFIG_DIR/acct/${NC}"
-log_info "Please configure '${CYAN}$HOME/.config/isync/mbsyncrc${NC}' and run ${CYAN}'mbsync -a'${NC} followed by 'notmuch new' to initialize local mail."
+log_info "Please configure '${CYAN}$HOME/.config/isync/mbsyncrc${NC}' and run ${CYAN}'mbsync -a'${NC} followed by ${CYAN}'notmuch new'${NC} to initialize local mail."

@@ -1,5 +1,6 @@
 # General Navigation
 bind index <Left> collapse-thread
+bind attach <Left> exit
 bind index <Right> collapse-thread
 bind index h collapse-thread
 bind index l collapse-thread
