@@ -108,10 +108,11 @@ macro attach,compose \cl "<pipe-entry> urlscan -d -w 80<Enter>" "call urlscan to
 
 # Vim-like Navigation
 macro index gi "<change-folder>!<enter>" "Go to Inbox"
-macro index gs "<change-folder>\$my_sent_folder<enter>" "Go to Sent"
+macro index gs "<change-folder>=$record<enter>" "Go to Sent"
 macro index gd "<change-folder>+Drafts<enter>" "Go to Drafts"
 macro index ga "<change-folder>=Archive<enter>" "Go to Archive"
-macro index gS "<change-folder>\$my_spam_folder<enter>" "Go to Spam"
+macro index gS "<change-folder>=$my_spam_folder<enter>" "Go to Spam"
+macro index gA "<change-folder>='[Gmail]/All Mail'<enter>" "Go to All Mail"
 
 # Notmuch Shortcuts
 macro index <Tab> "<vfolder-from-query>date:today..now<enter>" "Show Today's Mail"
@@ -125,6 +126,6 @@ macro index U "|urlscan -d -w 80 | grep -i unsubscribe<enter>" "Find unsubscribe
 macro index \Cf "<enter-command>set my_mailbox=\`find ~/.local/share/mail -type d -maxdepth 2 | fzf\`<enter><change-folder>\$my_mailbox<enter>" "Fuzzy change folder"
 
 # Spam Handling
-macro index S "<save-message>\$my_spam_folder<enter>" "Move to Spam"
+macro index S "<save-message>=$my_spam_folder<enter>" "Move to Spam"
 
 set abort_key = "<Esc>"

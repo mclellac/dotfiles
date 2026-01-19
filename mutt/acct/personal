@@ -1,22 +1,23 @@
 # Personal Account
 # ------------------------------------------------------------------------------
-# set imap_check_subscribed
+# Authentication is handled by mbsync and msmtp, which should be configured to
+# use OAuth2 for Gmail.
 # set imap_user 	= "user@domain"
-# set imap_pass 	= ""
 set folder 	    = "~/.local/share/mail/personal"
-# set smtp_url	= "smtps://user@domain@smtp.gmail.com/465"
-# set smtp_pass 	= ""
 set from 	    = "user@domain"
 set realname 	= "real name"
 
 set spoolfile 	= "+INBOX"
-# set postponed 	= "+[Gmail]/Drafts"
-set postponed = "+Drafts"
+set postponed 	= "+[Gmail]/Drafts"
 set trash		= "+[Gmail]/Trash"
 set my_spam_folder = "+[Gmail]/Spam"
-set my_sent_folder = "+[Gmail]/Sent Mail"
+set record      = "+[Gmail]/Sent Mail"
 set ispell      = "aspell --mode=email check"
-set include=yes
+set copy=no
+
+# IMAP connection settings
+set imap_idle = yes
+set imap_keepalive = 900
 
 set header_cache        =~/.cache/mutt/personal/headers
 set message_cachedir 	=~/.cache/mutt/personal/bodies

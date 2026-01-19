@@ -18,22 +18,18 @@ macro index,pager <F2> '<enter-command>source ~/.config/mutt/acct/personal<enter
 macro index,pager <F3> '<enter-command>source ~/.config/mutt/acct/work<enter><change-folder>+INBOX<enter>' "Switch to Work account"
 
 #### General Settings
-set smtp_authenticators = 'gssapi:login'
-set help = yes
 set sleep_time = 0		      # Pause 0 seconds for informational messages
 set pager_read_delay = 3      # View a message for 3 seconds to mark as read
 set mark_old = no		      # Unread mail stay unread until read
-set mime_forward = no	  	  # attachments are forwarded with mail
 set wait_key = no		      # mutt won't ask "press key to continue"
 set fast_reply			      # skip to compose when replying
-set fcc_attach			      # save attachments with the body
 set forward_format = "FW: %s" # format of subject when forwarding
-set forward_quote		      # quote forwarded message
 set reverse_name	          # reply as whomever it was to
 set reverse_realname=yes      # use any real name provided when replying
 set auto_tag                  # automatically apply commands to all tagged messages (if some messages are tagged)
-set include			          # include message in replies
-set mail_check=5              # to avoid lags using IMAP with some email providers (yahoo for example)
+# With imap_idle enabled, mutt will get new mail as it arrives.
+# We can set mail_check to a higher value.
+set mail_check=60             # to avoid lags using IMAP with some email providers (yahoo for example)
 set timeout=5                 # how long to wait after user input until unblocking background stuff like mail syncing
 set count_alternatives=yes    # recurse into text/multipart when looking for attachement types
 set thorough_search=no        # don't process mail (via mailcap etc) before parsing with queries like ~B
@@ -42,6 +38,7 @@ set flag_safe                 # flagged messages can't be deleted
 # Caching for speed
 set header_cache = ~/.cache/mutt/headers
 set message_cachedir = ~/.cache/mutt/bodies
+# Mail is synced with mbsync. Use the 'O' keybinding to sync all mail.
 
 #### Aliases
 set alias_file=~/.config/mutt/aliases
@@ -75,7 +72,7 @@ set display_filter="sed -e '/[[]-- Autoview using .* --[]]/d' -e '/[[]-- Type: .
 set nm_query_type=threads
 set nm_default_uri = "notmuch:///`notmuch config get database.path 2>/dev/null || echo $HOME/.local/share/mail`"
 set virtual_spoolfile=yes
-# set nm_record_tags = "sent"
+set nm_record_tags = "sent"
 
 #### Content/Autoview
 auto_view application/ics
