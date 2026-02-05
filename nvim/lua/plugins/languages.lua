@@ -4,10 +4,30 @@ return {
     dependencies = {
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
+      "whoissethdaniel/mason-tool-installer.nvim",
     },
     config = function()
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
+      local mason_tool_installer = require("mason-tool-installer")
+
+      mason_tool_installer.setup({
+        ensure_installed = {
+          "black",
+          "rustfmt",
+          "shfmt",
+          "markdownlint",
+          "clang-format",
+          "tflint",
+          "ansible-lint",
+          "shellcheck",
+          "prettier",
+          "gomodifytags",
+          "impl",
+          "gotests",
+          "delve",
+        },
+      })
 
       mason_lspconfig.setup({
         ensure_installed = {
@@ -51,6 +71,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-python",
+      "fredrikaverpil/neotest-golang",
     },
     config = function()
       require("neotest").setup({
@@ -58,9 +79,22 @@ return {
           require("neotest-python")({
             dap = { justMyCode = false },
           }),
+          require("neotest-golang")({
+            go_test_args = { "-v", "-count=1" },
+          }),
         },
       })
     end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "sql",
+        "gotmpl",
+        "comment",
+      },
+    },
   },
   {
     "mfussenegger/nvim-dap",
