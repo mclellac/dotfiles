@@ -29,7 +29,6 @@ return {
           "golines",
           "gotestsum",
           "json-to-struct",
-          "richgo",
         },
       })
 
