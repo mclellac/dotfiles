@@ -5,16 +5,47 @@ return {
       { "mason-org/mason.nvim", version = "^2.0" },
       { "mason-org/mason-lspconfig.nvim", version = "^2.0" },
     },
-    opts = {
-      servers = {
-        pyright = {},
-        rust_analyzer = {},
-        gopls = {},
-        bashls = {},
-        marksman = {},
-        lemminx = {},
-        clangd = {
-          filetypes = { "c", "cpp", "objc", "objcpp" },
+    config = function()
+      local lspconfig = require("lspconfig")
+      local mason_lspconfig = require("mason-lspconfig")
+      local mason_tool_installer = require("mason-tool-installer")
+
+      mason_tool_installer.setup({
+        ensure_installed = {
+          "black",
+          "rustfmt",
+          "shfmt",
+          "markdownlint",
+          "clang-format",
+          "tflint",
+          "ansible-lint",
+          "shellcheck",
+          "prettier",
+          "gomodifytags",
+          "impl",
+          "gotests",
+          "delve",
+          "golines",
+          "gotestsum",
+          "mockgen",
+          "json-to-struct",
+          "ginkgo",
+          "richgo",
+        },
+      })
+
+      mason_lspconfig.setup({
+        ensure_installed = {
+          "basedpyright",
+          "rust_analyzer",
+          "gopls",
+          "bashls",
+          "marksman",
+          "lemminx",
+          "clangd",
+          "terraformls",
+          "helm_ls",
+          "ansiblels",
         },
         terraformls = {},
         helm_ls = {},
