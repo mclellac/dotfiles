@@ -2,8 +2,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "mason-org/mason.nvim",
-      "mason-org/mason-lspconfig.nvim",
+      { "mason-org/mason.nvim", version = "^2.0" },
+      { "mason-org/mason-lspconfig.nvim", version = "^2.0" },
       "whoissethdaniel/mason-tool-installer.nvim",
     },
     config = function()
@@ -28,7 +28,6 @@ return {
           "delve",
           "golines",
           "gotestsum",
-          "mockgen",
           "json-to-struct",
           "ginkgo",
           "richgo",
@@ -48,17 +47,16 @@ return {
           "helm_ls",
           "ansiblels",
         },
-      })
-
-      mason_lspconfig.setup_handlers({
-        function(server_name)
-          lspconfig[server_name].setup({})
-        end,
-        ["clangd"] = function()
-          lspconfig.clangd.setup({
-            filetypes = { "c", "cpp", "objc", "objcpp" },
-          })
-        end,
+        handlers = {
+          function(server_name)
+            lspconfig[server_name].setup({})
+          end,
+          ["clangd"] = function()
+            lspconfig.clangd.setup({
+              filetypes = { "c", "cpp", "objc", "objcpp" },
+            })
+          end,
+        },
       })
     end,
   },
