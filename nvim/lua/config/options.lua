@@ -48,10 +48,25 @@ vim.opt.clipboard:append("unnamedplus")
 vim.filetype.add({
   extension = {
     yml = "yaml.ansible",
+    gotmpl = "gotmpl",
+    gowork = "gowork",
+    mdx = "markdown.mdx",
+    tfvars = "terraform-vars",
+    xsl = "xsl",
+  },
+  filename = {
+    ["Chart.yaml"] = "yaml.helm",
+    ["values.yaml"] = "yaml.helm-values",
+  },
+  pattern = {
+    [".*/templates/.*%.yaml"] = "helm",
+    [".*/templates/.*%.tpl"] = "helm",
   },
 })
 
 vim.g.python3_host_prog = vim.fn.trim(vim.fn.system("which python3"))
 vim.g.python_host_prog = vim.fn.trim(vim.fn.system("which python"))
 
-vim.env.PATH = vim.env.HOME .. "/Projects/bin:" .. vim.env.PATH
+vim.env.GOPATH = vim.env.HOME .. "/Projects"
+vim.env.GOBIN = vim.env.HOME .. "/Projects/bin"
+vim.env.PATH = vim.env.GOBIN .. ":" .. vim.env.PATH

@@ -26,6 +26,12 @@ return {
           "impl",
           "gotests",
           "delve",
+          "golines",
+          "gotestsum",
+          "mockgen",
+          "json-to-struct",
+          "ginkgo",
+          "richgo",
         },
       })
 
