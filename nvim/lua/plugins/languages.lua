@@ -37,7 +37,7 @@ return {
 
       mason_lspconfig.setup({
         ensure_installed = {
-          "pyright",
+          "basedpyright",
           "rust_analyzer",
           "gopls",
           "bashls",
