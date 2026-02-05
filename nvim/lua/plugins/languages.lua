@@ -32,6 +32,7 @@ return {
           "json-to-struct",
           "ginkgo",
           "richgo",
+          "bash-language-server",
         },
       })
 
