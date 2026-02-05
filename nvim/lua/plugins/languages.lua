@@ -2,9 +2,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "mason-org/mason.nvim",
-      "mason-org/mason-lspconfig.nvim",
-      "whoissethdaniel/mason-tool-installer.nvim",
+      { "mason-org/mason.nvim", version = "^2.0" },
+      { "mason-org/mason-lspconfig.nvim", version = "^2.0" },
     },
     config = function()
       local lspconfig = require("lspconfig")
@@ -48,18 +47,42 @@ return {
           "helm_ls",
           "ansiblels",
         },
-      })
-
-      mason_lspconfig.setup_handlers({
-        function(server_name)
-          lspconfig[server_name].setup({})
-        end,
-        ["clangd"] = function()
-          lspconfig.clangd.setup({
-            filetypes = { "c", "cpp", "objc", "objcpp" },
-          })
-        end,
-      })
+        terraformls = {},
+        helm_ls = {},
+        ansiblels = {},
+      },
+    },
+  },
+  {
+    "whoissethdaniel/mason-tool-installer.nvim",
+    dependencies = {
+      { "mason-org/mason.nvim", version = "^2.0" },
+    },
+    opts = {
+      ensure_installed = {
+        "black",
+        "rustfmt",
+        "shfmt",
+        "markdownlint",
+        "clang-format",
+        "tflint",
+        "ansible-lint",
+        "shellcheck",
+        "prettier",
+        "gomodifytags",
+        "impl",
+        "gotests",
+        "delve",
+        "golines",
+        "gotestsum",
+        "mockgen",
+        "json-to-struct",
+        "ginkgo",
+        "richgo",
+      },
+    },
+    config = function(_, opts)
+      require("mason-tool-installer").setup(opts)
     end,
   },
   {
@@ -94,6 +117,7 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     opts = {
       ensure_installed = {
         "sql",
