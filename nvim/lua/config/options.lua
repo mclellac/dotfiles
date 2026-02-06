@@ -64,8 +64,8 @@ vim.filetype.add({
   },
 })
 
-vim.g.python3_host_prog = vim.fn.trim(vim.fn.system("which python3"))
-vim.g.python_host_prog = vim.fn.trim(vim.fn.system("which python"))
+vim.g.python3_host_prog = vim.fn.exepath("python3")
+vim.g.python_host_prog = vim.fn.exepath("python")
 
 vim.env.GOPATH = vim.env.HOME .. "/Projects"
 vim.env.GOBIN = vim.env.HOME .. "/Projects/bin"
