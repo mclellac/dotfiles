@@ -29,6 +29,10 @@ return {
           "golines",
           "gotestsum",
           "json-to-struct",
+          "ruff",
+          "nginx-language-server",
+          "yaml-language-server",
+          "hadolint",
         },
       })
 
@@ -44,6 +48,9 @@ return {
           "terraformls",
           "helm_ls",
           "ansiblels",
+          "nginx_language_server",
+          "yamlls",
+          "dockerls",
         },
         handlers = {
           function(server_name)
@@ -95,6 +102,15 @@ return {
         "sql",
         "gotmpl",
         "comment",
+        "python",
+        "bash",
+        "markdown",
+        "markdown_inline",
+        "regex",
+        "vim",
+        "yaml",
+        "nginx",
+        "dockerfile",
       },
     },
   },
@@ -174,7 +190,7 @@ return {
     config = function()
       local lint = require("lint")
       lint.linters_by_ft = {
-        python = { "pylint" },
+        python = { "pylint", "ruff" },
         rust = { "rustc" },
         go = { "golangci-lint" },
         sh = { "shellcheck" },
@@ -183,6 +199,7 @@ return {
         terraform = { "tflint" },
         helm = { "helmlint" },
         ansible = { "ansible-lint" },
+        dockerfile = { "hadolint" },
       }
 
       vim.api.nvim_create_autocmd({ "BufWritePost" }, {
