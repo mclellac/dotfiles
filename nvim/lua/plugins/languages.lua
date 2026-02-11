@@ -61,6 +61,37 @@ return {
               filetypes = { "c", "cpp", "objc", "objcpp" },
             })
           end,
+          ["varnishls"] = function()
+            lspconfig.varnishls.setup({
+              cmd = { vim.fn.expand("~/bin/varnishls") },
+              filetypes = { "vcl" },
+              -- The VARNISHLS_VCC_PATHS is crucial for varnishls to find its VCC files.
+              -- User needs to download VCC-files.zip from varnishls GitHub releases page,
+              -- extract its content, and place it under ~/.config/dotfiles/nvim/vcc_files/
+              -- e.g., ~/.config/dotfiles/nvim/vcc_files/vcc/std.vcc
+              -- The VARNISHLS_VCC_PATHS environment variable was removed
+              -- as the VCC files are compiled VCL, not source files for the LSP.
+              -- If varnishls needs VMOD definitions, they are likely bundled or
+              -- expected to be found from a local Varnish installation.
+            })
+          end,
+          -- Explicitly configure yamlls for Kubernetes schemas
+          ["yamlls"] = function()
+            lspconfig.yamlls.setup({
+              settings = {
+                yaml = {
+                  schemaStore = {
+                    enable = true,
+                    url = "https://www.schemastore.org/api/json/catalog.json",
+                  },
+                  schemas = {
+                    ["kubernetes"] = { "*-k8s.yaml", "*.kubernetes.yaml", "*.kube.yaml", "*deployment.yaml", "*service.yaml", "*ingress.yaml", "*configmap.yaml", "*secret.yaml", "*pod.yaml", "*.kustomization.yaml", "*.cluster.yaml", "*.flux.yaml", "*.argocd.yaml" },
+                    ["https://helm.sh/schemas/helm-template-0.2.0.json"] = "*/templates/*.yaml",
+                  },
+                },
+              },
+            })
+          end,
         },
       })
     end,
