@@ -1,0 +1,39 @@
+# Lynx Style Sheet (LSS) for Mutt
+#
+# This file defines the colors for different HTML tags.
+#
+# The format is:
+#
+# style <tag> <foreground> <background> <attributes>
+#
+# Where:
+#   <tag> is the HTML tag name (e.g., h1, p, a)
+#   <foreground> is the foreground color
+#   <background> is the background color
+#   <attributes> is a comma-separated list of attributes (e.g., bold, underline)
+
+# Default text
+style p green black
+
+# Headings
+style h1 brightred black bold
+style h2 green black bold
+style h3 yellow black bold
+style h4 blue black bold
+style h5 magenta black bold
+style h6 cyan black bold
+
+# Links
+style a brightblue black underline
+
+# Visited links
+style a.visited magenta black underline
+
+# Images
+style img cyan black
+
+# Preformatted text
+style pre green black
+
+# Blockquotes
+style blockquote yellow black
