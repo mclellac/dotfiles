@@ -71,12 +71,12 @@ set display_filter="sed -e '/[[]-- Autoview using .* --[]]/d' -e '/[[]-- Type: .
 set nm_query_type=threads
 set nm_default_uri = "notmuch:///`notmuch config get database.path 2>/dev/null || echo $HOME/.local/share/mail`"
 set virtual_spoolfile=yes
-set nm_record_tags = "sent"
+macro index,pager <F6> '<change-folder>notmuch://?query=tag:unread<enter>' "Show all unread mail"
+set nm_record_tags = "sent,replied,forwarded"
 
 #### Content/Autoview
 auto_view application/ics
 auto_view text/calendar
-auto_view text/plain
 auto_view text/html
 auto_view application/pgp-encrypted
 alternative_order text/calendar application/ics text/enriched text/html text/plain
@@ -93,7 +93,7 @@ set sidebar_short_path = yes
 set sidebar_component_depth = 0
 set mail_check_stats = yes
 set mail_check_stats_interval = 60
-set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set sidebar_format = "%B%?N? %N?"
 
 #### Thread ordering
 set sort=threads
@@ -123,5 +123,7 @@ macro compose M "F pandoc -s -f markdown -t html \ny^T^Utext/html; charset=UTF-8
 #### Show patch files (requires git-split-diffs)
 macro attach P "|git-split-diffs --color | less -RF<enter>" "View a patch file as a diff"
 set wait_key=no
+
+bind attach M view-mailcap
 
 push <change-folder>+INBOX<enter>

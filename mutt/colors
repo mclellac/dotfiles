@@ -31,7 +31,7 @@ color status white color8 ''
 
 
 # User Name Highlighting -----------------------------------------------------------
-color body color6 default "\\b([Cc]arey|[Mm]c[Ll]elland|[Mm]clellac|xorcsm)\\b"
+color body color6 default "\\b(carey|mclelland|mclellac|xorcsm|careymclelland@gmail\\.com)\\b"
 color body color6 default "\\b([Uu]ser [Nn]ame|[Rr]eal [Nn]ame)\\b" # Placeholder for unconfigured name
 
 
@@ -169,33 +169,33 @@ color   body    brightblue      default         "^Reply to this email.*"
 
 
 # Domain Specific Colors (Brand Colors)
-color index color33 default "~f gmail.com"          # Gmail Blue
-color index color33  default "~f hotmail.com"        # Hotmail Blue
-color index color39  default "~f crave.ca"           # Crave Blue
-color index color196 default "~f netflix.com"        # Netflix Red
-color index color39  default "~f primevideo.com"     # Prime Video Blue
-color index color208 default "~f amazon.ca"          # Amazon Orange
-color index color208 default "~f amazon.com"         # Amazon Orange
-color index color33  default "~f torontohydro.com"   # Toronto Hydro Blue
-color index color118 default "~f irobot.com"         # iRobot Green
-color index color196 default "~f rogers.com"         # Rogers Red
-color index color124 default "~f cibc.com"           # CIBC Maroon
-color index color117 default "~f steampowered.com"   # Steam Blue
-color index color220 default "~f wealthsimple.com"   # Wealthsimple Gold
-color index color37  default "~f petdesk.com"        # PetDesk Teal
-color index color220 default "~f interac.ca"         # Interac Yellow
-color index color220 default "~f interact.ca"        # Typo catch
-color index color250 default "~f github.com"         # Github Grey/White
+color index color33 default "~f gmail.com ~N"          # Gmail Blue
+color index color33  default "~f hotmail.com ~N"        # Hotmail Blue
+color index color39  default "~f crave.ca ~N"           # Crave Blue
+color index color196 default "~f netflix.com ~N"        # Netflix Red
+color index color39  default "~f primevideo.com ~N"     # Prime Video Blue
+color index color208 default "~f amazon.ca ~N"          # Amazon Orange
+color index color208 default "~f amazon.com ~N"         # Amazon Orange
+color index color33  default "~f torontohydro.com ~N"   # Toronto Hydro Blue
+color index color118 default "~f irobot.com ~N"         # iRobot Green
+color index color196 default "~f rogers.com ~N"         # Rogers Red
+color index color124 default "~f cibc.com ~N"           # CIBC Maroon
+color index color117 default "~f steampowered.com ~N"   # Steam Blue
+color index color220 default "~f wealthsimple.com ~N"   # Wealthsimple Gold
+color index color37  default "~f petdesk.com ~N"        # PetDesk Teal
+color index color220 default "~f interac.ca ~N"         # Interac Yellow
+color index color220 default "~f interact.ca ~N"        # Typo catch
+color index color250 default "~f github.com ~N"         # Github Grey/White
 
 # More Common Domains (Brand Colors)
-color index color196 default "~f youtube.com"        # YouTube Red
-color index color33  default "~f facebook.com"       # Facebook Blue
-color index color33  default "~f linkedin.com"       # LinkedIn Blue
-color index color39  default "~f twitter.com"        # Twitter Cyan
-color index color83  default "~f spotify.com"        # Spotify Green
-color index color250 default "~f apple.com"          # Apple Grey
-color index color33  default "~f microsoft.com"      # Microsoft Blue
-color index color203 default "~f airbnb.com"         # Airbnb Red/Pink
-color index color27  default "~f paypal.com"         # PayPal Blue
-color index color93  default "~f twitch.tv"          # Twitch Purple
-color index color202 default "~f soundcloud.com"     # SoundCloud Orange
+color index color196 default "~f youtube.com ~N"        # YouTube Red
+color index color33  default "~f facebook.com ~N"       # Facebook Blue
+color index color33  default "~f linkedin.com ~N"       # LinkedIn Blue
+color index color39  default "~f twitter.com ~N"        # Twitter Cyan
+color index color83  default "~f spotify.com ~N"        # Spotify Green
+color index color250 default "~f apple.com ~N"          # Apple Grey
+color index color33  default "~f microsoft.com ~N"      # Microsoft Blue
+color index color203 default "~f airbnb.com ~N"         # Airbnb Red/Pink
+color index color27  default "~f paypal.com ~N"         # PayPal Blue
+color index color93  default "~f twitch.tv ~N"          # Twitch Purple
+color index color202 default "~f soundcloud.com ~N"     # SoundCloud Orange

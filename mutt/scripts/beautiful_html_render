@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-# render html as markdown and display in glow, supports syntax highlighting
-# requires: pandoc, glow
-# author: CEUK
-# Use pandoc to convert HTML to Markdown (better preservation of structure than html2text)
-pandoc -f html -t markdown --wrap=none "$1" > /tmp/mutt.md
-glow -s ~/.config/glow/email.json /tmp/mutt.md
+# render html to text using w3m, optimized for best rendering
+# Note: This will not show link URLs inline. Use urlscan (\\cl) to see and open links.
+w3m -dump -T text/html -s -graph -cols 10000 "$1"

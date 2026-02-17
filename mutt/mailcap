@@ -1,11 +1,17 @@
-text/html; elinks -force-html -no-connect %s; nametemplate=%s.html; copiousoutput;
+# Suppress warnings for built-in types
+multipart/mixed; /bin/true
+multipart/alternative; /bin/true
+text/plain; /bin/true
+
+# Render HTML nicely inside mutt's pager
+text/html; ~/.config/mutt/scripts/beautiful_html_render %s; copiousoutput;
+
+# Open images externally
+image/*; xdg-open %s ;
 
 # show calendar invites
 text/calendar; ~/.config/mutt/scripts/render-calendar-attachment.py %s; copiousoutput;
 application/ics; ~/.config/mutt/scripts/mutt-viewical; copiousoutput;
-
-# open images externally
-image/*; xdg-open %s ;
 
 # open videos in mpv
 video/*; ~/.config/mutt/scripts/open_video.sh %s; needsterminal;
@@ -16,3 +22,4 @@ application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; sc-im %s; nee
 
 # open anything else externally
 application/pdf; xdg-open %s;
+application/*; xdg-open %s;
