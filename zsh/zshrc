@@ -132,12 +132,20 @@ source <(fzf --zsh)
 #  --color=fg:#839496,header:#20d9d3,info:#35ad81,pointer:#00f1f1
 #  --color=marker:#1f454b,fg+:#41d99f,prompt:#2f9a73,hl+:#00ffd9'
 
+# Ristretto
 export FZF_DEFAULT_OPTS="
-	--color=fg:#797593,bg:#faf4ed,hl:#d7827e
-	--color=fg+:#575279,bg+:#f2e9e1,hl+:#d7827e
-	--color=border:#dfdad9,header:#286983,gutter:#faf4ed
-	--color=spinner:#ea9d34,info:#56949f
-	--color=pointer:#907aa9,marker:#b4637a,prompt:#797593"
+	--color=fg:#e6d9db,bg:#2c2525,hl:#fd6883
+	--color=fg+:#f1e5e7,bg+:#403e41,hl+:#ff8297
+	--color=border:#72696a,header:#a8a9eb,gutter:#2c2525
+	--color=spinner:#adda78,info:#f9cc6c
+	--color=pointer:#f38d70,marker:#f38d70,prompt:#adda78"
+
+#export FZF_DEFAULT_OPTS="
+#	--color=fg:#797593,bg:#faf4ed,hl:#d7827e
+#	--color=fg+:#575279,bg+:#f2e9e1,hl+:#d7827e
+#	--color=border:#dfdad9,header:#286983,gutter:#faf4ed
+#	--color=spinner:#ea9d34,info:#56949f
+#	--color=pointer:#907aa9,marker:#b4637a,prompt:#797593"
 
 # Rose Pine
 #export FZF_DEFAULT_OPTS="
