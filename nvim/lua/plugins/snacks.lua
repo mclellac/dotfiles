@@ -16,7 +16,7 @@ return {
             follow_file = true,
             tree = true,
             focus = "list",
-            auto_close = true,
+            auto_close = false,
           },
         },
       },
@@ -51,3 +51,4 @@ return {
     end,
   },
 }
+
