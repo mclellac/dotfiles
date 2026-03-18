@@ -4,8 +4,8 @@ Based on the current Neovim configuration, here are several recommendations to i
 
 ## 1. Upgrade `nvim-colorizer.lua` to Active Fork
 * **Issue:** The currently installed `norcalli/nvim-colorizer.lua` plugin is unmaintained and causes deprecation warnings in Neovim v0.10+ (specifically concerning `vim.tbl_flatten`).
-* **Recommendation:** Switch to the actively maintained fork, `NvChad/nvim-colorizer.lua`, which is a drop-in replacement that supports modern Neovim APIs and provides more features.
-  * **Action:** Change `"norcalli/nvim-colorizer.lua"` to `"NvChad/nvim-colorizer.lua"` and optionally use `opts = { ... }` instead of the manual `config` function.
+* **Recommendation:** Switch to the actively maintained fork, `catgoose/nvim-colorizer.lua`, which is a drop-in replacement that supports modern Neovim APIs and provides more features.
+  * **Action:** Change `"norcalli/nvim-colorizer.lua"` to `"catgoose/nvim-colorizer.lua"` and optionally use `opts = { ... }` instead of the manual `config` function.
 
 ## 2. Leverage Lazy.nvim's `opts` Table
 * **Issue:** Many plugins (including `colorizer.lua`, `nvim-lspconfig`, `neotest`) are currently using manual `config = function() require("...").setup(...) end` patterns.
