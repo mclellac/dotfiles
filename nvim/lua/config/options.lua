@@ -47,9 +47,6 @@ vim.opt.clipboard:append("unnamedplus")
 -- ANSIBLE/YAML --------------------------------------------------------------
 vim.filetype.add({
   extension = {
-    yml = "yaml.ansible",
-    gotmpl = "gotmpl",
-    gowork = "gowork",
     mdx = "markdown.mdx",
     tfvars = "terraform-vars",
     xsl = "xsl",
@@ -66,7 +63,3 @@ vim.filetype.add({
 
 vim.g.python3_host_prog = vim.fn.exepath("python3")
 vim.g.python_host_prog = vim.fn.exepath("python")
-
-vim.env.GOPATH = vim.env.HOME .. "/Projects"
-vim.env.GOBIN = vim.env.HOME .. "/Projects/bin"
-vim.env.PATH = vim.env.GOBIN .. ":" .. vim.env.PATH

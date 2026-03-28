@@ -22,13 +22,7 @@ return {
           "ansible-lint",
           "shellcheck",
           "prettier",
-          "gomodifytags",
-          "impl",
-          "gotests",
-          "delve",
-          "golines",
-          "gotestsum",
-          "json-to-struct",
+          "djlint",
           "ruff",
           "yaml-language-server",
           "hadolint",
@@ -39,7 +33,9 @@ return {
         ensure_installed = {
           "basedpyright",
           "rust_analyzer",
-          "gopls",
+          "html",
+          "cssls",
+          "jinja_lsp",
           "bashls",
           "marksman",
           "lemminx",
@@ -123,16 +119,12 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-python",
-      "fredrikaverpil/neotest-golang",
     },
     config = function()
       require("neotest").setup({
         adapters = {
           require("neotest-python")({
             dap = { justMyCode = false },
-          }),
-          require("neotest-golang")({
-            go_test_args = { "-v", "-count=1" },
           }),
         },
       })
@@ -143,7 +135,8 @@ return {
     opts = {
       ensure_installed = {
         "sql",
-        "gotmpl",
+        "html",
+        "css",
         "comment",
         "python",
         "bash",
@@ -234,7 +227,8 @@ return {
       lint.linters_by_ft = {
         python = { "pylint", "ruff" },
         rust = { "rustc" },
-        go = { "golangci-lint" },
+        html = { "djlint" },
+        jinja = { "djlint" },
         sh = { "shellcheck" },
         markdown = { "markdownlint" },
         c = { "clang-tidy" },
@@ -257,7 +251,8 @@ return {
       formatters_by_ft = {
         python = { "black" },
         rust = { "rustfmt" },
-        go = { "gofmt" },
+        html = { "djlint" },
+        jinja = { "djlint" },
         sh = { "shfmt" },
         markdown = { "markdown-it" },
         c = { "clang-format" },
@@ -269,19 +264,5 @@ return {
         lsp_fallback = true,
       },
     },
-  },
-  {
-    "ray-x/go.nvim",
-    dependencies = {
-      "ray-x/guihua.lua",
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-    },
-    config = function()
-      require("go").setup()
-    end,
-    event = { "CmdlineEnter" },
-    ft = { "go", "gomod" },
-    build = "<CMD>GoInstallBinaries<CR>",
   },
 }
