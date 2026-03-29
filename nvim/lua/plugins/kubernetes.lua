@@ -10,8 +10,6 @@ return {
     dependencies = {
       "nvim-telescope/telescope.nvim", -- Required for some features
     },
-    config = function()
-      require("kube-utils").setup()
-    end,
+    config = true,
   },
 }
