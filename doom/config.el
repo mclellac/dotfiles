@@ -12,7 +12,7 @@
       doom-variable-pitch-font (font-spec :family "Adwaita Mono" :size 14))
 
 ;; Theme
-(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-material)
 
 ;; Start Emacs fullscreen without a titlebar
 (add-hook 'window-setup-hook #'toggle-frame-fullscreen)
@@ -43,38 +43,21 @@
 ;; Modeline Configuration
 (setq doom-modeline-enable-word-count t)
 
-;; Wanderlust Email Client Configuration
-(use-package! wanderlust
-  :commands (wl wl-other-frame wl-draft)
-  :config
-  (setq elmo-imap4-default-server "imap.gmail.com"
-        elmo-imap4-default-user "@gmail.com"
-        elmo-imap4-default-authenticate-type 'clear
-        elmo-imap4-default-port '993
-        elmo-imap4-default-stream-type 'ssl
-        elmo-imap4-use-modified-utf7 t
-        wl-smtp-connection-type 'starttls
-        wl-smtp-posting-port 587
-        wl-smtp-authenticate-type "plain"
-        wl-smtp-posting-user ""
-        wl-smtp-posting-server "smtp.gmail.com"
-        wl-local-domain "gmail.com"
-        wl-default-folder "%inbox"
-        wl-default-spec "%"
-        wl-draft-folder "%[Gmail]/Drafts"
-        wl-trash-folder "%[Gmail]/Trash"
-        wl-folder-check-async t
-        elmo-imap4-use-modified-utf7 t)
-  (autoload 'wl-user-agent-compose "wl-draft" nil t)
-  (if (boundp 'mail-user-agent)
-      (setq mail-user-agent 'wl-user-agent))
-  (if (fboundp 'define-mail-user-agent)
-      (define-mail-user-agent
-        'wl-user-agent
-        'wl-user-agent-compose
-        'wl-draft-send
-        'wl-draft-kill
-        'mail-send-hook)))
+;; mu4e Email Client Configuration
+(after! mu4e
+  (setq mu4e-update-interval (* 10 60)
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-index-update-error-continue t
+        sendmail-program (executable-find "msmtp")
+        send-mail-function #'message-send-mail-with-sendmail
+        message-sendmail-f-is-evil t
+        message-sendmail-extra-arguments '("--read-envelope-from")
+        message-send-mail-function #'message-send-mail-with-sendmail)
+  ;; Basic gmail setup
+  (setq mu4e-sent-folder   "/[Gmail]/Sent Mail"
+        mu4e-drafts-folder "/[Gmail]/Drafts"
+        mu4e-trash-folder  "/[Gmail]/Trash"
+        mu4e-refile-folder "/[Gmail]/All Mail"))
 
 ;; Custom Faces
 (custom-set-faces!
