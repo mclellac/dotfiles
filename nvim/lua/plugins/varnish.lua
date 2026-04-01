@@ -1,3 +1,3 @@
 return {
-	"varnishcache-friends/vim-varnish",
+  "varnishcache-friends/vim-varnish",
 }

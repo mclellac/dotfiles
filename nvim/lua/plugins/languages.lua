@@ -1,33 +1,34 @@
 return {
   {
+    "whoissethdaniel/mason-tool-installer.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    opts = {
+      ensure_installed = {
+        "black",
+        "rustfmt",
+        "shfmt",
+        "markdownlint",
+        "clang-format",
+        "tflint",
+        "ansible-lint",
+        "shellcheck",
+        "prettier",
+        "djlint",
+        "ruff",
+        "yaml-language-server",
+        "hadolint",
+      },
+    },
+  },
+  {
     "neovim/nvim-lspconfig",
     dependencies = {
       { "mason-org/mason.nvim", version = "^2.0" },
       { "mason-org/mason-lspconfig.nvim", version = "^2.0" },
-      "whoissethdaniel/mason-tool-installer.nvim",
     },
     config = function()
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
-      local mason_tool_installer = require("mason-tool-installer")
-
-      mason_tool_installer.setup({
-        ensure_installed = {
-          "black",
-          "rustfmt",
-          "shfmt",
-          "markdownlint",
-          "clang-format",
-          "tflint",
-          "ansible-lint",
-          "shellcheck",
-          "prettier",
-          "djlint",
-          "ruff",
-          "yaml-language-server",
-          "hadolint",
-        },
-      })
 
       mason_lspconfig.setup({
         ensure_installed = {
