@@ -76,7 +76,7 @@ return {
         NeoTreeHiddenFile = { fg = "#70788c" }, -- Example for neo-tree + palenight style (adjust color)
 
         -- Make comments italic (if not default)
-        Comment = { italic = true },
+        Comment = { italic = false },
 
         -- Add any other highlight group overrides here
         -- String = { fg = "#C3E88D" }, -- Example override for strings in palenight
