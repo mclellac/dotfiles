@@ -4,7 +4,6 @@ return {
     dependencies = { "mason-org/mason.nvim" },
     opts = {
       ensure_installed = {
-        "black",
         "rustfmt",
         "shfmt",
         "markdownlint",
@@ -17,6 +16,7 @@ return {
         "ruff",
         "yaml-language-server",
         "hadolint",
+        "bash-language-server",
       },
     },
   },
@@ -249,7 +249,7 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        python = { "black" },
+        python = { "ruff_format" },
         rust = { "rustfmt" },
         html = { "djlint" },
         jinja = { "djlint" },
