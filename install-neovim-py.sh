@@ -6,7 +6,9 @@ set -e
 RED="\033[0;31m";
 GREEN="\033[0;32m";
 YELLOW="\033[0;33m";
+# shellcheck disable=SC2034
 WHITE="\033[1;37m";
+# shellcheck disable=SC2034
 CYAN="\033[0;36m";
 RESET="\033[0m";
 
@@ -38,7 +40,7 @@ else
     if [[ -n "$BASH_VERSION" ]] && [ "$(uname)" == "Linux" ]; then
         while true; do
             echo -en "${YELLOW}Do you want to install neovim locally [y/N] ${RESET}"
-            [ -t 1 ] && read -t 5 -p "(wait 5 secs for auto-yes) ? " user_prompt || user_prompt="y";
+            [ -t 1 ] && read -r -t 5 -p "(wait 5 secs for auto-yes) ? " user_prompt || user_prompt="y";
             case $user_prompt in
                 [YyNn]* ) break;;
                 *) echo "Please answer yes or no.";;
@@ -46,7 +48,7 @@ else
         done
         if [[ "$user_prompt" == [Yy]* ]]; then
             echo -e "\n${GREEN}Installing neovim into ~/.local/bin/ ...${RESET}";
-            $HOME/.dotfiles/bin/dotfiles install neovim && exit 0;
+            "$HOME"/.dotfiles/bin/dotfiles install neovim && exit 0;
         fi
     fi
 

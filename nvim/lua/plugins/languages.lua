@@ -17,6 +17,7 @@ return {
         "ruff",
         "yaml-language-server",
         "hadolint",
+        "nginx-language-server",
       },
     },
   },
@@ -46,6 +47,7 @@ return {
           "ansiblels",
           "yamlls",
           "dockerls",
+          "nginx_language_server",
         },
         handlers = {
           function(server_name)
