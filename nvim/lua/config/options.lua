@@ -46,19 +46,19 @@ vim.opt.clipboard:append("unnamedplus")
 
 -- ANSIBLE/YAML --------------------------------------------------------------
 vim.filetype.add({
-	extension = {
-		mdx = "markdown.mdx",
-		tfvars = "terraform-vars",
-		xsl = "xsl",
-	},
-	filename = {
-		["Chart.yaml"] = "yaml.helm",
-		["values.yaml"] = "yaml.helm-values",
-	},
-	pattern = {
-		[".*/templates/.*%.yaml"] = "helm",
-		[".*/templates/.*%.tpl"] = "helm",
-	},
+  extension = {
+    mdx = "markdown.mdx",
+    tfvars = "terraform-vars",
+    xsl = "xsl",
+  },
+  filename = {
+    ["Chart.yaml"] = "yaml.helm",
+    ["values.yaml"] = "yaml.helm-values",
+  },
+  pattern = {
+    [".*/templates/.*%.yaml"] = "helm",
+    [".*/templates/.*%.tpl"] = "helm",
+  },
 })
 
 vim.g.python3_host_prog = vim.fn.exepath("python3")
