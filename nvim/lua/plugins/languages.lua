@@ -225,7 +225,7 @@ return {
 		config = function()
 			local lint = require("lint")
 			lint.linters_by_ft = {
-				python = { "pylint", "ruff" },
+				python = { "ruff" },
 				rust = { "rustc" },
 				html = { "djlint" },
 				jinja = { "djlint" },
@@ -249,7 +249,7 @@ return {
 		"stevearc/conform.nvim",
 		opts = {
 			formatters_by_ft = {
-				python = { "black" },
+				python = { "ruff_format" },
 				rust = { "rustfmt" },
 				html = { "djlint" },
 				jinja = { "djlint" },
