@@ -171,10 +171,13 @@
   :config
   (require 'vlf-setup))
 
-;; Rainbow Delimiters (Universal clarity)
+;; Rainbow Delimiters & Colors (Universal clarity)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'conf-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'text-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook #'rainbow-mode)
+(add-hook 'conf-mode-hook #'rainbow-mode)
+(add-hook 'text-mode-hook #'rainbow-mode)
 
 ;; Elfeed (Security Feeds via Org-mode)
 (setq elfeed-org-files (list (expand-file-name "~/.org/elfeed.org")))
