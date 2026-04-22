@@ -15,7 +15,7 @@ stty sane
 
 #export STARSHIP_CONFIG=~/.config/starship/starship.toml
 #export STARSHIP_CONFIG=~/.config/starship/jetpack.toml
-export STARSHIP_CONFIG=~/.config/starship/custom.toml
+export STARSHIP_CONFIG=~/.config/starship.toml
 
 autoload -Uz compinit
 

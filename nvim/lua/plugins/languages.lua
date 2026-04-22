@@ -5,7 +5,6 @@ return {
 		opts = {
 			ensure_installed = {
 				"black",
-				"rustfmt",
 				"shfmt",
 				"markdownlint",
 				"clang-format",
@@ -60,14 +59,9 @@ return {
 						lspconfig.varnishls.setup({
 							cmd = { vim.fn.expand("~/bin/varnishls") },
 							filetypes = { "vcl" },
-							-- The VARNISHLS_VCC_PATHS is crucial for varnishls to find its VCC files.
-							-- User needs to download VCC-files.zip from varnishls GitHub releases page,
-							-- extract its content, and place it under ~/.config/dotfiles/nvim/vcc_files/
-							-- e.g., ~/.config/dotfiles/nvim/vcc_files/vcc/std.vcc
-							-- The VARNISHLS_VCC_PATHS environment variable was removed
-							-- as the VCC files are compiled VCL, not source files for the LSP.
-							-- If varnishls needs VMOD definitions, they are likely bundled or
-							-- expected to be found from a local Varnish installation.
+							on_attach = function(client, _)
+								client.server_capabilities.semanticTokensProvider = nil
+							end,
 						})
 					end,
 					-- Explicitly configure yamlls for Kubernetes schemas

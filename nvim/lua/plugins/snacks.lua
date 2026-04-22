@@ -2,7 +2,10 @@ return {
 	{
 		"folke/snacks.nvim",
 		opts = {
-			bigfile = { enabled = true },
+			bigfile = {
+				enabled = true,
+				size = 10 * 1024 * 1024, -- 10MB
+			},
 			dashboard = { enabled = true },
 			explorer = { enabled = true },
 			indent = { enabled = false },
