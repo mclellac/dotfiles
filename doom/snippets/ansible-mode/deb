@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ansible debug
+# key: deb
+# --
+- name: Debug ${1:msg}
+  debug:
+    msg: "${2:value}"

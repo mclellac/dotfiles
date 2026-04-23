@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ansible package
+# key: pkg
+# --
+- name: Install package: ${1:name}
+  package:
+    name: ${1:name}
+    state: ${2:present}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: list comprehension
+# key: lc
+# --
+[${1:x} for ${1:x} in ${2:iterable} if ${3:condition}]

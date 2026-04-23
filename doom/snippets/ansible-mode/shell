@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ansible shell
+# key: shell
+# --
+- name: Run shell command: ${1:cmd}
+  shell: ${1:cmd}
+  register: ${2:result}
+  changed_when: ${3:false}

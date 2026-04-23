@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ansible include tasks
+# key: inc
+# --
+- name: Include tasks from ${1:file}
+  include_tasks: ${1:file}.yml

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: terraform output
+# key: out
+# --
+output "${1:name}" {
+  value = ${2:value}
+  ${3:description = "$4"}
+}

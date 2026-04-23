@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ansible task
+# key: task
+# --
+- name: ${1:task description}
+  ${2:module}:
+    ${3:attribute}: ${4:value}

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: function definition with docstring
+# key: def
+# --
+def ${1:function_name}(${2:args}):
+    """${3:Docstring summary.}"""
+    ${4:pass}

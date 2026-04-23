@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: terraform module
+# key: mod
+# --
+module "${1:name}" {
+  source = "${2:source_path_or_url}"
+  ${3:attribute} = ${4:value}
+}

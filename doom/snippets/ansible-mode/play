@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: ansible play
+# key: play
+# --
+- name: ${1:play description}
+  hosts: ${2:all}
+  become: ${3:yes}
+  tasks:
+    - name: ${4:first task}
+      ${5:module}:
+        ${6:attribute}: ${7:value}

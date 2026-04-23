@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: with open(...) as ...
+# key: with
+# --
+with open(${1:file}, "${2:r}") as ${3:f}:
+    ${4:data = $3.read()}

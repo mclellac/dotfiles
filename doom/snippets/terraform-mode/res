@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: terraform resource
+# key: res
+# --
+resource "${1:provider_type}" "${2:name}" {
+  ${3:attribute} = ${4:value}
+}

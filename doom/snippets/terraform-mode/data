@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: terraform data source
+# key: data
+# --
+data "${1:type}" "${2:name}" {
+  ${3:attribute} = ${4:value}
+}
