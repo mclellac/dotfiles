@@ -10,8 +10,8 @@
 (setq mu4e-maildir "/home/mclellac/.local/share/mail/personal")
 
 ;; Fonts
-(setq doom-font (font-spec :family "Adwaita Mono" :size 16 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "Adwaita Mono" :size 14))
+(setq doom-font (font-spec :family "Hack Nerd Font" :size 20 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "Hack Nerd Font" :size 18))
 
 ;; Theme
 (setq doom-theme 'doom-material)
@@ -24,8 +24,9 @@
 
 ;; Discover projects on launch
 (setq projectile-project-search-path '("~/Projects/src/gitlab.nm.cbc.ca/"
+                                       "~/Projects/src/bitbucket.org/cbc-digital"
                                        "~/Projects/src/github.com/mclellac")
-      projectile-max-known-projects 100)
+      projectile-max-known-projects 200)
 
 ;; Line Numbers
 (setq display-line-numbers-type t)
