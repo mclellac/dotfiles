@@ -10,6 +10,8 @@ return {
 				"clang-format",
 				"tflint",
 				"ansible-lint",
+				"ansible-language-server",
+				"terraform-ls",
 				"shellcheck",
 				"prettier",
 				"djlint",

@@ -122,11 +122,47 @@
 
 ;; Terraform
 (after! terraform-mode
-  (setq terraform-format-on-save t))
+  (setq terraform-format-on-save t)
+  (add-hook 'terraform-mode-hook #'lsp-deferred))
 
 ;; Ansible
 (after! ansible
-  (setq ansible-vault-password-file "~/.ansible-vault-pass"))
+  (setq ansible-vault-password-file "~/.ansible-vault-pass")
+  ;; Use LSP for ansible-mode
+  (add-hook 'ansible-mode-hook #'lsp-deferred))
+
+(after! lsp-mode
+  ;; Ensure ansible-language-server is used for ansible files
+  (add-to-list 'lsp-language-id-configuration '(ansible-mode . "ansible")))
+
+;; YAML / Ansible highlighting improvements
+(add-hook! 'yaml-mode-hook #'tree-sitter-hl-mode)
+
+;; C/C++
+(after! cc-mode
+  (setq-default c-basic-offset 4)
+  (setq c-default-style "linux")
+  (add-hook 'c-mode-common-hook #'lsp-deferred))
+
+;; Python
+(after! python
+  (setq python-shell-interpreter "python3")
+  (setq-default flycheck-python-pyright-executable "pyright")
+  (setq +python-pyright-format-on-save t)
+  (setq-hook! 'python-mode-hook +format-with 'black))
+
+;; Shell scripting
+(after! sh-script
+  (setq sh-shell-file "/bin/bash")
+  (setq sh-basic-offset 2)
+  (add-hook 'sh-mode-hook #'lsp-deferred)
+  (setq-hook! 'sh-mode-hook +format-with 'shfmt))
+
+;; Markdown
+(after! markdown-mode
+  (setq markdown-command "grip --export -"
+        markdown-open-command "grip")
+  (setq-hook! 'markdown-mode-hook +format-with 'prettier))
 
 ;; Magit TODOs
 (after! magit
