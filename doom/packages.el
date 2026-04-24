@@ -13,11 +13,14 @@
 ;; Productivity & Aesthetics
 (package! magit-todos)
 (package! mixed-pitch)
+(package! rainbow-mode)
 
 ;; Cloud, SecOps, and DevSecOps Tools
 (package! git-timemachine)
 (package! vlf)
 (package! rainbow-delimiters)
+(package! org-gcal)
+(package! elfeed-org)
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify

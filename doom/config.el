@@ -10,8 +10,8 @@
 (setq mu4e-maildir "/home/mclellac/.local/share/mail/personal")
 
 ;; Fonts
-(setq doom-font (font-spec :family "Hack Nerd Font" :size 20 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "Hack Nerd Font" :size 18))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "Hack" :size 18))
 
 ;; Theme
 (setq doom-theme 'doom-material)
@@ -23,8 +23,7 @@
 (setq confirm-kill-emacs nil)
 
 ;; Discover projects on launch
-(setq projectile-project-search-path '("~/Projects/src/gitlab.nm.cbc.ca/"
-                                       "~/Projects/src/bitbucket.org/cbc-digital"
+(setq projectile-project-search-path '("~/Projects/src/bitbucket.org/cbc-digital"
                                        "~/Projects/src/github.com/mclellac")
       projectile-max-known-projects 200)
 
@@ -50,6 +49,10 @@
 
 ;; Modeline Configuration
 (setq doom-modeline-enable-word-count t)
+
+;; Nerd Icons fix for missing Mono font
+(after! nerd-icons
+  (setq nerd-icons-font-family "Symbols Nerd Font"))
 
 ;; mu4e Email Client Configuration
 (after! mu4e
