@@ -4,7 +4,6 @@ return {
 		dependencies = { "mason-org/mason.nvim" },
 		opts = {
 			ensure_installed = {
-				"black",
 				"shfmt",
 				"markdownlint",
 				"clang-format",
@@ -18,6 +17,7 @@ return {
 				"ruff",
 				"yaml-language-server",
 				"hadolint",
+				"bash-language-server",
 			},
 		},
 	},
@@ -144,6 +144,8 @@ return {
 				"yaml",
 				"dockerfile",
 				"nginx",
+				"terraform",
+				"helm",
 			},
 		},
 	},
