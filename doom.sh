@@ -142,19 +142,45 @@ mkdir -p "$HOME/.config/doom"
 cp -rv doom/* "$HOME/.config/doom/"
 
 # --- Tree-sitter Grammar Sync ---
-echo "Linking Tree-sitter grammars..."
-# Standard Doom tree-sitter package locations
-mkdir -p "$HOME/.config/emacs/.local/cache/tree-sitter"
-mkdir -p "$HOME/.config/emacs/.local/etc/tree-sitter"
+echo "Building compatible Tree-sitter grammars (v0.23.6 for Python)..."
+rm -rf "$HOME/.config/emacs/tree-sitter"
+mkdir -p "$HOME/.config/emacs/tree-sitter"
 
-# Symlink system-installed grammars from Arch
-if [ -d /usr/lib/tree_sitter ]; then
-    for f in /usr/lib/tree_sitter/*.so; do
-        target=$(basename "$f")
-        ln -sf "$f" "$HOME/.config/emacs/.local/cache/tree-sitter/$target"
-        ln -sf "$f" "$HOME/.config/emacs/.local/etc/tree-sitter/$target"
-    done
-fi
+# Force Emacs to download and build grammars that match its internal queries
+# v0.23.6 is a robust choice for Emacs 30.2
+emacs --batch --eval "
+(progn
+  (setq treesit-language-source-alist
+        '((python \"https://github.com/tree-sitter/tree-sitter-python\" \"v0.23.6\")
+          (bash \"https://github.com/tree-sitter/tree-sitter-bash\")
+          (yaml \"https://github.com/ikatyang/tree-sitter-yaml\")
+          (json \"https://github.com/tree-sitter/tree-sitter-json\")
+          (c \"https://github.com/tree-sitter/tree-sitter-c\")
+          (cpp \"https://github.com/tree-sitter/tree-sitter-cpp\")))
+  (dolist (lang '(python bash yaml json c cpp))
+    (message \"Building %s...\" lang)
+    (condition-case err
+        (treesit-install-language-grammar lang)
+      (error (message \"Failed to build %s: %s\" lang (error-message-string err))))))
+"
+
+# Symlink libtree-sitter-*.so to *.so for maximum compatibility
+echo "Finalizing grammar paths..."
+for f in "$HOME/.config/emacs/tree-sitter"/libtree-sitter-*.so; do
+    if [ -f "$f" ]; then
+        lang=$(basename "$f" | sed 's/libtree-sitter-//;s/\.so//')
+        ln -sf "$f" "$HOME/.config/emacs/tree-sitter/$lang.so"
+    fi
+done
+
+# Symlink libtree-sitter-*.so to *.so for maximum compatibility
+echo "Finalizing grammar paths..."
+for f in "$HOME/.config/emacs/tree-sitter"/libtree-sitter-*.so; do
+    if [ -f "$f" ]; then
+        lang=$(basename "$f" | sed 's/libtree-sitter-//;s/\.so//')
+        ln -sf "$f" "$HOME/.config/emacs/tree-sitter/$lang.so"
+    fi
+done
 
 echo "Running Doom Emacs maintenance..."
 

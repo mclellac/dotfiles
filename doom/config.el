@@ -1,40 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; --- CRITICAL: GLOBAL TREESIT INIT (Emacs 30) ---
-;; Must be at the top to ensure all modes see it immediately
-(setq treesit-extra-load-path '("/usr/lib/tree_sitter"))
-(setq-default treesit-font-lock-level 4)
-
-;; Force TS modes globally via auto-mode-alist (higher priority than remapping)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.sh\\'" . bash-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.bash\\'" . bash-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
-
-;; Remap for good measure
-(setq major-mode-remap-alist
-      '((python-mode . python-ts-mode)
-        (bash-mode   . bash-ts-mode)
-        (sh-mode     . bash-ts-mode)
-        (yaml-mode   . yaml-ts-mode)
-        (json-mode   . json-ts-mode)
-        (c-mode      . c-ts-mode)
-        (c++-mode    . c++-ts-mode)))
-
-;; --- Fix for Buffer Switching / Explorer Lag ---
-(defun +treesit-force-refresh-hl-h ()
-  "Force treesit to re-index and paint the buffer."
-  (when (and (bound-and-true-p treesit-font-lock-settings)
-             (derived-mode-p 'prog-mode))
-    (treesit-font-lock-recompute-features)
-    (font-lock-flush)
-    (font-lock-ensure)))
-
-;; Run refresh on file open and buffer switch
-(add-hook 'find-file-hook #'+treesit-force-refresh-hl-h)
-(add-hook 'window-buffer-change-functions (lambda (_) (+treesit-force-refresh-hl-h)))
-
 ;; User Information
 (setq user-full-name ""
       user-mail-address "")
@@ -68,25 +33,54 @@
                            "~/.org/habits.org"
                            "~/.org/roam/")))
 
-;; --- LSP & PERFORMANCE ---
-(after! lsp-mode
-  ;; DISABLE semantic tokens - instant highlighting comes from Tree-sitter.
-  ;; Semantic tokens are what make it "slow as fuck".
-  (setq lsp-semantic-tokens-enable nil)
-  (setq lsp-idle-delay 0.1
-        lsp-headerline-breadcrumb-enable nil)
-  
-  ;; Ensure TS modes trigger LSP
-  (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
-  (add-to-list 'lsp-language-id-configuration '(bash-ts-mode . "sh"))
-  (add-to-list 'lsp-language-id-configuration '(yaml-ts-mode . "yaml")))
+;; --- NATIVE TREE-SITTER (Emacs 30) ---
+(setq-default treesit-font-lock-level 4)
 
-;; --- Python Specifics ---
+(after! treesit
+  (setq treesit-extra-load-path (list (expand-file-name "tree-sitter" user-emacs-directory)))
+  
+  (setq major-mode-remap-alist
+        '((python-mode . python-ts-mode)
+          (bash-mode   . bash-ts-mode)
+          (sh-mode     . bash-ts-mode)
+          (yaml-mode   . yaml-ts-mode)
+          (json-mode   . json-ts-mode)
+          (c-mode      . c-ts-mode)
+          (c++-mode    . c++-ts-mode))))
+
+;; --- Python Query Patch ---
+;; This aggressively fixes the "Syntax error at 358" by redefining the failing rule
 (after! python
   (setq python-shell-interpreter "python3")
   (setq-default flycheck-python-pyright-executable "pyright")
   (setq +python-pyright-format-on-save t)
-  (setq-hook! 'python-ts-mode-hook +format-with 'black))
+  (setq-hook! 'python-ts-mode-hook +format-with 'black)
+
+  ;; Define the corrected keywords list and rule
+  (let ((keywords '("as" "assert" "async" "await" "break" "case" "class" "continue" 
+                    "def" "del" "elif" "else" "except" "exec" "finally" "for" 
+                    "from" "global" "if" "import" "lambda" "match" "nonlocal" 
+                    "pass" "print" "raise" "return" "try" "while" "with" "yield" 
+                    "and" "in" "is" "not" "or")))
+    (setq python--treesit-settings
+          (append python--treesit-settings
+                  (treesit-font-lock-rules
+                   :language 'python
+                   :feature 'keyword
+                   :override t
+                   `([,@keywords] @font-lock-keyword-face
+                     ((identifier) @font-lock-keyword-face
+                      (:match "^self$" @font-lock-keyword-face))))))))
+
+;; --- LSP & PERFORMANCE ---
+(after! lsp-mode
+  (setq lsp-semantic-tokens-enable t)
+  (setq lsp-idle-delay 0.1
+        lsp-headerline-breadcrumb-enable nil)
+  
+  (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
+  (add-to-list 'lsp-language-id-configuration '(bash-ts-mode . "sh"))
+  (add-to-list 'lsp-language-id-configuration '(yaml-ts-mode . "yaml")))
 
 ;; Shell
 (after! sh-script
