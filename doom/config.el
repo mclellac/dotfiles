@@ -36,6 +36,9 @@
 ;; --- NATIVE TREE-SITTER (Emacs 30) ---
 (setq-default treesit-font-lock-level 4)
 
+;; Set installation directory globally
+(setq treesit-directory (expand-file-name ".local/cache/tree-sitter" user-emacs-directory))
+
 (setq treesit-language-source-alist
    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
      (cmake "https://github.com/uyha/tree-sitter-cmake")
@@ -54,13 +57,16 @@
      (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
 (after! treesit
-  (let ((cache-dir (expand-file-name ".local/cache/tree-sitter" user-emacs-directory))
-        (extra-dir (expand-file-name "tree-sitter" user-emacs-directory)))
-    (setq treesit-extra-load-path (list cache-dir extra-dir)))
+  ;; Ensure directory exists for grammar installation
+  (unless (file-directory-p treesit-directory)
+    (make-directory treesit-directory t))
+  
+  (add-to-list 'treesit-extra-load-path treesit-directory)
 
-  ;; Auto-install missing grammars
+  ;; Auto-install missing grammars safely
   (dolist (lang treesit-language-source-alist)
     (unless (treesit-language-available-p (car lang))
+      (message "Treesit: Installing %s..." (car lang))
       (treesit-install-language-grammar (car lang))))
 
   (setq major-mode-remap-alist
@@ -147,6 +153,47 @@
   :hook (org-mode . mixed-pitch-mode)
   :config
   (setq mixed-pitch-set-height t))
+
+;; --- UI ENHANCEMENTS ---
+
+;; Dashboard Banner (Minimalist)
+(setq fancy-splash-image (expand-file-name "wallpapers/mountains1.png" (file-name-directory load-file-name)))
+
+;; Modeline tweaks
+(after! doom-modeline
+  (setq doom-modeline-height 30
+        doom-modeline-bar-width 4
+        doom-modeline-buffer-file-name-style 'truncate-with-project
+        doom-modeline-major-mode-icon t
+        doom-modeline-major-mode-color-icon t
+        doom-modeline-buffer-state-icon t
+        doom-modeline-buffer-modification-icon t
+        doom-modeline-lsp t
+        doom-modeline-github t
+        doom-modeline-env-version t))
+
+;; Custom colors for a cleaner look
+(custom-set-faces!
+  '(doom-modeline-bar :background "#51afef")
+  '(mode-line :background "#1B2229" :foreground "#bbc2cf")
+  '(mode-line-inactive :background "#21242b" :foreground "#5b6268"))
+
+;; Transparency (Optional, but looks great with compositor)
+(set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+(add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+
+;; Treemacs Customization
+(after! treemacs
+  (setq treemacs-width 30
+        treemacs-position 'left
+        treemacs-is-never-other-window t
+        treemacs-silent-refresh t
+        treemacs-sorting 'alphabetic-case-insensitive-asc)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
+
+;; Indent Guides
+(setq highlight-indent-guides-method 'character)
 
 ;; Rainbow Delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
