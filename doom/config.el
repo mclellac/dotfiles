@@ -1,7 +1,39 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
+;; --- CRITICAL: GLOBAL TREESIT INIT (Emacs 30) ---
+;; Must be at the top to ensure all modes see it immediately
+(setq treesit-extra-load-path '("/usr/lib/tree_sitter"))
+(setq-default treesit-font-lock-level 4)
+
+;; Force TS modes globally via auto-mode-alist (higher priority than remapping)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.sh\\'" . bash-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.bash\\'" . bash-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+
+;; Remap for good measure
+(setq major-mode-remap-alist
+      '((python-mode . python-ts-mode)
+        (bash-mode   . bash-ts-mode)
+        (sh-mode     . bash-ts-mode)
+        (yaml-mode   . yaml-ts-mode)
+        (json-mode   . json-ts-mode)
+        (c-mode      . c-ts-mode)
+        (c++-mode    . c++-ts-mode)))
+
+;; --- Fix for Buffer Switching / Explorer Lag ---
+(defun +treesit-force-refresh-hl-h ()
+  "Force treesit to re-index and paint the buffer."
+  (when (and (bound-and-true-p treesit-font-lock-settings)
+             (derived-mode-p 'prog-mode))
+    (treesit-font-lock-recompute-features)
+    (font-lock-flush)
+    (font-lock-ensure)))
+
+;; Run refresh on file open and buffer switch
+(add-hook 'find-file-hook #'+treesit-force-refresh-hl-h)
+(add-hook 'window-buffer-change-functions (lambda (_) (+treesit-force-refresh-hl-h)))
 
 ;; User Information
 (setq user-full-name ""
@@ -14,10 +46,7 @@
       doom-variable-pitch-font (font-spec :family "Hack" :size 18))
 
 ;; Theme
-(setq doom-theme 'doom-material)
-
-;; Start Emacs fullscreen without a titlebar
-;;(add-hook 'window-setup-hook #'toggle-frame-fullscreen)
+(setq doom-theme 'doom-one)
 
 ;; Stop asking to quit
 (setq confirm-kill-emacs nil)
@@ -34,151 +63,34 @@
 (setq org-directory "~/.org/")
 (after! org
   (setq org-hide-emphasis-markers t
-        org-insert-heading-respect-content nil
-        org-log-done t
-        org-log-into-drawer t
-        ;; Agenda settings
         org-agenda-files '("~/.org/inbox.org"
                            "~/.org/projects.org"
                            "~/.org/habits.org"
                            "~/.org/roam/")))
 
-;; Auto Save and Backup
-(setq auto-save-default t
-      make-backup-files t)
-
-;; Modeline Configuration
-(setq doom-modeline-enable-word-count t)
-
-;; Nerd Icons fix for missing Mono font
-(after! nerd-icons
-  (setq nerd-icons-font-family "Symbols Nerd Font"))
-
-;; mu4e Email Client Configuration
-(after! mu4e
-  (setq mu4e-update-interval (* 10 60)
-        mu4e-get-mail-command "mbsync -a"
-        mu4e-index-update-error-continue t
-        mu4e-attachment-dir "~/Downloads"
-        mu4e-change-filenames-when-moving t
-        ;; Sending mail configuration
-        sendmail-program (executable-find "msmtp")
-        send-mail-function #'message-send-mail-with-sendmail
-        message-sendmail-f-is-evil t
-        message-sendmail-extra-arguments '("--read-envelope-from")
-        message-send-mail-function #'message-send-mail-with-sendmail)
-
-  ;; Configure contexts
-  (setq mu4e-contexts
-        (list
-         (make-mu4e-context
-          :name "Personal"
-          :match-func (lambda (msg)
-                        (when msg
-                          (string-prefix-p "/personal" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address  . "user@gmail.com")
-                  (user-full-name     . "")
-                  (mu4e-sent-folder   . "/[Gmail]/Sent Mail")
-                  (mu4e-drafts-folder . "/[Gmail]/Drafts")
-                  (mu4e-trash-folder  . "/[Gmail]/Bin")
-                  (mu4e-refile-folder . "/[Gmail]/All Mail")
-                  (mu4e-maildir-shortcuts . (("/INBOX"               . ?i)
-                                             ("/[Gmail]/Sent Mail"   . ?s)
-                                             ("/[Gmail]/Trash"       . ?t)
-                                             ("/[Gmail]/All Mail"    . ?a)
-                                             ("/[Gmail]/Starred"     . ?r)
-                                             ("/[Gmail]/Drafts"      . ?d))))))))
-
-;; Custom Faces
-(custom-set-faces!
-  '(doom-dashboard-banner :inherit default)
-  '(doom-dashboard-loaded :inherit default))
-
-;; Visual and Safety Improvements
-(setq vertico-resize t)
-(setq-default delete-by-moving-to-trash t)
-
-;; Org-Roam Configuration
-(setq org-roam-directory (file-truename "~/.org/roam"))
-(after! org-roam
-  (org-roam-db-autosync-mode))
-
-;; Quality of Life Improvements
-(setq which-key-idle-delay 0.5) ;; Show keybindings faster
-
-;; Smooth Scrolling
-(setq scroll-margin 2
-      scroll-conservatively 101
-      scroll-preserve-screen-position t
-      auto-window-vscroll nil)
-
-;; Prettier Org-mode symbols
-(after! org
-  (setq org-ellipsis " ▼ "))
-
-;; Python + Gnome/Libadwaita
-(setq lsp-pyright-python-executable-cmd "python3")
-(setq lsp-pyright-use-library-code-for-types t)
-
-;; Kubernetes & Helm Charts
-(use-package! kubernetes-helm
-  :mode ("templates/.*\\.yaml\\'" . kubernetes-helm-mode))
-
-;; Varnish/VCL
-(use-package! vcl-mode
-  :mode "\\.vcl\\'")
-
-;; Ansible associations
-(add-to-list 'auto-mode-alist '("\\.ansible\\.ya?ml\\'" . ansible-mode))
-(add-to-list 'auto-mode-alist '("group_vars/.*" . yaml-mode))
-(add-to-list 'auto-mode-alist '("host_vars/.*" . yaml-mode))
-
-;; Ensure tree-sitter highlighting is enabled for key modes
-(add-hook! '(python-mode-hook
-             yaml-mode-hook
-             sh-mode-hook
-             terraform-mode-hook
-             ansible-mode-hook
-             markdown-mode-hook)
-           #'tree-sitter-hl-mode)
-
-;; Terraform
-(after! terraform-mode
-  (setq terraform-format-on-save t)
-  (add-hook 'terraform-mode-hook #'lsp-deferred))
-
-;; Ansible
-(after! ansible
-  (setq ansible-vault-password-file "~/.ansible-vault-pass")
-  ;; Use LSP for ansible-mode
-  (add-hook 'ansible-mode-hook #'lsp-deferred))
-
+;; --- LSP & PERFORMANCE ---
 (after! lsp-mode
-  ;; Ensure ansible-language-server is used for ansible files
-  (add-to-list 'lsp-language-id-configuration '(ansible-mode . "ansible")))
+  ;; DISABLE semantic tokens - instant highlighting comes from Tree-sitter.
+  ;; Semantic tokens are what make it "slow as fuck".
+  (setq lsp-semantic-tokens-enable nil)
+  (setq lsp-idle-delay 0.1
+        lsp-headerline-breadcrumb-enable nil)
+  
+  ;; Ensure TS modes trigger LSP
+  (add-to-list 'lsp-language-id-configuration '(python-ts-mode . "python"))
+  (add-to-list 'lsp-language-id-configuration '(bash-ts-mode . "sh"))
+  (add-to-list 'lsp-language-id-configuration '(yaml-ts-mode . "yaml")))
 
-;; YAML / Ansible highlighting improvements
-(add-hook! 'yaml-mode-hook #'tree-sitter-hl-mode)
-
-;; C/C++
-(after! cc-mode
-  (setq-default c-basic-offset 4)
-  (setq c-default-style "linux")
-  (add-hook 'c-mode-common-hook #'lsp-deferred))
-
-;; Python
+;; --- Python Specifics ---
 (after! python
   (setq python-shell-interpreter "python3")
   (setq-default flycheck-python-pyright-executable "pyright")
   (setq +python-pyright-format-on-save t)
-  (setq-hook! 'python-mode-hook +format-with 'black))
+  (setq-hook! 'python-ts-mode-hook +format-with 'black))
 
-;; Shell scripting
+;; Shell
 (after! sh-script
-  (setq sh-shell-file "/bin/bash")
-  (setq sh-basic-offset 2)
-  (add-hook 'sh-mode-hook #'lsp-deferred)
-  (setq-hook! 'sh-mode-hook +format-with 'shfmt))
+  (setq-hook! 'bash-ts-mode-hook +format-with 'shfmt))
 
 ;; Markdown
 (after! markdown-mode
@@ -186,75 +98,11 @@
         markdown-open-command "grip")
   (setq-hook! 'markdown-mode-hook +format-with 'prettier))
 
-;; Magit TODOs
-(after! magit
-  (magit-todos-mode 1))
-
-;; Mixed Pitch (Variable-pitch for prose/comments)
+;; Mixed Pitch
 (use-package! mixed-pitch
   :hook (org-mode . mixed-pitch-mode)
   :config
   (setq mixed-pitch-set-height t))
 
-;; --- Productivity Hub Configuration ---
-
-;; Org-Journal
-(setq org-journal-dir "~/.org/journal/"
-      org-journal-date-format "%A, %d %B %Y"
-      org-journal-file-format "%Y-%m-%d.org")
-
-;; Google Calendar Sync (Placeholder)
-;; After 'doom sync', run 'M-x org-gcal-fetch' to authorize.
-(setq org-gcal-client-id "YOUR_CLIENT_ID"
-      org-gcal-client-secret "YOUR_CLIENT_SECRET"
-      org-gcal-fetch-file-alist '(("user@gmail.com" . "~/.org/gcal.org")))
-
-;; Pomodoro Sound
-(after! org-pomodoro
-  (setq org-pomodoro-play-sounds t))
-
-;; Custom Captures (Quick notes/tasks)
-(setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/.org/inbox.org" "Tasks")
-         "* TODO %?\n  %i\n  %a")
-        ("n" "Note" entry (file+headline "~/.org/inbox.org" "Notes")
-         "* %?\n  %i\n  %a")
-        ("j" "Journal Entry" entry (file+datetree "~/.org/journal.org")
-         "* %?\nEntered on %U\n  %i\n  %a")))
-
-;; --- Cloud, SecOps, and DevSecOps Configuration ---
-
-;; VLF (Very Large Files)
-(use-package! vlf
-  :config
-  (require 'vlf-setup))
-
-;; Rainbow Delimiters & Colors (Universal clarity)
+;; Rainbow Delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'conf-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'text-mode-hook #'rainbow-delimiters-mode)
-(add-hook 'prog-mode-hook #'rainbow-mode)
-(add-hook 'conf-mode-hook #'rainbow-mode)
-(add-hook 'text-mode-hook #'rainbow-mode)
-
-;; Elfeed (Security Feeds via Org-mode)
-(setq elfeed-org-files (list (expand-file-name "~/.org/elfeed.org")))
-(use-package! elfeed-org
-  :config
-  (elfeed-org))
-
-(after! elfeed
-  (setq elfeed-search-filter "@2-weeks-ago +unread"))
-
-;; --- Custom Keybindings ---
-(map! :leader
-      (:prefix ("o" . "open")
-       :desc "Elfeed (RSS)" "R" #'=rss))
-
-;; Avy Keybindings
-(map! :leader
-      :desc "Jump to char" "j" #'avy-goto-char-2)
-
-;; Git Timemachine Keybinding
-(map! :leader
-      :desc "Git Timemachine" "g t" #'git-timemachine-toggle)

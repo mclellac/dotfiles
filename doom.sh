@@ -31,16 +31,23 @@ case "$OS" in
         echo "Updating Arch Linux..."
         sudo pacman -Syu --needed --noconfirm \
             direnv terraform scrot rust-analyzer shellcheck tidy \
-            go npm python-pip curl ripgrep fd aspell aspell-en isync
+            go npm python-pip curl ripgrep fd aspell aspell-en isync \
+            shfmt python-black pyright tree-sitter-python
         
         if command_exists yay; then
-            echo "Installing ttf-symbola via yay..."
-            yay -S --needed --noconfirm ttf-symbola
+            echo "Installing AUR dependencies via yay..."
+            yay -S --needed --noconfirm ttf-symbola gomodifytags gotests gore-bin dockerfmt
         elif command_exists paru; then
-            echo "Installing ttf-symbola via paru..."
-            paru -S --needed --noconfirm ttf-symbola
+            echo "Installing AUR dependencies via paru..."
+            paru -S --needed --noconfirm ttf-symbola gomodifytags gotests gore-bin dockerfmt
         else
-            echo "Note: Symbola font is in AUR (ttf-symbola). Please install it manually if needed."
+            echo "Note: AUR dependencies (ttf-symbola, gomodifytags, gotests, gore-bin, dockerfmt) should be installed manually."
+        fi
+
+        # Ensure dockfmt is available (AUR package is dockerfmt)
+        if command_exists dockerfmt && ! command_exists dockfmt; then
+            echo "Creating symlink for dockfmt..."
+            sudo ln -sf /usr/bin/dockerfmt /usr/local/bin/dockfmt
         fi
         ;;
     ubuntu|debian)
@@ -49,7 +56,7 @@ case "$OS" in
         sudo apt-get install -y \
             fonts-symbola direnv scrot shellcheck tidy \
             golang npm python3-pip curl gnupg software-properties-common \
-            ripgrep fd-find aspell aspell-en isync mu4e
+            ripgrep fd-find aspell aspell-en isync mu4e shfmt
 
         # Install Terraform (HashiCorp Repo)
         if ! command_exists terraform; then
@@ -69,14 +76,14 @@ case "$OS" in
         sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
         sudo dnf install -y \
             gdouros-symbola-fonts direnv terraform scrot rust-analyzer ShellCheck tidy \
-            golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync
+            golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync shfmt
         ;;
     *)
         # Check ID_LIKE for derivatives
         if [[ "$LIKE" == *"arch"* ]]; then
-             sudo pacman -Syu --needed --noconfirm direnv terraform scrot rust-analyzer shellcheck tidy go npm python-pip curl ripgrep fd aspell aspell-en isync
+             sudo pacman -Syu --needed --noconfirm direnv terraform scrot rust-analyzer shellcheck tidy go npm python-pip curl ripgrep fd aspell aspell-en isync shfmt
         elif [[ "$LIKE" == *"debian"* ]]; then
-             sudo apt-get update && sudo apt-get install -y fonts-symbola direnv scrot rust-analyzer shellcheck tidy golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync
+             sudo apt-get update && sudo apt-get install -y fonts-symbola direnv scrot rust-analyzer shellcheck tidy golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync shfmt
         else
             error_exit "Unsupported OS: $OS ($LIKE). Please install dependencies manually."
         fi
@@ -97,8 +104,22 @@ go_tools=(
 )
 
 for tool in "${go_tools[@]}"; do
-    echo "Installing $tool..."
-    go install "$tool" || echo "Failed to install $tool"
+    # Simple heuristic to get binary name
+    case "$tool" in
+        *dockfmt*) binary="dockfmt" ;;
+        *gomodifytags*) binary="gomodifytags" ;;
+        *gotests*) binary="gotests" ;;
+        *gore*) binary="gore" ;;
+        *shfmt*) binary="shfmt" ;;
+        *) binary=$(basename "$tool" | cut -d'@' -f1) ;;
+    esac
+
+    if command_exists "$binary"; then
+        echo "$binary is already installed (found at $(command -v $binary)), skipping go install."
+    else
+        echo "Installing $tool..."
+        go install "$tool" || echo "Failed to install $tool"
+    fi
 done
 
 # --- Python Tools ---
@@ -116,6 +137,25 @@ echo "Installing NPM-based tools..."
 sudo npm install -g stylelint js-beautify pyright || echo "Failed to install NPM tools"
 
 # --- Final Steps ---
+echo "Syncing configuration files to ~/.config/doom..."
+mkdir -p "$HOME/.config/doom"
+cp -rv doom/* "$HOME/.config/doom/"
+
+# --- Tree-sitter Grammar Sync ---
+echo "Linking Tree-sitter grammars..."
+# Standard Doom tree-sitter package locations
+mkdir -p "$HOME/.config/emacs/.local/cache/tree-sitter"
+mkdir -p "$HOME/.config/emacs/.local/etc/tree-sitter"
+
+# Symlink system-installed grammars from Arch
+if [ -d /usr/lib/tree_sitter ]; then
+    for f in /usr/lib/tree_sitter/*.so; do
+        target=$(basename "$f")
+        ln -sf "$f" "$HOME/.config/emacs/.local/cache/tree-sitter/$target"
+        ln -sf "$f" "$HOME/.config/emacs/.local/etc/tree-sitter/$target"
+    done
+fi
+
 echo "Running Doom Emacs maintenance..."
 
 # Add GOPATH to current shell PATH for maintenance
