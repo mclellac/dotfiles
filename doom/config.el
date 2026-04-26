@@ -179,8 +179,8 @@
   '(mode-line-inactive :background "#21242b" :foreground "#5b6268"))
 
 ;; Transparency (Optional, but looks great with compositor)
-(set-frame-parameter (selected-frame) 'alpha '(95 . 95))
-(add-to-list 'default-frame-alist '(alpha . (95 . 95)))
+(set-frame-parameter (selected-frame) 'alpha '(98 . 98))
+(add-to-list 'default-frame-alist '(alpha . (98 . 98)))
 
 ;; Treemacs Customization
 (after! treemacs
