@@ -121,8 +121,26 @@
 (setq lsp-pyright-use-library-code-for-types t)
 
 ;; Kubernetes & Helm Charts
-(add-to-list 'auto-mode-alist '("templates/.*\\.yaml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("templates/.*\\.yml\\'" . yaml-mode))
+(use-package! kubernetes-helm
+  :mode ("templates/.*\\.yaml\\'" . kubernetes-helm-mode))
+
+;; Varnish/VCL
+(use-package! vcl-mode
+  :mode "\\.vcl\\'")
+
+;; Ansible associations
+(add-to-list 'auto-mode-alist '("\\.ansible\\.ya?ml\\'" . ansible-mode))
+(add-to-list 'auto-mode-alist '("group_vars/.*" . yaml-mode))
+(add-to-list 'auto-mode-alist '("host_vars/.*" . yaml-mode))
+
+;; Ensure tree-sitter highlighting is enabled for key modes
+(add-hook! '(python-mode-hook
+             yaml-mode-hook
+             sh-mode-hook
+             terraform-mode-hook
+             ansible-mode-hook
+             markdown-mode-hook)
+           #'tree-sitter-hl-mode)
 
 ;; Terraform
 (after! terraform-mode

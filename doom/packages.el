@@ -16,6 +16,7 @@
 (package! rainbow-mode)
 
 ;; Cloud, SecOps, and DevSecOps Tools
+(package! kubernetes-helm)
 (package! git-timemachine)
 (package! vlf)
 (package! rainbow-delimiters)

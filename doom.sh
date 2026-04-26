@@ -31,15 +31,25 @@ case "$OS" in
         echo "Updating Arch Linux..."
         sudo pacman -Syu --needed --noconfirm \
             direnv terraform scrot rust-analyzer shellcheck tidy \
-            go npm python-pip curl
-        echo "Note: Symbola font is in AUR (ttf-symbola). Please install it manually if needed."
+            go npm python-pip curl ripgrep fd aspell aspell-en isync
+        
+        if command_exists yay; then
+            echo "Installing ttf-symbola via yay..."
+            yay -S --needed --noconfirm ttf-symbola
+        elif command_exists paru; then
+            echo "Installing ttf-symbola via paru..."
+            paru -S --needed --noconfirm ttf-symbola
+        else
+            echo "Note: Symbola font is in AUR (ttf-symbola). Please install it manually if needed."
+        fi
         ;;
     ubuntu|debian)
         echo "Updating Debian/Ubuntu..."
         sudo apt-get update
         sudo apt-get install -y \
             fonts-symbola direnv scrot shellcheck tidy \
-            golang npm python3-pip curl gnupg software-properties-common
+            golang npm python3-pip curl gnupg software-properties-common \
+            ripgrep fd-find aspell aspell-en isync mu4e
 
         # Install Terraform (HashiCorp Repo)
         if ! command_exists terraform; then
@@ -59,14 +69,14 @@ case "$OS" in
         sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
         sudo dnf install -y \
             gdouros-symbola-fonts direnv terraform scrot rust-analyzer ShellCheck tidy \
-            golang npm python3-pip curl
+            golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync
         ;;
     *)
         # Check ID_LIKE for derivatives
         if [[ "$LIKE" == *"arch"* ]]; then
-             sudo pacman -Syu --needed --noconfirm direnv terraform scrot rust-analyzer shellcheck tidy go npm python-pip curl
+             sudo pacman -Syu --needed --noconfirm direnv terraform scrot rust-analyzer shellcheck tidy go npm python-pip curl ripgrep fd aspell aspell-en isync
         elif [[ "$LIKE" == *"debian"* ]]; then
-             sudo apt-get update && sudo apt-get install -y fonts-symbola direnv scrot rust-analyzer shellcheck tidy golang npm python3-pip curl
+             sudo apt-get update && sudo apt-get install -y fonts-symbola direnv scrot rust-analyzer shellcheck tidy golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync
         else
             error_exit "Unsupported OS: $OS ($LIKE). Please install dependencies manually."
         fi
@@ -103,7 +113,26 @@ $pip_install grip nose || echo "Failed to install python tools"
 
 # --- NPM Tools ---
 echo "Installing NPM-based tools..."
-sudo npm install -g stylelint js-beautify || echo "Failed to install NPM tools"
+sudo npm install -g stylelint js-beautify pyright || echo "Failed to install NPM tools"
+
+# --- Final Steps ---
+echo "Running Doom Emacs maintenance..."
+
+# Add GOPATH to current shell PATH for maintenance
+export PATH="$PATH:$HOME/go/bin"
+
+if command_exists doom; then
+    echo "Running 'doom sync -b' (rebuilding packages)..."
+    doom sync -b || echo "Warning: 'doom sync -b' failed."
+    
+    echo "Running 'doom env'..."
+    doom env || echo "Warning: 'doom env' failed."
+    
+    echo "Running 'doom doctor'..."
+    doom doctor
+else
+    echo "Error: 'doom' command not found. Please ensure '~/.config/emacs/bin' is in your PATH."
+fi
 
 # --- Summary ---
 echo "--------------------------------------------------"
@@ -112,5 +141,7 @@ echo "--------------------------------------------------"
 echo "Remaining Steps:"
 echo "1. Symbols Nerd Font: Run 'M-x nerd-icons-install-fonts' inside Doom Emacs."
 echo "2. Path Check: Ensure '$HOME/go/bin' is in your PATH."
-echo "3. Restart Emacs and run 'doom doctor' to verify."
+echo "   Add this to your ~/.zshrc or ~/.bashrc:"
+echo "   export PATH=\$PATH:\$HOME/go/bin"
+echo "3. Restart Emacs to ensure all changes take effect."
 echo "--------------------------------------------------"
