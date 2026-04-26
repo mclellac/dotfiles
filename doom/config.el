@@ -197,3 +197,90 @@
 
 ;; Rainbow Delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; --- WORKFLOW & NAVIGATION ENHANCEMENTS ---
+
+;; File Manager (Dired) Polish
+(after! dired
+  (setq dired-listing-switches "-agho --group-directories-first"
+        dired-kill-when-opening-new-dired-buffer t)
+  (add-hook 'dired-mode-hook 'dired-hide-details-mode))
+
+;; Minibuffer Search (Vertico)
+(after! vertico
+  (setq vertico-cycle t
+        vertico-resize nil
+        vertico-count 15))
+
+;; Smooth Scrolling (Emacs 29+)
+(pixel-scroll-precision-mode 1)
+
+;; Keep 5 lines of context when scrolling near the top/bottom
+(setq scroll-margin 5
+      scroll-conservatively 5
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01)
+
+;; Snappier Which-Key (shows keybinding hints faster)
+(setq which-key-idle-delay 0.3)
+
+;; Window Undo/Redo (use `SPC w u` to undo window changes)
+(winner-mode 1)
+
+;; Zen Mode (Writeroom) default width
+(setq writeroom-width 100)
+
+;; Better Autocomplete UI (Corfu)
+(after! corfu
+  ;; Show documentation popups alongside completions
+  (corfu-popupinfo-mode 1)
+  (setq corfu-popupinfo-delay 0.5)
+  ;; Make corfu a bit more responsive
+  (setq corfu-auto-delay 0.1
+        corfu-auto-prefix 2))
+
+;; --- MODERN UI FLOURISHES ---
+
+;; Beacon: Pulse cursor after jumps/window switches
+(after! beacon
+  (beacon-mode 1)
+  (setq beacon-color "#51afef"
+        beacon-size 40
+        beacon-blink-duration 0.3))
+
+;; Org-Modern: Sleek icons/elements for Org Mode
+(with-eval-after-load 'org
+  (global-org-modern-mode)
+  (setq
+   ;; Edit settings
+   org-auto-align-tags nil
+   org-tags-column 0
+   org-catch-all-regs t
+   org-special-ctrl-a/e t
+   org-insert-heading-respect-content t
+
+   ;; Appearance settings
+   org-modern-star '("◉" "○" "◈" "◇" "✳")
+   org-modern-list '((?- . "•") (?+ . "◦"))
+   org-modern-tag t
+   org-modern-priority t
+   org-modern-todo t
+   org-modern-table t
+   org-modern-checkbox '((?X . "☑") (?\s . "☐") (?- . "❍"))))
+
+;; Enhance search results visibility
+(setq search-highlight t
+      query-replace-highlight t)
+
+;; Custom faces for better contrast
+(custom-set-faces!
+  ;; Make current search match more obvious
+  '(isearch :background "#51afef" :foreground "#282c34" :weight bold)
+  '(lazy-highlight :background "#223f5a" :foreground "#bbc2cf")
+  ;; Prettier line highlighting
+  '(hl-line :background "#2e3440"))
+
+;; Minibuffer icons and info
+(after! marginalia
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+
