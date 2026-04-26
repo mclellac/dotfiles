@@ -153,17 +153,67 @@
   :hook (org-mode . mixed-pitch-mode)
   :config
   (setq mixed-pitch-set-height t))
-
 ;; --- UI ENHANCEMENTS ---
+
+;; Premium Typography: Italics for comments and Bold for keywords
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-doc-face :slant italic)
+  '(font-lock-keyword-face :weight bold)
+  '(font-lock-builtin-face :weight bold)
+  ;; Make line numbers more subtle
+  '(line-number :foreground "#4b5263")
+  '(line-number-current-line :foreground "#51afef" :weight bold))
 
 ;; Dashboard Banner (Minimalist)
 (setq fancy-splash-image (expand-file-name "wallpapers/mountains1.png" (file-name-directory load-file-name)))
+
+(defun my-open-doom-config ()
+  "Open the doom config file."
+  (interactive)
+  (find-file (expand-file-name "config.el" doom-user-dir)))
+
+;; Functional Dashboard Menu
+(setq +doom-dashboard-menu-sections
+  '(("Recently opened files"
+     :icon (nerd-icons-faicon "nf-fa-file_text_o" :face 'doom-dashboard-menu-title)
+     :action recentf-open-files)
+    ("Open project"
+     :icon (nerd-icons-faicon "nf-fa-folder_open" :face 'doom-dashboard-menu-title)
+     :action projectile-switch-project)
+    ("Jump to bookmark"
+     :icon (nerd-icons-faicon "nf-fa-bookmark" :face 'doom-dashboard-menu-title)
+     :action bookmark-jump)
+    ("Open org-agenda"
+     :icon (nerd-icons-faicon "nf-fa-calendar" :face 'doom-dashboard-menu-title)
+     :when (fboundp 'org-agenda)
+     :action org-agenda)
+    ("Edit emacs config"
+     :icon (nerd-icons-faicon "nf-fa-wrench" :face 'doom-dashboard-menu-title)
+     :action my-open-doom-config)))
+
+;; Clean Window Dividers
+(setq window-divider-default-places 'right-only
+      window-divider-default-bottom-width 1
+      window-divider-default-right-width 1)
+(add-hook 'doom-first-input-hook #'window-divider-mode)
+
+;; De-clutter: Hide line numbers in non-code buffers
+(setq display-line-numbers-type t)
+(dolist (mode '(org-mode-hook
+                help-mode-hook
+                vterm-mode-hook
+                dired-mode-hook
+                treemacs-mode-hook
+                calendar-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode -1))))
 
 ;; Modeline tweaks
 (after! doom-modeline
   (setq doom-modeline-height 30
         doom-modeline-bar-width 4
         doom-modeline-buffer-file-name-style 'truncate-with-project
+        doom-modeline-icon t
         doom-modeline-major-mode-icon t
         doom-modeline-major-mode-color-icon t
         doom-modeline-buffer-state-icon t
@@ -171,6 +221,39 @@
         doom-modeline-lsp t
         doom-modeline-github t
         doom-modeline-env-version t))
+
+;; Tab Bar (Centaur Tabs) Polish
+(after! centaur-tabs
+  (centaur-tabs-mode 1)
+  (setq centaur-tabs-style "bar"
+        centaur-tabs-height 32
+        centaur-tabs-set-icons t
+        centaur-tabs-set-modified-marker t
+        centaur-tabs-show-navigation-buttons t
+        centaur-tabs-set-bar 'left
+        centaur-tabs-gray-out-icons 'buffer)
+  ;; Make tabs look cleaner
+  (custom-set-faces!
+    '(centaur-tabs-default :background "#1b2229" :foreground "#5b6268")
+    '(centaur-tabs-selected :background "#282c34" :foreground "#bbc2cf" :weight bold)
+    '(centaur-tabs-active-bar-face :background "#51afef")))
+
+;; Dashboard Footer & Greeting
+(defun my-dashboard-footer ()
+  (insert "\n" (propertize "    Happy Hacking, mclellac!    " 'face 'font-lock-comment-face) "\n"))
+
+(setq +doom-dashboard-functions
+      '(doom-dashboard-widget-banner
+        doom-dashboard-widget-shortmenu
+        my-dashboard-footer
+        doom-dashboard-widget-loaded))
+
+;; Prettier Gutter (Fringe)
+(set-fringe-mode 10)
+(after! git-gutter
+  (setq git-gutter:modified-sign "~"
+        git-gutter:added-sign "+"
+        git-gutter:deleted-sign "-"))
 
 ;; Custom colors for a cleaner look
 (custom-set-faces!
