@@ -48,29 +48,52 @@
           (c-mode      . c-ts-mode)
           (c++-mode    . c++-ts-mode))))
 
-;; --- Python Query Patch ---
-;; This aggressively fixes the "Syntax error at 358" by redefining the failing rule
+;; --- Python Query Patch (Final Clean Slate) ---
+;; Completely replaces the built-in rules to avoid the crashing query bug in Emacs 30.2
 (after! python
   (setq python-shell-interpreter "python3")
   (setq-default flycheck-python-pyright-executable "pyright")
   (setq +python-pyright-format-on-save t)
   (setq-hook! 'python-ts-mode-hook +format-with 'black)
 
-  ;; Define the corrected keywords list and rule
-  (let ((keywords '("as" "assert" "async" "await" "break" "case" "class" "continue" 
-                    "def" "del" "elif" "else" "except" "exec" "finally" "for" 
-                    "from" "global" "if" "import" "lambda" "match" "nonlocal" 
-                    "pass" "print" "raise" "return" "try" "while" "with" "yield" 
-                    "and" "in" "is" "not" "or")))
-    (setq python--treesit-settings
-          (append python--treesit-settings
-                  (treesit-font-lock-rules
-                   :language 'python
-                   :feature 'keyword
-                   :override t
-                   `([,@keywords] @font-lock-keyword-face
-                     ((identifier) @font-lock-keyword-face
-                      (:match "^self$" @font-lock-keyword-face))))))))
+  (setq python--treesit-settings
+        (treesit-font-lock-rules
+         :language 'python
+         :feature 'keyword
+         :override t
+         '([
+            "and" "as" "assert" "async" "await" "break" "case" "class" "continue"
+            "def" "del" "elif" "else" "except" "exec" "finally" "for" "from"
+            "global" "if" "import" "in" "is" "lambda" "match" "nonlocal" "not"
+            "or" "pass" "print" "raise" "return" "try" "while" "with" "yield"
+            ] @font-lock-keyword-face)
+
+         :language 'python
+         :feature 'definition
+         :override t
+         '((function_definition
+            name: (identifier) @font-lock-function-name-face)
+           (class_definition
+            name: (identifier) @font-lock-type-face)
+           (parameters (identifier) @font-lock-variable-name-face)
+           (attribute attribute: (identifier) @font-lock-variable-name-face))
+
+         :language 'python
+         :feature 'assignment
+         :override t
+         '((assignment left: (identifier) @font-lock-variable-name-face)
+           (assignment left: (attribute attribute: (identifier) @font-lock-variable-name-face)))
+
+         :language 'python
+         :feature 'string
+         :override t
+         '((string) @font-lock-string-face
+           (interpolation (identifier) @font-lock-variable-name-face))
+
+         :language 'python
+         :feature 'comment
+         :override t
+         '((comment) @font-lock-comment-face))))
 
 ;; --- LSP & PERFORMANCE ---
 (after! lsp-mode

@@ -115,7 +115,7 @@ for tool in "${go_tools[@]}"; do
     esac
 
     if command_exists "$binary"; then
-        echo "$binary is already installed (found at $(command -v $binary)), skipping go install."
+        echo "$binary is already installed (found at $(command -v "$binary")), skipping go install."
     else
         echo "Installing $tool..."
         go install "$tool" || echo "Failed to install $tool"
@@ -142,16 +142,16 @@ mkdir -p "$HOME/.config/doom"
 cp -rv doom/* "$HOME/.config/doom/"
 
 # --- Tree-sitter Grammar Sync ---
-echo "Building compatible Tree-sitter grammars (v0.23.6 for Python)..."
+echo "Building compatible Tree-sitter grammars (v0.21.0 for Python)..."
 rm -rf "$HOME/.config/emacs/tree-sitter"
 mkdir -p "$HOME/.config/emacs/tree-sitter"
 
 # Force Emacs to download and build grammars that match its internal queries
-# v0.23.6 is a robust choice for Emacs 30.2
+# v0.21.0 is the most widely compatible for current Emacs 30 builds
 emacs --batch --eval "
 (progn
   (setq treesit-language-source-alist
-        '((python \"https://github.com/tree-sitter/tree-sitter-python\" \"v0.23.6\")
+        '((python \"https://github.com/tree-sitter/tree-sitter-python\" \"v0.21.0\")
           (bash \"https://github.com/tree-sitter/tree-sitter-bash\")
           (yaml \"https://github.com/ikatyang/tree-sitter-yaml\")
           (json \"https://github.com/tree-sitter/tree-sitter-json\")
@@ -163,15 +163,6 @@ emacs --batch --eval "
         (treesit-install-language-grammar lang)
       (error (message \"Failed to build %s: %s\" lang (error-message-string err))))))
 "
-
-# Symlink libtree-sitter-*.so to *.so for maximum compatibility
-echo "Finalizing grammar paths..."
-for f in "$HOME/.config/emacs/tree-sitter"/libtree-sitter-*.so; do
-    if [ -f "$f" ]; then
-        lang=$(basename "$f" | sed 's/libtree-sitter-//;s/\.so//')
-        ln -sf "$f" "$HOME/.config/emacs/tree-sitter/$lang.so"
-    fi
-done
 
 # Symlink libtree-sitter-*.so to *.so for maximum compatibility
 echo "Finalizing grammar paths..."
