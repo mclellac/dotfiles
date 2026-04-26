@@ -36,15 +36,42 @@
 ;; --- NATIVE TREE-SITTER (Emacs 30) ---
 (setq-default treesit-font-lock-level 4)
 
+(setq treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/ikatyang/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
 (after! treesit
-  (setq treesit-extra-load-path (list (expand-file-name "tree-sitter" user-emacs-directory)))
-  
+  (let ((cache-dir (expand-file-name ".local/cache/tree-sitter" user-emacs-directory))
+        (extra-dir (expand-file-name "tree-sitter" user-emacs-directory)))
+    (setq treesit-extra-load-path (list cache-dir extra-dir)))
+
+  ;; Auto-install missing grammars
+  (dolist (lang treesit-language-source-alist)
+    (unless (treesit-language-available-p (car lang))
+      (treesit-install-language-grammar (car lang))))
+
   (setq major-mode-remap-alist
         '((python-mode . python-ts-mode)
           (bash-mode   . bash-ts-mode)
           (sh-mode     . bash-ts-mode)
           (yaml-mode   . yaml-ts-mode)
           (json-mode   . json-ts-mode)
+          (go-mode     . go-ts-mode)
+          (rust-mode   . rust-ts-mode)
+          (lua-mode    . lua-ts-mode)
           (c-mode      . c-ts-mode)
           (c++-mode    . c++-ts-mode))))
 
