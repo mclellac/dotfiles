@@ -52,6 +52,19 @@ return {
           function(server_name)
             lspconfig[server_name].setup({})
           end,
+          ["rust_analyzer"] = function()
+            lspconfig.rust_analyzer.setup({
+              filetypes = { "rust" },
+              root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-toolchain", "rust-toolchain.toml"),
+              settings = {
+                ["rust-analyzer"] = {
+                  checkOnSave = {
+                    command = "clippy",
+                  },
+                },
+              },
+            })
+          end,
           ["clangd"] = function()
             lspconfig.clangd.setup({
               filetypes = { "c", "cpp", "objc", "objcpp" },
@@ -257,10 +270,17 @@ return {
         terraform = { "terraform_fmt" },
         ansible = { "ansible-lint" },
       },
-      format_on_save = {
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      format_on_save = function(bufnr)
+        -- Only run format on save if a formatter is defined for the filetype
+        -- This prevents conform from trying to use LSP for everything when opening/saving
+        local formatters = require("conform").list_formatters(bufnr)
+        if #formatters > 0 then
+          return {
+            timeout_ms = 500,
+            lsp_fallback = true,
+          }
+        end
+      end,
     },
   },
 }
