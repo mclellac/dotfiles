@@ -31,6 +31,7 @@ return {
       local lspconfig = require("lspconfig")
       local mason_lspconfig = require("mason-lspconfig")
 
+<<<<<<< HEAD
       mason_lspconfig.setup({
         ensure_installed = {
           "basedpyright",
@@ -159,6 +160,134 @@ return {
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
+=======
+			mason_lspconfig.setup({
+				ensure_installed = {
+					"basedpyright",
+					"html",
+					"cssls",
+					"jinja_lsp",
+					"bashls",
+					"marksman",
+					"lemminx",
+					"clangd",
+					"terraformls",
+					"helm_ls",
+					"ansiblels",
+					"yamlls",
+					"dockerls",
+				},
+				handlers = {
+					function(server_name)
+						lspconfig[server_name].setup({})
+					end,
+					["clangd"] = function()
+						lspconfig.clangd.setup({
+							filetypes = { "c", "cpp", "objc", "objcpp" },
+						})
+					end,
+					["varnishls"] = function()
+						lspconfig.varnishls.setup({
+							cmd = { vim.fn.expand("~/bin/varnishls") },
+							filetypes = { "vcl" },
+							on_attach = function(client, _)
+								client.server_capabilities.semanticTokensProvider = nil
+							end,
+						})
+					end,
+					-- Explicitly configure yamlls for Kubernetes schemas
+					["yamlls"] = function()
+						lspconfig.yamlls.setup({
+							settings = {
+								yaml = {
+									schemaStore = {
+										enable = true,
+										url = "https://www.schemastore.org/api/json/catalog.json",
+									},
+									schemas = {
+										["kubernetes"] = {
+											"*-k8s.yaml",
+											"*.kubernetes.yaml",
+											"*.kube.yaml",
+											"*deployment.yaml",
+											"*service.yaml",
+											"*ingress.yaml",
+											"*configmap.yaml",
+											"*secret.yaml",
+											"*pod.yaml",
+											"*.kustomization.yaml",
+											"*.cluster.yaml",
+											"*.flux.yaml",
+											"*.argocd.yaml",
+										},
+										["https://helm.sh/schemas/helm-template-0.2.0.json"] = "*/templates/*.yaml",
+									},
+								},
+							},
+						})
+					end,
+				},
+			})
+		end,
+	},
+	{
+		"L3MON4D3/LuaSnip",
+		dependencies = {
+			"rafamadriz/friendly-snippets",
+			"chrisgrieser/nvim-various-textobjs",
+		},
+	},
+	{
+		"nvim-neotest/neotest",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"antoinemadec/FixCursorHold.nvim",
+			"nvim-neotest/neotest-python",
+		},
+		config = function()
+			require("neotest").setup({
+				adapters = {
+					require("neotest-python")({
+						dap = { justMyCode = false },
+					}),
+				},
+			})
+		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter",
+		opts = {
+			ensure_installed = {
+				"sql",
+				"html",
+				"css",
+				"comment",
+				"python",
+				"bash",
+				"markdown",
+				"markdown_inline",
+				"regex",
+				"vim",
+				"yaml",
+				"dockerfile",
+				"nginx",
+				"terraform",
+				"helm",
+			},
+		},
+	},
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"rcarriga/nvim-dap-ui",
+			"theHamsta/nvim-dap-virtual-text",
+			"nvim-neotest/nvim-nio",
+		},
+		config = function()
+			local dap = require("dap")
+			local dapui = require("dapui")
+>>>>>>> f29fede (bump)
 
       dap.adapters.python = {
         type = "executable",
@@ -178,6 +307,7 @@ return {
         },
       }
 
+<<<<<<< HEAD
       dap.adapters.codelldb = {
         type = "server",
         port = "${port}",
@@ -263,4 +393,63 @@ return {
       },
     },
   },
+=======
+			dapui.setup()
+
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			dap.listeners.before.event_terminated["dapui_config"] = function()
+				dapui.close()
+			end
+			dap.listeners.before.event_exited["dapui_config"] = function()
+				dapui.close()
+			end
+		end,
+	},
+	{
+		"mfussenegger/nvim-lint",
+		config = function()
+			local lint = require("lint")
+			lint.linters_by_ft = {
+				python = { "ruff" },
+				html = { "djlint" },
+				jinja = { "djlint" },
+				sh = { "shellcheck" },
+				markdown = { "markdownlint" },
+				c = { "clang-tidy" },
+				terraform = { "tflint" },
+				helm = { "helmlint" },
+				ansible = { "ansible-lint" },
+				dockerfile = { "hadolint" },
+			}
+
+			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+				callback = function()
+					lint.try_lint()
+				end,
+			})
+		end,
+	},
+	{
+		"stevearc/conform.nvim",
+		opts = {
+			formatters_by_ft = {
+				python = { "ruff_format" },
+				html = { "djlint" },
+				jinja = { "djlint" },
+				sh = { "shfmt" },
+				markdown = { "markdown-it" },
+				c = { "clang-format" },
+				terraform = { "terraform_fmt" },
+				ansible = { "ansible-lint" },
+			},
+			format_on_save = {
+				timeout_ms = 500,
+				lsp_fallback = true,
+			},
+		},
+	},
+>>>>>>> f29fede (bump)
 }
+

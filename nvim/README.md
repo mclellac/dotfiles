@@ -21,9 +21,9 @@ Here are some suggestions for improving your Neovim experience:
 
 ## Features
 
-* **LSP:** Language server protocol support for Python, Rust, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
+* **LSP:** Language server protocol support for Python, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
 * **Snippets:** Code snippets for many languages.
 * **Auto-quit:** Automatically quit Neovim when the only remaining buffer is the snacks explorer.
-* **DAP:** Debug adapter protocol support for Python, Rust, and Go.
-* **Linters:** Linters for Python, Rust, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
-* **Formatters:** Formatters for Python, Rust, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
+* **DAP:** Debug adapter protocol support for Python, and Go.
+* **Linters:** Linters for Python, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
+* **Formatters:** Formatters for Python, Go, Shell, Markdown, Varnish VCL, C, Terraform, Helm and ansible.
