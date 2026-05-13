@@ -73,7 +73,7 @@
        (json +lsp)
        (lua +lsp)
        (markdown +grip)
-       (org +roam +journal +pomodoro +dragndrop)
+       (org +roam +journal +pomodoro +dragndrop +pretty)
        (python +lsp +pyright)
        qt
        rest

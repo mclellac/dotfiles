@@ -32,7 +32,8 @@ case "$OS" in
         sudo pacman -Syu --needed --noconfirm \
             direnv terraform scrot rust-analyzer shellcheck tidy \
             go npm python-pip curl ripgrep fd aspell aspell-en isync \
-            shfmt python-black pyright tree-sitter-python
+            shfmt python-black pyright tree-sitter-python \
+            adobe-source-sans-fonts ttf-jetbrains-mono-nerd
         
         if command_exists yay; then
             echo "Installing AUR dependencies via yay..."
@@ -54,7 +55,7 @@ case "$OS" in
         echo "Updating Debian/Ubuntu..."
         sudo apt-get update
         sudo apt-get install -y \
-            fonts-symbola direnv scrot shellcheck tidy \
+            fonts-symbola fonts-source-sans-pro fonts-jetbrains-mono direnv scrot shellcheck tidy \
             golang npm python3-pip curl gnupg software-properties-common \
             ripgrep fd-find aspell aspell-en isync mu4e shfmt
 
@@ -75,15 +76,15 @@ case "$OS" in
         sudo dnf install -y dnf-plugins-core
         sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
         sudo dnf install -y \
-            gdouros-symbola-fonts direnv terraform scrot rust-analyzer ShellCheck tidy \
+            gdouros-symbola-fonts adobe-source-sans-pro-fonts jetbrains-mono-fonts direnv terraform scrot rust-analyzer ShellCheck tidy \
             golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync shfmt
         ;;
     *)
         # Check ID_LIKE for derivatives
         if [[ "$LIKE" == *"arch"* ]]; then
-             sudo pacman -Syu --needed --noconfirm direnv terraform scrot rust-analyzer shellcheck tidy go npm python-pip curl ripgrep fd aspell aspell-en isync shfmt
+             sudo pacman -Syu --needed --noconfirm direnv terraform scrot rust-analyzer shellcheck tidy go npm python-pip curl ripgrep fd aspell aspell-en isync shfmt adobe-source-sans-fonts ttf-jetbrains-mono-nerd
         elif [[ "$LIKE" == *"debian"* ]]; then
-             sudo apt-get update && sudo apt-get install -y fonts-symbola direnv scrot rust-analyzer shellcheck tidy golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync shfmt
+             sudo apt-get update && sudo apt-get install -y fonts-symbola fonts-source-sans-pro fonts-jetbrains-mono direnv scrot rust-analyzer shellcheck tidy golang npm python3-pip curl ripgrep fd-find aspell aspell-en isync shfmt
         else
             error_exit "Unsupported OS: $OS ($LIKE). Please install dependencies manually."
         fi
@@ -134,7 +135,8 @@ $pip_install grip nose || echo "Failed to install python tools"
 
 # --- NPM Tools ---
 echo "Installing NPM-based tools..."
-sudo npm install -g stylelint js-beautify pyright || echo "Failed to install NPM tools"
+# Use --loglevel=error to suppress upstream deprecation warnings (e.g., glob@10)
+sudo npm install -g stylelint js-beautify pyright --loglevel=error || echo "Failed to install NPM tools"
 
 # --- Final Steps ---
 echo "Syncing configuration files to ~/.config/doom..."
@@ -196,7 +198,7 @@ echo "--------------------------------------------------"
 echo "Installation complete!"
 echo "--------------------------------------------------"
 echo "Remaining Steps:"
-echo "1. Symbols Nerd Font: Run 'M-x nerd-icons-install-fonts' inside Doom Emacs."
+echo "1. Symbols Nerd Font: Run 'nerd-icons-install-fonts' inside Doom Emacs (e.g., via 'SPC :' or 'M-x')."
 echo "2. Path Check: Ensure '$HOME/go/bin' is in your PATH."
 echo "   Add this to your ~/.zshrc or ~/.bashrc:"
 echo "   export PATH=\$PATH:\$HOME/go/bin"

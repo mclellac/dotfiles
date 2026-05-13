@@ -7,11 +7,11 @@
 (setq mu4e-maildir "/home/mclellac/.local/share/mail/personal")
 
 ;; Fonts
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 20 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "Hack" :size 18))
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 18))
 
 ;; Theme
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-nord)
 
 ;; Stop asking to quit
 (setq confirm-kill-emacs nil)
@@ -28,10 +28,47 @@
 (setq org-directory "~/.org/")
 (after! org
   (setq org-hide-emphasis-markers t
+        org-hide-leading-stars t
+        org-pretty-entities t
+        org-ellipsis " ·"
         org-agenda-files '("~/.org/inbox.org"
                            "~/.org/projects.org"
                            "~/.org/habits.org"
-                           "~/.org/roam/")))
+                           "~/.org/roam/"))
+
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "PROJ(p)" "READ(r)" "CHECK(c)" "IDEA(i)" "|" "DONE(d)")))
+
+  (setq org-todo-keyword-faces
+        '(("TODO" :inherit (org-todo region) :foreground "#A3BE8C" :weight bold)
+          ("PROJ" :inherit (org-todo region) :foreground "#88C0D0" :weight bold)
+          ("READ" :inherit (org-todo region) :foreground "#8FBCBB" :weight bold)
+          ("CHECK" :inherit (org-todo region) :foreground "#81A1C1" :weight bold)
+          ("IDEA" :inherit (org-todo region) :foreground "#EBCB8B" :weight bold)
+          ("DONE" :inherit (org-todo region) :foreground "#30343d" :weight bold)))
+
+  (setq org-priority-faces
+        '((?A . "#BF616A")
+          (?B . "#EBCB8B")
+          (?C . "#B48EAD")
+          (?D . "#81A1C1")
+          (?E . "#5E81AC")
+          (?F . "#4C566A")))
+
+  (setq org-lowest-priority ?F
+        org-default-priority ?E)
+
+  (setq org-adapt-indentation t
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0)
+
+  (plist-put org-format-latex-options :scale 2)
+
+  ;; Hooks
+  (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook #'olivetti-mode)
+  (add-hook 'org-mode-hook #'org-appear-mode))
 
 ;; --- NATIVE TREE-SITTER (Emacs 30) ---
 (setq-default treesit-font-lock-level 4)
@@ -40,21 +77,21 @@
 (setq treesit-directory (expand-file-name ".local/cache/tree-sitter" user-emacs-directory))
 
 (setq treesit-language-source-alist
-   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-     (cmake "https://github.com/uyha/tree-sitter-cmake")
-     (css "https://github.com/tree-sitter/tree-sitter-css")
-     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-     (go "https://github.com/tree-sitter/tree-sitter-go")
-     (html "https://github.com/tree-sitter/tree-sitter-html")
-     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-     (json "https://github.com/tree-sitter/tree-sitter-json")
-     (make "https://github.com/alemuller/tree-sitter-make")
-     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-     (python "https://github.com/tree-sitter/tree-sitter-python")
-     (toml "https://github.com/ikatyang/tree-sitter-toml")
-     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (toml "https://github.com/ikatyang/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
 (after! treesit
   ;; Ensure directory exists for grammar installation
@@ -163,7 +200,21 @@
   '(font-lock-builtin-face :weight bold)
   ;; Make line numbers more subtle
   '(line-number :foreground "#4b5263")
-  '(line-number-current-line :foreground "#51afef" :weight bold))
+  '(line-number-current-line :foreground "#51afef" :weight bold)
+  ;; Org Heading Sizes
+  '(org-level-1 :height 1.35 :weight bold :inherit variable-pitch)
+  '(org-level-2 :height 1.2 :weight bold :inherit variable-pitch)
+  '(org-level-3 :height 1.1 :weight bold :inherit variable-pitch)
+  '(org-level-4 :height 1.05 :weight bold :inherit variable-pitch)
+  '(org-level-5 :height 1.0 :weight bold :inherit variable-pitch)
+  '(org-document-title :height 1.8 :weight bold :inherit variable-pitch)
+  ;; Ensure fixed-pitch for specific Org elements
+  '(org-block :inherit fixed-pitch)
+  '(org-code :inherit fixed-pitch)
+  '(org-verbatim :inherit fixed-pitch)
+  '(org-special-keyword :inherit (font-lock-comment-face fixed-pitch))
+  '(org-meta-line :inherit (font-lock-comment-face fixed-pitch))
+  '(org-checkbox :inherit fixed-pitch))
 
 ;; Dashboard Banner (Minimalist)
 (setq fancy-splash-image (expand-file-name "wallpapers/mountains1.png" (file-name-directory load-file-name)))
@@ -175,22 +226,22 @@
 
 ;; Functional Dashboard Menu
 (setq +doom-dashboard-menu-sections
-  '(("Recently opened files"
-     :icon (nerd-icons-faicon "nf-fa-file_text_o" :face 'doom-dashboard-menu-title)
-     :action recentf-open-files)
-    ("Open project"
-     :icon (nerd-icons-faicon "nf-fa-folder_open" :face 'doom-dashboard-menu-title)
-     :action projectile-switch-project)
-    ("Jump to bookmark"
-     :icon (nerd-icons-faicon "nf-fa-bookmark" :face 'doom-dashboard-menu-title)
-     :action bookmark-jump)
-    ("Open org-agenda"
-     :icon (nerd-icons-faicon "nf-fa-calendar" :face 'doom-dashboard-menu-title)
-     :when (fboundp 'org-agenda)
-     :action org-agenda)
-    ("Edit emacs config"
-     :icon (nerd-icons-faicon "nf-fa-wrench" :face 'doom-dashboard-menu-title)
-     :action my-open-doom-config)))
+      '(("Recently opened files"
+         :icon (nerd-icons-faicon "nf-fa-file_text_o" :face 'doom-dashboard-menu-title)
+         :action recentf-open-files)
+        ("Open project"
+         :icon (nerd-icons-faicon "nf-fa-folder_open" :face 'doom-dashboard-menu-title)
+         :action projectile-switch-project)
+        ("Jump to bookmark"
+         :icon (nerd-icons-faicon "nf-fa-bookmark" :face 'doom-dashboard-menu-title)
+         :action bookmark-jump)
+        ("Open org-agenda"
+         :icon (nerd-icons-faicon "nf-fa-calendar" :face 'doom-dashboard-menu-title)
+         :when (fboundp 'org-agenda)
+         :action org-agenda)
+        ("Edit emacs config"
+         :icon (nerd-icons-faicon "nf-fa-wrench" :face 'doom-dashboard-menu-title)
+         :action my-open-doom-config)))
 
 ;; Clean Window Dividers
 (setq window-divider-default-places 'right-only
@@ -331,25 +382,36 @@
         beacon-size 40
         beacon-blink-duration 0.3))
 
-;; Org-Modern: Sleek icons/elements for Org Mode
-(with-eval-after-load 'org
+;; Modern Org UI: org-modern & org-superstar
+(after! org
   (global-org-modern-mode)
-  (setq
-   ;; Edit settings
-   org-auto-align-tags nil
-   org-tags-column 0
-   org-catch-all-regs t
-   org-special-ctrl-a/e t
-   org-insert-heading-respect-content t
+  (setq org-modern-tag nil
+        org-modern-priority nil
+        org-modern-todo nil
+        org-modern-table nil
+        org-modern-star nil)
 
-   ;; Appearance settings
-   org-modern-star '("◉" "○" "◈" "◇" "✳")
-   org-modern-list '((?- . "•") (?+ . "◦"))
-   org-modern-tag t
-   org-modern-priority t
-   org-modern-todo t
-   org-modern-table t
-   org-modern-checkbox '((?X . "☑") (?\s . "☐") (?- . "❍"))))
+  (setq org-superstar-leading-bullet " "
+        org-superstar-special-todo-items t
+        org-superstar-todo-bullet-alist
+        '(("TODO" . 9744)
+          ("PROJ" . 9744)
+          ("READ" . 9744)
+          ("CHECK" . 9744)
+          ("IDEA" . 9744)
+          ("DONE" . 9744)))
+
+  ;; Agenda styling
+  (setq org-agenda-tags-column 0
+        org-agenda-block-separator ?─
+        org-agenda-time-grid '((daily today require-timed)
+                               (800 1000 1200 1400 1600 1800 2000)
+                               " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        org-agenda-current-time-string "⭠ now ─────────────────────────────────────────────────"))
+
+;; Centering and Layout (Olivetti)
+(after! olivetti
+  (setq olivetti-body-width 100))
 
 ;; Enhance search results visibility
 (setq search-highlight t

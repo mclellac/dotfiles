@@ -96,10 +96,11 @@ else
 fi
 
 # Install git-split-diffs if npm is available
-if command -v npm &>/dev/null; then
+if command_v npm &>/dev/null; then
     if ! command -v git-split-diffs &>/dev/null; then
         log_info "Installing git-split-diffs via npm..."
-        sudo npm install -g git-split-diffs || log_error "Failed to install git-split-diffs. Please install it manually."
+        # Use --loglevel=error to suppress upstream deprecation warnings
+        sudo npm install -g git-split-diffs --loglevel=error || log_error "Failed to install git-split-diffs. Please install it manually."
     else
         log_info "git-split-diffs is already installed. Skipping."
     fi
