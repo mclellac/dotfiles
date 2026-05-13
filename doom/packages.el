@@ -28,6 +28,7 @@
 (package! beacon)
 (package! olivetti)
 (package! org-appear)
+(package! mu4e-marker-icons)
 
 ;; If the package you are trying to install does not contain a PACKAGENAME.el
 ;; file, or is located in a subdirectory of the repo, you'll need to specify

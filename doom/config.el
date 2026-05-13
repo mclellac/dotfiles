@@ -375,6 +375,71 @@
 
 ;; --- MODERN UI FLOURISHES ---
 
+;; mu4e Modernization
+(after! mu4e
+  (setq mu4e-use-fancy-chars t
+        mu4e-headers-draft-mark     '("D" . "󱘎")
+        mu4e-headers-flagged-mark   '("F" . "󰈻")
+        mu4e-headers-new-mark       '("N" . "󱅱")
+        mu4e-headers-passed-mark    '("P" . "󱞙")
+        mu4e-headers-replied-mark   '("R" . "󱞙")
+        mu4e-headers-seen-mark      '("S" . "󰄲")
+        mu4e-headers-trashed-mark   '("T" . "󰩹")
+        mu4e-headers-attach-mark    '("a" . "󰁦")
+        mu4e-headers-encrypted-mark '("x" . "󰌋")
+        mu4e-headers-signed-mark    '("s" . "󱝓")
+        mu4e-headers-unread-mark    '("u" . "󰶊"))
+
+  ;; Visual threading
+  (setq mu4e-headers-thread-child-prefix '("├" . "  ├─▶ ")
+        mu4e-headers-thread-last-child-prefix '("└" . "  ╰─▶ ")
+        mu4e-headers-thread-orphan-prefix '("◈" . "◈ ")
+        mu4e-headers-thread-single-orphan-prefix '("◇" . "◇ ")
+        mu4e-headers-thread-connection-prefix '("│" . "  │ "))
+
+  ;; Header columns
+  (setq mu4e-headers-fields
+        '((:human-date . 12)
+          (:flags . 6)
+          (:from-or-to . 25)
+          (:subject . nil)))
+
+  ;; Modern HTML Rendering
+  (setq mu4e-view-use-gnus nil
+        mu4e-view-show-images t
+        mu4e-view-image-max-width 800
+        shr-use-colors nil
+        shr-bullet "• "
+        shr-folding-mode t
+        shr-max-width 100)
+
+  ;; Center mail view
+  (add-hook 'mu4e-view-mode-hook #'olivetti-mode)
+  (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
+
+  ;; Use mu4e-marker-icons
+  (mu4e-marker-icons-mode 1))
+
+;; elfeed Modernization
+(after! elfeed
+  (setq elfeed-search-filter "@2-weeks-ago +unread"
+        elfeed-search-title-max-width 100
+        elfeed-search-title-min-width 30
+        elfeed-search-trailing-width 25)
+
+  ;; Better date formatting
+  (setq elfeed-search-date-format '("%Y-%m-%d %H:%M" 16 :left))
+
+  ;; Center article view
+  (add-hook 'elfeed-show-mode-hook #'olivetti-mode)
+  (add-hook 'elfeed-show-mode-hook #'visual-line-mode)
+
+  ;; Custom faces for elfeed
+  (custom-set-faces!
+    '(elfeed-search-unread-title-face :weight bold :foreground "#88C0D0")
+    '(elfeed-search-date-face :foreground "#4b5263")
+    '(elfeed-search-feed-face :foreground "#81A1C1" :slant italic)))
+
 ;; Beacon: Pulse cursor after jumps/window switches
 (after! beacon
   (beacon-mode 1)
