@@ -7,8 +7,8 @@
 (setq mu4e-maildir "/home/mclellac/.local/share/mail/personal")
 
 ;; Fonts
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 18 :weight 'regular)
-      doom-variable-pitch-font (font-spec :family "Source Sans Pro" :size 18))
+(setq doom-font (font-spec :family "AdwaitaMono Nerd Font" :size 18 :weight 'regular)
+      doom-variable-pitch-font (font-spec :family "Hack" :size 18))
 
 ;; Theme
 (setq doom-theme 'doom-nord)
