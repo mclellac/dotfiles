@@ -145,6 +145,10 @@ def action_vim_update(vim_executable, args, errors, console):
         Exception: If an error occurs during the update process.
     """
     try:
+        if not shutil.which(vim_executable):
+            log(f"{vim_executable} not found. Skipping update.", style="yellow", console=console)
+            return
+
         is_neovim = vim_executable.lower() == "nvim"
 
         if is_neovim:

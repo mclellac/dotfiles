@@ -75,6 +75,7 @@ fedora:
     - zsh-syntax-highlighting
     - zsh
     - fzf
+    - starship
     - vim-enhanced
     - tmux
     - git
@@ -117,6 +118,11 @@ fedora:
 
 arch:
   pacman:
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+    - fzf
+    - starship
     - python-dnspython
     - evolution
     - evolution-data-server
@@ -127,6 +133,7 @@ arch:
     - docker-compose
     - gopls
     - nodejs
+    - neovim
     - fd
     - ripgrep
   pip-packages:
@@ -137,6 +144,11 @@ arch:
 
 debian:
   apt:
+    - zsh
+    - zsh-autosuggestions
+    - zsh-syntax-highlighting
+    - fzf
+    - starship
     - python3-dns
     - evolution
     - evolution-data-server
@@ -149,6 +161,7 @@ debian:
     - docker-compose
     - golang-x-tools-gopls
     - nodejs
+    - neovim
     - fd-find
     - ripgrep
   pip-packages:
@@ -170,6 +183,8 @@ darwin:
     - httpie
     - zsh-syntax-highlighting
     - zsh-completions
+    - fzf
+    - starship
     - lazygit
     - gtk4
     - libadwaita

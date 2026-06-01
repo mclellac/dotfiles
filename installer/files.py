@@ -36,7 +36,7 @@ def copy_files_or_directories(target, source, args):
         if os.path.isfile(source):
             shutil.copy2(source, target)
         else:
-            shutil.copytree(source, target)
+            shutil.copytree(source, target, symlinks=True)
         console.print(
             "[blue]{}[/blue] [cyan]━━[/cyan] [green]'{}'[/green]".format(source, target),
             style="bold",

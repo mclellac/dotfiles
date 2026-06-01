@@ -151,12 +151,15 @@ def main() -> None:
                 import distro
 
                 current_os = distro.id().lower()
+                if current_os == "archarm":
+                    current_os = "arch"
             except ImportError:
                 console.print(
                     "[bold red]Error:[/bold red] Unable to determine the operating system. Make sure python package `distro` is installed."
                 )
                 return
 
+        pip_packages = []
         if current_os in config:
             os_config = config[current_os]
             dnf_packages = os_config.get("dnf", [])

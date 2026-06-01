@@ -54,7 +54,7 @@ def install_packages(packages: list, package_manager: str) -> None:
             elif package_manager == "homebrew":
                 subprocess.run(["brew", "install"] + not_installed, check=True)
             elif package_manager == "pip":
-                subprocess.run(["pip", "install"] + not_installed, check=True)
+                subprocess.run(["pip", "install", "--break-system-packages"] + not_installed, check=True)
             else:
                 console.print(f"[bold red]Error:[/bold red] Unsupported package manager: {package_manager}")
         else:
