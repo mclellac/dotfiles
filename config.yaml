@@ -110,7 +110,6 @@ fedora:
     - scap-workbench
   pip-packages:
     - pyright
-    - pyright
     - rich
     - pynvim
   copr-repo:
@@ -179,7 +178,7 @@ darwin:
     - ansible
     - ansible-lint
     - python
-    - terraform
+    - opentofu
     - httpie
     - zsh-syntax-highlighting
     - zsh-completions
@@ -204,7 +203,6 @@ darwin:
     - mtr
     - nghttp2
     - wireshark
-    - fd
     - ripgrep
   pip-packages:
     - prompt_toolkit

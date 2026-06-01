@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import argparse
@@ -141,15 +141,19 @@ def main() -> None:
             )
         )
 
-        current_os = None
-
-        try:
-            run_command(["brew", "--version"], check=True, timeout=30)
+        # OS detection
+        system = platform.system().lower()
+        if system == "darwin":
             current_os = "darwin"
-        except FileNotFoundError:
+            try:
+                run_command(["brew", "--version"], check=True, timeout=30)
+            except (FileNotFoundError, subprocess.CalledProcessError):
+                console.print(
+                    "[bold yellow]Warning:[/bold yellow] Homebrew not found. Please install it from https://brew.sh/"
+                )
+        else:
             try:
                 import distro
-
                 current_os = distro.id().lower()
                 if current_os == "archarm":
                     current_os = "arch"
@@ -221,7 +225,7 @@ def main() -> None:
                         progress.update(task, advance=1, description=f"Checking {pkg}")
                 install_packages(brew_packages, "homebrew")
 
-        install_packages(pip_packages, "pip")
+        install_packages(pip_packages, "pip3")
 
     current_dir = Path(__file__).resolve().parent
     os.chdir(current_dir)

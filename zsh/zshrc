@@ -12,18 +12,21 @@ export TERM="xterm-256color"
 export EDITOR="nvim"
 stty sane
 
+# Homebrew prefix detection
+if [[ "$(uname)" == "Darwin" ]]; then
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+        BREW_PREFIX="/opt/homebrew"
+    elif [[ -f /usr/local/bin/brew ]]; then
+        BREW_PREFIX="/usr/local"
+    fi
+    if [[ -n "$BREW_PREFIX" ]]; then
+        eval "$($BREW_PREFIX/bin/brew shellenv)"
+    fi
+fi
 
 #export STARSHIP_CONFIG=~/.config/starship/starship.toml
 #export STARSHIP_CONFIG=~/.config/starship/jetpack.toml
 export STARSHIP_CONFIG=~/.config/starship.toml
-
-autoload -Uz compinit
-
-for dump in ~/.zcompdump*; do
-    compinit
-done
-
-compinit -C
 
 # Must be sourced before powerlevel10k as it includes the $WORK_DOMAIN variable
 # the custom OpenShift segment uses.
@@ -121,7 +124,7 @@ function _pip_completion {
 compctl -K _pip_completion pip
 
 # LLVM path & DOOM emacs
-export PATH="/usr/local/opt/llvm/bin:${HOME}/.config/emacs/bin:${HOME}/.local/bin:/usr/local/opt/yq@3/bin:${HOME}/.config/hypr/bin:$PATH"
+export PATH="${BREW_PREFIX:-/usr/local}/opt/llvm/bin:${HOME}/.config/emacs/bin:${HOME}/.local/bin:${BREW_PREFIX:-/usr/local}/opt/yq@3/bin:${HOME}/.config/hypr/bin:$PATH"
 
 source <(fzf --zsh)
 
@@ -165,7 +168,7 @@ source "${HOME}"/.config/dotfiles/zsh/zshrc.d/zfunc
 set -k
 # To enable zsh auto-completion, run: eval "$(/usr/local/bin/akamai --zsh)"
 # We recommend adding this to your .zshrc file
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit -u
 autoload -U bashcompinit && bashcompinit
 _akamai_cli_bash_autocomplete() {
     local cur opts base

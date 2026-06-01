@@ -7,6 +7,7 @@ import subprocess
 from .setup_logs import log
 from rich.console import Console
 from rich.panel import Panel
+from rich.prompt import Prompt
 
 console = Console()
 
@@ -162,7 +163,7 @@ def action_vim_update(vim_executable, args, errors, console):
             console.print(vim_command)
 
         if not args.skip_vimplug:
-            result = run_command(vim_command.split())
+            result = run_command(["zsh", "-c", vim_command], timeout=300)
             if isinstance(result, Exception):
                 errors.append(("action_vim_update", str(result)))
         else:
@@ -281,15 +282,15 @@ def action_gitconfig_secret(args, errors, console) -> None:
                 console=console,
             )
             if not user_name:
-                git_username = input(
-                    "(git config user.name) Please input your name  : "
+                git_username = Prompt.ask(
+                    "(git config user.name) Please input your name"
                 )
             else:
                 git_username = user_name
 
             if not user_email:
-                git_useremail = input(
-                    "(git config user.email) Please input your email : "
+                git_useremail = Prompt.ask(
+                    "(git config user.email) Please input your email"
                 )
             else:
                 git_useremail = user_email

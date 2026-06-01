@@ -47,40 +47,73 @@ elif [[ "$OSTYPE" == "freebsd"* ]]; then
 
 elif [[ $OSTYPE = "darwin"* ]]; then
     GOPATH="${HOME}/Projects"
-    GOROOT="/usr/local/opt/go/libexec"
-    PATH="$PATH:$GOROOT/bin:$GOPATH/bin:${HOME}/Library/Python/3.10/bin:/usr/local/opt/curl/bin"
+    
+    # BREW_PREFIX should be inherited from zshrc, but fallback just in case
+    if [[ -z "$BREW_PREFIX" ]]; then
+        if type brew &>/dev/null; then
+            BREW_PREFIX=$(brew --prefix)
+        else
+            BREW_PREFIX="/usr/local"
+        fi
+    fi
+
+    GOROOT="$BREW_PREFIX/opt/go/libexec"
+    PATH="$PATH:$GOROOT/bin:$GOPATH/bin"
+    
+    # Python user bin
+    if type python3 &>/dev/null; then
+        PYTHON_USER_BASE=$(python3 -m site --user-base 2>/dev/null)
+        if [[ -n "$PYTHON_USER_BASE" ]]; then
+            PATH="$PATH:$PYTHON_USER_BASE/bin"
+        fi
+    fi
+    
+    PATH="$PATH:$BREW_PREFIX/opt/curl/bin"
     export GOPATH GOROOT PATH
 
     if type "fzf" > /dev/null; then
-        if [ -f "/usr/local/opt/fzf/shell/key-bindings.zsh" ]; then
-            source /usr/local/opt/fzf/shell/key-bindings.zsh
-        elif [ -f "/usr/share/fzf/shell/key-bindings.zsh" ]; then
-            source /usr/share/fzf/shell/key-bindings.zsh
-        fi
+        for f in "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh" "/usr/local/opt/fzf/shell/key-bindings.zsh" "/usr/share/fzf/shell/key-bindings.zsh"; do
+            if [ -f "$f" ]; then
+                source "$f"
+                break
+            fi
+        done
         
-        if [ -f "/usr/local/opt/fzf/shell/completion.zsh" ]; then
-            source /usr/local/opt/fzf/shell/completion.zsh
-        elif [ -f "/usr/share/fzf/shell/completion.zsh" ]; then
-            source /usr/share/fzf/shell/completion.zsh
-        fi
+        for f in "$BREW_PREFIX/opt/fzf/shell/completion.zsh" "/usr/local/opt/fzf/shell/completion.zsh" "/usr/share/fzf/shell/completion.zsh"; do
+            if [ -f "$f" ]; then
+                source "$f"
+                break
+            fi
+        done
     fi
 
     # zsh completions Homebrew
-    if type brew &>/dev/null; then
-        FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-
-        autoload -Uz compinit
-        compinit
+    if [[ -d "$BREW_PREFIX/share/zsh-completions" ]]; then
+        FPATH="$BREW_PREFIX/share/zsh-completions:$FPATH"
     fi
 
     # Google Cloud SDK
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+    for f in "$BREW_PREFIX/share/google-cloud-sdk/path.zsh.inc" \
+             "$BREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" \
+             "/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"; do
+        if [ -f "$f" ]; then
+            source "$f"
+            # Try to source completion in the same directory
+            comp="${f%path.zsh.inc}completion.zsh.inc"
+            [ -f "$comp" ] && source "$comp"
+            break
+        fi
+    done
 
     # zsh-syntax-highlighting (brew package)
-    if [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zshrc" ]; then
-      source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zshrc
-    fi
+    for f in "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zshrc" \
+             "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
+             "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zshrc"; do
+        if [ -f "$f" ]; then
+            source "$f"
+            break
+        fi
+    done
 
     # iterm shell integration
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

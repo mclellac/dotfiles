@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------#
 #                           PATH Variables
 #------------------------------------------------------------------------------#
-PATH=$PATH:$HOME/bin:/usr/local/opt/python/libexec/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+PATH=$PATH:$HOME/bin:${BREW_PREFIX:-/usr/local}/opt/python/libexec/bin:${BREW_PREFIX:-/usr/local}/bin:/bin:/usr/bin:${BREW_PREFIX:-/usr/local}/sbin:/usr/sbin:/sbin
 
 if [ -d ${HOME}/Library/Android/tools ]; then
     PATH=$PATH:${HOME}/Library/Android/sdk/platform-tools
@@ -34,7 +34,7 @@ setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording en
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 unsetopt HIST_BEEP               # Nope nope nope nope nope. Never in a million years.
 
-HELPDIR=/usr/local/share/zsh/help
+HELPDIR=${BREW_PREFIX:-/usr/local}/share/zsh/help
 EDITOR=vim
 VISUAL=vim
 CLICOLOR=1;
@@ -46,7 +46,7 @@ export COLORFGBG="default;default"
 #------------------------------------------------------------------------------#
 #                          Zsh Tab Completions
 #------------------------------------------------------------------------------#
-fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=(${BREW_PREFIX:-/usr/local}/share/zsh-completions $fpath)
 
 # OpenShift tab completion
 if [ $commands[oc] ]; then
