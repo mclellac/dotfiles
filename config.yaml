@@ -197,7 +197,6 @@ darwin:
     - autoconf
     - automake
     - meson
-    - meson-python
     - ninja
     - node
     - mtr

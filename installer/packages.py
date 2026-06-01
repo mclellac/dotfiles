@@ -64,7 +64,7 @@ def install_packages(packages: list, package_manager: str) -> None:
                 subprocess.run(["brew", "install"] + not_installed, check=True)
             elif package_manager in ["pip", "pip3"]:
                 pip_cmd = package_manager if package_manager == "pip3" else "pip"
-                subprocess.run([pip_cmd, "install"] + not_installed, check=True)
+                subprocess.run([pip_cmd, "install", "--break-system-packages"] + not_installed, check=True)
             else:
                 console.print(
                     f"[bold red]Error:[/bold red] Unsupported package manager: {package_manager}"
